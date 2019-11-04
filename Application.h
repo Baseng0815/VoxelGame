@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EventHandler.h"
+#include "ResourceRegistry.h"
 
 class Application {
 private:

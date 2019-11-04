@@ -5,10 +5,11 @@
 Application::Application() {
 	m_window.init(this);
 
+	ResourceRegistry::loadResources();
 }
 
 Application::~Application() {
-
+	ResourceRegistry::freeResources();
 }
 
 void Application::run() {
