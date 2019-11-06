@@ -7,18 +7,22 @@
 #ifndef PCH_H
 #define PCH_H
 
+#define BUFFER_OFFSET(x) ((void*)(x))
+
 // add headers that you want to pre-compile here
-#include <iostream>
+#include <map>
+#include <array>
 #include <string>
 #include <vector>
+#include <iostream>
 #include <stdexcept>
-#include <map>
-#include <string_view>
 #include <filesystem>
+#include <string_view>
 
 #include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/transform.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

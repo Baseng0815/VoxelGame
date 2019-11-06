@@ -5,11 +5,11 @@
 Application::Application() {
 	m_window.init(this);
 
-	ResourceRegistry::loadResources();
+	GameRegistry::loadResources();
 }
 
 Application::~Application() {
-	ResourceRegistry::freeResources();
+	GameRegistry::freeResources();
 }
 
 void Application::run() {
