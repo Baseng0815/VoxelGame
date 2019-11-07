@@ -10,9 +10,12 @@ void Window::init(Application* app, const int width, const int height) {
 	if (!m_window)
 		throw std::runtime_error("Failed to create GLFW window.");
 
+	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetWindowUserPointer(m_window, app);
 
 	glfwSetKeyCallback(m_window, EventHandler::keyCallback);
+	glfwSetCursorPosCallback(m_window, EventHandler::cursorPosCallback);
+	glfwSetScrollCallback(m_window, EventHandler::scrollCallback);
 
 	glfwMakeContextCurrent(m_window);
 }
@@ -24,6 +27,10 @@ void Window::clear(Color clearColor) {
 
 void Window::display() {
 	glfwSwapBuffers(m_window);
+}
+
+bool Window::getKey(int key) const {
+	return glfwGetKey(m_window, key);
 }
 
 void Window::close() {

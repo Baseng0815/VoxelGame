@@ -6,20 +6,29 @@
 
 class Chunk {
 private:
-	Block m_blocks[16][16][16];
+	// 16*16*16 array of blocks
+	Block*** m_blocks;
+
+	friend class MasterRenderer;
 
 	GLuint m_vao;
 	GLuint m_vbo, m_ebo;
 	unsigned int m_drawCount;
 
-	void updateMesh();
+
+	// return false if coordinates are out of bounds
+	static bool checkBounds(glm::ivec3 position);
 
 public:
 	glm::vec3 position;
 
-	Chunk();
+	void initEmpty(glm::vec3 position = glm::vec3(0));
+	void cleanUp();
 
-	void draw();
+	Block getBlock(glm::ivec3 position);
+	Block getBlock(int x, int y, int z);
+	void setBlock(int x, int y, int z, Block block);
+	void setBlock(glm::ivec3 position, Block block);
 
-	Block& blockAt(int x, int y, int z);
+	void updateMesh();
 };

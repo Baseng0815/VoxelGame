@@ -10,12 +10,14 @@ void Camera::recalculateVectors() {
 	m_front = glm::normalize(front);
 	m_right = glm::normalize(glm::cross(m_front, glm::vec3(0, 1, 0)));
 	m_up = glm::normalize(glm::cross(m_right, m_front));
+
+	m_viewMatrix = glm::lookAt(m_position, m_position + m_front, m_up);
 }
 
-Camera::Camera() {}
-
-Camera::Camera(int width, int height, float fov) 
-	: m_width(width), m_height(height), m_fov(fov) {
+void Camera::init(int width, int height, float fov) {
+	m_width = width;
+	m_height = height;
+	m_fov = fov;
 
 	recalculateProjectionMatrix(width, height);
 	recalculateVectors();
@@ -33,7 +35,7 @@ void Camera::recalculateProjectionMatrix(int width, int height) {
 	m_width = width;
 	m_height = height;
 
-	m_projectionMatrix = glm::perspective(glm::radians(m_fov), width / (float)height, 0.1f, 1000.f);
+	m_projectionMatrix = glm::perspective(glm::radians(m_fov), width / (float)height, 0.1f, 10000.f);
 }
 
 void Camera::handleKeys(const Window& window, int dt) {
@@ -58,7 +60,7 @@ void Camera::handleKeys(const Window& window, int dt) {
 	recalculateVectors();
 }
 
-void Camera::handleMouseMotion(float dx, float dy) {
+void Camera::handleMouseMotion(double dx, double dy) {
 	dx *= MOUSE_SENSITIVITY;
 	dy *= MOUSE_SENSITIVITY;
 
@@ -78,4 +80,11 @@ void Camera::handleMouseScroll(int dy) {
 	else if (m_fov < 1) m_fov = 1;
 
 	recalculateProjectionMatrix(m_width, m_height);
+}
+
+void Camera::_debugPrint() {
+	std::cout << "[" << m_position.x << " " << m_position.y << " " << m_position.z << "]" << std::endl;
+	std::cout << "[" << m_front.x << " " << m_front.y << " " << m_front.z << "]" << std::endl;
+	std::cout << "[" << m_right.x << " " << m_right.y << " " << m_right.z << "]" << std::endl;
+	std::cout << "--------------------------------------------------------" << std::endl;
 }

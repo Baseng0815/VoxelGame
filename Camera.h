@@ -11,7 +11,7 @@ private:
 	
 	const float MOUSE_SENSITIVITY = 0.2f;
 	const float MOUSE_SCROLL = 2.0f;
-	const float MOVE_SPEED = 2.8f;
+	const float MOVE_SPEED = 0.01f;
 
 	glm::vec3 m_position, m_front, m_up, m_right;
 	glm::mat4 m_projectionMatrix, m_viewMatrix;
@@ -21,8 +21,7 @@ private:
 	void recalculateVectors();
 
 public:
-	Camera();
-	Camera(int width, int height, float fov);
+	void init(int width, int height, float fov);
 
 	glm::mat4 getProjectionMatrix() const;
 	glm::mat4 getViewMatrix() const;
@@ -34,7 +33,9 @@ public:
 	// dt always in milliseconds
 	void handleKeys(const Window& window, int dt);
 
-	void handleMouseMotion(float dx, float dy);
+	void handleMouseMotion(double dx, double dy);
 
 	void handleMouseScroll(int dy);
+
+	void _debugPrint();
 };

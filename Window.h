@@ -15,5 +15,8 @@ public:
 	void clear(Color clearColor = Colors::Black);
 	void display();
 
+	// return true if the key is pressed
+	bool getKey(int key) const;
+
 	void close();
 };
