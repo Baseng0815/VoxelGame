@@ -7,6 +7,9 @@ Application::Application() {
 
 	// init glew and load function pointers
 	glewInit();
+	glEnable(GL_DEPTH_TEST);
+
+	srand(time(NULL));
 
 	m_masterRenderer.init();
 
@@ -18,9 +21,10 @@ Application::Application() {
 	for (int x = 0; x < 16; x++)
 		for (int y = 0; y < 16; y++)
 			for (int z = 0; z < 16; z++)
-				if (x % 4 == 0 && y % 4 == 0 && z % 4 == 0)
-					chunk.setBlock(x, y, z, Block(BLOCK_TYPE::BLOCK_DIRT));
+				if (x % 3 == 0 && y % 3 == 0 && z % 3 == 0)
+					chunk.setBlock(x, y, z, Block((BLOCK_TYPE)(int)(rand() * 3)));
 
+	chunk.setBlock(0, 0, 1, Block(BLOCK_TYPE::BLOCK_DIRT));
 	chunk.updateMesh();
 
 	m_chunks.push_back(chunk);

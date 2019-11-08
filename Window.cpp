@@ -22,11 +22,34 @@ void Window::init(Application* app, const int width, const int height) {
 
 void Window::clear(Color clearColor) {
 	glClearColor(clearColor.r, clearColor.g, clearColor.b, 1);
-	glClear(GL_COLOR_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 }
 
 void Window::display() {
 	glfwSwapBuffers(m_window);
+}
+
+void Window::toggleFullscreen() {
+	if (m_isFullscreen) {
+		glfwSetWindowSize(m_window, m_prevWidth, m_prevHeight);
+		glfwSetWindowPos(m_window, m_prevX, m_prevY);
+
+		glViewport(0, 0, m_prevWidth, m_prevHeight);
+
+		m_isFullscreen = false;
+	}
+	else {
+		glfwGetWindowSize(m_window, &m_prevWidth, &m_prevHeight);
+		glfwGetWindowPos(m_window, &m_prevX, &m_prevY);
+
+		const GLFWvidmode* vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
+		glfwSetWindowSize(m_window, vidMode->width, vidMode->height);
+		glfwSetWindowPos(m_window, 0, 0);
+
+		glViewport(0, 0, vidMode->width, vidMode->height);
+
+		m_isFullscreen = true;
+	}
 }
 
 bool Window::getKey(int key) const {

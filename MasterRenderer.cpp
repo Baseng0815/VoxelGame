@@ -6,18 +6,21 @@ void MasterRenderer::init() {
 	std::vector<std::string> attribs = {
 		"position",
 		"normal",
-		"texCoords"
+		"uvCoords"
 	};
 
 	m_chunkShader.init("Resources/Shaders/chunkShader", attribs);
 	m_chunkShader.addUniform("viewMatrix");
 	m_chunkShader.addUniform("projectionMatrix");
 	m_chunkShader.addUniform("modelMatrix");
+
+	Chunk::textureAtlas.init("Resources/Textures/textureAtlas.png");
 }
 
 void MasterRenderer::draw(const std::vector<Chunk>& chunks, const Camera& camera) {
 	// draw chunks
 	m_chunkShader.bind();
+	Chunk::textureAtlas.bind();
 
 	m_chunkShader.upload("viewMatrix", camera.getViewMatrix());
 	m_chunkShader.upload("projectionMatrix", camera.getProjectionMatrix());

@@ -3,6 +3,8 @@
 #include "Chunk.h"
 #include "Vertex.h"
 
+TextureAtlas Chunk::textureAtlas;
+
 bool Chunk::checkBounds(glm::ivec3 position) {
 	return !(position.x < 0 || position.x > 15 ||
 		position.y < 0 || position.y > 15 ||
@@ -79,73 +81,98 @@ void Chunk::updateMesh() {
 
 				glm::vec3 blockPosition = glm::vec3(x, y, z);
 				faceCountPerPass = 0;
+				bool draw = false;
+
+				FaceUVs faceUVs = textureAtlas.getTextureCoordinates(m_blocks[x][y][z].type);
 
 				// negative X
-				if (x > 0)
-					if (m_blocks[x-1][y][z].type == BLOCK_TYPE::BLOCK_AIR) {
-						vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0)));
-						vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0)));
-						vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0)));
-						vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0)));
+				if (x > 0) {
+					if (m_blocks[x - 1][y][z].type == BLOCK_TYPE::BLOCK_AIR) draw = true;
+				} else draw = true;
 
-						faceCountPerPass++;
-					}
+				if (draw) {
+					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[0]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[1]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[2]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[3]));
+
+					faceCountPerPass++;
+					draw = false;
+				}
 
 				// positive X
-				if (x < 15)
-					if (m_blocks[x+1][y][z].type == BLOCK_TYPE::BLOCK_AIR) {
-						vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0)));
-						vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0)));
-						vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0)));
-						vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0)));
+				if (x < 15) {
+					if (m_blocks[x + 1][y][z].type == BLOCK_TYPE::BLOCK_AIR) draw = true;
+				} else draw = true;
 
-						faceCountPerPass++;
-					}
+				if (draw) {
+					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[0]));
+					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[1]));
+					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[2]));
+					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[3]));
+
+					faceCountPerPass++;
+					draw = false;
+				}
 
 				// negative Y
-				if (y > 0)
-					if (m_blocks[x][y-1][z].type == BLOCK_TYPE::BLOCK_AIR) {
-						vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0)));
-						vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0)));
-						vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0)));
-						vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0)));
+				if (y > 0) {
+					if (m_blocks[x][y - 1][z].type == BLOCK_TYPE::BLOCK_AIR) draw = true;
+				} else draw = true;
 
-						faceCountPerPass++;
-					}
+				if (draw) {
+					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[0]));
+					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[1]));
+					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[2]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[3]));
+
+					faceCountPerPass++;
+					draw = false;
+				}
 				
 				// positive Y
-				if (y < 15)
-					if (m_blocks[x][y+1][z].type == BLOCK_TYPE::BLOCK_AIR) {
-						vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0)));
-						vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0)));
-						vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0)));
-						vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0)));
+				if (y < 15) {
+					if (m_blocks[x][y + 1][z].type == BLOCK_TYPE::BLOCK_AIR) draw = true;
+				} else draw = true;
 
-						faceCountPerPass++;
+				if (draw) {
+					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[0]));
+					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[1]));
+					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[2]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[3]));
 
-					}
+					faceCountPerPass++;
+					draw = false;
+				}
 
 				// negative Z
-				if (z > 0)
-					if (m_blocks[x][y][z-1].type == BLOCK_TYPE::BLOCK_AIR) {
-						vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition));
-						vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition));
-						vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition));
-						vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition));
+				if (z > 0) {
+					if (m_blocks[x][y][z - 1].type == BLOCK_TYPE::BLOCK_AIR) draw = true;
+				} else draw = true;
 
-						faceCountPerPass++;
-					}
+				if (draw) {
+					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[0]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[1]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[2]));
+					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[3]));
+
+					faceCountPerPass++;
+					draw = false;
+				}
 
 				// positive Z
-				if (z < 15)
-					if (m_blocks[x][y][z+1].type == BLOCK_TYPE::BLOCK_AIR) {
-						vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition));
-						vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition));
-						vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition));
-						vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition));
+				if (z < 15) {
+					if (m_blocks[x][y][z + 1].type == BLOCK_TYPE::BLOCK_AIR) draw = true;
+				} else draw = true;
 
-						faceCountPerPass++;
-					}
+				if (draw) {
+					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[0]));
+					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[1]));
+					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[2]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[3]));
+
+					faceCountPerPass++;
+				}
 
 				// add indices
 				for (int i = 0; i < faceCountPerPass; i++) {

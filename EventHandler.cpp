@@ -15,6 +15,10 @@ void EventHandler::keyCallback(GLFWwindow* window, int key, int scancode, int ac
 			if (action == GLFW_PRESS)
 				application->stop();
 
+		case GLFW_KEY_F:
+			if (action == GLFW_PRESS)
+				application->m_window.toggleFullscreen();
+
 		default:
 			break;
 	}

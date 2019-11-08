@@ -2,7 +2,7 @@
 
 #include "pch.h"
 
-enum class BLOCK_TYPE {
+enum BLOCK_TYPE {
 	BLOCK_AIR, BLOCK_DIRT
 };
 

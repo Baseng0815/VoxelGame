@@ -5,6 +5,7 @@
 #include "Chunk.h"
 #include "Camera.h"
 #include "Shader.h"
+#include "TextureAtlas.h"
 
 class MasterRenderer {
 private:

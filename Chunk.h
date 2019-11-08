@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "Block.h"
+#include "TextureAtlas.h"
 
 class Chunk {
 private:
@@ -15,11 +16,11 @@ private:
 	GLuint m_vbo, m_ebo;
 	unsigned int m_drawCount;
 
-
 	// return false if coordinates are out of bounds
 	static bool checkBounds(glm::ivec3 position);
 
 public:
+	static TextureAtlas textureAtlas;
 	glm::vec3 position;
 
 	void initEmpty(glm::vec3 position = glm::vec3(0));

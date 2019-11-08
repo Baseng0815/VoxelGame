@@ -12,8 +12,11 @@
 // add headers that you want to pre-compile here
 #include <map>
 #include <array>
+#include <tuple>
+#include <ctime>
 #include <string>
 #include <vector>
+#include <random>
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
