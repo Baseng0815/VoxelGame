@@ -27,9 +27,8 @@ void Chunk::initEmpty(glm::vec3 position) {
 		for (int y = 0; y < 16; y++) {
 			m_blocks[x][y] = new Block[16];
 
-			for (int z = 0; z < 16; z++) {
+			for (int z = 0; z < 16; z++)
 				m_blocks[x][y][z] = Block();
-			}
 		}
 	}
 
@@ -77,24 +76,24 @@ void Chunk::updateMesh() {
 	for (int x = 0; x < 16; x++)
 		for (int  y = 0; y < 16; y++)
 			for (int z = 0; z < 16; z++) {
-				if (m_blocks[x][y][z].type == BLOCK_TYPE::BLOCK_AIR) continue;
+				if (m_blocks[x][y][z].type == BLOCK_AIR) continue;
 
 				glm::vec3 blockPosition = glm::vec3(x, y, z);
 				faceCountPerPass = 0;
 				bool draw = false;
 
-				FaceUVs faceUVs = textureAtlas.getTextureCoordinates(m_blocks[x][y][z].type);
+				std::array<FaceUVs, 6> faceUVs = textureAtlas.getBlockTextureCoordinates(m_blocks[x][y][z].type);
 
 				// negative X
 				if (x > 0) {
-					if (m_blocks[x - 1][y][z].type == BLOCK_TYPE::BLOCK_AIR) draw = true;
+					if (m_blocks[x - 1][y][z].type == BLOCK_AIR) draw = true;
 				} else draw = true;
 
 				if (draw) {
-					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[0]));
-					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[1]));
-					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[2]));
-					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[3]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[4][0]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[4][1]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[4][2]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[4][3]));
 
 					faceCountPerPass++;
 					draw = false;
@@ -102,14 +101,14 @@ void Chunk::updateMesh() {
 
 				// positive X
 				if (x < 15) {
-					if (m_blocks[x + 1][y][z].type == BLOCK_TYPE::BLOCK_AIR) draw = true;
+					if (m_blocks[x + 1][y][z].type == BLOCK_AIR) draw = true;
 				} else draw = true;
 
 				if (draw) {
-					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[0]));
-					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[1]));
-					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[2]));
-					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[3]));
+					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[2][0]));
+					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[2][1]));
+					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[2][2]));
+					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[2][3]));
 
 					faceCountPerPass++;
 					draw = false;
@@ -117,14 +116,14 @@ void Chunk::updateMesh() {
 
 				// negative Y
 				if (y > 0) {
-					if (m_blocks[x][y - 1][z].type == BLOCK_TYPE::BLOCK_AIR) draw = true;
+					if (m_blocks[x][y - 1][z].type == BLOCK_AIR) draw = true;
 				} else draw = true;
 
 				if (draw) {
-					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[0]));
-					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[1]));
-					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[2]));
-					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[3]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[5][0]));
+					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[5][1]));
+					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[5][2]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[5][3]));
 
 					faceCountPerPass++;
 					draw = false;
@@ -132,14 +131,14 @@ void Chunk::updateMesh() {
 				
 				// positive Y
 				if (y < 15) {
-					if (m_blocks[x][y + 1][z].type == BLOCK_TYPE::BLOCK_AIR) draw = true;
+					if (m_blocks[x][y + 1][z].type == BLOCK_AIR) draw = true;
 				} else draw = true;
 
 				if (draw) {
-					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[0]));
-					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[1]));
-					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[2]));
-					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[3]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[0][0]));
+					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[0][1]));
+					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[0][2]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[0][3]));
 
 					faceCountPerPass++;
 					draw = false;
@@ -147,14 +146,14 @@ void Chunk::updateMesh() {
 
 				// negative Z
 				if (z > 0) {
-					if (m_blocks[x][y][z - 1].type == BLOCK_TYPE::BLOCK_AIR) draw = true;
+					if (m_blocks[x][y][z - 1].type == BLOCK_AIR) draw = true;
 				} else draw = true;
 
 				if (draw) {
-					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[0]));
-					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[1]));
-					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[2]));
-					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[3]));
+					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[3][0]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[3][1]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[3][2]));
+					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[3][3]));
 
 					faceCountPerPass++;
 					draw = false;
@@ -162,14 +161,14 @@ void Chunk::updateMesh() {
 
 				// positive Z
 				if (z < 15) {
-					if (m_blocks[x][y][z + 1].type == BLOCK_TYPE::BLOCK_AIR) draw = true;
+					if (m_blocks[x][y][z + 1].type == BLOCK_AIR) draw = true;
 				} else draw = true;
 
 				if (draw) {
-					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[0]));
-					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[1]));
-					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[2]));
-					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[3]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[1][0]));
+					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[1][1]));
+					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[1][2]));
+					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[1][3]));
 
 					faceCountPerPass++;
 				}

@@ -15,6 +15,11 @@ void MasterRenderer::init() {
 	m_chunkShader.addUniform("modelMatrix");
 
 	Chunk::textureAtlas.init("Resources/Textures/textureAtlas.png");
+
+	std::vector<FaceUVs> a;
+	for (size_t i = 0; i < 5; i++)
+		a.push_back(Chunk::textureAtlas.getTextureCoordinates(i));
+
 }
 
 void MasterRenderer::draw(const std::vector<Chunk>& chunks, const Camera& camera) {
