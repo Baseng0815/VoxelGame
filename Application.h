@@ -1,5 +1,6 @@
 #pragma once
 
+#include "World.h"
 #include "EventHandler.h"
 #include "MasterRenderer.h"
 
@@ -8,14 +9,15 @@ private:
 	Window m_window;
 	MasterRenderer m_masterRenderer;
 	Camera m_camera;
+	World m_world;
 
 	friend class EventHandler;
 
-	std::vector<Chunk> m_chunks;
-
 	// delta time
 	int m_prevTime = 0, m_deltaTime = 0;
-	int counter = 0;
+
+	// fps
+	int m_time = 0, m_frameCounter = 0;
 
 	bool m_isRunning = true;
 

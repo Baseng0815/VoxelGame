@@ -14,7 +14,7 @@ private:
 	int m_numRows, m_numCols;
 
 	// top - positive z - positive x - negative z - negative x - bot
-	static const std::map<BLOCK_TYPE, std::array<int, 6>> BLOCK_TEX_MAPPINGS;
+	static const std::map<BlockType, std::array<int, 6>> BLOCK_TEX_MAPPINGS;
 
 	// uv per tile
 	float m_uvXpT, m_uvYpT;
@@ -28,7 +28,7 @@ public:
 	FaceUVs getTextureCoordinates(int index) const;
 
 	// list of texture coordinates for a block type
-	std::array<FaceUVs, 6> getBlockTextureCoordinates(BLOCK_TYPE blockType);
+	std::array<FaceUVs, 6> getBlockTextureCoordinates(BlockType blockType);
 
 	void bind();
 };

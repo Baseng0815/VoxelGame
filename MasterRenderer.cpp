@@ -22,7 +22,7 @@ void MasterRenderer::init() {
 
 }
 
-void MasterRenderer::draw(const std::vector<Chunk>& chunks, const Camera& camera) {
+void MasterRenderer::draw(const World &world, const Camera& camera) {
 	// draw chunks
 	m_chunkShader.bind();
 	Chunk::textureAtlas.bind();
@@ -30,10 +30,12 @@ void MasterRenderer::draw(const std::vector<Chunk>& chunks, const Camera& camera
 	m_chunkShader.upload("viewMatrix", camera.getViewMatrix());
 	m_chunkShader.upload("projectionMatrix", camera.getProjectionMatrix());
 
-	for (const auto& chunk : chunks) {
-		m_chunkShader.upload("modelMatrix", glm::mat4(1.0f));
+	for (int x = 0; x < 7; x++)
+		for (int z = 0; z < 7; z++) {
+			auto chunk = world.getChunk(x, z);
+			m_chunkShader.upload("modelMatrix", glm::translate(glm::vec3(chunk.position)));
 
-		glBindVertexArray(chunk.m_vao);
-		glDrawElements(GL_TRIANGLES, chunk.m_drawCount, GL_UNSIGNED_INT, nullptr);
-	}
+			glBindVertexArray(chunk.m_vao);
+			glDrawElements(GL_TRIANGLES, chunk.m_drawCount, GL_UNSIGNED_INT, nullptr);
+		}
 }

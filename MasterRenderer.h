@@ -2,7 +2,7 @@
 
 #include "pch.h"
 
-#include "Chunk.h"
+#include "World.h"
 #include "Camera.h"
 #include "Shader.h"
 #include "TextureAtlas.h"
@@ -14,6 +14,5 @@ private:
 public:
 	void init();
 	
-	void draw(const std::vector<Chunk>& chunks, const Camera& camera);
-
+	void draw(const World &world, const Camera& camera);
 };

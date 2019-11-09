@@ -6,12 +6,12 @@
 TextureAtlas Chunk::textureAtlas;
 
 bool Chunk::checkBounds(glm::ivec3 position) {
-	return !(position.x < 0 || position.x > 15 ||
-		position.y < 0 || position.y > 15 ||
-		position.z < 0 || position.z > 15);
+	return !(position.x < 0 || position.x > CHUNK_SIZE-1 ||
+		position.y < 0 || position.y > CHUNK_SIZE-1 ||
+		position.z < 0 || position.z > CHUNK_SIZE-1);
 }
 
-void Chunk::initEmpty(glm::vec3 position) {
+void Chunk::init(glm::vec3 position, Block fill) {
 	this->position = position;
 
 	glGenVertexArrays(1, &m_vao);
@@ -19,16 +19,16 @@ void Chunk::initEmpty(glm::vec3 position) {
 	glGenBuffers(1, &m_ebo);
 
 	// allocate from heap due to its big size
-	m_blocks = new Block**[16];
+	m_blocks = new Block**[CHUNK_SIZE];
 
-	for (int x = 0; x < 16; x++) {
-		m_blocks[x] = new Block * [16];
+	for (int x = 0; x < CHUNK_SIZE; x++) {
+		m_blocks[x] = new Block * [CHUNK_SIZE];
 
-		for (int y = 0; y < 16; y++) {
-			m_blocks[x][y] = new Block[16];
+		for (int y = 0; y < CHUNK_SIZE; y++) {
+			m_blocks[x][y] = new Block[CHUNK_SIZE];
 
-			for (int z = 0; z < 16; z++)
-				m_blocks[x][y][z] = Block();
+			for (int z = 0; z < CHUNK_SIZE; z++)
+				m_blocks[x][y][z] = fill;
 		}
 	}
 
@@ -73,9 +73,9 @@ void Chunk::updateMesh() {
 	int faceCount = 0;
 	int faceCountPerPass = 0;
 
-	for (int x = 0; x < 16; x++)
-		for (int  y = 0; y < 16; y++)
-			for (int z = 0; z < 16; z++) {
+	for (int x = 0; x < CHUNK_SIZE; x++)
+		for (int  y = 0; y < CHUNK_SIZE; y++)
+			for (int z = 0; z < CHUNK_SIZE; z++) {
 				if (m_blocks[x][y][z].type == BLOCK_AIR) continue;
 
 				glm::vec3 blockPosition = glm::vec3(x, y, z);
@@ -100,7 +100,7 @@ void Chunk::updateMesh() {
 				}
 
 				// positive X
-				if (x < 15) {
+				if (x < CHUNK_SIZE-1) {
 					if (m_blocks[x + 1][y][z].type == BLOCK_AIR) draw = true;
 				} else draw = true;
 
@@ -130,7 +130,7 @@ void Chunk::updateMesh() {
 				}
 				
 				// positive Y
-				if (y < 15) {
+				if (y < CHUNK_SIZE-1) {
 					if (m_blocks[x][y + 1][z].type == BLOCK_AIR) draw = true;
 				} else draw = true;
 
@@ -160,7 +160,7 @@ void Chunk::updateMesh() {
 				}
 
 				// positive Z
-				if (z < 15) {
+				if (z < CHUNK_SIZE-1) {
 					if (m_blocks[x][y][z + 1].type == BLOCK_AIR) draw = true;
 				} else draw = true;
 

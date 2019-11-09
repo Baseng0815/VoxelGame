@@ -23,7 +23,9 @@ public:
 	static TextureAtlas textureAtlas;
 	glm::vec3 position;
 
-	void initEmpty(glm::vec3 position = glm::vec3(0));
+	static const int CHUNK_SIZE = 16;
+
+	void init(glm::vec3 position = glm::vec3(0), Block fill = Block());
 	void cleanUp();
 
 	Block getBlock(glm::ivec3 position);

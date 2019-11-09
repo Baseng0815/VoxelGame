@@ -2,13 +2,13 @@
 
 #include "pch.h"
 
-enum BLOCK_TYPE {
+enum BlockType {
 	BLOCK_AIR, BLOCK_DIRT, BLOCK_COBBLESTONE, BLOCK_GRASS, BLOCK_STONE, NUM_BLOCKS
 };
 
 struct Block {
 public:
-	Block(BLOCK_TYPE type = BLOCK_AIR);
+	Block(BlockType type = BLOCK_AIR);
 
-	BLOCK_TYPE type;
+	BlockType type;
 };

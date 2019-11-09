@@ -8,30 +8,13 @@ Application::Application() {
 	// init glew and load function pointers
 	glewInit();
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
 
 	srand(time(NULL));
 
 	m_masterRenderer.init();
-
-	// generate some mock chunks
-	Chunk chunk;
-	chunk.initEmpty();
-	chunk.position.z = -10;
-
-	for (int x = 0; x < 16; x++)
-		for (int y = 0; y < 16; y++)
-			for (int z = 0; z < 16; z++)
-				if (x % 3 == 0 && y % 3 == 0 && z % 3 == 0)
-					chunk.setBlock(x, y, z, Block((BLOCK_TYPE)(rand() % (NUM_BLOCKS - 1) + 1)));
-
-	for (size_t i = 0; i < 100; i++)
-		std::cout << (BLOCK_TYPE)(rand() % (NUM_BLOCKS - 1) + 1) << std::endl;
-
-	chunk.updateMesh();
-
-	m_chunks.push_back(chunk);
-
-	m_camera.init(800, 600, 120);
+	m_camera.init(800, 600, 100);
+	m_world.init(WORLD_FLAT);
 }
 
 Application::~Application() {
@@ -45,11 +28,12 @@ void Application::run() {
 		int currentTime = glfwGetTime() * 1000.f;
 		m_deltaTime = currentTime - m_prevTime;
 		m_prevTime = currentTime;
-		counter += m_deltaTime;
+		m_time += m_deltaTime;
 
-		if (counter > 500) {
-			m_camera._debugPrint();
-			counter = 0;
+		if (m_time > 1000) {
+			std::cout << m_frameCounter / (float)m_time * 1000 << " FPS" << std::endl;
+			m_frameCounter = 0;
+			m_time = 0;
 		}
 
 		m_camera.handleKeys(m_window, m_deltaTime);
@@ -57,9 +41,11 @@ void Application::run() {
 		// drawing
 		m_window.clear();
 
-		m_masterRenderer.draw(m_chunks, m_camera);
+		m_masterRenderer.draw(m_world, m_camera);
 
 		m_window.display();
+
+		m_frameCounter++;
 	}
 }
 
