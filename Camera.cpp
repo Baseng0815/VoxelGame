@@ -11,7 +11,7 @@ void Camera::recalculateVectors() {
 	m_right = glm::normalize(glm::cross(m_front, glm::vec3(0, 1, 0)));
 	m_up = glm::normalize(glm::cross(m_right, m_front));
 
-	m_viewMatrix = glm::lookAt(m_position, m_position + m_front, m_up);
+	m_viewMatrix = glm::lookAt(m_position, m_position + m_front, m_up);	
 }
 
 void Camera::init(int width, int height, float fov) {
@@ -53,9 +53,9 @@ void Camera::handleKeys(const Window& window, int dt) {
 	if (window.getKey(GLFW_KEY_A))
 		m_position += velocity * -m_right;
 	if (window.getKey(GLFW_KEY_W))
-		m_position += velocity * m_front;
+		m_position += velocity * glm::cross(m_right, glm::vec3(0, -1, 0));
 	if (window.getKey(GLFW_KEY_S))
-		m_position += velocity * -m_front;
+		m_position += velocity * glm::cross(m_right, glm::vec3(0, 1, 0));
 
 	recalculateVectors();
 }
