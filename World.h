@@ -5,10 +5,6 @@
 #include "Chunk.h"
 #include "WorldGenerator.h"
 
-enum WorldType {
-	WORLD_FLAT
-};
-
 // world size fixed to 7*7 chunks for now
 class World {
 private:

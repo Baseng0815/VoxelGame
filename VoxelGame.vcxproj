@@ -160,6 +160,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="BlockShader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="Colors.cpp" />
@@ -183,6 +184,7 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="BlockShader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="Colors.h" />
