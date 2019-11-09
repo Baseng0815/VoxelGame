@@ -25,23 +25,30 @@ void Application::run() {
 	while (m_isRunning) {
 		// updating
 		glfwPollEvents();
+
+		if (m_time > 1000) {
+			std::cout << m_frameCounter / (float)m_time * 1000 << " FPS" <<
+				"  -  " << m_frameTime / m_frameCounter << " microseconds render time" << std::endl;
+
+			m_frameTime = 0;
+			m_frameCounter = 0;
+			m_time = 0;
+		}
+
 		int currentTime = glfwGetTime() * 1000.f;
 		m_deltaTime = currentTime - m_prevTime;
 		m_prevTime = currentTime;
 		m_time += m_deltaTime;
-
-		if (m_time > 1000) {
-			std::cout << m_frameCounter / (float)m_time * 1000 << " FPS" << std::endl;
-			m_frameCounter = 0;
-			m_time = 0;
-		}
 
 		m_camera.handleKeys(m_window, m_deltaTime);
 
 		// drawing
 		m_window.clear();
 
+		auto startTime = std::chrono::high_resolution_clock::now();
 		m_masterRenderer.draw(m_world, m_camera);
+		auto endTime = std::chrono::high_resolution_clock::now();
+		m_frameTime += std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
 
 		m_window.display();
 

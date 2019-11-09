@@ -15,10 +15,12 @@
 #include <tuple>
 #include <ctime>
 #include <string>
+#include <future>
 #include <vector>
 #include <random>
 #include <fstream>
 #include <iostream>
+#include <Windows.h>
 #include <stdexcept>
 #include <filesystem>
 #include <string_view>

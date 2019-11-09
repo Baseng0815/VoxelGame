@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "Block.h"
+#include "Vertex.h"
 #include "TextureAtlas.h"
 
 class Chunk {
@@ -16,9 +17,6 @@ private:
 	GLuint m_vbo, m_ebo;
 	unsigned int m_drawCount;
 
-	// return false if coordinates are out of bounds
-	static bool checkBounds(glm::ivec3 position);
-
 public:
 	static TextureAtlas textureAtlas;
 	glm::vec3 position;
@@ -28,10 +26,9 @@ public:
 	void init(glm::vec3 position = glm::vec3(0), Block fill = Block());
 	void cleanUp();
 
-	Block getBlock(glm::ivec3 position);
-	Block getBlock(int x, int y, int z);
+	Block getBlock(int x, int y, int z) const;
 	void setBlock(int x, int y, int z, Block block);
-	void setBlock(glm::ivec3 position, Block block);
 
+	// update the geometry
 	void updateMesh();
 };

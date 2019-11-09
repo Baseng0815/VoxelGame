@@ -6,10 +6,6 @@
 void Window::init(Application* app, const int width, const int height) {
 	glfwInit();
 
-	// disable vsync
-	// glFlush() is needed now instead of glfwSwapBuffers()
-	glfwWindowHint(GLFW_DOUBLEBUFFER, GL_FALSE);
-
 	m_window = glfwCreateWindow(width, height, "GLFW window", nullptr, nullptr);
 	if (!m_window)
 		throw std::runtime_error("Failed to create GLFW window.");
@@ -30,8 +26,7 @@ void Window::clear(Color clearColor) {
 }
 
 void Window::display() {
-	glFlush();
-	//glfwSwapBuffers(m_window);
+	glfwSwapBuffers(m_window);
 }
 
 void Window::toggleFullscreen() {

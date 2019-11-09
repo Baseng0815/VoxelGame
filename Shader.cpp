@@ -62,6 +62,19 @@ GLuint Shader::createShader(std::string text, GLenum type) {
 	return shader;
 }
 
+void Shader::upload(GLint location, glm::mat4 value) {
+	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
+}
+
+void Shader::upload(GLint location, glm::vec3 value) {
+	glUniform3f(location, value.x, value.y, value.z);
+}
+
+void Shader::upload(GLint location, float value) {
+	glUniform1f(location, value);
+
+}
+
 // Public functions
 
 Shader::~Shader() {
@@ -70,11 +83,6 @@ Shader::~Shader() {
 		glDeleteShader(m_shaders[i]);
 	}
 	glDeleteProgram(m_program);
-}
-
-void Shader::addUniform(std::string name) {
-	GLuint location = glGetUniformLocation(m_program, name.c_str());
-	m_uniformLocations.insert(std::pair<std::string, GLuint>(name, location));
 }
 
 void Shader::init(std::string fileName, std::vector<std::string> attribs) {
@@ -94,30 +102,6 @@ void Shader::init(std::string fileName, std::vector<std::string> attribs) {
 	checkShaderError(m_program, GL_VALIDATE_STATUS, GL_TRUE, "Error: Program is invalid: ");
 }
 
-void Shader::upload(std::string uniform, glm::mat4 value) {
-	auto it = m_uniformLocations.find(uniform);
-	if (it == m_uniformLocations.end())
-		std::cerr << "Invalid uniform location: " << uniform << std::endl;
-
-	glUniformMatrix4fv(it->second, 1, GL_FALSE, glm::value_ptr(value));
-}
-
-void Shader::upload(std::string uniform, glm::vec3 value) {
-	auto it = m_uniformLocations.find(uniform);
-	if (it == m_uniformLocations.end())
-		std::cerr << "Invalid uniform location: " << uniform << std::endl;
-
-	glUniform3f(it->second, value.x, value.y, value.z);
-}
-
-void Shader::upload(std::string uniform, float value) {
-	auto it = m_uniformLocations.find(uniform);
-	if (it == m_uniformLocations.end())
-		std::cerr << "Invalid uniform location: " << uniform << std::endl;
-
-	glUniform1f(it->second, value);
-
-}
 
 void Shader::bind() {
 	glUseProgram(m_program);

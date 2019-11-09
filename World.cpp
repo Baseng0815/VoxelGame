@@ -2,11 +2,8 @@
 
 #include "World.h"
 
-bool World::checkBounds(int x, int z) const {
-	return !(x < 0 || x > 6 || z < 0 || z > 6);
-}
 
-Chunk World::generateChunk(int x, int z, WorldType type) {
+void World::generateChunk(int x, int z, WorldType type) {
 	Chunk chunk;
 	chunk.init(glm::vec3(x * Chunk::CHUNK_SIZE, 0, z * Chunk::CHUNK_SIZE));
 
@@ -26,18 +23,21 @@ Chunk World::generateChunk(int x, int z, WorldType type) {
 	}
 
 	chunk.updateMesh();
-	return chunk;
+	m_chunks[x][z] = chunk;
 }
 
 void World::init(WorldType worldType) {
 	for (int x = 0; x < 7; x++)
 		for (int z = 0; z < 7; z++)
-			m_chunks[x][z] = generateChunk(x, z, worldType);
+			generateChunk(x, z, worldType);
 }
 
-Chunk World::getChunk(int x, int z) const {
-	if (checkBounds(x, z))
-		return m_chunks[x][z];
-	else
-		throw std::out_of_range("Coordinates out of range.");
+Block World::getBlock(int x, int y, int z) const {
+	return m_chunks[x / Chunk::CHUNK_SIZE][z / Chunk::CHUNK_SIZE]
+		.getBlock(x % Chunk::CHUNK_SIZE, y, z % Chunk::CHUNK_SIZE);
+}
+
+void World::setBlock(int x, int y, int z, Block block) {
+	m_chunks[x / Chunk::CHUNK_SIZE][z / Chunk::CHUNK_SIZE]
+		.setBlock(x % Chunk::CHUNK_SIZE, y, z % Chunk::CHUNK_SIZE, block);
 }

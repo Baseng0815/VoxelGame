@@ -4,12 +4,13 @@
 
 #include "World.h"
 #include "Camera.h"
-#include "Shader.h"
 #include "TextureAtlas.h"
+
+#include "BlockShader.h"
 
 class MasterRenderer {
 private:
-	Shader m_chunkShader;
+	BlockShader m_blockShader;
 
 public:
 	void init();

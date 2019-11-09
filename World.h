@@ -13,11 +13,13 @@ class World {
 private:
 	std::array<std::array<Chunk, 7>, 7> m_chunks;
 
-	bool checkBounds(int x, int z) const;
-	Chunk generateChunk(int x, int z, WorldType type);
+	friend class MasterRenderer;
+
+	void generateChunk(int x, int z, WorldType type);
 
 public:
 	void init(WorldType worldType = WORLD_FLAT);
 
-	Chunk getChunk(int x, int z) const;
+	Block getBlock(int x, int y, int z) const;
+	void setBlock(int x, int y, int z, Block block);
 };

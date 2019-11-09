@@ -5,12 +5,6 @@
 
 TextureAtlas Chunk::textureAtlas;
 
-bool Chunk::checkBounds(glm::ivec3 position) {
-	return !(position.x < 0 || position.x > CHUNK_SIZE-1 ||
-		position.y < 0 || position.y > CHUNK_SIZE-1 ||
-		position.z < 0 || position.z > CHUNK_SIZE-1);
-}
-
 void Chunk::init(glm::vec3 position, Block fill) {
 	this->position = position;
 
@@ -41,37 +35,20 @@ void Chunk::cleanUp() {
 	glDeleteVertexArrays(1, &m_vao);
 }
 
-Block Chunk::getBlock(glm::ivec3 position) {
-	if (checkBounds(position))
-		return m_blocks[position.x][position.y][position.z];
-	else
-		throw std::out_of_range("Coordinates out of range.");
-}
-
-Block Chunk::getBlock(int x, int y, int z) {
-	return getBlock(glm::ivec3(x, y, z));
+Block Chunk::getBlock(int x, int y, int z) const {
+	return m_blocks[x][y][z];
 }
 
 void Chunk::setBlock(int x, int y, int z, Block block) {
-	setBlock(glm::ivec3(x, y, z), block);
-}
-
-void Chunk::setBlock(glm::ivec3 position, Block block) {
-	if (checkBounds(position))
-		m_blocks[position.x][position.y][position.z] = block;
-	else
-		throw std::out_of_range("Coordinates out of range.");
+	m_blocks[x][y][z] = block;
 }
 
 void Chunk::updateMesh() {
-	glBindVertexArray(m_vao);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+	int faceCount = 0;
+	int faceCountPerPass = 0;
 
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
-	int faceCount = 0;
-	int faceCountPerPass = 0;
 
 	for (int x = 0; x < CHUNK_SIZE; x++)
 		for (int  y = 0; y < CHUNK_SIZE; y++)
@@ -186,6 +163,12 @@ void Chunk::updateMesh() {
 				}
 			}
 
+	m_drawCount = indices.size();
+
+	glBindVertexArray(m_vao);
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * vertices.size(), vertices.data(), GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
@@ -195,6 +178,4 @@ void Chunk::updateMesh() {
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(sizeof(glm::vec3) * 2));
 
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * indices.size(), indices.data(), GL_DYNAMIC_DRAW);
-
-	m_drawCount = indices.size();
 }

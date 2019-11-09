@@ -18,8 +18,10 @@ private:
 
 	// fps
 	int m_time = 0, m_frameCounter = 0;
-
 	bool m_isRunning = true;
+
+	// frametime, in microseconds, only related to the rendering process
+	int m_frameTime = 0;
 
 public:
 	Application();
