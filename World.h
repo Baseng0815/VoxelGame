@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "Chunk.h"
+#include "WorldGenerator.h"
 
 enum WorldType {
 	WORLD_FLAT
@@ -12,11 +13,10 @@ enum WorldType {
 class World {
 private:
 	std::array<std::array<Chunk, 7>, 7> m_chunks;
+	WorldGenerator m_generator;
 
 	friend class MasterRenderer;
-
-	void generateChunk(int x, int z, WorldType type);
-
+	friend class WorldGenerator;
 public:
 	void init(WorldType worldType = WORLD_FLAT);
 

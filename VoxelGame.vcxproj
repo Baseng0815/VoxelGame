@@ -160,7 +160,6 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="Block.cpp" />
-    <ClCompile Include="BlockShader.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="Colors.cpp" />
@@ -179,14 +178,15 @@
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="World.cpp" />
+    <ClCompile Include="WorldGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Block.h" />
-    <ClInclude Include="BlockShader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="Colors.h" />
+    <ClInclude Include="CubeMesh.h" />
     <ClInclude Include="EventHandler.h" />
     <ClInclude Include="MasterRenderer.h" />
     <ClInclude Include="pch.h" />
@@ -196,6 +196,7 @@
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="World.h" />
+    <ClInclude Include="WorldGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

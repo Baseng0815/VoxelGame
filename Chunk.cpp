@@ -21,7 +21,7 @@ void Chunk::init(glm::vec3 position, Block fill) {
 		for (int y = 0; y < CHUNK_SIZE; y++) {
 			m_blocks[x][y] = new Block[CHUNK_SIZE];
 
-			for (int z = 0; z < CHUNK_SIZE; z++)
+			for (int z = 0; z < 64; z++)
 				m_blocks[x][y][z] = fill;
 		}
 	}

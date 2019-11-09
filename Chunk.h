@@ -8,7 +8,7 @@
 
 class Chunk {
 private:
-	// 16*16*16 array of blocks
+	// 16*16*256 array of blocks
 	Block*** m_blocks;
 
 	friend class MasterRenderer;
@@ -22,6 +22,7 @@ public:
 	glm::vec3 position;
 
 	static const int CHUNK_SIZE = 16;
+	static const int CHUNK_HEIGHT = 256;
 
 	void init(glm::vec3 position = glm::vec3(0), Block fill = Block());
 	void cleanUp();
