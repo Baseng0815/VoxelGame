@@ -78,6 +78,9 @@
     <ClCompile Include="BlockShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MapGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -129,6 +132,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BlockShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MapGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
