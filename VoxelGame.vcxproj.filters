@@ -25,6 +25,9 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{6c4a1d65-eb31-47a4-9487-06b28d8a43c8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Misc">
+      <UniqueIdentifier>{61b3c1bc-7c2d-42db-838f-566ac1b96263}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -76,6 +79,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BlockShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Definitions.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -131,6 +137,12 @@
     <ClInclude Include="BlockShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BlockData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Definitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -139,6 +151,9 @@
     </None>
     <None Include="Resources\Shaders\chunkShader.vert">
       <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="Resources\Misc\BlockData.json">
+      <Filter>Resource Files\Misc</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -2,9 +2,7 @@
 
 #include "pch.h"
 
-enum BlockType {
-	BLOCK_AIR, BLOCK_DIRT, BLOCK_COBBLESTONE, BLOCK_GRASS, BLOCK_STONE, NUM_BLOCKS
-};
+#include "BlockData.h"
 
 struct Block {
 public:

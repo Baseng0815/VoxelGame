@@ -1,7 +1,5 @@
 #pragma once
 
-#include "pch.h"
-
 #include "Block.h"
 #include "Vertex.h"
 #include "TextureAtlas.h"
