@@ -4,8 +4,8 @@
 
 void MapGenerator::init(int minHeight, int maxHeight)
 {
-	this->minHeight = minHeight;
-	this->maxHeight = maxHeight;
+	this->minTerrainHeight = minHeight;
+	this->maxTerrainHeight = maxHeight;
 }
 
 int** MapGenerator::generateMap(World* world) {
@@ -35,10 +35,10 @@ int** MapGenerator::generateMap(World* world) {
 
 				noise += (blendY * (sampleB - sampleT) + sampleT) * scale;
 				scaleAcc += scale;
-				scale /= 2;
+				scale /= 2.0f;
 			}
 
-			map[x][y] = noise * (maxHeight - minHeight) + minHeight;
+			map[x][y] = (noise / scaleAcc) * (maxTerrainHeight - minTerrainHeight) + minTerrainHeight;
 		}
 	}
 
@@ -59,4 +59,18 @@ void MapGenerator::setMapSize(int width, int height) {
 	this->height = height * Chunk::CHUNK_SIZE;
 
 	generateSeed();
+}
+
+void MapGenerator::setBounds(Chunk* chunk1, Chunk* chunk2) {
+	this->chunk1 = chunk1;
+	this->chunk2 = chunk2;
+
+	glm::vec3 mapSize = chunk2->position - chunk1->position;
+
+	this->width = mapSize.x + Chunk::CHUNK_SIZE;
+	this->height = mapSize.z + Chunk::CHUNK_SIZE;
+}
+
+int** MapGenerator::generateChunksMap(World* world) {
+	return nullptr;
 }

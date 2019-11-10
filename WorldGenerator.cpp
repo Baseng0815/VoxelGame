@@ -10,10 +10,10 @@ void WorldGenerator::init(WorldType worldType)
 	map = new MapGenerator();
 
 	if (m_type == WORLD_NORMAL)
-		map->init(10, 100);
+		map->init(10, 50);
 }
 
-void WorldGenerator::generate(World* world, int width, int height)
+void WorldGenerator::generateTerrain(World* world, int width, int height)
 {
 	if (m_type == WORLD_FLAT) {
 		for (int x = 0; x < width; x++)
@@ -22,7 +22,7 @@ void WorldGenerator::generate(World* world, int width, int height)
 				for (int cy = 0; cy < 4; cy++) {
 					Block block;
 
-					if (cy == 0) block = Block(BLOCK_COBBLESTONE);
+					if (cy == 0) block = Block(BLOCK_STONE);
 					if (cy == 3) block = Block(BLOCK_GRASS);
 					else block = Block(BLOCK_DIRT);
 
@@ -34,8 +34,9 @@ void WorldGenerator::generate(World* world, int width, int height)
 				world->m_chunks[x][y].updateMesh();
 			}
 	}
-	else if (m_type == WORLD_NORMAL) {	
-		map->setMapSize(width, height);		
+	else if (m_type == WORLD_NORMAL) {
+		
+		map->setMapSize(width, height);
 		int** terrain = map->generateMap(world);
 
 		for (int x = 0; x < width; x++)
@@ -46,13 +47,19 @@ void WorldGenerator::generate(World* world, int width, int height)
 					for (int cz = 0; cz < Chunk::CHUNK_SIZE; cz++) {
 						int terrainHeight = terrain[x * Chunk::CHUNK_SIZE + cx][y * Chunk::CHUNK_SIZE + cz];
 						for (int cy = 0; cy < terrainHeight; cy++) {
-							world->m_chunks[x][y].setBlock(cx, cy, cz, Block(BLOCK_DIRT));
+							if (cy > terrainHeight - 5)
+								world->m_chunks[x][y].setBlock(cx, cy, cz, Block(BLOCK_DIRT));
+							else
+								world->m_chunks[x][y].setBlock(cx, cy, cz, Block(BLOCK_STONE));
 						}
-						world->m_chunks[x][y].setBlock(cx, terrainHeight
-							, cz, Block(BLOCK_GRASS));
+						world->m_chunks[x][y].setBlock(cx, terrainHeight, cz, Block(BLOCK_GRASS));
 					}
 
 				world->m_chunks[x][y].updateMesh();
 			}
 	}
+}
+
+void WorldGenerator::generateOres(World* world) {
+
 }

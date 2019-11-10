@@ -20,6 +20,7 @@ private:
 public:
 	void init(WorldType worldType);
 
-	void generate(World* world, int width, int height);
+	void generateTerrain(World* world, int width, int height);
+	void generateOres(World* world);
 };
 

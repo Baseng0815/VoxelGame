@@ -52,7 +52,7 @@ void Chunk::updateMesh() {
 	std::vector<unsigned int> indices;
 
 	for (int x = 0; x < CHUNK_SIZE; x++)
-		for (int y = 0; y < CHUNK_SIZE; y++)
+		for (int y = 0; y < CHUNK_HEIGHT; y++)
 			for (int z = 0; z < CHUNK_SIZE; z++) {
 				if (m_blocks[x][y][z].type == BLOCK_AIR) continue;
 
