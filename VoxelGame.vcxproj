@@ -221,6 +221,7 @@
     </Image>
     <Image Include="Resources\Textures\stone.png" />
     <Image Include="Resources\Textures\textureAtlas.png" />
+    <Image Include="Resources\Textures\textureAtlas0.png" />
   </ItemGroup>
   <ItemGroup>
     <Object Include="Resources\Models\mock_mesh.obj">

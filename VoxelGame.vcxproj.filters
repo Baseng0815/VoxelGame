@@ -137,6 +137,9 @@
     <Image Include="Resources\Textures\textureAtlas.png">
       <Filter>Resources\Textures</Filter>
     </Image>
+    <Image Include="Resources\Textures\textureAtlas0.png">
+      <Filter>Resources\Textures</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -7,7 +7,8 @@ void TextureAtlas::init(const char *fileName, int tileSize) {
 	glGenTextures(1, &m_texture);
 
 	int channels = 0;
-	unsigned char* data = SOIL_load_image(fileName, &m_width, &m_height, &channels, SOIL_LOAD_AUTO);
+	unsigned char* data = SOIL_load_image(fileName, &m_width, &m_height, &channels, SOIL_LOAD_RGBA);
+	std::cout << SOIL_last_result() << std::endl;
 	if (!data)
 		throw std::runtime_error("Failed to load texture atlas.");
 
@@ -29,7 +30,7 @@ void TextureAtlas::init(const char *fileName, int tileSize) {
 }
 
 FaceUVs TextureAtlas::getTextureCoordinates(int index) const {
-	glm::vec2 topLeft = glm::vec2(index % m_numCols / (float)m_numCols , m_numRows - index / m_numCols / (float)m_numRows);
+	glm::vec2 topLeft = glm::vec2(index % m_numCols / (float)m_numCols , index / m_numCols / (float)m_numRows);
 	return std::array<glm::vec2, 4> { topLeft, glm::vec2(topLeft.x + m_uvXpT, topLeft.y + m_uvYpT),
 		glm::vec2(topLeft.x + m_uvXpT, topLeft.y), glm::vec2(topLeft.x, topLeft.y + m_uvYpT) };
 }

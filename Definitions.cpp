@@ -17,14 +17,13 @@ void Definitions::loadData() {
 	BlockData blockData;
 	int i = 0;
 	for (auto it = root.begin(); it != root.end(); it++) {
-		ind = std::to_string(i);
 		blockData.tid_up = (*it)["tid_up"].get<int>();
 		blockData.tid_px = (*it)["tid_px"].get<int>();
 		blockData.tid_nx = (*it)["tid_nx"].get<int>();
 		blockData.tid_pz = (*it)["tid_pz"].get<int>();
 		blockData.tid_nz = (*it)["tid_nz"].get<int>();
 		blockData.tid_bot = (*it)["tid_bt"].get<int>();
-		Definitions::BLOCK_DATA[i] = blockData;
+		Definitions::BLOCK_DATA[std::stoi(it.key())] = blockData;
 		i++;
 	}
 }

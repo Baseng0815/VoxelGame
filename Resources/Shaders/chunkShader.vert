@@ -5,8 +5,8 @@ layout (location = 1) in vec3 normal;
 layout (location = 2) in vec2 uvCoords;
 
 out vec3 pass_normal;
-out vec2 pass_uvCoords;
 out vec3 pass_fragPos;
+out vec2 pass_uvCoords;
 
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
