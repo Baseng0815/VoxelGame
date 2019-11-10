@@ -20,6 +20,6 @@ void World::setBlock(int x, int y, int z, Block block) {
 
 int World::getTerrainHeight(int x, int y) {
 	int height = 0;
-	while (getBlock(x, height, y).type != BLOCK_AIR) height++;
+	while (getBlock(x, height, y).type != BlockType::BLOCK_AIR) height++;
 	return height;
 }

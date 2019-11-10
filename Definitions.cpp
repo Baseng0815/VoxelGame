@@ -5,7 +5,7 @@
 
 using json = nlohmann::json;
 
-std::array<BlockData, NUM_BLOCKS> Definitions::BLOCK_DATA;
+std::array<BlockData, (int)BlockType::NUM_BLOCKS> Definitions::BLOCK_DATA;
 
 void Definitions::loadData() {
 	std::ifstream file("Resources/Misc/BlockData.json");

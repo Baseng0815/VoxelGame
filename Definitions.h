@@ -4,7 +4,7 @@
 
 class Definitions {
 public:
-	static std::array<BlockData, NUM_BLOCKS> BLOCK_DATA;
+	static std::array<BlockData, (int)BlockType::NUM_BLOCKS> BLOCK_DATA;
 
 	static void loadData();
 };

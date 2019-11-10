@@ -6,7 +6,7 @@
 
 struct Block {
 public:
-	Block(BlockType type = BLOCK_AIR);
+	Block(BlockType type = BlockType::BLOCK_AIR);
 
 	BlockType type;
 };

@@ -37,12 +37,12 @@ FaceUVs TextureAtlas::getTextureCoordinates(int index) const {
 
 std::array<FaceUVs, 6> TextureAtlas::getBlockTextureCoordinates(BlockType blockType) {
 	std::array<FaceUVs, 6> output;
-	output[0] = getTextureCoordinates(Definitions::BLOCK_DATA.at(blockType).tid_up);
-	output[1] = getTextureCoordinates(Definitions::BLOCK_DATA.at(blockType).tid_nx);
-	output[2] = getTextureCoordinates(Definitions::BLOCK_DATA.at(blockType).tid_px);
-	output[3] = getTextureCoordinates(Definitions::BLOCK_DATA.at(blockType).tid_nz);
-	output[4] = getTextureCoordinates(Definitions::BLOCK_DATA.at(blockType).tid_pz);
-	output[5] = getTextureCoordinates(Definitions::BLOCK_DATA.at(blockType).tid_bot);
+	output[0] = getTextureCoordinates(Definitions::BLOCK_DATA.at((int)blockType).tid_up);
+	output[1] = getTextureCoordinates(Definitions::BLOCK_DATA.at((int)blockType).tid_nx);
+	output[2] = getTextureCoordinates(Definitions::BLOCK_DATA.at((int)blockType).tid_px);
+	output[3] = getTextureCoordinates(Definitions::BLOCK_DATA.at((int)blockType).tid_nz);
+	output[4] = getTextureCoordinates(Definitions::BLOCK_DATA.at((int)blockType).tid_pz);
+	output[5] = getTextureCoordinates(Definitions::BLOCK_DATA.at((int)blockType).tid_bot);
 	return output;
 }
 

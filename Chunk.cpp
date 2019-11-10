@@ -54,7 +54,7 @@ void Chunk::updateMesh() {
 	for (int x = 0; x < CHUNK_SIZE; x++)
 		for (int y = 0; y < CHUNK_HEIGHT; y++)
 			for (int z = 0; z < CHUNK_SIZE; z++) {
-				if (m_blocks[x][y][z].type == BLOCK_AIR) continue;
+				if (m_blocks[x][y][z].type == BlockType::BLOCK_AIR) continue;
 
 				glm::vec3 blockPosition = glm::vec3(x, y, z);
 				faceCountPerPass = 0;
@@ -64,7 +64,7 @@ void Chunk::updateMesh() {
 
 				// negative X
 				if (x > 0) {
-					if (m_blocks[x - 1][y][z].type == BLOCK_AIR) draw = true;
+					if (m_blocks[x - 1][y][z].type == BlockType::BLOCK_AIR) draw = true;
 				}
 				else draw = true;
 
@@ -80,7 +80,7 @@ void Chunk::updateMesh() {
 
 				// positive X
 				if (x < CHUNK_SIZE - 1) {
-					if (m_blocks[x + 1][y][z].type == BLOCK_AIR) draw = true;
+					if (m_blocks[x + 1][y][z].type == BlockType::BLOCK_AIR) draw = true;
 				}
 				else draw = true;
 
@@ -96,7 +96,7 @@ void Chunk::updateMesh() {
 
 				// negative Y
 				if (y > 0) {
-					if (m_blocks[x][y - 1][z].type == BLOCK_AIR) draw = true;
+					if (m_blocks[x][y - 1][z].type == BlockType::BLOCK_AIR) draw = true;
 				}
 				else draw = true;
 
@@ -112,7 +112,7 @@ void Chunk::updateMesh() {
 
 				// positive Y
 				if (y < CHUNK_SIZE - 1) {
-					if (m_blocks[x][y + 1][z].type == BLOCK_AIR) draw = true;
+					if (m_blocks[x][y + 1][z].type == BlockType::BLOCK_AIR) draw = true;
 				}
 				else draw = true;
 
@@ -128,7 +128,7 @@ void Chunk::updateMesh() {
 
 				// negative Z
 				if (z > 0) {
-					if (m_blocks[x][y][z - 1].type == BLOCK_AIR) draw = true;
+					if (m_blocks[x][y][z - 1].type == BlockType::BLOCK_AIR) draw = true;
 				}
 				else draw = true;
 
@@ -144,7 +144,7 @@ void Chunk::updateMesh() {
 
 				// positive Z
 				if (z < CHUNK_SIZE - 1) {
-					if (m_blocks[x][y][z + 1].type == BLOCK_AIR) draw = true;
+					if (m_blocks[x][y][z + 1].type == BlockType::BLOCK_AIR) draw = true;
 				}
 				else draw = true;
 
