@@ -10,7 +10,7 @@ void WorldGenerator::init(WorldType worldType)
 	map = new MapGenerator();
 
 	if (m_type == WORLD_NORMAL)
-		map->init(3, 10);
+		map->init(10, 100);
 }
 
 void WorldGenerator::generate(World* world, int width, int height)
@@ -35,7 +35,8 @@ void WorldGenerator::generate(World* world, int width, int height)
 			}
 	}
 	else if (m_type == WORLD_NORMAL) {	
-		int** terrain = map->generateMap(world, width, height);
+		map->setMapSize(width, height);		
+		int** terrain = map->generateMap(world);
 
 		for (int x = 0; x < width; x++)
 			for (int y = 0; y < height; y++) {
@@ -43,9 +44,12 @@ void WorldGenerator::generate(World* world, int width, int height)
 
 				for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++)
 					for (int cz = 0; cz < Chunk::CHUNK_SIZE; cz++) {
-						for (int cy = 0; cy < terrain[x * Chunk::CHUNK_SIZE + cx][y * Chunk::CHUNK_SIZE + cz]; cy++) {
+						int terrainHeight = terrain[x * Chunk::CHUNK_SIZE + cx][y * Chunk::CHUNK_SIZE + cz];
+						for (int cy = 0; cy < terrainHeight; cy++) {
 							world->m_chunks[x][y].setBlock(cx, cy, cz, Block(BLOCK_DIRT));
 						}
+						world->m_chunks[x][y].setBlock(cx, terrainHeight
+							, cz, Block(BLOCK_GRASS));
 					}
 
 				world->m_chunks[x][y].updateMesh();
