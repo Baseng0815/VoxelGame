@@ -20,6 +20,7 @@
 #include <random>
 #include <fstream>
 #include <iostream>
+#include <streambuf>
 #include <Windows.h>
 #include <stdexcept>
 #include <filesystem>

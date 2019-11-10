@@ -5,7 +5,7 @@
 void MasterRenderer::init() {
 	m_blockShader.init();
 
-	Chunk::textureAtlas.init("Resources/Textures/textureAtlas.png");
+	Chunk::textureAtlas.init("Resources/Textures/textureAtlas0.png");
 }
 
 void MasterRenderer::draw(const World &world, const Camera& camera) {

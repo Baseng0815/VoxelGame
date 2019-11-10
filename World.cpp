@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "World.h"
-#include "WorldGenerator.h"
 
 void World::init(WorldType worldType) {
 	m_generator.init(worldType);

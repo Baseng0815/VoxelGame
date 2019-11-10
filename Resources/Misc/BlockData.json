@@ -1,0 +1,178 @@
+{
+    "0": {
+        "tid_up":0,
+        "tid_px":0,
+        "tid_nx":0,
+        "tid_pz":0,
+        "tid_nz":0,
+        "tid_bt":0
+    },
+    "1": {
+        "tid_up":0,
+        "tid_px":3,
+        "tid_nx":3,
+        "tid_pz":3,
+        "tid_nz":3,
+        "tid_bt":2
+    },
+    "2": {
+        "tid_up":1,
+        "tid_px":1,
+        "tid_nx":1,
+        "tid_pz":1,
+        "tid_nz":1,
+        "tid_bt":1
+    },
+    "3": {
+        "tid_up":20,
+        "tid_px":19,
+        "tid_nx":19,
+        "tid_pz":19,
+        "tid_nz":19,
+        "tid_bt":20
+    },
+    "4": {
+        "tid_up":5,
+        "tid_px":5,
+        "tid_nx":5,
+        "tid_pz":5,
+        "tid_nz":5,
+        "tid_bt":5
+    },
+    "5": {
+        "tid_up":6,
+        "tid_px":6,
+        "tid_nx":6,
+        "tid_pz":6,
+        "tid_nz":6,
+        "tid_bt":6
+    },
+    "6": {
+        "tid_up":7,
+        "tid_px":7,
+        "tid_nx":7,
+        "tid_pz":7,
+        "tid_nz":7,
+        "tid_bt":7
+    },
+    "7": {
+        "tid_up":9,
+        "tid_px":8,
+        "tid_nx":8,
+        "tid_pz":8,
+        "tid_nz":8,
+        "tid_bt":10
+    },
+    "8": {
+        "tid_up":16,
+        "tid_px":16,
+        "tid_nx":16,
+        "tid_pz":16,
+        "tid_nz":16,
+        "tid_bt":16
+    },
+    "9": {
+        "tid_up":17,
+        "tid_px":17,
+        "tid_nx":17,
+        "tid_pz":17,
+        "tid_nz":17,
+        "tid_bt":17
+    },
+    "10": {
+        "tid_up":18,
+        "tid_px":18,
+        "tid_nx":18,
+        "tid_pz":18,
+        "tid_nz":18,
+        "tid_bt":18
+    },
+    "11": {
+        "tid_up":19,
+        "tid_px":19,
+        "tid_nx":19,
+        "tid_pz":19,
+        "tid_nz":19,
+        "tid_bt":19
+    },
+    "12": {
+        "tid_up":22,
+        "tid_px":22,
+        "tid_nx":22,
+        "tid_pz":22,
+        "tid_nz":22,
+        "tid_bt":22
+    },
+    "13": {
+        "tid_up":23,
+        "tid_px":23,
+        "tid_nx":23,
+        "tid_pz":23,
+        "tid_nz":23,
+        "tid_bt":23
+    },
+    "14": {
+        "tid_up":24,
+        "tid_px":24,
+        "tid_nx":24,
+        "tid_pz":24,
+        "tid_nz":24,
+        "tid_bt":24
+    },
+    "15": {
+        "tid_up":25,
+        "tid_px":25,
+        "tid_nx":25,
+        "tid_pz":25,
+        "tid_nz":25,
+        "tid_bt":25
+    },
+    "16": {
+        "tid_up":32,
+        "tid_px":32,
+        "tid_nx":32,
+        "tid_pz":32,
+        "tid_nz":32,
+        "tid_bt":32
+    },
+    "17": {
+        "tid_up":33,
+        "tid_px":33,
+        "tid_nx":33,
+        "tid_pz":33,
+        "tid_nz":33,
+        "tid_bt":33
+    },
+    "18": {
+        "tid_up":34,
+        "tid_px":34,
+        "tid_nx":34,
+        "tid_pz":34,
+        "tid_nz":34,
+        "tid_bt":34
+    },
+    "19": {
+        "tid_up":35,
+        "tid_px":35,
+        "tid_nx":35,
+        "tid_pz":35,
+        "tid_nz":35,
+        "tid_bt":35
+    },
+    "20": {
+        "tid_up":36,
+        "tid_px":36,
+        "tid_nx":36,
+        "tid_pz":36,
+        "tid_nz":36,
+        "tid_bt":36
+    },
+    "21": {
+      "tid_up":2,
+      "tid_px":2,
+      "tid_nx":2,
+      "tid_pz":2,
+      "tid_nz":2,
+      "tid_bt":2
+    }
+}

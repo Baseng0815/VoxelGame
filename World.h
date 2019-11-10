@@ -9,6 +9,9 @@
 class World {
 private:
 	std::array<std::array<Chunk, 7>, 7> m_chunks;
+
+	std::array<BlockData, NUM_BLOCKS> BLOCK_DATA;
+
 	WorldGenerator m_generator;
 
 	friend class MasterRenderer;

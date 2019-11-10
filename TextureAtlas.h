@@ -1,8 +1,6 @@
 #pragma once
 
-#include "pch.h"
-
-#include "Block.h"
+#include "Definitions.h"
 
 typedef std::array<glm::vec2, 4> FaceUVs;
 
@@ -12,9 +10,6 @@ private:
 	GLuint m_texture;
 	int m_width, m_height;
 	int m_numRows, m_numCols;
-
-	// top - positive z - positive x - negative z - negative x - bot
-	static const std::map<BlockType, std::array<int, 6>> BLOCK_TEX_MAPPINGS;
 
 	// uv per tile
 	float m_uvXpT, m_uvYpT;

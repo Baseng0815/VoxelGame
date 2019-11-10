@@ -3,13 +3,6 @@
 #include "soil.h"
 #include "TextureAtlas.h"
 
-const std::map<BlockType, std::array<int, 6>> TextureAtlas::BLOCK_TEX_MAPPINGS = {
-	{ BLOCK_DIRT, std::array<int, 6>{ 0, 0, 0, 0, 0, 0 }},
-	{ BLOCK_COBBLESTONE, std::array<int, 6>{ 1, 1, 1, 1, 1, 1 }},
-	{ BLOCK_GRASS, std::array<int, 6>{ 4, 2, 2, 2, 2, 0 }},
-	{ BLOCK_STONE, std::array<int, 6>{ 3, 3, 3, 3, 3, 3 }}
-};
-
 void TextureAtlas::init(const char *fileName, int tileSize) {
 	glGenTextures(1, &m_texture);
 
@@ -43,8 +36,12 @@ FaceUVs TextureAtlas::getTextureCoordinates(int index) const {
 
 std::array<FaceUVs, 6> TextureAtlas::getBlockTextureCoordinates(BlockType blockType) {
 	std::array<FaceUVs, 6> output;
-	for (int i = 0; i < 6; i++)
-		output[i] = getTextureCoordinates(BLOCK_TEX_MAPPINGS.at(blockType)[i]);
+	output[0] = getTextureCoordinates(Definitions::BLOCK_DATA.at(blockType).tid_up);
+	output[1] = getTextureCoordinates(Definitions::BLOCK_DATA.at(blockType).tid_nx);
+	output[2] = getTextureCoordinates(Definitions::BLOCK_DATA.at(blockType).tid_px);
+	output[3] = getTextureCoordinates(Definitions::BLOCK_DATA.at(blockType).tid_nz);
+	output[4] = getTextureCoordinates(Definitions::BLOCK_DATA.at(blockType).tid_pz);
+	output[5] = getTextureCoordinates(Definitions::BLOCK_DATA.at(blockType).tid_bot);
 	return output;
 }
 

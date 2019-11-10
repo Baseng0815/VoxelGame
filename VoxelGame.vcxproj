@@ -93,6 +93,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <ShowIncludes>true</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -164,6 +165,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="Colors.cpp" />
+    <ClCompile Include="Definitions.cpp" />
     <ClCompile Include="EventHandler.cpp" />
     <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="MasterRenderer.cpp" />
@@ -185,11 +187,12 @@
   <ItemGroup>
     <ClInclude Include="Application.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="BlockData.h" />
     <ClInclude Include="BlockShader.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="Colors.h" />
-    <ClInclude Include="CubeMesh.h" />
+    <ClInclude Include="Definitions.h" />
     <ClInclude Include="EventHandler.h" />
     <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="MasterRenderer.h" />
@@ -204,6 +207,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\Misc\BlockData.json" />
     <None Include="Resources\Shaders\chunkShader.frag" />
     <None Include="Resources\Shaders\chunkShader.vert" />
   </ItemGroup>
@@ -232,6 +236,7 @@
     <Import Project="packages\glm.0.9.9.600\build\native\glm.targets" Condition="Exists('packages\glm.0.9.9.600\build\native\glm.targets')" />
     <Import Project="packages\freetype.redist.2.8.0.1\build\native\freetype.redist.targets" Condition="Exists('packages\freetype.redist.2.8.0.1\build\native\freetype.redist.targets')" />
     <Import Project="packages\freetype.2.8.0.1\build\native\freetype.targets" Condition="Exists('packages\freetype.2.8.0.1\build\native\freetype.targets')" />
+    <Import Project="packages\nlohmann.json.3.7.0\build\native\nlohmann.json.targets" Condition="Exists('packages\nlohmann.json.3.7.0\build\native\nlohmann.json.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
@@ -244,5 +249,6 @@
     <Error Condition="!Exists('packages\freetype.redist.2.8.0.1\build\native\freetype.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\freetype.redist.2.8.0.1\build\native\freetype.redist.targets'))" />
     <Error Condition="!Exists('packages\freetype.2.8.0.1\build\native\freetype.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\freetype.2.8.0.1\build\native\freetype.targets'))" />
     <Error Condition="!Exists('packages\soil.1.16.0\build\native\soil.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\soil.1.16.0\build\native\soil.props'))" />
+    <Error Condition="!Exists('packages\nlohmann.json.3.7.0\build\native\nlohmann.json.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\nlohmann.json.3.7.0\build\native\nlohmann.json.targets'))" />
   </Target>
 </Project>

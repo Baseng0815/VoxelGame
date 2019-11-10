@@ -12,6 +12,8 @@ Application::Application() {
 
 	srand(time(NULL));
 
+	Definitions::loadData();
+
 	m_masterRenderer.init();
 	m_camera.init(800, 600, 100);
 	m_world.init(WORLD_NORMAL);
