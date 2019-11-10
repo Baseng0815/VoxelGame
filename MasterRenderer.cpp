@@ -13,6 +13,7 @@ void MasterRenderer::draw(const World &world, const Camera& camera) {
 	m_blockShader.bind();
 	Chunk::textureAtlas.bind();
 
+	m_blockShader.uploadDirectionalLight(world.dirLight);
 	m_blockShader.uploadViewMatrix(camera.getViewMatrix());
 	m_blockShader.uploadProjectionMatrix(camera.getProjectionMatrix());
 

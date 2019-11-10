@@ -166,6 +166,7 @@
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="Colors.cpp" />
     <ClCompile Include="Definitions.cpp" />
+    <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="EventHandler.cpp" />
     <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="MasterRenderer.cpp" />
@@ -193,6 +194,7 @@
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="Definitions.h" />
+    <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="EventHandler.h" />
     <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="MasterRenderer.h" />
