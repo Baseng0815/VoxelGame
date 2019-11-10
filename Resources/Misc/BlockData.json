@@ -166,5 +166,13 @@
         "tid_pz":36,
         "tid_nz":36,
         "tid_bt":36
+    },
+    "21": {
+      "tid_up":2,
+      "tid_px":2,
+      "tid_nx":2,
+      "tid_pz":2,
+      "tid_nz":2,
+      "tid_bt":2
     }
 }
