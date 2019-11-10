@@ -192,7 +192,6 @@
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="Colors.h" />
-    <ClInclude Include="CubeMesh.h" />
     <ClInclude Include="Definitions.h" />
     <ClInclude Include="EventHandler.h" />
     <ClInclude Include="MapGenerator.h" />
