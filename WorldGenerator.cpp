@@ -8,17 +8,14 @@
 void WorldGenerator::init(WorldType worldType)
 {
 	m_type = worldType;
-	map = new MapGenerator();
-
-	if (m_type == WORLD_NORMAL)
-		map->init(10, 50);
+	map = new MapGenerator(5);
 }
 
-void WorldGenerator::generateTerrain(World* world, int width, int height)
+void WorldGenerator::generateTerrain(World* world)
 {
 	if (m_type == WORLD_FLAT) {
-		for (int x = 0; x < width; x++)
-			for (int y = 0; y < height; y++) {
+		for (int x = 0; x < 7; x++)
+			for (int y = 0; y < 7; y++) {
 				world->m_chunks[x][y].init(glm::vec3(x * Chunk::CHUNK_SIZE, 0, y * Chunk::CHUNK_SIZE));
 				for (int cy = 0; cy < 4; cy++) {
 					Block block;
@@ -36,12 +33,11 @@ void WorldGenerator::generateTerrain(World* world, int width, int height)
 			}
 	}
 	else if (m_type == WORLD_NORMAL) {
-		
-		map->setMapSize(width, height);
+		map->generateSeed();
 		int** terrain = map->generateMap(world);
 
-		for (int x = 0; x < width; x++)
-			for (int y = 0; y < height; y++) {
+		for (int x = 0; x < 5; x++)
+			for (int y = 0; y < 5; y++) {
 				world->m_chunks[x][y].init(glm::vec3(x * Chunk::CHUNK_SIZE, 0, y * Chunk::CHUNK_SIZE));
 
 				for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++)
@@ -59,7 +55,7 @@ void WorldGenerator::generateTerrain(World* world, int width, int height)
 				world->m_chunks[x][y].updateMesh();
 			}
 
-		for(int i = 0; i < Definitions::generationSize; i++)
+		for(int i = 0; i < 5; i++)
 			delete[] terrain[i];
 
 		delete[] terrain;

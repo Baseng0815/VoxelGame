@@ -6,19 +6,20 @@ class Chunk;
 
 class MapGenerator
 {
-private:	
+private:
 	int interval = 16;
 	int octavesCount = 5;	
-	float seed[Definitions::generationSize * Definitions::generationSize];
-	int maxTerrainHeight = 0;
-	int minTerrainHeight = 0;
-	
-	Chunk* chunk1 = nullptr;
-	Chunk* chunk2 = nullptr;
+	float* seed = nullptr;
+	int width = 0;
+	int maxTerrainHeight = 60;
+	int minTerrainHeight = 10;
 
-public:		
+public:
+	MapGenerator(int generationSize);
+	~MapGenerator();
+
 	void generateSeed();
-	void init(int minHeight, int maxHeight);
+	
 	void setBounds(Chunk* chunk1, Chunk* chunk2);
 	int** generateChunksMap(World* world);
 

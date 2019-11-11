@@ -5,7 +5,7 @@
 void World::init(WorldType worldType) {
 	m_generator.init(worldType);
 	
-	m_generator.generateTerrain(this, 7, 7);
+	m_generator.generateTerrain(this);
 }
 
 Block World::getBlock(int x, int y, int z) const {
