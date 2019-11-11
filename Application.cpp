@@ -17,7 +17,6 @@ Application::Application() {
 	m_masterRenderer.init();
 	m_camera.init(800, 600, 100);
 	m_world.init(WORLD_NORMAL);
-	m_world.dirLight = DirectionalLight(glm::vec3(0.5, -0.4, -1), glm::vec3(0.9, 0.8, 0.8));
 }
 
 Application::~Application() {
@@ -49,7 +48,7 @@ void Application::run() {
 		m_window.clear();
 
 		auto startTime = std::chrono::high_resolution_clock::now();
-		m_masterRenderer.draw(m_world, m_camera);
+		m_masterRenderer.render(m_world, m_camera);
 		auto endTime = std::chrono::high_resolution_clock::now();
 		m_frameTime += std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
 

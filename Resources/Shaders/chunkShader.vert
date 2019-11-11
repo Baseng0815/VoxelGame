@@ -13,10 +13,11 @@ uniform mat4 projectionMatrix;
 uniform mat4 modelMatrix;
 
 void main() {
-	pass_fragPos = vec3(modelMatrix * vec4(position, 1.f));
+	vec4 worldPos = modelMatrix * vec4(position, 1.f);
 
-	pass_normal = mat3(transpose(inverse(modelMatrix))) * normal;
+	pass_normal = transpose(inverse(mat3(modelMatrix))) * normal;
+	pass_fragPos = worldPos.xyz;
 	pass_uvCoords = uvCoords;
 
-	gl_Position = projectionMatrix * viewMatrix * vec4(pass_fragPos, 1.f);
+	gl_Position = projectionMatrix * viewMatrix * worldPos;
 }

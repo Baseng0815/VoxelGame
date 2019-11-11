@@ -166,8 +166,10 @@
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="Colors.cpp" />
     <ClCompile Include="Definitions.cpp" />
-    <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="EventHandler.cpp" />
+    <ClCompile Include="GBuffer.cpp" />
+    <ClCompile Include="Light.cpp" />
+    <ClCompile Include="LightingShader.cpp" />
     <ClCompile Include="MapGenerator.cpp" />
     <ClCompile Include="MasterRenderer.cpp" />
     <ClCompile Include="pch.cpp">
@@ -177,9 +179,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RenderQuad.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="TextureAtlas.cpp" />
-    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="World.cpp" />
@@ -194,14 +196,16 @@
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="Definitions.h" />
-    <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="EventHandler.h" />
+    <ClInclude Include="GBuffer.h" />
+    <ClInclude Include="Light.h" />
+    <ClInclude Include="LightingShader.h" />
     <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="MasterRenderer.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="RenderQuad.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="TextureAtlas.h" />
-    <ClInclude Include="Transform.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="World.h" />
@@ -212,24 +216,26 @@
     <None Include="Resources\Misc\BlockData.json" />
     <None Include="Resources\Shaders\chunkShader.frag" />
     <None Include="Resources\Shaders\chunkShader.vert" />
+    <None Include="Resources\Shaders\lightingShader.frag" />
+    <None Include="Resources\Shaders\lightingShader.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\cobblestone.png" />
+    <Image Include="Resources\Textures\debug.png" />
     <Image Include="Resources\Textures\dirt.png" />
     <Image Include="Resources\Textures\grass_block_side.png" />
+    <Image Include="Resources\Textures\grass_block_top.png" />
     <Image Include="Resources\Textures\mock_texture.bmp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
     </Image>
     <Image Include="Resources\Textures\stone.png" />
     <Image Include="Resources\Textures\textureAtlas.png" />
+    <Image Include="Resources\Textures\textureAtlas0.bmp" />
+    <Image Include="Resources\Textures\textureAtlas0.jpg" />
     <Image Include="Resources\Textures\textureAtlas0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Object Include="Resources\Models\mock_mesh.obj">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DeploymentContent>
-    </Object>
+    <Image Include="Resources\Textures\textureAtlas1.png" />
+    <Image Include="Resources\Textures\textureAtlasPrev.bmp" />
+    <Image Include="Resources\Textures\textureAtlasPrev.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

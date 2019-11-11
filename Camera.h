@@ -26,7 +26,7 @@ public:
 	glm::mat4 getProjectionMatrix() const;
 	glm::mat4 getViewMatrix() const;
 
-	void recalculateProjectionMatrix(int width, int height);
+	void resize(int width, int height);
 
 	// key handler (not event based)
 	// window as argument to retrieve current key states

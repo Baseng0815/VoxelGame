@@ -18,6 +18,7 @@ protected:
 	void upload(GLint location, glm::mat4 value);
 	void upload(GLint location, glm::vec3 value);
 	void upload(GLint location, float value);
+	void upload(GLint location, int value);
 
 	// fragment and vertex shader need to have same file name
 	// extensions used are .vert for vertex and .frag for fragment shaders

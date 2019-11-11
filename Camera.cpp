@@ -19,7 +19,7 @@ void Camera::init(int width, int height, float fov) {
 	m_height = height;
 	m_fov = fov;
 
-	recalculateProjectionMatrix(width, height);
+	resize(width, height);
 	recalculateVectors();
 }
 
@@ -31,7 +31,7 @@ glm::mat4 Camera::getViewMatrix() const {
 	return m_viewMatrix;
 }
 
-void Camera::recalculateProjectionMatrix(int width, int height) {
+void Camera::resize(int width, int height) {
 	m_width = width;
 	m_height = height;
 
@@ -79,7 +79,7 @@ void Camera::handleMouseScroll(int dy) {
 	if (m_fov > 179) m_fov = 179;
 	else if (m_fov < 1) m_fov = 1;
 
-	recalculateProjectionMatrix(m_width, m_height);
+	resize(m_width, m_height);
 }
 
 void Camera::_debugPrint() {

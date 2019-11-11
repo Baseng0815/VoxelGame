@@ -72,7 +72,10 @@ void Shader::upload(GLint location, glm::vec3 value) {
 
 void Shader::upload(GLint location, float value) {
 	glUniform1f(location, value);
+}
 
+void Shader::upload(GLint location, int value) {
+	glUniform1i(location, value);
 }
 
 // Public functions

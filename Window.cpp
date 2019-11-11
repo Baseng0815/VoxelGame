@@ -16,6 +16,7 @@ void Window::init(Application* app, const int width, const int height) {
 	glfwSetKeyCallback(m_window, EventHandler::keyCallback);
 	glfwSetCursorPosCallback(m_window, EventHandler::cursorPosCallback);
 	glfwSetScrollCallback(m_window, EventHandler::scrollCallback);
+	glfwSetFramebufferSizeCallback(m_window, EventHandler::framebufferSizeCallback);
 
 	glfwMakeContextCurrent(m_window);
 }
