@@ -4,7 +4,6 @@
 
 #include "Chunk.h"
 #include "WorldGenerator.h"
-#include "DirectionalLight.h"
 
 // world size fixed to 7*7 chunks for now
 class World {
@@ -18,8 +17,6 @@ private:
 	friend class MasterRenderer;
 	friend class WorldGenerator;
 public:
-	DirectionalLight dirLight;
-
 	void init(WorldType worldType = WORLD_FLAT);
 
 	Block getBlock(int x, int y, int z) const;

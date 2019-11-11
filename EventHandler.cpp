@@ -48,3 +48,10 @@ void EventHandler::scrollCallback(GLFWwindow* window, double xoffset, double yof
 
 	application->m_camera.handleMouseScroll(yoffset);
 }
+
+void EventHandler::framebufferSizeCallback(GLFWwindow* window, int width, int height) {
+	Application* application = (Application*)glfwGetWindowUserPointer(window);
+
+	application->m_masterRenderer.resize(width, height);
+	application->m_camera.resize(width, height);
+}

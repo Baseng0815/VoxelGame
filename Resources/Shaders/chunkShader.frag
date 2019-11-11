@@ -12,12 +12,12 @@ in vec2 pass_uvCoords;
 uniform sampler2D texture0;
 
 void main() {
-    // store normal
-    gNormal = normalize(pass_normal);
+	// store normal
+	gNormal = normalize(pass_normal);
 
-    // store position
-    gPosition = pass_fragPos;
+	// store position
+	gPosition = pass_fragPos;
 
-    // store per-fragment color
-    gAlbedo = texture2D(texture0, pass_uvCoords);
+	// store per-fragment color
+	gAlbedo = texture2D(texture0, pass_uvCoords);
 }
