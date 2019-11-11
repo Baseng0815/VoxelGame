@@ -14,12 +14,10 @@ void Camera::recalculateVectors() {
 	m_viewMatrix = glm::lookAt(m_position, m_position + m_front, m_up);	
 }
 
-void Camera::init(int width, int height, float fov) {
-	m_width = width;
-	m_height = height;
+void Camera::init(float fov) {
 	m_fov = fov;
 
-	resize(width, height);
+	resize(m_width, m_height);
 	recalculateVectors();
 }
 

@@ -1,12 +1,13 @@
 #include "pch.h"
 
 #include "Window.h"
+#include "Definitions.h"
 #include "EventHandler.h"
 
-void Window::init(Application* app, const int width, const int height) {
+void Window::init(Application* app) {
 	glfwInit();
 
-	m_window = glfwCreateWindow(width, height, "GLFW window", nullptr, nullptr);
+	m_window = glfwCreateWindow(Definitions::WINDOW_WIDTH, Definitions::WINDOW_HEIGHT, "GLFW window", nullptr, nullptr);
 	if (!m_window)
 		throw std::runtime_error("Failed to create GLFW window.");
 

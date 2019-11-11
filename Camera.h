@@ -3,11 +3,12 @@
 #include "pch.h"
 
 #include "Window.h"
+#include "Definitions.h"
 
 class Camera {
 private:
 	float m_yaw, m_pitch, m_fov;
-	int m_width, m_height;
+	int m_width = Definitions::WINDOW_WIDTH, m_height = Definitions::WINDOW_HEIGHT;
 	
 	const float MOUSE_SENSITIVITY = 0.2f;
 	const float MOUSE_SCROLL = 2.0f;
@@ -21,7 +22,7 @@ private:
 	void recalculateVectors();
 
 public:
-	void init(int width, int height, float fov);
+	void init(float fov);
 
 	glm::mat4 getProjectionMatrix() const;
 	glm::mat4 getViewMatrix() const;

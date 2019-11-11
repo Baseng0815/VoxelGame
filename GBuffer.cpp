@@ -1,6 +1,7 @@
 #include "pch.h"
 
 #include "GBuffer.h"
+#include "Definitions.h"
 
 void GBuffer::init() {
 	void resize(int width, int height);
@@ -10,7 +11,7 @@ void GBuffer::init() {
 	// position color buffer
 	glGenTextures(1, &m_gPos);
 	glBindTexture(GL_TEXTURE_2D, m_gPos);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, 800, 600, 0, GL_RGB, GL_FLOAT, nullptr);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, Definitions::WINDOW_WIDTH, Definitions::WINDOW_HEIGHT, 0, GL_RGB, GL_FLOAT, nullptr);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_gPos, 0);
@@ -18,7 +19,7 @@ void GBuffer::init() {
 	// normal color buffer
 	glGenTextures(1, &m_gNorm);
 	glBindTexture(GL_TEXTURE_2D, m_gNorm);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, 800, 600, 0, GL_RGB, GL_FLOAT, nullptr);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, Definitions::WINDOW_WIDTH, Definitions::WINDOW_HEIGHT, 0, GL_RGB, GL_FLOAT, nullptr);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_gNorm, 0);
@@ -26,7 +27,7 @@ void GBuffer::init() {
 	// color + specular color buffer
 	glGenTextures(1, &m_gAlbedo);
 	glBindTexture(GL_TEXTURE_2D, m_gAlbedo);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 800, 600, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, Definitions::WINDOW_WIDTH, Definitions::WINDOW_HEIGHT, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_gAlbedo, 0);
@@ -38,7 +39,7 @@ void GBuffer::init() {
 	// depth buffer
 	glGenRenderbuffers(1, &m_rboDepth);
 	glBindRenderbuffer(GL_RENDERBUFFER, m_rboDepth);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, 800, 600);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, Definitions::WINDOW_WIDTH, Definitions::WINDOW_HEIGHT);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_rboDepth);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
