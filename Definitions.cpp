@@ -5,6 +5,7 @@
 
 using json = nlohmann::json;
 
+constexpr unsigned int Definitions::generationSize = 5;
 std::array<BlockData, (int)BlockType::NUM_BLOCKS> Definitions::BLOCK_DATA;
 
 void Definitions::loadData() {

@@ -3,6 +3,7 @@
 // in der .cpp kann man einbinden, was man will, da entsteht kein Problem
 #include "World.h"
 #include "WorldGenerator.h"
+#include "Definitions.h"
 
 void WorldGenerator::init(WorldType worldType)
 {
@@ -57,9 +58,14 @@ void WorldGenerator::generateTerrain(World* world, int width, int height)
 
 				world->m_chunks[x][y].updateMesh();
 			}
+
+		for(int i = 0; i < Definitions::generationSize; i++)
+			delete[] terrain[i];
+
+		delete[] terrain;
 	}
 }
 
 void WorldGenerator::generateOres(World* world) {
-
+	
 }
