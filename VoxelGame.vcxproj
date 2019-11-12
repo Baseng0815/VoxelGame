@@ -180,7 +180,10 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderQuad.cpp" />
+    <ClCompile Include="RenderSkybox.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Skybox.cpp" />
+    <ClCompile Include="SkyboxShader.cpp" />
     <ClCompile Include="TextureAtlas.cpp" />
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -204,7 +207,10 @@
     <ClInclude Include="MasterRenderer.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="RenderQuad.h" />
+    <ClInclude Include="RenderSkybox.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Skybox.h" />
+    <ClInclude Include="SkyboxShader.h" />
     <ClInclude Include="TextureAtlas.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Window.h" />
@@ -218,6 +224,8 @@
     <None Include="Resources\Shaders\chunkShader.vert" />
     <None Include="Resources\Shaders\lightingShader.frag" />
     <None Include="Resources\Shaders\lightingShader.vert" />
+    <None Include="Resources\Shaders\skyboxShader.frag" />
+    <None Include="Resources\Shaders\skyboxShader.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\cobblestone.png" />

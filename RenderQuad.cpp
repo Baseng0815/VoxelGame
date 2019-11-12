@@ -22,6 +22,11 @@ void RenderQuad::init() {
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, BUFFER_OFFSET(3 * sizeof(float)));
 }
 
+void RenderQuad::cleanUp() {
+	glDeleteBuffers(1, &m_vbo);
+	glDeleteVertexArrays(1, &m_vao);
+}
+
 void RenderQuad::render() {
 	glBindVertexArray(m_vao);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

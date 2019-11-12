@@ -55,10 +55,16 @@ void GBuffer::resize(int width, int height) {
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 	glBindRenderbuffer(GL_RENDERBUFFER, m_rboDepth);
 	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, width, height);
+
+	this->width = width;
+	this->height = height;
 }
 
-void GBuffer::bindFramebuffer() {
-	glBindFramebuffer(GL_FRAMEBUFFER, m_gBuffer);
+void GBuffer::bindFramebuffer(bool readOnly) {
+	if (readOnly)
+		glBindFramebuffer(GL_READ_FRAMEBUFFER, m_gBuffer);
+	else
+		glBindFramebuffer(GL_FRAMEBUFFER, m_gBuffer);
 }
 
 void GBuffer::bindTextures() {
