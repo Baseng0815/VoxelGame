@@ -202,6 +202,7 @@
     <ClInclude Include="LightingShader.h" />
     <ClInclude Include="MapGenerator.h" />
     <ClInclude Include="MasterRenderer.h" />
+    <ClInclude Include="OreData.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="RenderQuad.h" />
     <ClInclude Include="Shader.h" />

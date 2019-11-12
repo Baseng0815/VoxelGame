@@ -135,6 +135,7 @@
     <ClInclude Include="GBuffer.h">
       <Filter>Headers\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="OreData.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\debug.png">

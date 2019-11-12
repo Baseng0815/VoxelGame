@@ -25,6 +25,14 @@ void Definitions::loadData() {
 		blockData.tid_pz = (*it)["tid_pz"].get<int>();
 		blockData.tid_nz = (*it)["tid_nz"].get<int>();
 		blockData.tid_bot = (*it)["tid_bt"].get<int>();
+
+		if ((*it).contains("oreData")) {
+			blockData.oreData.generationCounts = (*it)["oreData"]["generationsCount"].get<int>();
+			blockData.oreData.minHeight = (*it)["oreData"]["minHeight"].get<int>();
+			blockData.oreData.maxHeight = (*it)["oreData"]["maxHeight"].get<int>();
+			blockData.oreData.size = (*it)["oreData"]["size"].get<int>();
+		}
+
 		Definitions::BLOCK_DATA[std::stoi(it.key())] = blockData;
 		i++;
 	}

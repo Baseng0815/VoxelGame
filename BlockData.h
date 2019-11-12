@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pch.h"
+#include "OreData.h"
 
 // map names to IDs and vice versa
 enum class BlockType : char {
@@ -15,4 +16,6 @@ struct BlockData {
 	bool drawBlock = true;
 	// texture IDs
 	int tid_up = 0, tid_px = 0, tid_nx = 0, tid_pz = 0, tid_nz = 0, tid_bot = 0;
+	
+	OreData oreData;
 };
