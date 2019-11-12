@@ -144,7 +144,7 @@
     <ClInclude Include="GBuffer.h">
       <Filter>Headers\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="OreData.h" />
+    <ClInclude Include="RenderSkybox.h">
       <Filter>Headers\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="SkyboxShader.h">
