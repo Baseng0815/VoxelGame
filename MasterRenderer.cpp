@@ -17,7 +17,7 @@ void MasterRenderer::resize(int width, int height) {
 	m_gBuffer.resize(width, height);
 }
 
-void MasterRenderer::render(const World &world, const Camera& camera) {
+void MasterRenderer::render(const World& world, const Camera& camera) {
 	// clear screen framebuffer
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -25,7 +25,7 @@ void MasterRenderer::render(const World &world, const Camera& camera) {
 	// use gBuffer and clean it
 	m_gBuffer.bindFramebuffer();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	
+
 	// geometry pass: scene's geometry and color data
 	m_blockShader.bind();
 	Chunk::textureAtlas.bind();
@@ -33,21 +33,20 @@ void MasterRenderer::render(const World &world, const Camera& camera) {
 	m_blockShader.uploadViewMatrix(camera.getViewMatrix());
 	m_blockShader.uploadProjectionMatrix(camera.getProjectionMatrix());
 
-	for (int x = 0; x < 7; x++)
-		for (int z = 0; z < 7; z++) {
-			Chunk chunk = world.m_chunks[x][z];
-			m_blockShader.uploadModelMatrix(glm::translate(chunk.position));
+	for (int i = 0; i < world.m_chunks.size(); i++) {
+		Chunk chunk = world.m_chunks[i];
+		m_blockShader.uploadModelMatrix(glm::translate(chunk.position));
 
-			glBindVertexArray(chunk.m_vao);
-			glDrawElements(GL_TRIANGLES, chunk.m_drawCount, GL_UNSIGNED_INT, nullptr);
-		}
+		glBindVertexArray(chunk.m_vao);
+		glDrawElements(GL_TRIANGLES, chunk.m_drawCount, GL_UNSIGNED_INT, nullptr);
+	}
 
 	// lighting pass
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	m_lightingShader.bind();
 	m_gBuffer.bindTextures();
-	
+
 	m_lightingShader.setLight(m_light, 0);
 	m_renderQuad.render();
 

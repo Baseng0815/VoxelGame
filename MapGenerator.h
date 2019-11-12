@@ -6,24 +6,20 @@ class Chunk;
 
 class MapGenerator
 {
-private:
-	int interval = 16;
+private:	
 	int octavesCount = 5;	
-	float* seed = nullptr;
+	float* terrainSeed = nullptr;
 	int width = 0;
 	int maxTerrainHeight = 60;
 	int minTerrainHeight = 10;
 
+	float noise(int x, int y);
 public:
 	MapGenerator();
 	~MapGenerator();
 
-	void generateSeed();
-	void generateChunkSeed();
+	void generateSeed();	
 	
-	void setBounds(Chunk* chunk1, Chunk* chunk2);	
-
-	int** generateMap(World* world);
-	int** generateChunkMap(World* world, glm::vec3 chunkPosition);
+	int** generateChunkMap(int x, int y);
 };
 

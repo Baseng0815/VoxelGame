@@ -8,60 +8,63 @@
 void WorldGenerator::init(WorldType worldType)
 {
 	m_type = worldType;
-	map = new MapGenerator(5);
+	map = new MapGenerator();
 }
 
 void WorldGenerator::generateTerrain(World* world)
 {
 	if (m_type == WORLD_FLAT) {
-		for (int x = 0; x < 7; x++)
-			for (int y = 0; y < 7; y++) {
-				world->m_chunks[x][y].init(glm::vec3(x * Chunk::CHUNK_SIZE, 0, y * Chunk::CHUNK_SIZE));
+		for (int x = 0; x < 5; x++)
+			for (int y = 0; y < 5; y++) {
+				Chunk* c = world->createChunk(x, y);
 				for (int cy = 0; cy < 4; cy++) {
 					Block block;
 
-					if (cy == 0) block = Block(BlockType::BLOCK_STONE);
+					if (cy == 0) block = Block(BlockType::BLOCK_STONE_COBBLE);
 					if (cy == 3) block = Block(BlockType::BLOCK_GRASS);
 					else block = Block(BlockType::BLOCK_DIRT);
 
 					for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++)
 						for (int cz = 0; cz < Chunk::CHUNK_SIZE; cz++) {
-							world->m_chunks[x][y].setBlock(cx, cy, cz, block);
+							c->setBlock(cx, cy, cz, block);
 						}
 				}
-				world->m_chunks[x][y].updateMesh();
+				c->updateMesh();
 			}
 	}
 	else if (m_type == WORLD_NORMAL) {
 		map->generateSeed();
-		int** terrain = map->generateMap(world);
 
-		for (int x = 0; x < 5; x++)
-			for (int y = 0; y < 5; y++) {
-				world->m_chunks[x][y].init(glm::vec3(x * Chunk::CHUNK_SIZE, 0, y * Chunk::CHUNK_SIZE));
+		for (int x = 0; x < 10; x++)
+			for (int y = 0; y < 10; y++) {
+				Chunk* c = world->createChunk(x, y);
+				int** cMap = map->generateChunkMap(x, y);
 
-				for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++)
+				for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++) 
 					for (int cz = 0; cz < Chunk::CHUNK_SIZE; cz++) {
-						int terrainHeight = terrain[x * Chunk::CHUNK_SIZE + cx][y * Chunk::CHUNK_SIZE + cz];
+						int terrainHeight = cMap[cx][cz];
 						for (int cy = 0; cy < terrainHeight; cy++) {
-							if (cy > terrainHeight - 5)
-								world->m_chunks[x][y].setBlock(cx, cy, cz, Block(BlockType::BLOCK_DIRT));
+							Block block;
+							if (cy < terrainHeight - 5)
+								block = Block(BlockType::BLOCK_STONE);
+							else if (cy < terrainHeight - 1)
+								block = Block(BlockType::BLOCK_DIRT);
 							else
-								world->m_chunks[x][y].setBlock(cx, cy, cz, Block(BlockType::BLOCK_STONE));
+								block = Block(BlockType::BLOCK_GRASS);
+
+							c->setBlock(cx, cy, cz, block);
 						}
-						world->m_chunks[x][y].setBlock(cx, terrainHeight, cz, Block(BlockType::BLOCK_GRASS));
 					}
-
-				world->m_chunks[x][y].updateMesh();
+				
+				c->updateMesh();
+				for (int i = 0; i < Chunk::CHUNK_SIZE; i++) {
+					delete[] cMap[i];
+				}
+				delete[] cMap;
 			}
-
-		for(int i = 0; i < 5; i++)
-			delete[] terrain[i];
-
-		delete[] terrain;
 	}
 }
 
 void WorldGenerator::generateOres(World* world) {
-	
+
 }
