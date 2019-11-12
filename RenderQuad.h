@@ -10,5 +10,7 @@ private:
 
 public:
 	void init();
+	void cleanUp();
+
 	void render();
 };

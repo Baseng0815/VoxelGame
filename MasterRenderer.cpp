@@ -9,7 +9,20 @@ void MasterRenderer::init() {
 	m_lightingShader.init();
 	m_renderQuad.init();
 
+	m_renderSkybox.init();
+	m_skyboxShader.init();
+	m_skybox.init();
+
 	Chunk::textureAtlas.init("Resources/Textures/textureAtlas0.png");
+}
+
+void MasterRenderer::cleanUp() {
+	m_blockShader.cleanUp();
+	m_lightingShader.cleanUp();
+	m_renderQuad.cleanUp();
+	m_renderSkybox.cleanUp();
+	m_skyboxShader.cleanUp();
+	m_skybox.cleanUp();
 }
 
 void MasterRenderer::resize(int width, int height) {
@@ -50,5 +63,15 @@ void MasterRenderer::render(const World& world, const Camera& camera) {
 	m_lightingShader.setLight(m_light, 0);
 	m_renderQuad.render();
 
+	m_gBuffer.bindFramebuffer(true);
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	glBlitFramebuffer(0, 0, m_gBuffer.width, m_gBuffer.height, 0, 0, m_gBuffer.width, m_gBuffer.height,
+		GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	m_skyboxShader.bind();
+	m_skyboxShader.uploadViewMatrix(camera.getViewMatrix());
+	m_skyboxShader.uploadProjectionMatrix(camera.getProjectionMatrix());
+	m_skybox.bind();
+	m_renderSkybox.render();
 }
