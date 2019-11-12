@@ -27,7 +27,7 @@ void Definitions::loadData() {
 		blockData.tid_bot = (*it)["tid_bt"].get<int>();
 
 		if ((*it).contains("oreData")) {
-			blockData.oreData.generationCounts = (*it)["oreData"]["generationsCount"].get<int>();
+			blockData.oreData.generationCounts = (*it)["oreData"]["generationCounts"].get<int>();
 			blockData.oreData.minHeight = (*it)["oreData"]["minHeight"].get<int>();
 			blockData.oreData.maxHeight = (*it)["oreData"]["maxHeight"].get<int>();
 			blockData.oreData.size = (*it)["oreData"]["size"].get<int>();

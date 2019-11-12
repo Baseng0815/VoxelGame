@@ -16,11 +16,11 @@ class WorldGenerator {
 private:
 	WorldType m_type;
 	MapGenerator* map;
-
+	void generateTerrain(World* world);
+	void generateOres(World* world, Chunk* chunk);
 public:
 	void init(WorldType worldType);
 
-	void generateTerrain(World* world);
-	void generateOres(World* world);
+	void generate(World* world);
 };
 

@@ -6,7 +6,7 @@
 void World::init(WorldType worldType) {
 	m_generator.init(worldType);
 	
-	m_generator.generateTerrain(this);
+	m_generator.generate(this);
 }
 
 Block World::getBlock(int x, int y, int z) {

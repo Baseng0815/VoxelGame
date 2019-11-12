@@ -40,7 +40,7 @@ void WorldGenerator::generateTerrain(World* world)
 				Chunk* c = world->createChunk(x, y);
 				int** cMap = map->generateChunkMap(x, y);
 
-				for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++) 
+				for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++)
 					for (int cz = 0; cz < Chunk::CHUNK_SIZE; cz++) {
 						int terrainHeight = cMap[cx][cz];
 						for (int cy = 0; cy < terrainHeight; cy++) {
@@ -55,7 +55,8 @@ void WorldGenerator::generateTerrain(World* world)
 							c->setBlock(cx, cy, cz, block);
 						}
 					}
-				
+
+				generateOres(world, c);
 				c->updateMesh();
 				for (int i = 0; i < Chunk::CHUNK_SIZE; i++) {
 					delete[] cMap[i];
@@ -65,6 +66,55 @@ void WorldGenerator::generateTerrain(World* world)
 	}
 }
 
-void WorldGenerator::generateOres(World* world) {
+void WorldGenerator::generateOres(World* world, Chunk* chunk) {
+	for (int i = 0; i < Definitions::BLOCK_DATA.size(); i++) {
+		BlockData blockData = Definitions::BLOCK_DATA[i];
+		if (blockData.oreData.generationCounts > 0) {
+			for (int c = 0; c < blockData.oreData.generationCounts; c++) {
+				int y = rand() % (blockData.oreData.maxHeight - blockData.oreData.minHeight) + blockData.oreData.minHeight;
 
+				int x = rand() % Chunk::CHUNK_SIZE;
+				int z = rand() % Chunk::CHUNK_SIZE;
+
+				int rotation = rand() % 4;
+				int height = 2;
+				int width = sqrt(blockData.oreData.size / height);
+				// set blocks
+				for (int ox = 0; ox < width; ox++)
+					for (int oy = 0; oy < height; oy++)
+						for (int oz = 0; oz < width; oz++) {
+							switch (rotation)
+							{
+							case 0:
+								if (x + ox < Chunk::CHUNK_SIZE && z + oz < Chunk::CHUNK_SIZE)
+									if (chunk->getBlock(x + ox, y + oy, z + oz).type == BlockType::BLOCK_STONE)
+										chunk->setBlock(x + ox, y + oy, z + oz, (BlockType)i);
+								break;
+							case 1:
+								if (x - ox >= 0 && z + oz < Chunk::CHUNK_SIZE)
+									if (chunk->getBlock(x - ox, y + oy, z + oz).type == BlockType::BLOCK_STONE)
+										chunk->setBlock(x - ox, y + oy, z + oz, (BlockType)i);
+								break;
+							case 2:
+								if (z - oz >= 0 && x + ox < Chunk::CHUNK_SIZE)
+									if (chunk->getBlock(x + ox, y + oy, z - oz).type == BlockType::BLOCK_STONE)
+										chunk->setBlock(x + ox, y + oy, z - oz, (BlockType)i);
+
+								break;
+							case 3:
+								if (x - ox >= 0 && z - oz >= 0)
+									if (chunk->getBlock(x - ox, y + oy, z - oz).type == BlockType::BLOCK_STONE)
+										chunk->setBlock(x - ox, y + oy, z - oz, (BlockType)i);
+
+								break;
+							}
+						}
+			}
+		}
+	}
+	chunk->updateMesh();
+}
+
+void WorldGenerator::generate(World* world) {
+	generateTerrain(world);
 }
