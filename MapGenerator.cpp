@@ -3,10 +3,9 @@
 #include "Chunk.h"
 #include "Definitions.h"
 
-MapGenerator::MapGenerator(int generationSize) {
-	width = generationSize * Chunk::CHUNK_SIZE;
+MapGenerator::MapGenerator() {
+	width = Chunk::CHUNK_SIZE;
 	seed = new float[width * width];
-	for (int i = 0; i < width * width; i++) seed[i] = 0;
 }
 MapGenerator::~MapGenerator() {
 	delete[] seed;
@@ -60,6 +59,7 @@ void MapGenerator::setBounds(Chunk* chunk1, Chunk* chunk2) {
 	
 }
 
-int** MapGenerator::generateChunksMap(World* world) {
-	return nullptr;
+int** MapGenerator::generateChunkMap(World* world, glm::vec3 chunkPosition) {
+	Chunk neightbourChunks[] = 
+
 }

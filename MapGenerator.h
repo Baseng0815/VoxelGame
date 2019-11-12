@@ -15,14 +15,15 @@ private:
 	int minTerrainHeight = 10;
 
 public:
-	MapGenerator(int generationSize);
+	MapGenerator();
 	~MapGenerator();
 
 	void generateSeed();
+	void generateChunkSeed();
 	
-	void setBounds(Chunk* chunk1, Chunk* chunk2);
-	int** generateChunksMap(World* world);
+	void setBounds(Chunk* chunk1, Chunk* chunk2);	
 
 	int** generateMap(World* world);
+	int** generateChunkMap(World* world, glm::vec3 chunkPosition);
 };
 
