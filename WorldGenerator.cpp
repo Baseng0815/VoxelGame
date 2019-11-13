@@ -11,12 +11,13 @@ void WorldGenerator::init(WorldType worldType)
 	map = new MapGenerator();
 }
 
-void WorldGenerator::generateTerrain(World* world)
+void WorldGenerator::generateTerrain(World& world)
 {
-	if (m_type == WORLD_FLAT) {
+	if (m_type == WorldType::WORLD_FLAT) {
 		for (int x = 0; x < 5; x++)
 			for (int y = 0; y < 5; y++) {
-				Chunk* c = world->createChunk(x, y);
+				Chunk c;
+				c.init(glm::vec3(x * Chunk::CHUNK_SIZE, 0, y * Chunk::CHUNK_SIZE));
 				for (int cy = 0; cy < 4; cy++) {
 					Block block;
 
@@ -26,18 +27,20 @@ void WorldGenerator::generateTerrain(World* world)
 
 					for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++)
 						for (int cz = 0; cz < Chunk::CHUNK_SIZE; cz++) {
-							c->setBlock(cx, cy, cz, block);
+							c.setBlock(cx, cy, cz, block);
 						}
 				}
-				c->updateMesh();
+				
+				world.m_chunks[x][y] = c;
 			}
 	}
-	else if (m_type == WORLD_NORMAL) {
+	else if (m_type == WorldType::WORLD_NORMAL) {
 		map->generateSeed();
 
-		for (int x = 0; x < 10; x++)
-			for (int y = 0; y < 10; y++) {
-				Chunk* c = world->createChunk(x, y);
+		for (int x = 0; x < 5; x++)
+			for (int y = 0; y < 5; y++) {
+				Chunk c;
+				c.init(glm::vec3(x * Chunk::CHUNK_SIZE, 0, y * Chunk::CHUNK_SIZE));
 				int** cMap = map->generateChunkMap(x, y);
 
 				for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++)
@@ -52,12 +55,14 @@ void WorldGenerator::generateTerrain(World* world)
 							else
 								block = Block(BlockType::BLOCK_GRASS);
 
-							c->setBlock(cx, cy, cz, block);
+							c.setBlock(cx, cy, cz, block);
 						}
 					}
 
 				generateOres(world, c);
-				c->updateMesh();
+
+				world.m_chunks[x][y] = c;
+
 				for (int i = 0; i < Chunk::CHUNK_SIZE; i++) {
 					delete[] cMap[i];
 				}
@@ -66,7 +71,7 @@ void WorldGenerator::generateTerrain(World* world)
 	}
 }
 
-void WorldGenerator::generateOres(World* world, Chunk* chunk) {
+void WorldGenerator::generateOres(const World& world, Chunk& chunk) {
 	for (int i = 0; i < Definitions::BLOCK_DATA.size(); i++) {
 		BlockData blockData = Definitions::BLOCK_DATA[i];
 		if (blockData.oreData.generationCounts > 0) {
@@ -87,24 +92,24 @@ void WorldGenerator::generateOres(World* world, Chunk* chunk) {
 							{
 							case 0:
 								if (x + ox < Chunk::CHUNK_SIZE && z + oz < Chunk::CHUNK_SIZE)
-									if (chunk->getBlock(x + ox, y + oy, z + oz).type == BlockType::BLOCK_STONE)
-										chunk->setBlock(x + ox, y + oy, z + oz, (BlockType)i);
+									if (chunk.getBlock(x + ox, y + oy, z + oz).type == BlockType::BLOCK_STONE)
+										chunk.setBlock(x + ox, y + oy, z + oz, (BlockType)i);
 								break;
 							case 1:
 								if (x - ox >= 0 && z + oz < Chunk::CHUNK_SIZE)
-									if (chunk->getBlock(x - ox, y + oy, z + oz).type == BlockType::BLOCK_STONE)
-										chunk->setBlock(x - ox, y + oy, z + oz, (BlockType)i);
+									if (chunk.getBlock(x - ox, y + oy, z + oz).type == BlockType::BLOCK_STONE)
+										chunk.setBlock(x - ox, y + oy, z + oz, (BlockType)i);
 								break;
 							case 2:
 								if (z - oz >= 0 && x + ox < Chunk::CHUNK_SIZE)
-									if (chunk->getBlock(x + ox, y + oy, z - oz).type == BlockType::BLOCK_STONE)
-										chunk->setBlock(x + ox, y + oy, z - oz, (BlockType)i);
+									if (chunk.getBlock(x + ox, y + oy, z - oz).type == BlockType::BLOCK_STONE)
+										chunk.setBlock(x + ox, y + oy, z - oz, (BlockType)i);
 
 								break;
 							case 3:
 								if (x - ox >= 0 && z - oz >= 0)
-									if (chunk->getBlock(x - ox, y + oy, z - oz).type == BlockType::BLOCK_STONE)
-										chunk->setBlock(x - ox, y + oy, z - oz, (BlockType)i);
+									if (chunk.getBlock(x - ox, y + oy, z - oz).type == BlockType::BLOCK_STONE)
+										chunk.setBlock(x - ox, y + oy, z - oz, (BlockType)i);
 
 								break;
 							}
@@ -112,9 +117,8 @@ void WorldGenerator::generateOres(World* world, Chunk* chunk) {
 			}
 		}
 	}
-	chunk->updateMesh();
 }
 
-void WorldGenerator::generate(World* world) {
+void WorldGenerator::generate(World& world) {
 	generateTerrain(world);
 }

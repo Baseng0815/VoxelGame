@@ -67,9 +67,6 @@
     <ClCompile Include="GBuffer.cpp">
       <Filter>Source\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSkybox.cpp">
-      <Filter>Source\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="SkyboxShader.cpp">
       <Filter>Source\Rendering\Shaders</Filter>
     </ClCompile>
@@ -144,15 +141,13 @@
     <ClInclude Include="GBuffer.h">
       <Filter>Headers\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSkybox.h">
-      <Filter>Headers\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="SkyboxShader.h">
       <Filter>Headers\Rendering\Shaders</Filter>
     </ClInclude>
     <ClInclude Include="Skybox.h">
       <Filter>Headers\Rendering</Filter>
     </ClInclude>
+    <ClInclude Include="OreData.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\debug.png">

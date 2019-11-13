@@ -180,7 +180,6 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderQuad.cpp" />
-    <ClCompile Include="RenderSkybox.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="SkyboxShader.cpp" />
@@ -208,7 +207,6 @@
     <ClInclude Include="OreData.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="RenderQuad.h" />
-    <ClInclude Include="RenderSkybox.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="SkyboxShader.h" />

@@ -14,6 +14,10 @@ private:
 	GLuint m_vao;
 	GLuint m_vbo, m_ebo;
 	unsigned int m_drawCount;
+	bool m_buffersInitialized = false;
+
+	std::vector<Vertex> m_vertices;
+	std::vector<unsigned int> m_indices;
 
 public:
 	static TextureAtlas textureAtlas;
@@ -22,12 +26,16 @@ public:
 	static const int CHUNK_SIZE = 16;
 	static const int CHUNK_HEIGHT = 256;
 
-	void init(glm::vec3 position = glm::vec3(0), Block fill = Block());
+	void init(glm::vec3 position = glm::vec3(0));
 	void cleanUp();
 
 	Block getBlock(int x, int y, int z) const;
 	void setBlock(int x, int y, int z, Block block);
 
+	// split up to enable multithreaded generation
 	// update the geometry
-	void updateMesh();
+	void updateVertices();
+
+	// update the buffers
+	void updateBuffers();
 };

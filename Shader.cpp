@@ -80,7 +80,7 @@ void Shader::upload(GLint location, int value) {
 
 // Public functions
 
-void Shader::cleanUp() {
+Shader::~Shader() {
 	for (unsigned int i = 0; i < NUM_SHADERS; i++) {
 		glDetachShader(m_program, m_shaders[i]);
 		glDeleteShader(m_shaders[i]);

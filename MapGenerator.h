@@ -1,9 +1,6 @@
 #pragma once
 #include "Definitions.h"
 
-class World;
-class Chunk;
-
 class MapGenerator
 {
 private:	

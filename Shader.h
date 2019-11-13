@@ -26,7 +26,7 @@ protected:
 	void init(std::string filename, std::vector<std::string> attribs);
 
 public:
-	void cleanUp();
+	~Shader();
 
 	void bind();
 };

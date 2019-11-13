@@ -7,7 +7,7 @@
 
 class World {
 private:	
-	std::vector<Chunk> m_chunks;
+	Chunk m_chunks[Definitions::CHUNK_PRELOAD_SIZE][Definitions::CHUNK_PRELOAD_SIZE];
 
 	std::array<BlockData, (int)BlockType::NUM_BLOCKS> BLOCK_DATA;
 
@@ -15,13 +15,11 @@ private:
 
 	friend class MasterRenderer;
 	friend class WorldGenerator;
-
-	Chunk* createChunk(int x, int y);
 public:
-	void init(WorldType worldType = WORLD_FLAT);
+	void init(WorldType worldType = WorldType::WORLD_FLAT);
+	~World();
 
 	Block getBlock(int x, int y, int z);
 	void setBlock(int x, int y, int z, Block block);
 	int getTerrainHeight(int x, int y);	
-	Chunk* getChunk(int x, int y);
 };

@@ -16,7 +16,7 @@ private:
 
 public:
 	void init(const char* fileName, int tileSize = 16);
-	void cleanUp();
+	~TextureAtlas();
 
 	// top-left, bottom-right, top-right, bottom-left
 	// texture coords for a single tile

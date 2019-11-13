@@ -22,7 +22,7 @@ void RenderQuad::init() {
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, BUFFER_OFFSET(3 * sizeof(float)));
 }
 
-void RenderQuad::cleanUp() {
+RenderQuad::~RenderQuad() {
 	glDeleteBuffers(1, &m_vbo);
 	glDeleteVertexArrays(1, &m_vao);
 }

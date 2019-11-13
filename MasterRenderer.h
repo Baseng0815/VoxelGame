@@ -8,7 +8,6 @@
 #include "GBuffer.h"
 #include "RenderQuad.h"
 #include "TextureAtlas.h"
-#include "RenderSkybox.h"
 
 #include "BlockShader.h"
 #include "SkyboxShader.h"
@@ -26,13 +25,11 @@ private:
 	RenderQuad m_renderQuad;
 
 	// skybox
-	RenderSkybox m_renderSkybox;
 	SkyboxShader m_skyboxShader;
 	Skybox m_skybox;
 
 public:
 	void init();
-	void cleanUp();
 
 	void resize(int width, int height);
 	void render(const World &world, const Camera& camera);

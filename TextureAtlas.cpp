@@ -46,7 +46,7 @@ std::array<FaceUVs, 6> TextureAtlas::getBlockTextureCoordinates(BlockType blockT
 	return output;
 }
 
-void TextureAtlas::cleanUp() {
+TextureAtlas::~TextureAtlas() {
 	glDeleteTextures(1, &m_texture);
 }
 

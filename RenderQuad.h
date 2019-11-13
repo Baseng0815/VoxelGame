@@ -10,7 +10,7 @@ private:
 
 public:
 	void init();
-	void cleanUp();
+	~RenderQuad();
 
 	void render();
 };

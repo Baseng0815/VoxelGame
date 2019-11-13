@@ -5,7 +5,7 @@
 
 TextureAtlas Chunk::textureAtlas;
 
-void Chunk::init(glm::vec3 position, Block fill) {
+void Chunk::init(glm::vec3 position) {
 	this->position = position;
 
 	glGenVertexArrays(1, &m_vao);
@@ -13,24 +13,26 @@ void Chunk::init(glm::vec3 position, Block fill) {
 	glGenBuffers(1, &m_ebo);
 
 	// allocate from heap due to its big size
-	m_blocks = new Block * *[CHUNK_SIZE];
+	m_blocks = new Block**[CHUNK_SIZE];
 
 	for (int x = 0; x < CHUNK_SIZE; x++) {
-		m_blocks[x] = new Block * [CHUNK_HEIGHT];
-
+		m_blocks[x] = new Block*[CHUNK_HEIGHT];
 		for (int y = 0; y < CHUNK_HEIGHT; y++) {
 			m_blocks[x][y] = new Block[CHUNK_SIZE];
-
 			for (int z = 0; z < CHUNK_SIZE; z++)
-				if (z < 65)
-					m_blocks[x][y][z] = fill;
+				m_blocks[x][y][z] = Block(BlockType::BLOCK_AIR);
 		}
 	}
-
-	updateMesh();
 }
 
 void Chunk::cleanUp() {
+	for (int x = 0; x < CHUNK_SIZE; x++) {
+		for (int y = 0; y < CHUNK_HEIGHT; y++)
+			delete[] m_blocks[x][y];
+		delete[] m_blocks[x];
+	}
+	delete[] m_blocks;
+
 	glDeleteBuffers(1, &m_vbo);
 	glDeleteBuffers(1, &m_ebo);
 	glDeleteVertexArrays(1, &m_vao);
@@ -44,12 +46,9 @@ void Chunk::setBlock(int x, int y, int z, Block block) {
 	m_blocks[x][y][z] = block;
 }
 
-void Chunk::updateMesh() {
+void Chunk::updateVertices() {
 	int faceCount = 0;
 	int faceCountPerPass = 0;
-
-	std::vector<Vertex> vertices;
-	std::vector<unsigned int> indices;
 
 	for (int x = 0; x < CHUNK_SIZE; x++)
 		for (int y = 0; y < CHUNK_HEIGHT; y++)
@@ -69,10 +68,10 @@ void Chunk::updateMesh() {
 				else draw = true;
 
 				if (draw) {
-					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[4][0]));
-					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[4][1]));
-					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[4][2]));
-					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[4][3]));
+					m_vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[4][0]));
+					m_vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[4][1]));
+					m_vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[4][2]));
+					m_vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), faceUVs[4][3]));
 
 					faceCountPerPass++;
 					draw = false;
@@ -85,10 +84,10 @@ void Chunk::updateMesh() {
 				else draw = true;
 
 				if (draw) {
-					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[2][0]));
-					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[2][1]));
-					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[2][2]));
-					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[2][3]));
+					m_vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[2][0]));
+					m_vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[2][1]));
+					m_vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[2][2]));
+					m_vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), faceUVs[2][3]));
 
 					faceCountPerPass++;
 					draw = false;
@@ -101,26 +100,26 @@ void Chunk::updateMesh() {
 				else draw = true;
 
 				if (draw) {
-					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[5][0]));
-					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[5][1]));
-					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[5][2]));
-					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[5][3]));
+					m_vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[5][0]));
+					m_vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[5][1]));
+					m_vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[5][2]));
+					m_vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[5][3]));
 
 					faceCountPerPass++;
 					draw = false;
 				}
 
 				// positive Y
-				if (y < CHUNK_SIZE - 1) {
+				if (y < CHUNK_HEIGHT - 1) {
 					if (m_blocks[x][y + 1][z].type == BlockType::BLOCK_AIR) draw = true;
 				}
 				else draw = true;
 
 				if (draw) {
-					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[0][0]));
-					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[0][1]));
-					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[0][2]));
-					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[0][3]));
+					m_vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[0][0]));
+					m_vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[0][1]));
+					m_vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[0][2]));
+					m_vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), faceUVs[0][3]));
 
 					faceCountPerPass++;
 					draw = false;
@@ -133,10 +132,10 @@ void Chunk::updateMesh() {
 				else draw = true;
 
 				if (draw) {
-					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[3][0]));
-					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[3][1]));
-					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[3][2]));
-					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[3][3]));
+					m_vertices.push_back(Vertex(glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[3][0]));
+					m_vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[3][1]));
+					m_vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[3][2]));
+					m_vertices.push_back(Vertex(glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[3][3]));
 
 					faceCountPerPass++;
 					draw = false;
@@ -149,34 +148,39 @@ void Chunk::updateMesh() {
 				else draw = true;
 
 				if (draw) {
-					vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[1][0]));
-					vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[1][1]));
-					vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[1][2]));
-					vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[1][3]));
+					m_vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[1][0]));
+					m_vertices.push_back(Vertex(glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[1][1]));
+					m_vertices.push_back(Vertex(glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[1][2]));
+					m_vertices.push_back(Vertex(glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), faceUVs[1][3]));
 
 					faceCountPerPass++;
 				}
 
-				// add indices
+				// add m_indices
 				for (int i = 0; i < faceCountPerPass; i++) {
-					indices.push_back(faceCount * 4 + 0);
-					indices.push_back(faceCount * 4 + 1);
-					indices.push_back(faceCount * 4 + 2);
-					indices.push_back(faceCount * 4 + 0);
-					indices.push_back(faceCount * 4 + 3);
-					indices.push_back(faceCount * 4 + 1);
+					m_indices.push_back(faceCount * 4 + 0);
+					m_indices.push_back(faceCount * 4 + 1);
+					m_indices.push_back(faceCount * 4 + 2);
+					m_indices.push_back(faceCount * 4 + 0);
+					m_indices.push_back(faceCount * 4 + 3);
+					m_indices.push_back(faceCount * 4 + 1);
 
 					faceCount++;
 				}
 			}
 
-	m_drawCount = indices.size();
+	m_drawCount = m_indices.size();
+}
 
-	glBindVertexArray(m_vao);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+void Chunk::updateBuffers() {
+	if (!m_buffersInitialized) {
+		glBindVertexArray(m_vao);
+		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+		m_buffersInitialized = true;
+	}
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * vertices.size(), vertices.data(), GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices[0]) * m_vertices.size(), m_vertices.data(), GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
@@ -184,5 +188,8 @@ void Chunk::updateMesh() {
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(sizeof(glm::vec3)));
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(sizeof(glm::vec3) * 2));
 
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * indices.size(), indices.data(), GL_DYNAMIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indices[0]) * m_indices.size(), m_indices.data(), GL_DYNAMIC_DRAW);
+
+	m_vertices.clear();
+	m_indices.clear();
 }

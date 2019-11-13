@@ -9,20 +9,10 @@ void MasterRenderer::init() {
 	m_lightingShader.init();
 	m_renderQuad.init();
 
-	m_renderSkybox.init();
 	m_skyboxShader.init();
 	m_skybox.init();
 
 	Chunk::textureAtlas.init("Resources/Textures/textureAtlas0.png");
-}
-
-void MasterRenderer::cleanUp() {
-	m_blockShader.cleanUp();
-	m_lightingShader.cleanUp();
-	m_renderQuad.cleanUp();
-	m_renderSkybox.cleanUp();
-	m_skyboxShader.cleanUp();
-	m_skybox.cleanUp();
 }
 
 void MasterRenderer::resize(int width, int height) {
@@ -46,13 +36,14 @@ void MasterRenderer::render(const World& world, const Camera& camera) {
 	m_blockShader.uploadViewMatrix(camera.getViewMatrix());
 	m_blockShader.uploadProjectionMatrix(camera.getProjectionMatrix());
 
-	for (int i = 0; i < world.m_chunks.size(); i++) {
-		Chunk chunk = world.m_chunks[i];
-		m_blockShader.uploadModelMatrix(glm::translate(chunk.position));
+	for (int x = 0; x < Definitions::CHUNK_PRELOAD_SIZE; x++)
+		for (int z = 0; z < Definitions::CHUNK_PRELOAD_SIZE; z++) {
+			const Chunk& chunk = world.m_chunks[x][z];
+			m_blockShader.uploadModelMatrix(glm::translate(chunk.position));
 
-		glBindVertexArray(chunk.m_vao);
-		glDrawElements(GL_TRIANGLES, chunk.m_drawCount, GL_UNSIGNED_INT, nullptr);
-	}
+			glBindVertexArray(chunk.m_vao);
+			glDrawElements(GL_TRIANGLES, chunk.m_drawCount, GL_UNSIGNED_INT, nullptr);
+		}
 
 	// lighting pass
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -72,6 +63,5 @@ void MasterRenderer::render(const World& world, const Camera& camera) {
 	m_skyboxShader.bind();
 	m_skyboxShader.uploadViewMatrix(camera.getViewMatrix());
 	m_skyboxShader.uploadProjectionMatrix(camera.getProjectionMatrix());
-	m_skybox.bind();
-	m_renderSkybox.render();
+	m_skybox.render();
 }

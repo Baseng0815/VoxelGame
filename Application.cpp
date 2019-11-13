@@ -16,7 +16,7 @@ Application::Application() {
 
 	m_masterRenderer.init();
 	m_camera.init(100);
-	m_world.init(WORLD_NORMAL);
+	m_world.init(WorldType::WORLD_NORMAL);
 }
 
 Application::~Application() {
