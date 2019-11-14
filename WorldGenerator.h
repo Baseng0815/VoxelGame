@@ -15,7 +15,7 @@ enum class WorldType : char {
 class WorldGenerator {
 private:
 	WorldType m_type;
-	MapGenerator* map;
+	MapGenerator map;
 	void generateTerrain(World& world);
 	void generateOres(const World& world, Chunk& chunk);
 

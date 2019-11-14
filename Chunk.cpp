@@ -8,10 +8,6 @@ TextureAtlas Chunk::textureAtlas;
 void Chunk::init(glm::vec3 position) {
 	this->position = position;
 
-	glGenVertexArrays(1, &m_vao);
-	glGenBuffers(1, &m_vbo);
-	glGenBuffers(1, &m_ebo);
-
 	// allocate from heap due to its big size
 	m_blocks = new Block**[CHUNK_SIZE];
 
@@ -174,12 +170,15 @@ void Chunk::updateVertices() {
 
 void Chunk::updateBuffers() {
 	if (!m_buffersInitialized) {
-		glBindVertexArray(m_vao);
-		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+		glGenVertexArrays(1, &m_vao);
+		glGenBuffers(1, &m_vbo);
+		glGenBuffers(1, &m_ebo);
 		m_buffersInitialized = true;
 	}
 
+	glBindVertexArray(m_vao);
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices[0]) * m_vertices.size(), m_vertices.data(), GL_DYNAMIC_DRAW);
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);

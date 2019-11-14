@@ -5,10 +5,8 @@
 #include "WorldGenerator.h"
 #include "Definitions.h"
 
-void WorldGenerator::init(WorldType worldType)
-{
+void WorldGenerator::init(WorldType worldType) {
 	m_type = worldType;
-	map = new MapGenerator();
 }
 
 void WorldGenerator::generateTerrain(World& world)
@@ -35,13 +33,13 @@ void WorldGenerator::generateTerrain(World& world)
 			}
 	}
 	else if (m_type == WorldType::WORLD_NORMAL) {
-		map->generateSeed();
+		map.generateSeed();
 
 		for (int x = 0; x < 5; x++)
 			for (int y = 0; y < 5; y++) {
 				Chunk c;
 				c.init(glm::vec3(x * Chunk::CHUNK_SIZE, 0, y * Chunk::CHUNK_SIZE));
-				int** cMap = map->generateChunkMap(x, y);
+				auto cMap = map.generateChunkMap(x, y);
 
 				for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++)
 					for (int cz = 0; cz < Chunk::CHUNK_SIZE; cz++) {
@@ -62,11 +60,6 @@ void WorldGenerator::generateTerrain(World& world)
 				generateOres(world, c);
 
 				world.m_chunks[x][y] = c;
-
-				for (int i = 0; i < Chunk::CHUNK_SIZE; i++) {
-					delete[] cMap[i];
-				}
-				delete[] cMap;
 			}
 	}
 }

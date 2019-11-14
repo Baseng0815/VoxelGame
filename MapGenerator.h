@@ -1,22 +1,22 @@
 #pragma once
+
+#include "Chunk.h"
 #include "Definitions.h"
 
-class MapGenerator
-{
-private:	
-	int octavesCount = 5;	
-	float* terrainSeed = nullptr;
-	int width = 0;
+typedef std::array<std::array<int, Chunk::CHUNK_SIZE>, Chunk::CHUNK_SIZE> ChunkMapArray;
+
+class MapGenerator {
+private:
+	int octavesCount = 5;
+	float terrainSeed[Definitions::MAP_SEED_SIZE * Definitions::MAP_SEED_SIZE];
+
 	int maxTerrainHeight = 60;
 	int minTerrainHeight = 10;
 
 	float noise(int x, int y);
 public:
-	MapGenerator();
-	~MapGenerator();
-
 	void generateSeed();	
 	
-	int** generateChunkMap(int x, int y);
+	ChunkMapArray&& generateChunkMap(int x, int y);
 };
 

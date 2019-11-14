@@ -23,8 +23,8 @@ public:
 	static TextureAtlas textureAtlas;
 	glm::vec3 position;
 
-	static const int CHUNK_SIZE = 16;
-	static const int CHUNK_HEIGHT = 256;
+	static constexpr int CHUNK_SIZE = 16;
+	static constexpr int CHUNK_HEIGHT = 256;
 
 	void init(glm::vec3 position = glm::vec3(0));
 	void cleanUp();

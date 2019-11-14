@@ -94,12 +94,13 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <ShowIncludes>true</ShowIncludes>
+      <AdditionalIncludeDirectories>.\other_packages\libnoise\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3dll.lib;glew.lib;glu32.lib;opengl32.lib;freetype28d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>.\packages\glfw.3.3.0.1\build\native\lib\dynamic\v142\win32;.\packages\glew.1.9.0.1\build\native\lib\v110\Win32\Debug\dynamic;.\packages\freetype.2.8.0.1\build\native\lib\Win32\v141\dynamic\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3dll.lib;glew.lib;glu32.lib;opengl32.lib;freetype28d.lib;libnoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>.\packages\glfw.3.3.0.1\build\native\lib\dynamic\v142\win32;.\packages\glew.1.9.0.1\build\native\lib\v110\Win32\Debug\dynamic;.\packages\freetype.2.8.0.1\build\native\lib\Win32\v141\dynamic\Debug;.\other_packages\libnoise\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <EntryPointSymbol>
       </EntryPointSymbol>
     </Link>

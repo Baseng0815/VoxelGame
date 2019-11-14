@@ -7,8 +7,6 @@ using json = nlohmann::json;
 
 std::array<BlockData, (int)BlockType::NUM_BLOCKS> Definitions::BLOCK_DATA;
 
-unsigned int Definitions::WINDOW_WIDTH = 800, Definitions::WINDOW_HEIGHT = 600;
-
 void Definitions::loadData() {
 	std::ifstream file("Resources/Misc/BlockData.json");
 

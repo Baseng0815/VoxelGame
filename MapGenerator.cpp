@@ -3,15 +3,9 @@
 #include "Chunk.h"
 #include "Definitions.h"
 
-MapGenerator::MapGenerator() {
-	width = Definitions::MAP_SEED_SIZE;
-	terrainSeed = new float[width * width];
-}
-MapGenerator::~MapGenerator() {
-	delete[] terrainSeed;
-}
-
 float MapGenerator::noise(int x, int y) {
+	int width = Definitions::MAP_SEED_SIZE;
+
 	float noise = 0.0f;
 	float scale = 1.0f;
 	float scaleAcc = 0.0f;
@@ -39,18 +33,18 @@ float MapGenerator::noise(int x, int y) {
 }
 
 void MapGenerator::generateSeed() {
+	int width = Definitions::MAP_SEED_SIZE;
+
 	for (int y = 0; y < width; y++)
 		for (int x = 0; x < width; x++) {
 			terrainSeed[y * width + x] = (float)rand() / (float)RAND_MAX;
 		}
 }
 
-int** MapGenerator::generateChunkMap(int x, int y) {
-	int** map = new int* [Chunk::CHUNK_SIZE];
+ChunkMapArray&& MapGenerator::generateChunkMap(int x, int y) {
+	ChunkMapArray map;
 
 	for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++) {
-		map[cx] = new int[Chunk::CHUNK_SIZE];
-
 		for (int cz = 0; cz < Chunk::CHUNK_SIZE; cz++) {
 
 			float noise = this->noise(x * Chunk::CHUNK_SIZE + cx, y * Chunk::CHUNK_SIZE + cz);
@@ -58,5 +52,5 @@ int** MapGenerator::generateChunkMap(int x, int y) {
 		}
 	}
 
-	return map;
+	return std::move(map);
 }
