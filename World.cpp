@@ -8,26 +8,24 @@ void World::init(WorldType worldType) {
 	
 	m_generator.generate(*this);
 
-	for (int x = 0; x < Definitions::CHUNK_PRELOAD_SIZE; x++)
-		for (int z = 0; z < Definitions::CHUNK_PRELOAD_SIZE; z++) {
-			m_chunks[x][z].updateVertices();
-			m_chunks[x][z].updateBuffers();
-		}
+	for (auto it = m_chunks.begin(); it != m_chunks.end(); it++) {
+		it->second.updateVertices();
+		it->second.updateBuffers();
+	}
 }
 
 World::~World() {
-	for (int x = 0; x < Definitions::CHUNK_PRELOAD_SIZE; x++)
-		for (int z = 0; z < Definitions::CHUNK_PRELOAD_SIZE; z++)
-			m_chunks[x][z].cleanUp();
+	for (auto it = m_chunks.begin(); it != m_chunks.end(); it++)
+		it->second.cleanUp();
 }
 
-Block World::getBlock(int x, int y, int z) {
-	return m_chunks[x / Chunk::CHUNK_SIZE][z / Chunk::CHUNK_SIZE].
+Block World::getBlock(int x, int y, int z) const {
+	return m_chunks.at(glm::vec2(x / Chunk::CHUNK_SIZE, z / Chunk::CHUNK_SIZE)).
 		getBlock(x % Chunk::CHUNK_SIZE, y, z % Chunk::CHUNK_SIZE);
 }
 
 void World::setBlock(int x, int y, int z, Block block) {
-	m_chunks[x / Chunk::CHUNK_SIZE][z / Chunk::CHUNK_SIZE].
+	m_chunks[glm::vec2(x / Chunk::CHUNK_SIZE, z / Chunk::CHUNK_SIZE)].
 		setBlock(x % Chunk::CHUNK_SIZE, y, z % Chunk::CHUNK_SIZE, block);
 }
 

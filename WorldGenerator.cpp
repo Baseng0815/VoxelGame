@@ -15,7 +15,7 @@ void WorldGenerator::generateTerrain(World& world)
 		for (int x = 0; x < 5; x++)
 			for (int y = 0; y < 5; y++) {
 				Chunk c;
-				c.init(glm::vec3(x * Chunk::CHUNK_SIZE, 0, y * Chunk::CHUNK_SIZE));
+				c.init();
 				for (int cy = 0; cy < 4; cy++) {
 					Block block;
 
@@ -29,7 +29,7 @@ void WorldGenerator::generateTerrain(World& world)
 						}
 				}
 				
-				world.m_chunks[x][y] = c;
+				world.m_chunks[glm::vec2(x, y)] = std::move(c);
 			}
 	}
 	else if (m_type == WorldType::WORLD_NORMAL) {
@@ -38,7 +38,7 @@ void WorldGenerator::generateTerrain(World& world)
 		for (int x = 0; x < 5; x++)
 			for (int y = 0; y < 5; y++) {
 				Chunk c;
-				c.init(glm::vec3(x * Chunk::CHUNK_SIZE, 0, y * Chunk::CHUNK_SIZE));
+				c.init();
 				auto cMap = map.generateChunkMap(x, y);
 
 				for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++)
@@ -59,7 +59,7 @@ void WorldGenerator::generateTerrain(World& world)
 
 				generateOres(world, c);
 
-				world.m_chunks[x][y] = c;
+				world.m_chunks[glm::vec2(x, y)] = std::move(c);
 			}
 	}
 }

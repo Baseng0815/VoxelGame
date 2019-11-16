@@ -5,9 +5,19 @@
 #include "Chunk.h"
 #include "WorldGenerator.h"
 
+struct HashFunction {
+	size_t operator()(const glm::vec2& v) const {
+		return std::hash<int>()(v.x) ^ std::hash<int>()(v.y);
+	}
+
+	bool operator()(const glm::vec2& l, const glm::vec2& r) const {
+		return l.x == r.x && l.y == r.y;
+	}
+};
+
 class World {
 private:	
-	Chunk m_chunks[Definitions::CHUNK_PRELOAD_SIZE][Definitions::CHUNK_PRELOAD_SIZE];
+	std::unordered_map<glm::vec2, Chunk, HashFunction, HashFunction> m_chunks;
 
 	std::array<BlockData, (int)BlockType::NUM_BLOCKS> BLOCK_DATA;
 
@@ -19,7 +29,7 @@ public:
 	void init(WorldType worldType = WorldType::WORLD_FLAT);
 	~World();
 
-	Block getBlock(int x, int y, int z);
+	Block getBlock(int x, int y, int z) const;
 	void setBlock(int x, int y, int z, Block block);
 	int getTerrainHeight(int x, int y);	
 };

@@ -14,8 +14,10 @@
 #include <array>
 #include <tuple>
 #include <ctime>
+#include <mutex>
 #include <string>
 #include <future>
+#include <thread>
 #include <vector>
 #include <random>
 #include <fstream>
@@ -25,6 +27,8 @@
 #include <stdexcept>
 #include <filesystem>
 #include <string_view>
+#include <unordered_map>
+#include <condition_variable>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>

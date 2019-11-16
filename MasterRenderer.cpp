@@ -36,14 +36,8 @@ void MasterRenderer::render(const World& world, const Camera& camera) {
 	m_blockShader.uploadViewMatrix(camera.getViewMatrix());
 	m_blockShader.uploadProjectionMatrix(camera.getProjectionMatrix());
 
-	for (int x = 0; x < Definitions::CHUNK_PRELOAD_SIZE; x++)
-		for (int z = 0; z < Definitions::CHUNK_PRELOAD_SIZE; z++) {
-			const Chunk& chunk = world.m_chunks[x][z];
-			m_blockShader.uploadModelMatrix(glm::translate(chunk.position));
-
-			glBindVertexArray(chunk.m_vao);
-			glDrawElements(GL_TRIANGLES, chunk.m_drawCount, GL_UNSIGNED_INT, nullptr);
-		}
+	for (auto it = world.m_chunks.begin(); it != world.m_chunks.end(); it++)
+		it->second.render(m_blockShader, it->first);
 
 	// lighting pass
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

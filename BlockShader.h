@@ -12,7 +12,7 @@ public:
 	// load shader and get uniform locations
 	void init();
 
-	void uploadModelMatrix(glm::mat4 modelMatrix);
-	void uploadProjectionMatrix(glm::mat4 projectionMatrix);
-	void uploadViewMatrix(glm::mat4 viewMatrix);
+	void uploadModelMatrix(glm::mat4 modelMatrix) const;
+	void uploadProjectionMatrix(glm::mat4 projectionMatrix) const;
+	void uploadViewMatrix(glm::mat4 viewMatrix) const;
 };

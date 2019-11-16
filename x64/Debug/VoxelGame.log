@@ -1,0 +1,222 @@
+﻿  Application.cpp
+D:\Development\Projects\VoxelGame\Application.cpp(13,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+D:\Development\Projects\VoxelGame\Application.cpp(40,19): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Window.cpp
+  WorldGenerator.cpp
+  Generating Code...
+D:\Development\Projects\VoxelGame\Application.cpp(53,100): warning C4244: '+=': conversion from '_Rep' to 'int', possible loss of data
+D:\Development\Projects\VoxelGame\Application.cpp(53,100): warning C4244:         with
+D:\Development\Projects\VoxelGame\Application.cpp(53,100): warning C4244:         [
+D:\Development\Projects\VoxelGame\Application.cpp(53,100): warning C4244:             _Rep=__int64
+D:\Development\Projects\VoxelGame\Application.cpp(53,100): warning C4244:         ]
+Application.obj : error LNK2019: unresolved external symbol __imp_glEnable referenced in function "public: __cdecl Application::Application(void)" (??0Application@@QEAA@XZ)
+Skybox.obj : error LNK2001: unresolved external symbol __imp_glEnable
+Application.obj : error LNK2019: unresolved external symbol __imp_glewInit referenced in function "public: __cdecl Application::Application(void)" (??0Application@@QEAA@XZ)
+BlockShader.obj : error LNK2001: unresolved external symbol __imp___glewGetUniformLocation
+LightingShader.obj : error LNK2001: unresolved external symbol __imp___glewGetUniformLocation
+SkyboxShader.obj : error LNK2001: unresolved external symbol __imp___glewGetUniformLocation
+Chunk.obj : error LNK2019: unresolved external symbol __imp_glDrawElements referenced in function "public: void __cdecl Chunk::render(struct glm::vec<2,float,0>,class BlockShader const &)const " (?render@Chunk@@QEBAXU?$vec@$01M$0A@@glm@@AEBVBlockShader@@@Z)
+Skybox.obj : error LNK2001: unresolved external symbol __imp_glDrawElements
+Chunk.obj : error LNK2001: unresolved external symbol __imp___glewBindBuffer
+RenderQuad.obj : error LNK2001: unresolved external symbol __imp___glewBindBuffer
+Skybox.obj : error LNK2001: unresolved external symbol __imp___glewBindBuffer
+Chunk.obj : error LNK2001: unresolved external symbol __imp___glewBufferData
+RenderQuad.obj : error LNK2001: unresolved external symbol __imp___glewBufferData
+Skybox.obj : error LNK2001: unresolved external symbol __imp___glewBufferData
+Chunk.obj : error LNK2001: unresolved external symbol __imp___glewDeleteBuffers
+RenderQuad.obj : error LNK2001: unresolved external symbol __imp___glewDeleteBuffers
+Skybox.obj : error LNK2001: unresolved external symbol __imp___glewDeleteBuffers
+Chunk.obj : error LNK2001: unresolved external symbol __imp___glewGenBuffers
+RenderQuad.obj : error LNK2001: unresolved external symbol __imp___glewGenBuffers
+Skybox.obj : error LNK2001: unresolved external symbol __imp___glewGenBuffers
+Chunk.obj : error LNK2001: unresolved external symbol __imp___glewEnableVertexAttribArray
+RenderQuad.obj : error LNK2001: unresolved external symbol __imp___glewEnableVertexAttribArray
+Skybox.obj : error LNK2001: unresolved external symbol __imp___glewEnableVertexAttribArray
+Chunk.obj : error LNK2001: unresolved external symbol __imp___glewVertexAttribPointer
+RenderQuad.obj : error LNK2001: unresolved external symbol __imp___glewVertexAttribPointer
+Skybox.obj : error LNK2001: unresolved external symbol __imp___glewVertexAttribPointer
+Chunk.obj : error LNK2001: unresolved external symbol __imp___glewBindVertexArray
+RenderQuad.obj : error LNK2001: unresolved external symbol __imp___glewBindVertexArray
+Skybox.obj : error LNK2001: unresolved external symbol __imp___glewBindVertexArray
+Chunk.obj : error LNK2001: unresolved external symbol __imp___glewDeleteVertexArrays
+RenderQuad.obj : error LNK2001: unresolved external symbol __imp___glewDeleteVertexArrays
+Skybox.obj : error LNK2001: unresolved external symbol __imp___glewDeleteVertexArrays
+Chunk.obj : error LNK2001: unresolved external symbol __imp___glewGenVertexArrays
+RenderQuad.obj : error LNK2001: unresolved external symbol __imp___glewGenVertexArrays
+Skybox.obj : error LNK2001: unresolved external symbol __imp___glewGenVertexArrays
+GBuffer.obj : error LNK2019: unresolved external symbol __imp_glBindTexture referenced in function "public: void __cdecl GBuffer::bindTextures(void)" (?bindTextures@GBuffer@@QEAAXXZ)
+Skybox.obj : error LNK2001: unresolved external symbol __imp_glBindTexture
+TextureAtlas.obj : error LNK2001: unresolved external symbol __imp_glBindTexture
+soil.lib(SOIL.obj) : error LNK2001: unresolved external symbol __imp_glBindTexture
+GBuffer.obj : error LNK2019: unresolved external symbol __imp_glGenTextures referenced in function "public: void __cdecl GBuffer::init(void)" (?init@GBuffer@@QEAAXXZ)
+Skybox.obj : error LNK2001: unresolved external symbol __imp_glGenTextures
+TextureAtlas.obj : error LNK2001: unresolved external symbol __imp_glGenTextures
+soil.lib(SOIL.obj) : error LNK2001: unresolved external symbol __imp_glGenTextures
+GBuffer.obj : error LNK2019: unresolved external symbol __imp_glTexImage2D referenced in function "public: void __cdecl GBuffer::init(void)" (?init@GBuffer@@QEAAXXZ)
+Skybox.obj : error LNK2001: unresolved external symbol __imp_glTexImage2D
+TextureAtlas.obj : error LNK2001: unresolved external symbol __imp_glTexImage2D
+soil.lib(SOIL.obj) : error LNK2001: unresolved external symbol __imp_glTexImage2D
+GBuffer.obj : error LNK2019: unresolved external symbol __imp_glTexParameteri referenced in function "public: void __cdecl GBuffer::init(void)" (?init@GBuffer@@QEAAXXZ)
+Skybox.obj : error LNK2001: unresolved external symbol __imp_glTexParameteri
+TextureAtlas.obj : error LNK2001: unresolved external symbol __imp_glTexParameteri
+soil.lib(SOIL.obj) : error LNK2001: unresolved external symbol __imp_glTexParameteri
+GBuffer.obj : error LNK2001: unresolved external symbol __imp___glewActiveTexture
+Skybox.obj : error LNK2001: unresolved external symbol __imp___glewActiveTexture
+TextureAtlas.obj : error LNK2001: unresolved external symbol __imp___glewActiveTexture
+GBuffer.obj : error LNK2001: unresolved external symbol __imp___glewDrawBuffers
+GBuffer.obj : error LNK2001: unresolved external symbol __imp___glewBindFramebuffer
+MasterRenderer.obj : error LNK2001: unresolved external symbol __imp___glewBindFramebuffer
+GBuffer.obj : error LNK2001: unresolved external symbol __imp___glewBindRenderbuffer
+GBuffer.obj : error LNK2001: unresolved external symbol __imp___glewCheckFramebufferStatus
+GBuffer.obj : error LNK2001: unresolved external symbol __imp___glewFramebufferRenderbuffer
+GBuffer.obj : error LNK2001: unresolved external symbol __imp___glewFramebufferTexture2D
+GBuffer.obj : error LNK2001: unresolved external symbol __imp___glewGenFramebuffers
+GBuffer.obj : error LNK2001: unresolved external symbol __imp___glewGenRenderbuffers
+GBuffer.obj : error LNK2001: unresolved external symbol __imp___glewRenderbufferStorage
+MasterRenderer.obj : error LNK2019: unresolved external symbol __imp_glClear referenced in function "public: void __cdecl MasterRenderer::render(class World const &,class Camera const &)" (?render@MasterRenderer@@QEAAXAEBVWorld@@AEBVCamera@@@Z)
+Window.obj : error LNK2001: unresolved external symbol __imp_glClear
+MasterRenderer.obj : error LNK2019: unresolved external symbol __imp_glClearColor referenced in function "public: void __cdecl MasterRenderer::render(class World const &,class Camera const &)" (?render@MasterRenderer@@QEAAXAEBVWorld@@AEBVCamera@@@Z)
+Window.obj : error LNK2001: unresolved external symbol __imp_glClearColor
+MasterRenderer.obj : error LNK2019: unresolved external symbol __imp_glViewport referenced in function "public: void __cdecl MasterRenderer::resize(int,int)" (?resize@MasterRenderer@@QEAAXHH@Z)
+Window.obj : error LNK2001: unresolved external symbol __imp_glViewport
+MasterRenderer.obj : error LNK2001: unresolved external symbol __imp___glewBlitFramebuffer
+RenderQuad.obj : error LNK2019: unresolved external symbol __imp_glDrawArrays referenced in function "public: void __cdecl RenderQuad::render(void)" (?render@RenderQuad@@QEAAXXZ)
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewAttachShader
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewBindAttribLocation
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewCompileShader
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewCreateProgram
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewCreateShader
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewDeleteProgram
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewDeleteShader
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewDetachShader
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewGetProgramInfoLog
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewGetProgramiv
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewGetShaderInfoLog
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewGetShaderiv
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewLinkProgram
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewShaderSource
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewUniform1f
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewUniform1i
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewUniform3f
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewUniformMatrix4fv
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewUseProgram
+Shader.obj : error LNK2001: unresolved external symbol __imp___glewValidateProgram
+Skybox.obj : error LNK2019: unresolved external symbol __imp_glDeleteTextures referenced in function "public: __cdecl Skybox::~Skybox(void)" (??1Skybox@@QEAA@XZ)
+TextureAtlas.obj : error LNK2001: unresolved external symbol __imp_glDeleteTextures
+soil.lib(SOIL.obj) : error LNK2001: unresolved external symbol __imp_glDeleteTextures
+Skybox.obj : error LNK2019: unresolved external symbol __imp_glDisable referenced in function "public: void __cdecl Skybox::render(void)" (?render@Skybox@@QEAAXXZ)
+World.obj : error LNK2019: unresolved external symbol "private: void __cdecl World::chunkUnload(void)" (?chunkUnload@World@@AEAAXXZ) referenced in function "public: void __cdecl World::init(enum WorldType)" (?init@World@@QEAAXW4WorldType@@@Z)
+World.obj : error LNK2001: unresolved external symbol "private: static class std::array<struct glm::vec<2,float,0>,4> World::neighbourOffsets" (?neighbourOffsets@World@@0V?$array@U?$vec@$01M$0A@@glm@@$03@std@@A)
+soil.lib(SOIL.obj) : error LNK2019: unresolved external symbol __imp_wglGetProcAddress referenced in function query_DXT_capability
+soil.lib(SOIL.obj) : error LNK2019: unresolved external symbol __imp_glGetIntegerv referenced in function SOIL_internal_create_OGL_texture
+soil.lib(SOIL.obj) : error LNK2019: unresolved external symbol __imp_glGetString referenced in function query_cubemap_capability
+soil.lib(SOIL.obj) : error LNK2019: unresolved external symbol __imp_glReadPixels referenced in function SOIL_save_screenshot
+D:\Development\Projects\VoxelGame\x64\Debug\VoxelGame.exe : fatal error LNK1120: 60 unresolved externals
+
+Project Performance Summary:
+     1371 ms  D:\Development\Projects\VoxelGame\VoxelGame.vcxproj   1 calls
+               1371 ms  Build                                      1 calls
+
+Target Performance Summary:
+        0 ms  AfterMidl                                  1 calls
+        0 ms  BeforeBuildGenerateSources                 1 calls
+        0 ms  PreBuildEvent                              1 calls
+        0 ms  _SelectedFiles                             1 calls
+        0 ms  SelectCustomBuild                          1 calls
+        0 ms  ComputeCustomBuildOutput                   1 calls
+        0 ms  BuildLinkTraverse                          1 calls
+        0 ms  CopyFileToFolders                          1 calls
+        0 ms  _Xsd                                       1 calls
+        0 ms  MakeDirsForMidl                            1 calls
+        0 ms  ComputeMIDLGeneratedCompileInputs          1 calls
+        0 ms  BuildCompile                               1 calls
+        0 ms  _Midl                                      1 calls
+        0 ms  AfterBuildGenerateSources                  1 calls
+        0 ms  AfterBuildGenerateSourcesEvent             1 calls
+        0 ms  _BuildGenerateSourcesAction                1 calls
+        0 ms  BuildGenerateSources                       1 calls
+        0 ms  BuildCompileTraverse                       1 calls
+        0 ms  BeforeClCompile                            1 calls
+        0 ms  ComputeCLInputPDBName                      1 calls
+        0 ms  ComputeReferenceCLInput                    1 calls
+        0 ms  _BuildCompileAction                        1 calls
+        0 ms  AfterBuildCompileEvent                     1 calls
+        0 ms  _ResourceCompile                           1 calls
+        0 ms  SelectClCompile                            1 calls
+        0 ms  AfterResourceCompile                       1 calls
+        0 ms  AfterClCompile                             1 calls
+        0 ms  _ClCompile                                 1 calls
+        0 ms  BuildGenerateSourcesTraverse               1 calls
+        0 ms  BeforeResourceCompile                      1 calls
+        0 ms  ComputeLegacyManifestEmbedding             1 calls
+        0 ms  AfterResolveReferences                     1 calls
+        0 ms  glew_redist_init_2                         1 calls
+        0 ms  glew_init                                  1 calls
+        0 ms  freetype_redist_init                       1 calls
+        0 ms  PreLinkEvent                               1 calls
+        0 ms  freetype_init                              1 calls
+        0 ms  PrepareResourceNames                       1 calls
+        0 ms  CreateCustomManifestResourceNames          1 calls
+        0 ms  _PrepareForBuild                           1 calls
+        0 ms  ComputeManifestInputsTargets               1 calls
+        0 ms  BeforeResolveReferences                    1 calls
+        0 ms  ComputeLinkInputsFromProject               1 calls
+        0 ms  _SplitProjectReferencesByFileExistence     1 calls
+        0 ms  ComputeCLGeneratedLinkInputs               1 calls
+        0 ms  PrepareProjectReferences                   1 calls
+        0 ms  ComputeManifestGeneratedLinkerInputs       1 calls
+        0 ms  GetFrameworkPaths                          1 calls
+        0 ms  GetReferenceAssemblyPaths                  1 calls
+        0 ms  SetBuildDefaultEnvironmentVariables        1 calls
+        0 ms  GetResolvedWinMD                           1 calls
+        0 ms  _CheckWindowsSDKInstalled                  1 calls
+        0 ms  ComputeRCGeneratedLinkInputs               1 calls
+        0 ms  EnsureNuGetPackageBuildImports             1 calls
+        0 ms  ComputeRCOutputs                           1 calls
+        0 ms  ResolveSDKReferences                       1 calls
+        0 ms  ExpandSDKReferences                        1 calls
+        0 ms  BeforeLink                                 1 calls
+        0 ms  ResolveAssemblyReferences                  1 calls
+        0 ms  ResolveReferences                          1 calls
+        0 ms  MakeDirsForResourceCompile                 1 calls
+        1 ms  glew_redist_init                           1 calls
+        1 ms  DoLinkOutputFilesMatch                     1 calls
+        1 ms  SplitResourcesByCulture                    1 calls
+        1 ms  _PrepareForReferenceResolution             1 calls
+        1 ms  _GetProjectReferenceTargetFrameworkProperties   1 calls
+        1 ms  freetype_redist_init_2                     1 calls
+        1 ms  SetCABuildNativeEnvironmentVariables       1 calls
+        1 ms  MakeDirsForLink                            1 calls
+        1 ms  AssignProjectConfiguration                 1 calls
+        1 ms  FixupCLCompileOptions                      1 calls
+        2 ms  ComputeCLOutputs                           1 calls
+        2 ms  AssignTargetPaths                          1 calls
+        4 ms  MakeDirsForCl                              1 calls
+        4 ms  InitializeBuildStatus                      1 calls
+        4 ms  CustomBuild                                1 calls
+        5 ms  WarnCompileDuplicatedFilename              1 calls
+        6 ms  ComputeLinkSwitches                        1 calls
+        7 ms  SetTelemetryEnvironmentVariables           1 calls
+        8 ms  PrepareForBuild                            1 calls
+       13 ms  _CheckForInvalidConfigurationAndPlatform   1 calls
+       14 ms  ResolveProjectReferences                   1 calls
+       17 ms  _HandlePackageFileConflicts                1 calls
+      546 ms  ClCompile                                  1 calls
+      724 ms  Link                                       1 calls
+
+Task Performance Summary:
+        0 ms  MSBuild                                    1 calls
+        0 ms  MakeDir                                    7 calls
+        0 ms  ReadLinesFromFile                          1 calls
+        0 ms  AssignCulture                              1 calls
+        1 ms  CheckVCToolsetVersion                      1 calls
+        1 ms  AssignTargetPath                           4 calls
+        1 ms  WriteLinesToFile                           1 calls
+        1 ms  Message                                    2 calls
+        1 ms  AssignProjectConfiguration                 1 calls
+        2 ms  Touch                                      1 calls
+        3 ms  SetEnv                                     8 calls
+        4 ms  GetOutOfDateItems                          3 calls
+       14 ms  ResolvePackageFileConflicts                1 calls
+      544 ms  CL                                         2 calls
+      719 ms  Link                                       1 calls

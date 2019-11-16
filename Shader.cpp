@@ -62,19 +62,19 @@ GLuint Shader::createShader(std::string text, GLenum type) {
 	return shader;
 }
 
-void Shader::upload(GLint location, glm::mat4 value) {
+void Shader::upload(GLint location, glm::mat4 value) const {
 	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
 }
 
-void Shader::upload(GLint location, glm::vec3 value) {
+void Shader::upload(GLint location, glm::vec3 value) const {
 	glUniform3f(location, value.x, value.y, value.z);
 }
 
-void Shader::upload(GLint location, float value) {
+void Shader::upload(GLint location, float value) const {
 	glUniform1f(location, value);
 }
 
-void Shader::upload(GLint location, int value) {
+void Shader::upload(GLint location, int value) const {
 	glUniform1i(location, value);
 }
 
@@ -106,7 +106,7 @@ void Shader::init(std::string fileName, std::vector<std::string> attribs) {
 }
 
 
-void Shader::bind() {
+void Shader::bind() const {
 	glUseProgram(m_program);
 }
 

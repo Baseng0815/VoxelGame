@@ -16,14 +16,14 @@ void BlockShader::init() {
 	m_locationViewMatrix = glGetUniformLocation(m_program, "viewMatrix");
 }
 
-void BlockShader::uploadModelMatrix(glm::mat4 modelMatrix) {
+void BlockShader::uploadModelMatrix(glm::mat4 modelMatrix) const {
 	upload(m_locationModelMatrix, modelMatrix);
 }
 
-void BlockShader::uploadProjectionMatrix(glm::mat4 projectionMatrix) {
+void BlockShader::uploadProjectionMatrix(glm::mat4 projectionMatrix) const {
 	upload(m_locationProjectionMatrix, projectionMatrix);
 }
 
-void BlockShader::uploadViewMatrix(glm::mat4 viewMatrix) {
+void BlockShader::uploadViewMatrix(glm::mat4 viewMatrix) const {
 	upload(m_locationViewMatrix, viewMatrix);
 }

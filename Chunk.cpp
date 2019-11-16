@@ -5,9 +5,7 @@
 
 TextureAtlas Chunk::textureAtlas;
 
-void Chunk::init(glm::vec3 position) {
-	this->position = position;
-
+void Chunk::init() {
 	// allocate from heap due to its big size
 	m_blocks = new Block**[CHUNK_SIZE];
 
@@ -40,6 +38,12 @@ Block Chunk::getBlock(int x, int y, int z) const {
 
 void Chunk::setBlock(int x, int y, int z, Block block) {
 	m_blocks[x][y][z] = block;
+}
+
+void Chunk::render(const BlockShader& shader, glm::vec2 position) const {
+	shader.uploadModelMatrix(glm::translate(glm::vec3(position.x * Chunk::CHUNK_SIZE, 0, position.y * Chunk::CHUNK_SIZE)));
+	glBindVertexArray(m_vao);
+	glDrawElements(GL_TRIANGLES, m_drawCount, GL_UNSIGNED_INT, nullptr);
 }
 
 void Chunk::updateVertices() {
@@ -166,29 +170,35 @@ void Chunk::updateVertices() {
 			}
 
 	m_drawCount = m_indices.size();
+	m_buffersOutdated = true;
 }
 
 void Chunk::updateBuffers() {
-	if (!m_buffersInitialized) {
-		glGenVertexArrays(1, &m_vao);
-		glGenBuffers(1, &m_vbo);
-		glGenBuffers(1, &m_ebo);
-		m_buffersInitialized = true;
+	if (m_buffersOutdated) {
+		if (!m_buffersInitialized) {
+			glGenVertexArrays(1, &m_vao);
+			glBindVertexArray(m_vao);
+			glGenBuffers(1, &m_vbo);
+			glGenBuffers(1, &m_ebo);
+			m_buffersInitialized = true;
+		}
+
+		glBindVertexArray(m_vao);
+		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices[0]) * m_vertices.size(), m_vertices.data(), GL_DYNAMIC_DRAW);
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(0));
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(sizeof(glm::vec3)));
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(sizeof(glm::vec3) * 2));
+
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indices[0]) * m_indices.size(), m_indices.data(), GL_DYNAMIC_DRAW);
+
+		m_vertices.clear();
+		m_indices.clear();
+		
+		m_buffersOutdated = false;
 	}
-
-	glBindVertexArray(m_vao);
-	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices[0]) * m_vertices.size(), m_vertices.data(), GL_DYNAMIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glEnableVertexAttribArray(1);
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(0));
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(sizeof(glm::vec3)));
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(sizeof(glm::vec3) * 2));
-
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indices[0]) * m_indices.size(), m_indices.data(), GL_DYNAMIC_DRAW);
-
-	m_vertices.clear();
-	m_indices.clear();
 }
