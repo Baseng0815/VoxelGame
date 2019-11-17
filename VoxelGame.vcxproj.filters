@@ -73,6 +73,9 @@
     <ClCompile Include="Skybox.cpp">
       <Filter>Source\Rendering</Filter>
     </ClCompile>
+    <ClCompile Include="noiseutils.cpp">
+      <Filter>Source\World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h">
@@ -147,7 +150,12 @@
     <ClInclude Include="Skybox.h">
       <Filter>Headers\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="OreData.h" />
+    <ClInclude Include="OreData.h">
+      <Filter>Headers\World</Filter>
+    </ClInclude>
+    <ClInclude Include="noiseutils.h">
+      <Filter>Headers\World</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\debug.png">

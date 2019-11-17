@@ -4,64 +4,47 @@
 #include "World.h"
 #include "WorldGenerator.h"
 #include "Definitions.h"
+#include "noiseutils.h"
+
+using namespace noise::utils;
+using namespace noise::model;
+using namespace noise::module;
 
 void WorldGenerator::init(WorldType worldType) {
 	m_type = worldType;
+
+	perlinNoise.SetSeed(349237589);
+	perlinNoise.SetOctaveCount(6);
 }
 
-void WorldGenerator::generateTerrain(World& world)
-{
-	if (m_type == WorldType::WORLD_FLAT) {
-		for (int x = 0; x < 5; x++)
-			for (int y = 0; y < 5; y++) {
-				Chunk c;
-				c.init();
-				for (int cy = 0; cy < 4; cy++) {
-					Block block;
+void WorldGenerator::generateTerrain(glm::vec2 position, Chunk* chunk) const {
+	utils::NoiseMap heightMap;
+	utils::NoiseMapBuilderPlane planeBuilder = NoiseMapBuilderPlane();
 
-					if (cy == 0) block = Block(BlockType::BLOCK_STONE_COBBLE);
-					if (cy == 3) block = Block(BlockType::BLOCK_GRASS);
-					else block = Block(BlockType::BLOCK_DIRT);
+	planeBuilder.SetSourceModule(perlinNoise);
+	planeBuilder.SetDestNoiseMap(heightMap);
+	planeBuilder.SetDestSize(Chunk::CHUNK_SIZE, Chunk::CHUNK_SIZE);
+	planeBuilder.SetBounds(position.x, position.x + Chunk::CHUNK_SIZE, position.y, position.y + Chunk::CHUNK_SIZE);
 
-					for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++)
-						for (int cz = 0; cz < Chunk::CHUNK_SIZE; cz++) {
-							c.setBlock(cx, cy, cz, block);
-						}
-				}
-				
-				world.m_chunks[glm::vec2(x, y)] = std::move(c);
+	planeBuilder.Build();
+
+	for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++)
+		for (int cz = 0; cz < Chunk::CHUNK_SIZE; cz++) {
+			int height = heightMap.GetValue(cx, cz) * (float)30 + 40;
+			for (int cy = 0; cy < height; cy++) {
+				Block block;
+				if (cy < height - 5)
+					block = Block(BlockType::BLOCK_STONE);
+				else if (cy < height - 1)
+					block = Block(BlockType::BLOCK_DIRT);
+				else
+					block = Block(BlockType::BLOCK_GRASS);
+
+				chunk->setBlock(cx, cy, cz, block);
 			}
-	}
-	else if (m_type == WorldType::WORLD_NORMAL) {
-		map.generateSeed();
+		}
 
-		for (int x = 0; x < 5; x++)
-			for (int y = 0; y < 5; y++) {
-				Chunk c;
-				c.init();
-				auto cMap = map.generateChunkMap(x, y);
-
-				for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++)
-					for (int cz = 0; cz < Chunk::CHUNK_SIZE; cz++) {
-						int terrainHeight = cMap[cx][cz];
-						for (int cy = 0; cy < terrainHeight; cy++) {
-							Block block;
-							if (cy < terrainHeight - 5)
-								block = Block(BlockType::BLOCK_STONE);
-							else if (cy < terrainHeight - 1)
-								block = Block(BlockType::BLOCK_DIRT);
-							else
-								block = Block(BlockType::BLOCK_GRASS);
-
-							c.setBlock(cx, cy, cz, block);
-						}
-					}
-
-				generateOres(world, c);
-
-				world.m_chunks[glm::vec2(x, y)] = std::move(c);
-			}
-	}
+	chunk->updateVertices();
 }
 
 void WorldGenerator::generateOres(const World& world, Chunk& chunk) {
@@ -112,6 +95,6 @@ void WorldGenerator::generateOres(const World& world, Chunk& chunk) {
 	}
 }
 
-void WorldGenerator::generate(World& world) {
-	generateTerrain(world);
+void WorldGenerator::generateChunk(glm::vec2 position, Chunk* chunk) const {
+	generateTerrain(position, chunk);
 }

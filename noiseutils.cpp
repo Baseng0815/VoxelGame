@@ -20,6 +20,7 @@
 // off every 'zig'.)
 //
 
+#include "pch.h"
 #include <fstream>
 
 #include <noise/interp.h>

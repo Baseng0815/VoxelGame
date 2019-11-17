@@ -5,8 +5,17 @@
 
 void World::init(WorldType worldType) {
 	m_generator.init(worldType);
-	
-	m_generator.generate(*this);
+
+	for (int x = 0; x < 7; x++)
+		for (int y = 0; y < 7; y++) {
+			Chunk c = Chunk();
+			c.init();
+			glm::vec2 position = glm::vec2(x, y);
+
+			m_generator.generateChunk(position, &c);
+
+			m_chunks[position] = std::move(c);
+		}
 
 	for (auto it = m_chunks.begin(); it != m_chunks.end(); it++) {
 		it->second.updateVertices();
