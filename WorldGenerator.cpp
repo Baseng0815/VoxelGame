@@ -13,8 +13,9 @@ using namespace noise::module;
 void WorldGenerator::init(WorldType worldType) {
 	m_type = worldType;
 
-	perlinNoise.SetSeed(349237589);
-	perlinNoise.SetOctaveCount(6);
+	perlinNoise.SetSeed(rand());
+	perlinNoise.SetOctaveCount(8);	
+	perlinNoise.SetPersistence(1 / 64.0f);
 }
 
 void WorldGenerator::generateTerrain(glm::vec2 position, Chunk* chunk) const {
@@ -24,13 +25,14 @@ void WorldGenerator::generateTerrain(glm::vec2 position, Chunk* chunk) const {
 	planeBuilder.SetSourceModule(perlinNoise);
 	planeBuilder.SetDestNoiseMap(heightMap);
 	planeBuilder.SetDestSize(Chunk::CHUNK_SIZE, Chunk::CHUNK_SIZE);
-	planeBuilder.SetBounds(position.x, position.x + Chunk::CHUNK_SIZE, position.y, position.y + Chunk::CHUNK_SIZE);
+	planeBuilder.SetBounds(position.x, position.x + 1, position.y, position.y + 1);
 
-	planeBuilder.Build();
+	planeBuilder.Build();	
+	
 
 	for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++)
 		for (int cz = 0; cz < Chunk::CHUNK_SIZE; cz++) {
-			int height = heightMap.GetValue(cx, cz) * (float)30 + 40;
+			int height = heightMap.GetValue(cx, cz) * (float)3 + 40;
 			for (int cy = 0; cy < height; cy++) {
 				Block block;
 				if (cy < height - 5)
