@@ -19,6 +19,8 @@ class WorldGenerator {
 private:
 	WorldType m_type;
 	Perlin perlinNoise;	
+	Billow baseFlatTerrain;
+	ScaleBias flatTerrain;
 	void generateTerrain(glm::vec2 position, Chunk* chunk) const;
 	void generateOres(const World& world, Chunk& chunk);
 
