@@ -1,10 +1,12 @@
 #pragma once
 
 #include "BlockData.h"
+#include "BiomeInfo.h"
 
 class Definitions {
 public:
-	static std::array<BlockData, (int)BlockType::NUM_BLOCKS> BLOCK_DATA;	
+	static std::array<BlockData, (int)BlockType::NUM_BLOCKS> BLOCK_DATA;
+	static std::array<BiomeInfo, (int)BiomeID::NUM_BIOMES> BIOME_INFO;
 
 	// initial size
 	static constexpr unsigned int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600;

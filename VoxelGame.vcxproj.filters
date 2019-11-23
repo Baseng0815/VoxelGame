@@ -156,6 +156,9 @@
     <ClInclude Include="noiseutils.h">
       <Filter>Headers\World</Filter>
     </ClInclude>
+    <ClInclude Include="BiomeInfo.h">
+      <Filter>Headers\World</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\debug.png">
@@ -225,6 +228,9 @@
     </None>
     <None Include="Resources\Shaders\skyboxShader.vert">
       <Filter>Resources\Shaders</Filter>
+    </None>
+    <None Include="Resources\Misc\BiomeInfo.json">
+      <Filter>Resources\Misc</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -193,6 +193,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="BiomeInfo.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockData.h" />
     <ClInclude Include="BlockShader.h" />
@@ -221,6 +222,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Resources\Misc\BiomeInfo.json" />
     <None Include="Resources\Misc\BlockData.json" />
     <None Include="Resources\Shaders\chunkShader.frag" />
     <None Include="Resources\Shaders\chunkShader.vert" />
