@@ -16,7 +16,7 @@ Application::Application() {
 
 	m_masterRenderer.init();
 	m_camera.init(100);
-	m_world.init(WorldType::WORLD_NORMAL);
+	m_world.init(/*WorldType::WORLD_NORMAL*/);
 }
 
 Application::~Application() {
@@ -25,9 +25,10 @@ Application::~Application() {
 
 void Application::run() {
 	while (m_isRunning) {
-		// updating
+		// event polling
 		glfwPollEvents();
 
+		// fps and render time
 		if (m_time > 1000) {
 			std::cout << m_frameCounter / (float)m_time * 1000 << " FPS" <<
 				"  -  " << m_frameTime / m_frameCounter << " microseconds render time" << std::endl;
@@ -37,12 +38,15 @@ void Application::run() {
 			m_time = 0;
 		}
 
+		// time
 		int currentTime = glfwGetTime() * 1000.f;
 		m_deltaTime = currentTime - m_prevTime;
 		m_prevTime = currentTime;
 		m_time += m_deltaTime;
 
+		// updating
 		m_camera.handleKeys(m_window, m_deltaTime);
+		m_world.update(m_deltaTime, m_camera.getPosition());
 
 		// drawing
 		m_window.clear();

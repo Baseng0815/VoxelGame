@@ -3,7 +3,7 @@
 #include "pch.h"
 
 #include "Chunk.h"
-#include "WorldGenerator.h"
+//#include "WorldGenerator.h"
 
 struct HashFunction {
 	size_t operator()(const glm::vec2& v) const {
@@ -19,15 +19,17 @@ class World {
 private:	
 	std::unordered_map<glm::vec2, Chunk, HashFunction, HashFunction> m_chunks;
 
-	std::array<BlockData, (int)BlockType::NUM_BLOCKS> BLOCK_DATA;
-
-	WorldGenerator m_generator;
+	//WorldGenerator m_generator;
 
 	friend class MasterRenderer;
-	friend class WorldGenerator;
+	//friend class WorldGenerator;
+
 public:
-	void init(WorldType worldType = WorldType::WORLD_FLAT);
+	void init(/*WorldType worldType = WorldType::WORLD_FLAT*/);
 	~World();
+
+	// dt in milliseconds
+	void update(int dt, glm::vec3 camPos);
 
 	Block getBlock(int x, int y, int z) const;
 	void setBlock(int x, int y, int z, Block block);

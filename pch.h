@@ -15,6 +15,8 @@
 #include <tuple>
 #include <ctime>
 #include <mutex>
+#include <queue>
+#include <deque>
 #include <string>
 #include <future>
 #include <thread>

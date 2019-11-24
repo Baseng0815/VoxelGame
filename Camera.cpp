@@ -21,6 +21,14 @@ void Camera::init(float fov) {
 	recalculateVectors();
 }
 
+glm::vec3 Camera::getPosition() const {
+	return m_position;
+}
+
+glm::vec3 Camera::getFront() const {
+	return m_front;
+}
+
 glm::mat4 Camera::getProjectionMatrix() const {
 	return m_projectionMatrix;
 }

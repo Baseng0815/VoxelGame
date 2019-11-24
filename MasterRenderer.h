@@ -28,6 +28,8 @@ private:
 	SkyboxShader m_skyboxShader;
 	Skybox m_skybox;
 
+	TextureAtlas m_textureAtlas;
+
 public:
 	void init();
 

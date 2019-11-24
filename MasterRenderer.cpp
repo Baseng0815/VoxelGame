@@ -12,7 +12,8 @@ void MasterRenderer::init() {
 	m_skyboxShader.init();
 	m_skybox.init();
 
-	Chunk::textureAtlas.init("Resources/Textures/textureAtlas0.png");
+	m_textureAtlas.init("Resources/Textures/textureAtlas0.png");
+	Chunk::setBlockUVsArray(m_textureAtlas.getBlockTextureCoordinates());
 }
 
 void MasterRenderer::resize(int width, int height) {
@@ -31,7 +32,7 @@ void MasterRenderer::render(const World& world, const Camera& camera) {
 
 	// geometry pass: scene's geometry and color data
 	m_blockShader.bind();
-	Chunk::textureAtlas.bind();
+	m_textureAtlas.bind();
 
 	m_blockShader.uploadViewMatrix(camera.getViewMatrix());
 	m_blockShader.uploadProjectionMatrix(camera.getProjectionMatrix());

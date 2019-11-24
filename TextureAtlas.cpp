@@ -27,23 +27,30 @@ void TextureAtlas::init(const char *fileName, int tileSize) {
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
 	SOIL_free_image_data(data);
+
+	FaceUVs faceUVs;
+	// generate face uvs
+	for (int i = 0; i < m_numCols * m_numRows; i++) {
+		glm::vec2 topLeft = glm::vec2(i % m_numCols / (float)m_numCols , i / m_numCols / (float)m_numRows);
+		m_faceUVs.push_back({ topLeft, glm::vec2(topLeft.x + m_uvXpT, topLeft.y + m_uvYpT),
+			glm::vec2(topLeft.x + m_uvXpT, topLeft.y), glm::vec2(topLeft.x, topLeft.y + m_uvYpT)});
+	}
+
+	BlockUVs blockUVs;
+	// generate block uv arrays
+	for (int i = 0; i < m_blockUVsArray.size(); i++) {
+		blockUVs[0] = m_faceUVs[(Definitions::BLOCK_DATA.at(i).tid_up)];
+		blockUVs[1] = m_faceUVs[(Definitions::BLOCK_DATA.at(i).tid_nx)];
+		blockUVs[2] = m_faceUVs[(Definitions::BLOCK_DATA.at(i).tid_px)];
+		blockUVs[3] = m_faceUVs[(Definitions::BLOCK_DATA.at(i).tid_nz)];
+		blockUVs[4] = m_faceUVs[(Definitions::BLOCK_DATA.at(i).tid_pz)];
+		blockUVs[5] = m_faceUVs[(Definitions::BLOCK_DATA.at(i).tid_bot)];
+		m_blockUVsArray[i] = blockUVs;
+	}
 }
 
-FaceUVs TextureAtlas::getTextureCoordinates(int index) const {
-	glm::vec2 topLeft = glm::vec2(index % m_numCols / (float)m_numCols , index / m_numCols / (float)m_numRows);
-	return std::array<glm::vec2, 4> { topLeft, glm::vec2(topLeft.x + m_uvXpT, topLeft.y + m_uvYpT),
-		glm::vec2(topLeft.x + m_uvXpT, topLeft.y), glm::vec2(topLeft.x, topLeft.y + m_uvYpT) };
-}
-
-std::array<FaceUVs, 6> TextureAtlas::getBlockTextureCoordinates(BlockType blockType) {
-	std::array<FaceUVs, 6> output;
-	output[0] = getTextureCoordinates(Definitions::BLOCK_DATA.at((int)blockType).tid_up);
-	output[1] = getTextureCoordinates(Definitions::BLOCK_DATA.at((int)blockType).tid_nx);
-	output[2] = getTextureCoordinates(Definitions::BLOCK_DATA.at((int)blockType).tid_px);
-	output[3] = getTextureCoordinates(Definitions::BLOCK_DATA.at((int)blockType).tid_nz);
-	output[4] = getTextureCoordinates(Definitions::BLOCK_DATA.at((int)blockType).tid_pz);
-	output[5] = getTextureCoordinates(Definitions::BLOCK_DATA.at((int)blockType).tid_bot);
-	return output;
+const BlockUVsArray* TextureAtlas::getBlockTextureCoordinates() {
+	return &m_blockUVsArray;
 }
 
 TextureAtlas::~TextureAtlas() {

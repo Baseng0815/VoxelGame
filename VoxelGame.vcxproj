@@ -171,7 +171,9 @@
     <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightingShader.cpp" />
-    <ClCompile Include="MapGenerator.cpp" />
+    <ClCompile Include="MapGenerator.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="MasterRenderer.cpp" />
     <ClCompile Include="noiseutils.cpp" />
     <ClCompile Include="pch.cpp">
@@ -189,7 +191,9 @@
     <ClCompile Include="Vertex.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="World.cpp" />
-    <ClCompile Include="WorldGenerator.cpp" />
+    <ClCompile Include="WorldGenerator.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -204,7 +208,9 @@
     <ClInclude Include="GBuffer.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightingShader.h" />
-    <ClInclude Include="MapGenerator.h" />
+    <ClInclude Include="MapGenerator.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="MasterRenderer.h" />
     <ClInclude Include="noiseutils.h" />
     <ClInclude Include="OreData.h" />
@@ -217,7 +223,9 @@
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Window.h" />
     <ClInclude Include="World.h" />
-    <ClInclude Include="WorldGenerator.h" />
+    <ClInclude Include="WorldGenerator.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
