@@ -79,6 +79,15 @@
     <ClCompile Include="OreData.cpp">
       <Filter>Source\World</Filter>
     </ClCompile>
+    <ClCompile Include="Font.cpp">
+      <Filter>Source\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIShader.cpp">
+      <Filter>Source\Rendering\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="GUIRenderer.cpp">
+      <Filter>Source\GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h">
@@ -162,6 +171,18 @@
     <ClInclude Include="BiomeInfo.h">
       <Filter>Headers\World</Filter>
     </ClInclude>
+    <ClInclude Include="Font.h">
+      <Filter>Headers\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIRenderer.h">
+      <Filter>Headers\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="GUIShader.h">
+      <Filter>Headers\Rendering\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.h">
+      <Filter>Headers\GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Textures\debug.png">
@@ -235,6 +256,12 @@
     <None Include="Resources\Misc\BiomeInfo.json">
       <Filter>Resources\Misc</Filter>
     </None>
+    <None Include="Resources\Shaders\guiShader.vert">
+      <Filter>Resources\Shaders</Filter>
+    </None>
+    <None Include="Resources\Shaders\guiShader.frag">
+      <Filter>Resources\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">
@@ -279,5 +306,31 @@
     <Filter Include="Resources\Shaders">
       <UniqueIdentifier>{4dac08f8-00f3-416c-9206-95c5ef165162}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Headers\GUI">
+      <UniqueIdentifier>{f0b6a4e9-0b02-4ba9-b767-c1fc55192bc1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\GUI">
+      <UniqueIdentifier>{698d085b-1af7-4073-b3c8-dbde8bcdd2bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources\Fonts">
+      <UniqueIdentifier>{f0ab74d6-20fb-4477-8f4d-46c5876c081b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\Fonts\arial.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="Resources\Fonts\arialbd.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="Resources\Fonts\arialbi.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="Resources\Fonts\ariali.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
+    <Font Include="Resources\Fonts\ariblk.ttf">
+      <Filter>Resources\Fonts</Filter>
+    </Font>
   </ItemGroup>
 </Project>

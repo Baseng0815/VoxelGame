@@ -168,7 +168,10 @@
     <ClCompile Include="Colors.cpp" />
     <ClCompile Include="Definitions.cpp" />
     <ClCompile Include="EventHandler.cpp" />
+    <ClCompile Include="Font.cpp" />
     <ClCompile Include="GBuffer.cpp" />
+    <ClCompile Include="GUIRenderer.cpp" />
+    <ClCompile Include="GUIShader.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="LightingShader.cpp" />
     <ClCompile Include="MapGenerator.cpp">
@@ -207,7 +210,10 @@
     <ClInclude Include="Colors.h" />
     <ClInclude Include="Definitions.h" />
     <ClInclude Include="EventHandler.h" />
+    <ClInclude Include="Font.h" />
     <ClInclude Include="GBuffer.h" />
+    <ClInclude Include="GUIRenderer.h" />
+    <ClInclude Include="GUIShader.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="LightingShader.h" />
     <ClInclude Include="MapGenerator.h">
@@ -221,6 +227,7 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="SkyboxShader.h" />
+    <ClInclude Include="Text.h" />
     <ClInclude Include="TextureAtlas.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Window.h" />
@@ -235,6 +242,8 @@
     <None Include="Resources\Misc\BlockData.json" />
     <None Include="Resources\Shaders\chunkShader.frag" />
     <None Include="Resources\Shaders\chunkShader.vert" />
+    <None Include="Resources\Shaders\guiShader.frag" />
+    <None Include="Resources\Shaders\guiShader.vert" />
     <None Include="Resources\Shaders\lightingShader.frag" />
     <None Include="Resources\Shaders\lightingShader.vert" />
     <None Include="Resources\Shaders\skyboxShader.frag" />
@@ -257,6 +266,13 @@
     <Image Include="Resources\Textures\textureAtlas1.png" />
     <Image Include="Resources\Textures\textureAtlasPrev.bmp" />
     <Image Include="Resources\Textures\textureAtlasPrev.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\Fonts\arial.ttf" />
+    <Font Include="Resources\Fonts\arialbd.ttf" />
+    <Font Include="Resources\Fonts\arialbi.ttf" />
+    <Font Include="Resources\Fonts\ariali.ttf" />
+    <Font Include="Resources\Fonts\ariblk.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

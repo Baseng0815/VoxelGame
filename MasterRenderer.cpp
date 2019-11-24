@@ -14,6 +14,18 @@ void MasterRenderer::init() {
 
 	m_textureAtlas.init("Resources/Textures/textureAtlas0.png");
 	Chunk::setBlockUVsArray(m_textureAtlas.getBlockTextureCoordinates());
+
+	m_guiRenderer.init();
+}
+
+void MasterRenderer::addText(Text* t) {
+	m_texts.push_back(t);
+}
+
+void MasterRenderer::removeText(Text* t) {
+	auto it = std::find(m_texts.begin(), m_texts.end(), t);
+	if (it != m_texts.end())
+		m_texts.erase(it);
 }
 
 void MasterRenderer::resize(int width, int height) {
@@ -25,6 +37,7 @@ void MasterRenderer::render(const World& world, const Camera& camera) {
 	// clear screen framebuffer
 	glClearColor(0, 0, 0, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	// use gBuffer and clean it
 	m_gBuffer.bindFramebuffer();
@@ -35,7 +48,7 @@ void MasterRenderer::render(const World& world, const Camera& camera) {
 	m_textureAtlas.bind();
 
 	m_blockShader.uploadViewMatrix(camera.getViewMatrix());
-	m_blockShader.uploadProjectionMatrix(camera.getProjectionMatrix());
+	m_blockShader.uploadProjectionMatrix(camera.getProjectionMatrix(PROJECTION_PERSPECTIVE));
 
 	for (auto it = world.m_chunks.begin(); it != world.m_chunks.end(); it++)
 		it->second.render(m_blockShader, it->first);
@@ -55,8 +68,12 @@ void MasterRenderer::render(const World& world, const Camera& camera) {
 		GL_DEPTH_BUFFER_BIT, GL_NEAREST);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
+	// skybox
 	m_skyboxShader.bind();
 	m_skyboxShader.uploadViewMatrix(camera.getViewMatrix());
-	m_skyboxShader.uploadProjectionMatrix(camera.getProjectionMatrix());
+	m_skyboxShader.uploadProjectionMatrix(camera.getProjectionMatrix(PROJECTION_PERSPECTIVE));
 	m_skybox.render();
+
+	// GUI elements
+	m_guiRenderer.render(m_texts);
 }

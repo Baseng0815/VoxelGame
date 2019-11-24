@@ -5,6 +5,10 @@
 #include "Window.h"
 #include "Definitions.h"
 
+enum ProjectionType {
+	PROJECTION_PERSPECTIVE, PROJECTION_ORTHO
+};
+
 class Camera {
 private:
 	float m_yaw, m_pitch, m_fov;
@@ -15,7 +19,7 @@ private:
 	const float MOVE_SPEED = 0.01f;
 
 	glm::vec3 m_position, m_front, m_up, m_right;
-	glm::mat4 m_projectionMatrix, m_viewMatrix;
+	glm::mat4 m_projectionPerspective, m_projectionOrtho, m_viewMatrix;
 
 	// recalculate view matrix, front, up and right vectors
 	// based on yaw and pitch
@@ -26,7 +30,7 @@ public:
 
 	glm::vec3 getPosition() const;
 	glm::vec3 getFront() const;
-	glm::mat4 getProjectionMatrix() const;
+	glm::mat4 getProjectionMatrix(ProjectionType type) const;
 	glm::mat4 getViewMatrix() const;
 
 	void resize(int width, int height);

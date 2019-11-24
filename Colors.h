@@ -5,5 +5,5 @@
 typedef glm::vec3 Color;
 
 struct Colors {
-	static const Color Red, Green, Blue, Orange, White, Black, Yellow;
+	static const Color Red, Green, Blue, Orange, White, Black, Grey, Yellow;
 };

@@ -41,3 +41,7 @@ int World::getTerrainHeight(int x, int y) {
 	while (getBlock(x, height, y).type != BlockType::BLOCK_AIR) height++;
 	return height;
 }
+
+int World::chunkCount() const {
+	return m_chunks.size();
+}

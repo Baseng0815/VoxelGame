@@ -7,6 +7,7 @@ class Application;
 class Window {
 private:
 	GLFWwindow* m_window = nullptr;
+	GLFWmonitor* m_primaryMonitor = nullptr;
 
 	// fullscreen toggle
 	int m_prevWidth, m_prevHeight;

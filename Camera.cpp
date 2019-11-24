@@ -29,8 +29,11 @@ glm::vec3 Camera::getFront() const {
 	return m_front;
 }
 
-glm::mat4 Camera::getProjectionMatrix() const {
-	return m_projectionMatrix;
+glm::mat4 Camera::getProjectionMatrix(ProjectionType type) const {
+	if (type == PROJECTION_PERSPECTIVE)
+		return m_projectionPerspective;
+	else if (type == PROJECTION_ORTHO)
+		return m_projectionOrtho;
 }
 
 glm::mat4 Camera::getViewMatrix() const {
@@ -41,7 +44,9 @@ void Camera::resize(int width, int height) {
 	m_width = width;
 	m_height = height;
 
-	m_projectionMatrix = glm::perspective(glm::radians(m_fov), width / (float)height, 0.1f, 10000.f);
+	m_projectionPerspective = glm::perspective(glm::radians(m_fov), width / (float)height, 0.1f, 100000.f);
+	m_projectionOrtho = glm::ortho(0.0f, static_cast<GLfloat>(width),
+		0.0f, static_cast<GLfloat>(height));
 }
 
 void Camera::handleKeys(const Window& window, int dt) {

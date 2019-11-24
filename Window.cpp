@@ -11,6 +11,8 @@ void Window::init(Application* app) {
 	if (!m_window)
 		throw std::runtime_error("Failed to create GLFW window.");
 
+	m_primaryMonitor = glfwGetPrimaryMonitor();
+
 	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetWindowUserPointer(m_window, app);
 
@@ -20,6 +22,7 @@ void Window::init(Application* app) {
 	glfwSetFramebufferSizeCallback(m_window, EventHandler::framebufferSizeCallback);
 
 	glfwMakeContextCurrent(m_window);
+	glfwSwapInterval(1);
 }
 
 void Window::clear(Color clearColor) {
@@ -33,8 +36,7 @@ void Window::display() {
 
 void Window::toggleFullscreen() {
 	if (m_isFullscreen) {
-		glfwSetWindowSize(m_window, m_prevWidth, m_prevHeight);
-		glfwSetWindowPos(m_window, m_prevX, m_prevY);
+		glfwSetWindowMonitor(m_window, nullptr, m_prevX, m_prevY, m_prevWidth, m_prevHeight, 0);
 
 		glViewport(0, 0, m_prevWidth, m_prevHeight);
 
@@ -44,9 +46,9 @@ void Window::toggleFullscreen() {
 		glfwGetWindowSize(m_window, &m_prevWidth, &m_prevHeight);
 		glfwGetWindowPos(m_window, &m_prevX, &m_prevY);
 
-		const GLFWvidmode* vidMode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-		glfwSetWindowSize(m_window, vidMode->width, vidMode->height);
-		glfwSetWindowPos(m_window, 0, 0);
+		const GLFWvidmode* vidMode = glfwGetVideoMode(m_primaryMonitor);
+		glfwSetWindowMonitor(m_window,  m_primaryMonitor, 0, 0,
+			vidMode->width, vidMode->height, 0);
 
 		glViewport(0, 0, vidMode->width, vidMode->height);
 
