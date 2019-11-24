@@ -3,6 +3,8 @@
 #include "Definitions.h"
 
 typedef std::array<glm::vec2, 4> FaceUVs;
+typedef std::array<FaceUVs, 6> BlockUVs;
+typedef std::array<BlockUVs, (int)BlockType::NUM_BLOCKS> BlockUVsArray;
 
 // texture atlas used for block rendering
 class TextureAtlas {
@@ -14,16 +16,16 @@ private:
 	// uv per tile
 	float m_uvXpT, m_uvYpT;
 
+	// do all precalculations to save performance
+	std::vector<FaceUVs> m_faceUVs;
+	BlockUVsArray m_blockUVsArray;
+
 public:
 	void init(const char* fileName, int tileSize = 16);
 	~TextureAtlas();
 
-	// top-left, bottom-right, top-right, bottom-left
-	// texture coords for a single tile
-	FaceUVs getTextureCoordinates(int index) const;
-
 	// list of texture coordinates for a block type
-	std::array<FaceUVs, 6> getBlockTextureCoordinates(BlockType blockType);
+	const BlockUVsArray* getBlockTextureCoordinates();
 
 	void bind();
 };
