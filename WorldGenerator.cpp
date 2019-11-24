@@ -40,20 +40,20 @@ void WorldGenerator::init(WorldType worldType) {
 	}
 }
 
-void WorldGenerator::generateTerrain(glm::vec2 position, Chunk* chunk) const {
+void WorldGenerator::generateTerrain(glm::vec2 position, Block*** blocks) const {
 	if (m_type == WorldType::WORLD_NORMAL) {
 		utils::NoiseMap heightMap;
 		utils::NoiseMapBuilderPlane planeBuilder = NoiseMapBuilderPlane();
 
 		planeBuilder.SetSourceModule(terrainSelector);
 		planeBuilder.SetDestNoiseMap(heightMap);
-		planeBuilder.SetDestSize(Chunk::CHUNK_SIZE, Chunk::CHUNK_SIZE);
+		planeBuilder.SetDestSize(Definitions::CHUNK_SIZE, Definitions::CHUNK_SIZE);
 		planeBuilder.SetBounds(position.x, position.x + 1, position.y, position.y + 1);
 
 		planeBuilder.Build();
 
-		for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++)
-			for (int cz = 0; cz < Chunk::CHUNK_SIZE; cz++) {
+		for (int cx = 0; cx < Definitions::CHUNK_SIZE; cx++)
+			for (int cz = 0; cz < Definitions::CHUNK_SIZE; cz++) {
 				int height = heightMap.GetValue(cx, cz) * (float)6 + 40;
 				for (int cy = 0; cy < height; cy++) {
 					Block block;
@@ -64,15 +64,13 @@ void WorldGenerator::generateTerrain(glm::vec2 position, Chunk* chunk) const {
 					else
 						block = Block(BlockType::BLOCK_GRASS);
 
-					chunk->setBlock(cx, cy, cz, block);
+					blocks[cx][cy][cz] = block;
 				}
 			}
 	}
-
-	chunk->updateVertices();
 }
 
-void WorldGenerator::generateUnderground(glm::vec2 position, Chunk* chunk) const {
+void WorldGenerator::generateUnderground(glm::vec2 position, Block*** blocks) const {
 	if (m_type == WorldType::WORLD_FLAT)
 		return;
 
@@ -85,15 +83,12 @@ void WorldGenerator::generateUnderground(glm::vec2 position, Chunk* chunk) const
 			int z = rand() % 16;
 
 			int size = blockData.oreData.size;
-			generateOre(x, y, z, size, (BlockType)b, chunk);
+			generateOre(x, y, z, size, (BlockType)b, blocks);
 		}
 	}
-
-	chunk->updateVertices();
-	chunk->updateBuffers();
 }
 
-void WorldGenerator::generateOre(int x, int y, int z, int size, BlockType block, Chunk* chunk) const {
+void WorldGenerator::generateOre(int x, int y, int z, int size, BlockType block, Block*** blocks) const {
 	for (int i = 0; i < size; i += 4) {
 		float x1 = x + i;
 		float z1 = z + i;
@@ -106,14 +101,14 @@ void WorldGenerator::generateOre(int x, int y, int z, int size, BlockType block,
 					int z2 = z1;
 
 					if (x2 >= 0 && x2 < 16 && y2 >= 0 && y2 < 256 && z2 >= 0 && z2 < 16) {
-						if (chunk->getBlock(x2, y2, z2).type == BlockType::BLOCK_STONE)
-							chunk->setBlock(x2, y2, z2, Block(block));
+						if (blocks[x2][y2][z2].type == BlockType::BLOCK_STONE)
+							blocks[x2][y2][z2] = Block(block);
 					}
 				}
 	}
 }
 
-void WorldGenerator::generateChunk(glm::vec2 position, Chunk* chunk) const {
-	generateTerrain(position, chunk);
-	generateUnderground(position, chunk);
+void WorldGenerator::generateBlocks(glm::vec2 position, Block*** blocks) const {
+generateTerrain(position, blocks);
+	generateUnderground(position, blocks);
 }

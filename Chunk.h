@@ -5,6 +5,8 @@
 #include "BlockShader.h"
 #include "TextureAtlas.h"
 
+class WorldGenerator;
+
 class Chunk {
 private:
 	// 16*16*256 array of blocks
@@ -38,15 +40,18 @@ private:
 	void updateBuffers();
 
 	static const BlockUVsArray* m_blockUVArray;
+	static const WorldGenerator* m_worldGenerator;
 
 	// keep a hold on futures because they will join on destruction
 	// -> loss of benefits
 	std::vector<std::future<void>> m_futures;
+	glm::vec2 m_position;
 
 public:
 	static void setBlockUVsArray(const BlockUVsArray* array);
+	static void setWorldGenerator(const WorldGenerator* generator);
 
-	Chunk();
+	Chunk(glm::vec2 position = glm::vec2(0, 0));
 	Chunk(const Chunk& other);
 
 	// creates blocks, handles vertex and buffer updates as needed

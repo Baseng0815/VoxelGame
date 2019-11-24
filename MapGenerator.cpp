@@ -44,10 +44,10 @@ void MapGenerator::generateSeed() {
 ChunkMapArray&& MapGenerator::generateChunkMap(int x, int y) {
 	ChunkMapArray map;
 
-	for (int cx = 0; cx < Chunk::CHUNK_SIZE; cx++) {
-		for (int cz = 0; cz < Chunk::CHUNK_SIZE; cz++) {
+	for (int cx = 0; cx < Definitions::CHUNK_SIZE; cx++) {
+		for (int cz = 0; cz < Definitions::CHUNK_SIZE; cz++) {
 
-			float noise = this->noise(x * Chunk::CHUNK_SIZE + cx, y * Chunk::CHUNK_SIZE + cz);
+			float noise = this->noise(x * Definitions::CHUNK_SIZE + cx, y * Definitions::CHUNK_SIZE + cz);
 			map[cx][cz] = noise * (maxTerrainHeight - minTerrainHeight) + minTerrainHeight;
 		}
 	}

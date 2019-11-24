@@ -32,13 +32,13 @@ private:
 	Billow baseFlatTerrain;
 	ScaleBias flatTerrain;
 
-	void generateTerrain(glm::vec2 position, Chunk* chunk) const;
-	void generateUnderground(glm::vec2 position, Chunk* chunk) const;
-	void generateOre(int x, int y, int z, int size, BlockType block, Chunk* chunk) const;
+	void generateTerrain(glm::vec2 position, Block*** blocks) const;
+	void generateUnderground(glm::vec2 position, Block*** blocks) const;
+	void generateOre(int x, int y, int z, int size, BlockType block, Block*** blocks) const;
 
 public:
 	void init(WorldType worldType);
 
-	void generateChunk(glm::vec2 position, Chunk* chunk) const;
+	void generateBlocks(glm::vec2 position, Block*** blocks) const;
 };
 

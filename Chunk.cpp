@@ -2,8 +2,10 @@
 
 #include "Chunk.h"
 #include "Vertex.h"
+#include "WorldGenerator.h"
 
 const BlockUVsArray* Chunk::m_blockUVArray;
+const WorldGenerator* Chunk::m_worldGenerator;
 
 void Chunk::createBlocks() {
 	std::lock_guard<std::mutex> blockLock(m_blockMutex);
@@ -14,11 +16,12 @@ void Chunk::createBlocks() {
 		for (int y = 0; y < Definitions::CHUNK_HEIGHT; y++) {
 			m_blocks[x][y] = new Block[Definitions::CHUNK_SIZE];
 			for (int z = 0; z < Definitions::CHUNK_SIZE; z++)
-				m_blocks[x][y][z] = Block(BlockType::BLOCK_STONE);
+				m_blocks[x][y][z] = Block(BlockType::BLOCK_AIR);
 		}
 	}
 
 	// get blocks from terrain generation
+	m_worldGenerator->generateBlocks(m_position, m_blocks);
 }
 
 void Chunk::updateVertices() {
@@ -179,7 +182,12 @@ void Chunk::setBlockUVsArray(const BlockUVsArray* array) {
 	m_blockUVArray = array;
 }
 
-Chunk::Chunk() {}
+void Chunk::setWorldGenerator(const WorldGenerator* worldGenerator) {
+	m_worldGenerator = worldGenerator;
+}
+
+Chunk::Chunk(glm::vec2 position)
+	: m_position(position) {}
 
 Chunk::Chunk(const Chunk& other) {
 	m_blocks = other.m_blocks;

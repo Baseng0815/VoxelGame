@@ -3,7 +3,7 @@
 #include "Chunk.h"
 #include "Definitions.h"
 
-typedef std::array<std::array<int, Chunk::CHUNK_SIZE>, Chunk::CHUNK_SIZE> ChunkMapArray;
+typedef std::array<std::array<int, Definitions::CHUNK_SIZE>, Definitions::CHUNK_SIZE> ChunkMapArray;
 
 class MapGenerator {
 private:
