@@ -18,5 +18,5 @@ struct BlockData {
 	int tid_up = 0, tid_px = 0, tid_nx = 0, tid_pz = 0, tid_nz = 0, tid_bot = 0;
 	
 	BlockType type;
-	OreData oreData;
+	OreData oreData = OreData(0, 0, 0, 0);
 };

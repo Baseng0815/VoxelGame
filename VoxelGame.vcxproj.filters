@@ -76,6 +76,9 @@
     <ClCompile Include="noiseutils.cpp">
       <Filter>Source\World</Filter>
     </ClCompile>
+    <ClCompile Include="OreData.cpp">
+      <Filter>Source\World</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h">

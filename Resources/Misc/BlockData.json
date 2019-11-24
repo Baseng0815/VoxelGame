@@ -133,13 +133,7 @@
     "tid_nx": 32,
     "tid_pz": 32,
     "tid_nz": 32,
-    "tid_bt": 32,
-    "oreData": {
-      "generationCounts": 2,
-      "minHeight": 5,
-      "maxHeight": 15,
-      "size": 4
-    }
+    "tid_bt": 32    
   },
   "17": {
     "tid_up": 33,
@@ -147,13 +141,7 @@
     "tid_nx": 33,
     "tid_pz": 33,
     "tid_nz": 33,
-    "tid_bt": 33,
-    "oreData": {
-      "generationCounts": 10,
-      "minHeight": 5,
-      "maxHeight": 50,
-      "size": 4
-    }
+    "tid_bt": 33
   },
   "18": {
     "tid_up": 34,
@@ -161,13 +149,7 @@
     "tid_nx": 34,
     "tid_pz": 34,
     "tid_nz": 34,
-    "tid_bt": 34,
-    "oreData": {
-      "generationCounts": 15,
-      "minHeight": 5,
-      "maxHeight": 100,
-      "size": 16
-    }
+    "tid_bt": 34
   },
   "19": {
     "tid_up": 35,

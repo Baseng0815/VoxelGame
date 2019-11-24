@@ -77,20 +77,40 @@ void WorldGenerator::generateUnderground(glm::vec2 position, Chunk* chunk) const
 		return;
 
 	// generate ores
-	for (auto blockInfo = Definitions::BLOCK_DATA.begin(); blockInfo != Definitions::BLOCK_DATA.end(); blockInfo++) {
-		for (int i = 0; i < (*blockInfo).oreData.generationCounts; i++) {
+	for (int b = 0; b < (int)BlockType::NUM_BLOCKS; b++) {
+		BlockData blockData = Definitions::BLOCK_DATA[b];
+		for (int i = 0; i < blockData.oreData.generationCounts; i++) {
 			int x = rand() % 16;
-			int y = rand() % ((*blockInfo).oreData.maxHeight - (*blockInfo).oreData.minHeight) + (*blockInfo).oreData.minHeight;
+			int y = rand() % (blockData.oreData.maxHeight - blockData.oreData.minHeight) + blockData.oreData.minHeight;
 			int z = rand() % 16;
 
-			int size = (*blockInfo).oreData.size;
-			generateOre(x, y, z, size, (*blockInfo).type, chunk);
+			int size = blockData.oreData.size;
+			generateOre(x, y, z, size, (BlockType)b, chunk);
 		}
 	}
+
+	chunk->updateVertices();
+	chunk->updateBuffers();
 }
 
 void WorldGenerator::generateOre(int x, int y, int z, int size, BlockType block, Chunk* chunk) const {
+	for (int i = 0; i < size; i += 4) {
+		float x1 = x + i;
+		float z1 = z + i;
 
+		for (int k = 0; k < 2; k++)
+			for (int j = 0; j < 2; j++)
+				if (i + k + j < size) {
+					int x2 = x1 + k;
+					int y2 = y + j;
+					int z2 = z1;
+
+					if (x2 >= 0 && x2 < 16 && y2 >= 0 && y2 < 256 && z2 >= 0 && z2 < 16) {
+						if (chunk->getBlock(x2, y2, z2).type == BlockType::BLOCK_STONE)
+							chunk->setBlock(x2, y2, z2, Block(block));
+					}
+				}
+	}
 }
 
 void WorldGenerator::generateChunk(glm::vec2 position, Chunk* chunk) const {
