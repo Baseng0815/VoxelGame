@@ -109,6 +109,6 @@ void WorldGenerator::generateOre(int x, int y, int z, int size, BlockType block,
 }
 
 void WorldGenerator::generateBlocks(glm::vec2 position, Block*** blocks) const {
-generateTerrain(position, blocks);
+	generateTerrain(position, blocks);
 	generateUnderground(position, blocks);
 }

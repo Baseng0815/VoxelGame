@@ -200,6 +200,7 @@ Chunk::Chunk(const Chunk& other) {
 	m_buffersOutdated = other.m_buffersOutdated;
 	m_vertices = other.m_vertices;
 	m_indices = other.m_indices;
+	m_position = other.m_position;
 }
 
 void Chunk::update() {
