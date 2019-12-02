@@ -16,11 +16,6 @@ void Window::init(Application* app) {
 	glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetWindowUserPointer(m_window, app);
 
-	glfwSetKeyCallback(m_window, EventHandler::keyCallback);
-	glfwSetCursorPosCallback(m_window, EventHandler::cursorPosCallback);
-	glfwSetScrollCallback(m_window, EventHandler::scrollCallback);
-	glfwSetFramebufferSizeCallback(m_window, EventHandler::framebufferSizeCallback);
-
 	glfwMakeContextCurrent(m_window);
 	glfwSwapInterval(1);
 }
@@ -58,6 +53,10 @@ void Window::toggleFullscreen() {
 
 bool Window::getKey(int key) const {
 	return glfwGetKey(m_window, key);
+}
+
+GLFWwindow* Window::getHandle() const {
+	return m_window;
 }
 
 void Window::close() {

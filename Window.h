@@ -25,6 +25,7 @@ public:
 
 	// return true if the key is pressed
 	bool getKey(int key) const;
+	GLFWwindow* getHandle() const;
 
 	void close();
 };

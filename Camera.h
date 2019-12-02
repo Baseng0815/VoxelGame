@@ -18,31 +18,24 @@ private:
 	const float MOUSE_SCROLL = 2.0f;
 	const float MOVE_SPEED = 0.01f;
 
-	glm::vec3 m_position, m_front, m_up, m_right;
+	glm::vec3 m_up, m_right;
 	glm::mat4 m_projectionPerspective, m_projectionOrtho, m_viewMatrix;
 
 	// recalculate view matrix, front, up and right vectors
-	// based on yaw and pitch
-	void recalculateVectors();
+	// return new front vector
+	glm::vec3 update(glm::vec3 position);
 
-public:
 	void init(float fov);
 
-	glm::vec3 getPosition() const;
-	glm::vec3 getFront() const;
+	void resize();
+
+	void handleCursorPos(Application*, double, double, double, double);
+	void handleScroll(Application*, double, double dy);
+	void handleFramebufferSize(Application*, int width, int height);
+
+	friend class Player;
+
+public:
 	glm::mat4 getProjectionMatrix(ProjectionType type) const;
 	glm::mat4 getViewMatrix() const;
-
-	void resize(int width, int height);
-
-	// key handler (not event based)
-	// window as argument to retrieve current key states
-	// dt always in milliseconds
-	void handleKeys(const Window& window, int dt);
-
-	void handleMouseMotion(double dx, double dy);
-
-	void handleMouseScroll(int dy);
-
-	void _debugPrint();
 };

@@ -10,12 +10,6 @@
     <ClCompile Include="World.cpp">
       <Filter>Source\World</Filter>
     </ClCompile>
-    <ClCompile Include="WorldGenerator.cpp">
-      <Filter>Source\World</Filter>
-    </ClCompile>
-    <ClCompile Include="MapGenerator.cpp">
-      <Filter>Source\World</Filter>
-    </ClCompile>
     <ClCompile Include="LightingShader.cpp">
       <Filter>Source\Rendering\Shaders</Filter>
     </ClCompile>
@@ -73,12 +67,6 @@
     <ClCompile Include="Skybox.cpp">
       <Filter>Source\Rendering</Filter>
     </ClCompile>
-    <ClCompile Include="noiseutils.cpp">
-      <Filter>Source\World</Filter>
-    </ClCompile>
-    <ClCompile Include="OreData.cpp">
-      <Filter>Source\World</Filter>
-    </ClCompile>
     <ClCompile Include="Font.cpp">
       <Filter>Source\GUI</Filter>
     </ClCompile>
@@ -88,6 +76,21 @@
     <ClCompile Include="GUIRenderer.cpp">
       <Filter>Source\GUI</Filter>
     </ClCompile>
+    <ClCompile Include="MapGenerator.cpp">
+      <Filter>Source\World\Generation</Filter>
+    </ClCompile>
+    <ClCompile Include="noiseutils.cpp">
+      <Filter>Source\World\Generation</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldGenerator.cpp">
+      <Filter>Source\World\Generation</Filter>
+    </ClCompile>
+    <ClCompile Include="OreData.cpp">
+      <Filter>Source\World\Generation</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Block.h">
@@ -96,13 +99,7 @@
     <ClInclude Include="BlockData.h">
       <Filter>Headers\World</Filter>
     </ClInclude>
-    <ClInclude Include="MapGenerator.h">
-      <Filter>Headers\World</Filter>
-    </ClInclude>
     <ClInclude Include="World.h">
-      <Filter>Headers\World</Filter>
-    </ClInclude>
-    <ClInclude Include="WorldGenerator.h">
       <Filter>Headers\World</Filter>
     </ClInclude>
     <ClInclude Include="RenderQuad.h">
@@ -162,15 +159,6 @@
     <ClInclude Include="Skybox.h">
       <Filter>Headers\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="OreData.h">
-      <Filter>Headers\World</Filter>
-    </ClInclude>
-    <ClInclude Include="noiseutils.h">
-      <Filter>Headers\World</Filter>
-    </ClInclude>
-    <ClInclude Include="BiomeInfo.h">
-      <Filter>Headers\World</Filter>
-    </ClInclude>
     <ClInclude Include="Font.h">
       <Filter>Headers\GUI</Filter>
     </ClInclude>
@@ -182,6 +170,27 @@
     </ClInclude>
     <ClInclude Include="Text.h">
       <Filter>Headers\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MapGenerator.h">
+      <Filter>Headers\World\Generation</Filter>
+    </ClInclude>
+    <ClInclude Include="OreData.h">
+      <Filter>Headers\World\Generation</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldGenerator.h">
+      <Filter>Headers\World\Generation</Filter>
+    </ClInclude>
+    <ClInclude Include="noiseutils.h">
+      <Filter>Headers\World\Generation</Filter>
+    </ClInclude>
+    <ClInclude Include="BiomeInfo.h">
+      <Filter>Headers\World\Generation</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Headers\World</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -314,6 +323,12 @@
     </Filter>
     <Filter Include="Resources\Fonts">
       <UniqueIdentifier>{f0ab74d6-20fb-4477-8f4d-46c5876c081b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Headers\World\Generation">
+      <UniqueIdentifier>{9c6792d7-eba1-423c-ae9f-e5f8b47fbc5c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\World\Generation">
+      <UniqueIdentifier>{6b31a533-a073-402c-8d77-b2950ad80619}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

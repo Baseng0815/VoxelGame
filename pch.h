@@ -27,6 +27,7 @@
 #include <streambuf>
 #include <Windows.h>
 #include <stdexcept>
+#include <functional>
 #include <filesystem>
 #include <string_view>
 #include <unordered_map>

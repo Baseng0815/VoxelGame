@@ -4,6 +4,7 @@
 
 Application::Application() {
 	m_window.init(this);
+	EventHandler::attachToWindow(m_window);
 
 	// init glew and load function pointers
 	glewInit();
