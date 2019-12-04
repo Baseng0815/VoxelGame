@@ -167,7 +167,8 @@
     <ClCompile Include="Chunk.cpp" />
     <ClCompile Include="Colors.cpp" />
     <ClCompile Include="Definitions.cpp" />
-    <ClCompile Include="EventHandler.cpp" />
+    <ClCompile Include="Event.cpp" />
+    <ClCompile Include="EventDispatcher.cpp" />
     <ClCompile Include="Font.cpp" />
     <ClCompile Include="GBuffer.cpp" />
     <ClCompile Include="GUIRenderer.cpp" />
@@ -210,7 +211,8 @@
     <ClInclude Include="Chunk.h" />
     <ClInclude Include="Colors.h" />
     <ClInclude Include="Definitions.h" />
-    <ClInclude Include="EventHandler.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="EventDispatcher.h" />
     <ClInclude Include="Font.h" />
     <ClInclude Include="GBuffer.h" />
     <ClInclude Include="GUIRenderer.h" />

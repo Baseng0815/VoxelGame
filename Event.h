@@ -13,7 +13,7 @@ struct Event {
 	T* get();
 };
 
-typedef std::pair<CallbackId ,std::function<void(Event *e)>> Callback;
+typedef std::function<void(Event *e)> Callback;
 
 struct KeyEvent : public Event {
 	static constexpr EventType TYPE = 0;

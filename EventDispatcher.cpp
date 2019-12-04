@@ -77,5 +77,5 @@ void EventDispatcher::removeCallback(CallbackId callbackId) {
 	for (auto it = m_callbacks.begin(); it != m_callbacks.end(); it++)
 		for (auto jt = it->second.begin(); jt != it->second.end(); jt++)
 			if (jt->first == callbackId)
-				it->second.erase(it);
+				it->second.erase(jt);
 }

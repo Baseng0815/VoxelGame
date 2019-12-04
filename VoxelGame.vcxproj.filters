@@ -43,9 +43,6 @@
     <ClCompile Include="Definitions.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
-    <ClCompile Include="EventHandler.cpp">
-      <Filter>Source\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Source\Core</Filter>
     </ClCompile>
@@ -90,6 +87,12 @@
     </ClCompile>
     <ClCompile Include="Player.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Event.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="EventDispatcher.cpp">
+      <Filter>Source\Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -144,9 +147,6 @@
     <ClInclude Include="Camera.h">
       <Filter>Headers\Core</Filter>
     </ClInclude>
-    <ClInclude Include="EventHandler.h">
-      <Filter>Headers\Core</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Headers\Core</Filter>
     </ClInclude>
@@ -191,6 +191,12 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Event.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="EventDispatcher.h">
+      <Filter>Headers\Core</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
