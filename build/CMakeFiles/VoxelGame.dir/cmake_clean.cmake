@@ -14,6 +14,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/VoxelGame.dir/src/GUIShader.cpp.o"
   "CMakeFiles/VoxelGame.dir/src/Light.cpp.o"
   "CMakeFiles/VoxelGame.dir/src/LightingShader.cpp.o"
+  "CMakeFiles/VoxelGame.dir/src/Logger.cpp.o"
   "CMakeFiles/VoxelGame.dir/src/MapGenerator.cpp.o"
   "CMakeFiles/VoxelGame.dir/src/MasterRenderer.cpp.o"
   "CMakeFiles/VoxelGame.dir/src/OreData.cpp.o"
@@ -29,8 +30,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/VoxelGame.dir/src/WorldGenerator.cpp.o"
   "CMakeFiles/VoxelGame.dir/src/main.cpp.o"
   "CMakeFiles/VoxelGame.dir/src/noiseutils.cpp.o"
-  "bin/VoxelGame.pdb"
   "bin/VoxelGame"
+  "bin/VoxelGame.pdb"
 )
 
 # Per-language clean rules from dependency scanning.
