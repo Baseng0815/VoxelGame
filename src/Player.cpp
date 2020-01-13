@@ -67,7 +67,7 @@ void Player::handleKeys(Event* event) {
 Player::Player()
     : m_velocity(0), m_position(0), m_camera(120) {
 
-    EventDispatcher::addCallback(std::bind(&Player::handleKeys, this, _1), EventType::KEY_EVENT);
+    ADD_EVENT(Player::handleKeys, KEY_EVENT);
 }
 
 void Player::update(int dt) {

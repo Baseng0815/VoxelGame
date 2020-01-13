@@ -6,6 +6,8 @@
 #include <map>
 #include <vector>
 
+#define ADD_EVENT(func, type) EventDispatcher::addCallback(std::bind(&func, this, _1), EventType::type);
+
 class EventDispatcher {
 private:
     static bool m_firstMouse;

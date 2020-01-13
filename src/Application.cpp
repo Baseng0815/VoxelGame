@@ -1,4 +1,5 @@
 #include "../include/Application.h"
+#include "../include/EventDispatcher.h"
 
 void Application::handleKeys(Event* event) {
     KeyEvent* kE = event->get<KeyEvent>();

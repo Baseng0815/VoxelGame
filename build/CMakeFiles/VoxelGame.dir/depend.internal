@@ -287,8 +287,6 @@ CMakeFiles/VoxelGame.dir/src/main.cpp.o
  /home/bastian/dev/projects/VoxelGame/include/Chunk.h
  /home/bastian/dev/projects/VoxelGame/include/Colors.h
  /home/bastian/dev/projects/VoxelGame/include/Definitions.h
- /home/bastian/dev/projects/VoxelGame/include/Event.h
- /home/bastian/dev/projects/VoxelGame/include/EventDispatcher.h
  /home/bastian/dev/projects/VoxelGame/include/Font.h
  /home/bastian/dev/projects/VoxelGame/include/GBuffer.h
  /home/bastian/dev/projects/VoxelGame/include/GUIRenderer.h

@@ -21,7 +21,7 @@ void MasterRenderer::init() {
     m_textureAtlas.init("Resources/Textures/textureAtlas0.png");
     Chunk::setBlockUVsArray(m_textureAtlas.getBlockTextureCoordinates());
 
-    EventDispatcher::addCallback(std::bind(&MasterRenderer::handleFramebufferSize, this, _1), FRAMEBUFFER_SIZE_EVENT);
+    ADD_EVENT(MasterRenderer::handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT);
 
     m_guiRenderer.init();
 }

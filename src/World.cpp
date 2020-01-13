@@ -31,7 +31,7 @@ void World::init(WorldType worldType) {
     m_generator.init(worldType);
     Chunk::setWorldGenerator(&m_generator);
 
-    EventDispatcher::addCallback(std::bind(&World::handleEnterChunk, this, _1), ENTER_CHUNK_EVENT);
+    ADD_EVENT(World::handleEnterChunk, ENTER_CHUNK_EVENT);
 }
 
 World::~World() {

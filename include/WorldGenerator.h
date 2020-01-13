@@ -5,7 +5,7 @@
 
 #include <glm/glm.hpp>
 #include <unordered_map>
-#include <libnoise/noise.h>
+#include <noise/noise.h>
 
 using namespace noise;
 using namespace noise::module;

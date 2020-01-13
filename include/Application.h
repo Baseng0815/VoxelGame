@@ -1,9 +1,8 @@
 #pragma once
 
 #include "World.h"
-#include "EventDispatcher.h"
-#include "MasterRenderer.h"
 #include "Scene.h"
+#include "MasterRenderer.h"
 
 class Application {
 private:

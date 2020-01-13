@@ -65,9 +65,9 @@ void Camera::handleFramebufferSize(Event* e) {
 Camera::Camera(float fov) {
     m_fov = fov;
 
-    EventDispatcher::addCallback(std::bind(&Camera::handleCursorPos, this, _1), EventType::CURSOR_EVENT);
-    EventDispatcher::addCallback(std::bind(&Camera::handleScroll, this, _1), EventType::SCROLL_EVENT);
-    EventDispatcher::addCallback(std::bind(&Camera::handleFramebufferSize, this, _1), EventType::FRAMEBUFFER_SIZE_EVENT);
+    ADD_EVENT(Camera::handleCursorPos, CURSOR_EVENT)
+    ADD_EVENT(Camera::handleScroll, SCROLL_EVENT)
+    ADD_EVENT(Camera::handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT)
 
     resize();
     update(glm::vec3(0, 0, 0));

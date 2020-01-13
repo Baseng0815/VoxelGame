@@ -286,8 +286,6 @@ CMakeFiles/VoxelGame.dir/src/main.cpp.o: ../include/Camera.h
 CMakeFiles/VoxelGame.dir/src/main.cpp.o: ../include/Chunk.h
 CMakeFiles/VoxelGame.dir/src/main.cpp.o: ../include/Colors.h
 CMakeFiles/VoxelGame.dir/src/main.cpp.o: ../include/Definitions.h
-CMakeFiles/VoxelGame.dir/src/main.cpp.o: ../include/Event.h
-CMakeFiles/VoxelGame.dir/src/main.cpp.o: ../include/EventDispatcher.h
 CMakeFiles/VoxelGame.dir/src/main.cpp.o: ../include/Font.h
 CMakeFiles/VoxelGame.dir/src/main.cpp.o: ../include/GBuffer.h
 CMakeFiles/VoxelGame.dir/src/main.cpp.o: ../include/GUIRenderer.h
