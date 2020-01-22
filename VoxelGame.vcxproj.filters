@@ -354,4 +354,7 @@
       <Filter>Resources\Fonts</Filter>
     </Font>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="CMakeLists.txt" />
+  </ItemGroup>
 </Project>
