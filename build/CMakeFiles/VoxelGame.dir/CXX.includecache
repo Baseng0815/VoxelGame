@@ -6,6 +6,14 @@
 
 #IncludeRegexTransform: 
 
+/home/bastian/dev/projects/VoxelGame/include/Application.h
+World.h
+/home/bastian/dev/projects/VoxelGame/include/World.h
+Scene.h
+/home/bastian/dev/projects/VoxelGame/include/Scene.h
+MasterRenderer.h
+/home/bastian/dev/projects/VoxelGame/include/MasterRenderer.h
+
 /home/bastian/dev/projects/VoxelGame/include/BiomeInfo.h
 
 /home/bastian/dev/projects/VoxelGame/include/Block.h
@@ -218,6 +226,32 @@ unordered_map
 noise/noise.h
 -
 
+/home/bastian/dev/projects/VoxelGame/src/Application.cpp
+../include/Application.h
+/home/bastian/dev/projects/VoxelGame/include/Application.h
+../include/EventDispatcher.h
+/home/bastian/dev/projects/VoxelGame/include/EventDispatcher.h
+
+/home/bastian/dev/projects/VoxelGame/src/Camera.cpp
+../include/Camera.h
+/home/bastian/dev/projects/VoxelGame/include/Camera.h
+../include/EventDispatcher.h
+/home/bastian/dev/projects/VoxelGame/include/EventDispatcher.h
+glm/gtx/transform.hpp
+-
+glm/gtc/matrix_transform.hpp
+-
+
+/home/bastian/dev/projects/VoxelGame/src/Event.cpp
+../include/Event.h
+/home/bastian/dev/projects/VoxelGame/include/Event.h
+
+/home/bastian/dev/projects/VoxelGame/src/EventDispatcher.cpp
+../include/EventDispatcher.h
+/home/bastian/dev/projects/VoxelGame/include/EventDispatcher.h
+../include/Application.h
+/home/bastian/dev/projects/VoxelGame/include/Application.h
+
 /home/bastian/dev/projects/VoxelGame/src/MasterRenderer.cpp
 ../include/Scene.h
 /home/bastian/dev/projects/VoxelGame/include/Scene.h
@@ -235,6 +269,14 @@ noise/noise.h
 /home/bastian/dev/projects/VoxelGame/include/EventDispatcher.h
 iostream
 -
+
+/home/bastian/dev/projects/VoxelGame/src/Window.cpp
+../include/Window.h
+/home/bastian/dev/projects/VoxelGame/include/Window.h
+../include/Definitions.h
+/home/bastian/dev/projects/VoxelGame/include/Definitions.h
+../include/EventDispatcher.h
+/home/bastian/dev/projects/VoxelGame/include/EventDispatcher.h
 
 /home/bastian/dev/projects/VoxelGame/src/World.cpp
 ../include/Block.h
