@@ -58,6 +58,10 @@ GLFWwindow* Window::getHandle() const {
     return m_window;
 }
 
+Event* Window::nextEvent() {
+    return m_events.pop();
+}
+
 void Window::close() {
     glfwDestroyWindow(m_window);
 }

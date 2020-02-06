@@ -33,7 +33,7 @@ EventType EnterChunkEvent::type() {
     return EnterChunkEvent::TYPE;
 }
 
-EnterChunkEvent::EnterChunkEvent(Application* app, int oldX, int oldY, int newX, int newY) : app(app), oldX(oldX), oldY(oldY), newX(newX), newY(newY) {}
+EnterChunkEvent::EnterChunkEvent(Application* app, int oldX, int oldZ, int newX, int newZ) : app(app), oldX(oldX), oldZ(oldZ), newX(newX), newZ(newZ) {}
 
 template KeyEvent* Event::get<KeyEvent>();
 template ScrollEvent* Event::get<ScrollEvent>();

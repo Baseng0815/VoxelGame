@@ -26,6 +26,7 @@ CMakeFiles/VoxelGame.dir/src/Application.cpp.o: ../include/Scene.h
 CMakeFiles/VoxelGame.dir/src/Application.cpp.o: ../include/Shader.h
 CMakeFiles/VoxelGame.dir/src/Application.cpp.o: ../include/Skybox.h
 CMakeFiles/VoxelGame.dir/src/Application.cpp.o: ../include/SkyboxShader.h
+CMakeFiles/VoxelGame.dir/src/Application.cpp.o: ../include/SystemManager.h
 CMakeFiles/VoxelGame.dir/src/Application.cpp.o: ../include/Text.h
 CMakeFiles/VoxelGame.dir/src/Application.cpp.o: ../include/TextureAtlas.h
 CMakeFiles/VoxelGame.dir/src/Application.cpp.o: ../include/Vertex.h
@@ -68,8 +69,33 @@ CMakeFiles/VoxelGame.dir/src/Chunk.cpp.o: ../include/Vertex.h
 CMakeFiles/VoxelGame.dir/src/Chunk.cpp.o: ../include/WorldGenerator.h
 CMakeFiles/VoxelGame.dir/src/Chunk.cpp.o: ../src/Chunk.cpp
 
+CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o: ../include/BiomeInfo.h
+CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o: ../include/Block.h
+CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o: ../include/BlockData.h
+CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o: ../include/ChunkCreateSystem.h
+CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o: ../include/Components.h
+CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o: ../include/Definitions.h
+CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o: ../include/Event.h
+CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o: ../include/OreData.h
+CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o: ../include/System.h
+CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o: ../include/SystemManager.h
+CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o: ../include/TextureAtlas.h
+CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o: ../include/Utility.h
+CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o: ../include/Vertex.h
+CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o: ../include/WorldGenerator.h
+CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o: ../src/ChunkCreateSystem.cpp
+
 CMakeFiles/VoxelGame.dir/src/Colors.cpp.o: ../include/Colors.h
 CMakeFiles/VoxelGame.dir/src/Colors.cpp.o: ../src/Colors.cpp
+
+CMakeFiles/VoxelGame.dir/src/Components.cpp.o: ../include/BiomeInfo.h
+CMakeFiles/VoxelGame.dir/src/Components.cpp.o: ../include/BlockData.h
+CMakeFiles/VoxelGame.dir/src/Components.cpp.o: ../include/Components.h
+CMakeFiles/VoxelGame.dir/src/Components.cpp.o: ../include/Definitions.h
+CMakeFiles/VoxelGame.dir/src/Components.cpp.o: ../include/OreData.h
+CMakeFiles/VoxelGame.dir/src/Components.cpp.o: ../include/TextureAtlas.h
+CMakeFiles/VoxelGame.dir/src/Components.cpp.o: ../include/Vertex.h
+CMakeFiles/VoxelGame.dir/src/Components.cpp.o: ../src/Components.cpp
 
 CMakeFiles/VoxelGame.dir/src/Definitions.cpp.o: ../include/BiomeInfo.h
 CMakeFiles/VoxelGame.dir/src/Definitions.cpp.o: ../include/BlockData.h
@@ -105,6 +131,7 @@ CMakeFiles/VoxelGame.dir/src/EventDispatcher.cpp.o: ../include/Scene.h
 CMakeFiles/VoxelGame.dir/src/EventDispatcher.cpp.o: ../include/Shader.h
 CMakeFiles/VoxelGame.dir/src/EventDispatcher.cpp.o: ../include/Skybox.h
 CMakeFiles/VoxelGame.dir/src/EventDispatcher.cpp.o: ../include/SkyboxShader.h
+CMakeFiles/VoxelGame.dir/src/EventDispatcher.cpp.o: ../include/SystemManager.h
 CMakeFiles/VoxelGame.dir/src/EventDispatcher.cpp.o: ../include/Text.h
 CMakeFiles/VoxelGame.dir/src/EventDispatcher.cpp.o: ../include/TextureAtlas.h
 CMakeFiles/VoxelGame.dir/src/EventDispatcher.cpp.o: ../include/Vertex.h
@@ -224,6 +251,23 @@ CMakeFiles/VoxelGame.dir/src/SkyboxShader.cpp.o: ../include/Shader.h
 CMakeFiles/VoxelGame.dir/src/SkyboxShader.cpp.o: ../include/SkyboxShader.h
 CMakeFiles/VoxelGame.dir/src/SkyboxShader.cpp.o: ../src/SkyboxShader.cpp
 
+CMakeFiles/VoxelGame.dir/src/System.cpp.o: ../include/System.h
+CMakeFiles/VoxelGame.dir/src/System.cpp.o: ../include/SystemManager.h
+CMakeFiles/VoxelGame.dir/src/System.cpp.o: ../src/System.cpp
+
+CMakeFiles/VoxelGame.dir/src/SystemManager.cpp.o: ../include/BiomeInfo.h
+CMakeFiles/VoxelGame.dir/src/SystemManager.cpp.o: ../include/BlockData.h
+CMakeFiles/VoxelGame.dir/src/SystemManager.cpp.o: ../include/ChunkCreateSystem.h
+CMakeFiles/VoxelGame.dir/src/SystemManager.cpp.o: ../include/Components.h
+CMakeFiles/VoxelGame.dir/src/SystemManager.cpp.o: ../include/Definitions.h
+CMakeFiles/VoxelGame.dir/src/SystemManager.cpp.o: ../include/OreData.h
+CMakeFiles/VoxelGame.dir/src/SystemManager.cpp.o: ../include/System.h
+CMakeFiles/VoxelGame.dir/src/SystemManager.cpp.o: ../include/SystemManager.h
+CMakeFiles/VoxelGame.dir/src/SystemManager.cpp.o: ../include/TextureAtlas.h
+CMakeFiles/VoxelGame.dir/src/SystemManager.cpp.o: ../include/Vertex.h
+CMakeFiles/VoxelGame.dir/src/SystemManager.cpp.o: ../include/WorldGenerator.h
+CMakeFiles/VoxelGame.dir/src/SystemManager.cpp.o: ../src/SystemManager.cpp
+
 CMakeFiles/VoxelGame.dir/src/TextureAtlas.cpp.o: ../include/BiomeInfo.h
 CMakeFiles/VoxelGame.dir/src/TextureAtlas.cpp.o: ../include/BlockData.h
 CMakeFiles/VoxelGame.dir/src/TextureAtlas.cpp.o: ../include/Definitions.h
@@ -300,6 +344,7 @@ CMakeFiles/VoxelGame.dir/src/main.cpp.o: ../include/Scene.h
 CMakeFiles/VoxelGame.dir/src/main.cpp.o: ../include/Shader.h
 CMakeFiles/VoxelGame.dir/src/main.cpp.o: ../include/Skybox.h
 CMakeFiles/VoxelGame.dir/src/main.cpp.o: ../include/SkyboxShader.h
+CMakeFiles/VoxelGame.dir/src/main.cpp.o: ../include/SystemManager.h
 CMakeFiles/VoxelGame.dir/src/main.cpp.o: ../include/Text.h
 CMakeFiles/VoxelGame.dir/src/main.cpp.o: ../include/TextureAtlas.h
 CMakeFiles/VoxelGame.dir/src/main.cpp.o: ../include/Vertex.h

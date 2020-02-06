@@ -72,8 +72,8 @@ struct EnterChunkEvent : public Event {
     static constexpr EventType TYPE = ENTER_CHUNK_EVENT;
 
     Application* app;
-    int oldX, oldY;
-    int newX, newY;
+    int oldX, oldZ;
+    int newX, newZ;
 
     EventType type() override final;
     EnterChunkEvent(Application* app = nullptr, int oldX = 0, int oldY = 0, int newX = 0, int newY = 0);

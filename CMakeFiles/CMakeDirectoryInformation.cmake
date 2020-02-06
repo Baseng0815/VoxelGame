@@ -3,7 +3,7 @@
 
 # Relative path conversion top directories.
 set(CMAKE_RELATIVE_PATH_TOP_SOURCE "/home/bastian/projects/VoxelGame")
-set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/bastian/projects/VoxelGame/build")
+set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/bastian/projects/VoxelGame")
 
 # Force unix paths in dependencies.
 set(CMAKE_FORCE_UNIX_PATHS 1)

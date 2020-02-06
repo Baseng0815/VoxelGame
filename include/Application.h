@@ -3,11 +3,14 @@
 #include "World.h"
 #include "Scene.h"
 #include "MasterRenderer.h"
+#include "SystemManager.h"
 
 class Application {
 private:
     Window m_window;
     MasterRenderer m_masterRenderer;
+
+    SystemManager m_systemManager;
 
     Scene m_scene;
 

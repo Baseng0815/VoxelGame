@@ -1,7 +1,12 @@
 #include "../include/ChunkCreateSystem.h"
 
 #include "../include/Event.h"
+#include "../include/Block.h"
+#include "../include/TextureAtlas.h"
 #include "../include/SystemManager.h"
+
+#include "../include/Utility.h"
+#include "../include/Definitions.h"
 
 void ChunkCreateSystem::updateChunkBlocks(ChunkComponent& chunk) {
     chunk.blocks = new Block**[Definitions::CHUNK_SIZE];
@@ -22,17 +27,17 @@ void ChunkCreateSystem::updateChunkVertices(ChunkComponent& chunk, GeometryCompo
     for (int x = 0; x < Definitions::CHUNK_SIZE; x++)
         for (int y = 0; y < Definitions::CHUNK_HEIGHT; y++)
             for (int z = 0; z < Definitions::CHUNK_SIZE; z++) {
-                if (m_blocks[x][y][z].type == BlockType::BLOCK_AIR) continue;
+                if (chunk.blocks[x][y][z].type == BlockType::BLOCK_AIR) continue;
 
                 glm::vec3 blockPosition = glm::vec3(x, y, z);
                 faceCountPerPass = 0;
                 bool draw = false;
 
-                BlockUVs blockUVs = (*m_blockUVArray)[(int)m_blocks[x][y][z].type];
+                BlockUVs blockUVs = ChunkComponent::blockUVSArray[(int)chunk.blocks[x][y][z].type];
 
                 // negative X
                 if (x > 0) {
-                    if (m_blocks[x - 1][y][z].type == BlockType::BLOCK_AIR) draw = true;
+                    if (chunk.blocks[x - 1][y][z].type == BlockType::BLOCK_AIR) draw = true;
                 }
                 else draw = true;
 
@@ -48,7 +53,7 @@ void ChunkCreateSystem::updateChunkVertices(ChunkComponent& chunk, GeometryCompo
 
                 // positive X
                 if (x < Definitions::CHUNK_SIZE - 1) {
-                    if (m_blocks[x + 1][y][z].type == BlockType::BLOCK_AIR) draw = true;
+                    if (chunk.blocks[x + 1][y][z].type == BlockType::BLOCK_AIR) draw = true;
                 }
                 else draw = true;
 
@@ -64,7 +69,7 @@ void ChunkCreateSystem::updateChunkVertices(ChunkComponent& chunk, GeometryCompo
 
                 // negative Y
                 if (y > 0) {
-                    if (m_blocks[x][y - 1][z].type == BlockType::BLOCK_AIR) draw = true;
+                    if (chunk.blocks[x][y - 1][z].type == BlockType::BLOCK_AIR) draw = true;
                 }
                 else draw = true;
 
@@ -80,7 +85,7 @@ void ChunkCreateSystem::updateChunkVertices(ChunkComponent& chunk, GeometryCompo
 
                 // positive Y
                 if (y < Definitions::CHUNK_HEIGHT - 1) {
-                    if (m_blocks[x][y + 1][z].type == BlockType::BLOCK_AIR) draw = true;
+                    if (chunk.blocks[x][y + 1][z].type == BlockType::BLOCK_AIR) draw = true;
                 }
                 else draw = true;
 
@@ -96,7 +101,7 @@ void ChunkCreateSystem::updateChunkVertices(ChunkComponent& chunk, GeometryCompo
 
                 // negative Z
                 if (z > 0) {
-                    if (m_blocks[x][y][z - 1].type == BlockType::BLOCK_AIR) draw = true;
+                    if (chunk.blocks[x][y][z - 1].type == BlockType::BLOCK_AIR) draw = true;
                 }
                 else draw = true;
 
@@ -112,7 +117,7 @@ void ChunkCreateSystem::updateChunkVertices(ChunkComponent& chunk, GeometryCompo
 
                 // positive Z
                 if (z < Definitions::CHUNK_SIZE - 1) {
-                    if (m_blocks[x][y][z + 1].type == BlockType::BLOCK_AIR) draw = true;
+                    if (chunk.blocks[x][y][z + 1].type == BlockType::BLOCK_AIR) draw = true;
                 }
                 else draw = true;
 
@@ -170,36 +175,35 @@ void ChunkCreateSystem::updateChunkBuffers(ChunkComponent& chunk, GeometryCompon
     chunk.indices.clear();
 }
 
-void ChunkCreateSystem::handleChunkEnter(ChunkEnterEvent* e) {
+void ChunkCreateSystem::handleEnterChunk(EnterChunkEvent* e) {
     EnterChunkEvent event = *e->get<EnterChunkEvent>();
-    int dx = event.newX - event.oldX;
-    int dz = event.newZ - event.oldZ;
 
     entt::registry& registry = m_systemManager->getRegistry();
     auto view = registry.view<TransformationComponent, GeometryComponent, ChunkComponent>();
 
     for (auto entity : view) {
-        auto& transformation    = view.get<TransformationComponent>(entity);
-        auto& geometry          = view.get<GeometryComponent>(entity);
-        auto& chunk             = view.get<ChunkComponent>(entity);
+        TransformationComponent& transformation = view.get<TransformationComponent>(entity);
+        GeometryComponent& geometry             = view.get<GeometryComponent>(entity);
+        ChunkComponent& chunk                   = view.get<ChunkComponent>(entity);
 
-        // remove chunks which have gone out of range
         if (std::abs(event.newX - transformation.position.x) > Definitions::CHUNK_PRELOAD_SIZE ||
             std::abs(event.newZ - transformation.position.z) > Definitions::CHUNK_PRELOAD_SIZE)
-            it->second.queueDestruction();
+                m_registry->destroy(entity);
     }
 
     // create new chunks which have come into range
-    int pX, pZ;
     for (int x = event.newX - Definitions::CHUNK_PRELOAD_SIZE; x <= event.newX + (int)Definitions::CHUNK_PRELOAD_SIZE; x++) {
-        for (int z = event.newZ - Definitions::CHUNK_PRELOAD_SIZE; z <= event.newY + (int)Definitions::CHUNK_PRELOAD_SIZE; z++) {
-            pX = x;
-            pZ = z;
-            if (!m_chunks.count(pos))
-                m_chunks.insert(std::make_pair(pos, Chunk(pos)));
+        for (int z = event.newZ - Definitions::CHUNK_PRELOAD_SIZE; z <= event.newZ + (int)Definitions::CHUNK_PRELOAD_SIZE; z++) {
+            glm::vec2 pos(x, z);
+            if (!std::count(loadedChunks.begin(), loadedChunks.end(), pos)) {
+                auto entity = m_registry->create();
+                m_registry->assign<TransformationComponent>(entity);
+                m_registry->assign<GeometryComponent>(entity);
+                m_registry->assign<ChunkComponent>(entity);
+                loadedChunks.push_back(pos);
+            }
         }
     }
-
 }
 
 ChunkCreateSystem::ChunkCreateSystem(SystemManager* systemManager, WorldType type)
@@ -208,26 +212,25 @@ ChunkCreateSystem::ChunkCreateSystem(SystemManager* systemManager, WorldType typ
 }
 
 void ChunkCreateSystem::update(int dt) {
-    entt::registry& registry = m_systemManager->getRegistry();
-    auto view = registry.view<TransformationComponent, GeometryComponent, ChunkComponent>();
+    auto view = m_registry->view<TransformationComponent, GeometryComponent, ChunkComponent>();
+    for (auto entity : view ) {
 
-    for (auto entity : view) {
-        auto& transformation    = view.get<TransformationComponent>(entity);
-        auto& geometry          = view.get<GeometryComponent>(entity);
-        auto& chunk             = view.get<ChunkComponent>(entity);
+        TransformationComponent& transformation = view.get<TransformationComponent>(entity);
+        GeometryComponent& geometry             = view.get<GeometryComponent>(entity);
+        ChunkComponent& chunk                   = view.get<ChunkComponent>(entity);
 
-        if (ChunkComponent::constructionCount < 6) {
+        if (constructionCount < 6) {
             // create blocks
-            if (!chunk.m_blocks) {
+            if (!chunk.blocks) {
                 if (!chunk.threadActiveOnSelf) {
-                    Chunk::constructionCount++;
+                    constructionCount++;
                     chunk.threadActiveOnSelf = true;
-                    chunk.futures.push_back(std::async(std::launch::async, [chunk]() {
-                        std::lock_guard<std::mutex> blockLock(chunk.blockMutex);
+                    chunk.futures.push_back(std::async(std::launch::async, [this, &chunk]() {
+                        //std::lock_guard<std::mutex> blockLock(chunk.blockMutex);
 
                         updateChunkBlocks(chunk);
 
-                        Chunk::constructionCount--;
+                        constructionCount--;
                         chunk.verticesOutdated = true;
                         chunk.threadActiveOnSelf = false;
                     }));
@@ -235,15 +238,14 @@ void ChunkCreateSystem::update(int dt) {
             // update vertices
             } else if (chunk.verticesOutdated) {
                 if (!chunk.threadActiveOnSelf) {
-                    Chunk::constructionCount++;
+                    constructionCount++;
                     chunk.threadActiveOnSelf = true;
                     chunk.threadActiveOnSelf = false;
-                    chunk.futures.push_back(std::async(std::launch::async, [chunk]() {
-                        Chunk::constructionCount++;
+                    chunk.futures.push_back(std::async(std::launch::async, [this, &chunk, &geometry]() {
 
                         updateChunkVertices(chunk, geometry);
 
-                        Chunk::constructionCount--;
+                        constructionCount--;
                         chunk.verticesOutdated = false;
                         chunk.threadActiveOnSelf = false;
                     }));
@@ -251,17 +253,18 @@ void ChunkCreateSystem::update(int dt) {
             }
         }
 
+        // keep buffers updated
         if (chunk.buffersOutdated) {
             if (!chunk.threadActiveOnSelf) {
                 updateChunkBuffers(chunk, geometry);
                 chunk.buffersOutdated = false;
             }
         }
-    }
+    };
 }
 
 void ChunkCreateSystem::handleEvent(Event* e) {
     if (e->type() == EventType::ENTER_CHUNK_EVENT)
-        handleChunkEnter(e->get<ChunkEnterEvent>);
+        handleEnterChunk(e->get<EnterChunkEvent>());
 }
 

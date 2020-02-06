@@ -37,6 +37,8 @@ Application::Application() {
 
     m_masterRenderer.init();
     m_scene.world.init(WorldType::WORLD_NORMAL);
+
+    m_systemManager.init();
 }
 
 Application::~Application() {

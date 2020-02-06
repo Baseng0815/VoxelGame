@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/bastian/dev/projects/VoxelGame
+CMAKE_SOURCE_DIR = /home/bastian/projects/VoxelGame
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/bastian/dev/projects/VoxelGame/build
+CMAKE_BINARY_DIR = /home/bastian/projects/VoxelGame/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/bastian/dev/projects/VoxelGame/build/CMakeFiles /home/bastian/dev/projects/VoxelGame/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/bastian/projects/VoxelGame/build/CMakeFiles /home/bastian/projects/VoxelGame/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/bastian/dev/projects/VoxelGame/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/bastian/projects/VoxelGame/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -258,6 +258,33 @@ src/Chunk.cpp.s:
 	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/Chunk.cpp.s
 .PHONY : src/Chunk.cpp.s
 
+src/ChunkCreateSystem.o: src/ChunkCreateSystem.cpp.o
+
+.PHONY : src/ChunkCreateSystem.o
+
+# target to build an object file
+src/ChunkCreateSystem.cpp.o:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o
+.PHONY : src/ChunkCreateSystem.cpp.o
+
+src/ChunkCreateSystem.i: src/ChunkCreateSystem.cpp.i
+
+.PHONY : src/ChunkCreateSystem.i
+
+# target to preprocess a source file
+src/ChunkCreateSystem.cpp.i:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.i
+.PHONY : src/ChunkCreateSystem.cpp.i
+
+src/ChunkCreateSystem.s: src/ChunkCreateSystem.cpp.s
+
+.PHONY : src/ChunkCreateSystem.s
+
+# target to generate assembly for a file
+src/ChunkCreateSystem.cpp.s:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.s
+.PHONY : src/ChunkCreateSystem.cpp.s
+
 src/Colors.o: src/Colors.cpp.o
 
 .PHONY : src/Colors.o
@@ -284,6 +311,33 @@ src/Colors.s: src/Colors.cpp.s
 src/Colors.cpp.s:
 	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/Colors.cpp.s
 .PHONY : src/Colors.cpp.s
+
+src/Components.o: src/Components.cpp.o
+
+.PHONY : src/Components.o
+
+# target to build an object file
+src/Components.cpp.o:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/Components.cpp.o
+.PHONY : src/Components.cpp.o
+
+src/Components.i: src/Components.cpp.i
+
+.PHONY : src/Components.i
+
+# target to preprocess a source file
+src/Components.cpp.i:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/Components.cpp.i
+.PHONY : src/Components.cpp.i
+
+src/Components.s: src/Components.cpp.s
+
+.PHONY : src/Components.s
+
+# target to generate assembly for a file
+src/Components.cpp.s:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/Components.cpp.s
+.PHONY : src/Components.cpp.s
 
 src/Definitions.o: src/Definitions.cpp.o
 
@@ -771,6 +825,60 @@ src/SkyboxShader.cpp.s:
 	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/SkyboxShader.cpp.s
 .PHONY : src/SkyboxShader.cpp.s
 
+src/System.o: src/System.cpp.o
+
+.PHONY : src/System.o
+
+# target to build an object file
+src/System.cpp.o:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/System.cpp.o
+.PHONY : src/System.cpp.o
+
+src/System.i: src/System.cpp.i
+
+.PHONY : src/System.i
+
+# target to preprocess a source file
+src/System.cpp.i:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/System.cpp.i
+.PHONY : src/System.cpp.i
+
+src/System.s: src/System.cpp.s
+
+.PHONY : src/System.s
+
+# target to generate assembly for a file
+src/System.cpp.s:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/System.cpp.s
+.PHONY : src/System.cpp.s
+
+src/SystemManager.o: src/SystemManager.cpp.o
+
+.PHONY : src/SystemManager.o
+
+# target to build an object file
+src/SystemManager.cpp.o:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/SystemManager.cpp.o
+.PHONY : src/SystemManager.cpp.o
+
+src/SystemManager.i: src/SystemManager.cpp.i
+
+.PHONY : src/SystemManager.i
+
+# target to preprocess a source file
+src/SystemManager.cpp.i:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/SystemManager.cpp.i
+.PHONY : src/SystemManager.cpp.i
+
+src/SystemManager.s: src/SystemManager.cpp.s
+
+.PHONY : src/SystemManager.s
+
+# target to generate assembly for a file
+src/SystemManager.cpp.s:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/SystemManager.cpp.s
+.PHONY : src/SystemManager.cpp.s
+
 src/TextureAtlas.o: src/TextureAtlas.cpp.o
 
 .PHONY : src/TextureAtlas.o
@@ -984,9 +1092,15 @@ help:
 	@echo "... src/Chunk.o"
 	@echo "... src/Chunk.i"
 	@echo "... src/Chunk.s"
+	@echo "... src/ChunkCreateSystem.o"
+	@echo "... src/ChunkCreateSystem.i"
+	@echo "... src/ChunkCreateSystem.s"
 	@echo "... src/Colors.o"
 	@echo "... src/Colors.i"
 	@echo "... src/Colors.s"
+	@echo "... src/Components.o"
+	@echo "... src/Components.i"
+	@echo "... src/Components.s"
 	@echo "... src/Definitions.o"
 	@echo "... src/Definitions.i"
 	@echo "... src/Definitions.s"
@@ -1041,6 +1155,12 @@ help:
 	@echo "... src/SkyboxShader.o"
 	@echo "... src/SkyboxShader.i"
 	@echo "... src/SkyboxShader.s"
+	@echo "... src/System.o"
+	@echo "... src/System.i"
+	@echo "... src/System.s"
+	@echo "... src/SystemManager.o"
+	@echo "... src/SystemManager.i"
+	@echo "... src/SystemManager.s"
 	@echo "... src/TextureAtlas.o"
 	@echo "... src/TextureAtlas.i"
 	@echo "... src/TextureAtlas.s"

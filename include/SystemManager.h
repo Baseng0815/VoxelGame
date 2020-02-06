@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include <entt/entt.hpp>
 
@@ -5,17 +7,17 @@ class System;
 class Event;
 
 class SystemManager {
-    private:
-        std::vector<System*> m_systems;
+private:
+    std::vector<System*> m_systems;
 
-        entt::registry m_entityRegistry;
+    entt::registry m_entityRegistry;
 
-    public:
-        void init();
-        ~SystemManager();
+public:
+    void init();
+    ~SystemManager();
 
-        void update(int dt);
-        void handleEvent(Event* e);
+    void update(int dt);
+    void handleEvent(Event* e);
 
-        entt::registry& getRegistry() const;
+    entt::registry& getRegistry() const;
 };

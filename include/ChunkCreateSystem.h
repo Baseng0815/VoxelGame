@@ -1,4 +1,7 @@
+#pragma once
+
 #include "System.h"
+#include "Components.h"
 #include "WorldGenerator.h"
 
 struct ChunkHashFunction {
@@ -11,15 +14,21 @@ struct ChunkHashFunction {
     }
 };
 
-class ChunkCreateSystem {
+class EnterChunkEvent;
+
+class ChunkCreateSystem : public System {
     private:
         WorldGenerator m_generator;
 
-        void handleChunkEnter(int x, int z);
+        std::atomic_int constructionCount;
+        std::vector<glm::vec2> loadedChunks;
+        BlockUVsArray blockUVsArray;
 
-        void updateChunkBlocks(ChunkComponent& chunk);
-        void updateChunkVertices(ChunkComponent& chunk, GeometryComponent& geometryComponent);
-        void updateChunkBuffers(ChunkComponent& chunk, GeometryComponent& geometryComponent);
+        void handleEnterChunk(EnterChunkEvent*);
+
+        static void updateChunkBlocks(ChunkComponent& chunk);
+        static void updateChunkVertices(ChunkComponent& chunk, GeometryComponent& geometryComponent);
+        static void updateChunkBuffers(ChunkComponent& chunk, GeometryComponent& geometryComponent);
 
     public:
         ChunkCreateSystem(SystemManager* systemManager, WorldType worldType);
@@ -27,5 +36,5 @@ class ChunkCreateSystem {
         void update(int dt) override;
         void handleEvent(Event* e) override;
 
-        ~ChunkUpdateSystem() override;
-}
+        ~ChunkCreateSystem();
+};
