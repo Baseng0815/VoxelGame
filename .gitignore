@@ -1,4 +1,8 @@
 .vs/*
+build/*
+packages/*
+x64/*
+x86/*
 Debug/*
 
 # Prerequisites
