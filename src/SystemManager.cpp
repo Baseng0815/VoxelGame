@@ -4,7 +4,7 @@
 
 void SystemManager::init() {
     // create and initialize all systems
-    m_systems.push_back(new ChunkCreateSystem(this, WORLD_FLAT));
+    m_systems.push_back(new ChunkCreateSystem(this, WorldType::WORLD_FLAT));
 }
 
 SystemManager::~SystemManager() {
@@ -12,16 +12,16 @@ SystemManager::~SystemManager() {
         delete system;
 }
 
-SystemManager::update(int dt) {
+void SystemManager::update(int dt) {
     for (auto system : m_systems)
         system->update(dt);
 }
 
-SystemManager::handleEvent(Event *e) {
+void SystemManager::handleEvent(Event *e) {
     for (auto system : m_systems)
         system->handleEvent(e);
 }
 
-entt::registry& SystemManager::getRegistry() const {
-    return m_registry;
+entt::registry& SystemManager::getRegistry() {
+    return m_entityRegistry;
 }

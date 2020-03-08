@@ -1,7 +1,6 @@
 #pragma once
 
 #include "World.h"
-#include "Scene.h"
 #include "MasterRenderer.h"
 #include "SystemManager.h"
 
@@ -11,8 +10,6 @@ private:
     MasterRenderer m_masterRenderer;
 
     SystemManager m_systemManager;
-
-    Scene m_scene;
 
     friend class EventDispatcher;
 

@@ -27,6 +27,17 @@ void Camera::resize() {
             0.0f, static_cast<GLfloat>(m_height));
 }
 
+Camera::Camera(float fov) {
+    m_fov = fov;
+
+    ADD_EVENT(Camera::handleCursorPos, CURSOR_EVENT)
+    ADD_EVENT(Camera::handleScroll, SCROLL_EVENT)
+    ADD_EVENT(Camera::handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT)
+
+    resize();
+    update(glm::vec3(0, 0, 0));
+}
+
 void Camera::handleCursorPos(Event* e) {
     CursorEvent* kE = e->get<CursorEvent>();
     double dx = kE->dx;
@@ -62,17 +73,6 @@ void Camera::handleFramebufferSize(Event* e) {
     resize();
 }
 
-Camera::Camera(float fov) {
-    m_fov = fov;
-
-    ADD_EVENT(Camera::handleCursorPos, CURSOR_EVENT)
-    ADD_EVENT(Camera::handleScroll, SCROLL_EVENT)
-    ADD_EVENT(Camera::handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT)
-
-    resize();
-    update(glm::vec3(0, 0, 0));
-}
-
 glm::mat4 Camera::getProjectionMatrix(ProjectionType type) const {
     if (type == PROJECTION_PERSPECTIVE)
         return m_projectionPerspective;
@@ -83,5 +83,9 @@ glm::mat4 Camera::getProjectionMatrix(ProjectionType type) const {
 }
 
 glm::mat4 Camera::getViewMatrix() const {
-	return m_viewMatrix;
+    return m_viewMatrix;
+}
+
+glm::vec3 Camera::getPosition() const {
+    return m_position;
 }

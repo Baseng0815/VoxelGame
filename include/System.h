@@ -13,7 +13,8 @@ class System {
     public:
         System(SystemManager* systemManager);
 
+        virtual void init() = 0;
+
         // dt in milliseconds
         virtual void update(int dt) = 0;
-        virtual void handleEvent(Event* e) = 0;
 };

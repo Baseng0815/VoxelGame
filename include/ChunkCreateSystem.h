@@ -1,8 +1,8 @@
 #pragma once
 
 #include "System.h"
-#include "Components.h"
 #include "WorldGenerator.h"
+#include "TextureAtlas.h"
 
 struct ChunkHashFunction {
     size_t operator()(const glm::vec2& v) const {
@@ -15,6 +15,8 @@ struct ChunkHashFunction {
 };
 
 class EnterChunkEvent;
+class ChunkComponent;
+class GeometryComponent;
 
 class ChunkCreateSystem : public System {
     private:
@@ -26,9 +28,9 @@ class ChunkCreateSystem : public System {
 
         void handleEnterChunk(EnterChunkEvent*);
 
-        static void updateChunkBlocks(ChunkComponent& chunk);
-        static void updateChunkVertices(ChunkComponent& chunk, GeometryComponent& geometryComponent);
-        static void updateChunkBuffers(ChunkComponent& chunk, GeometryComponent& geometryComponent);
+        void updateChunkBlocks(ChunkComponent& chunk);
+        void updateChunkVertices(ChunkComponent& chunk, GeometryComponent& geometryComponent);
+        void updateChunkBuffers(ChunkComponent& chunk, GeometryComponent& geometryComponent);
 
     public:
         ChunkCreateSystem(SystemManager* systemManager, WorldType worldType);

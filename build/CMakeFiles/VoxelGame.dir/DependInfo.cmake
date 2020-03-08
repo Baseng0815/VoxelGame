@@ -11,7 +11,6 @@ set(CMAKE_DEPENDS_CHECK_CXX
   "/home/bastian/projects/VoxelGame/src/Chunk.cpp" "/home/bastian/projects/VoxelGame/build/CMakeFiles/VoxelGame.dir/src/Chunk.cpp.o"
   "/home/bastian/projects/VoxelGame/src/ChunkCreateSystem.cpp" "/home/bastian/projects/VoxelGame/build/CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o"
   "/home/bastian/projects/VoxelGame/src/Colors.cpp" "/home/bastian/projects/VoxelGame/build/CMakeFiles/VoxelGame.dir/src/Colors.cpp.o"
-  "/home/bastian/projects/VoxelGame/src/Components.cpp" "/home/bastian/projects/VoxelGame/build/CMakeFiles/VoxelGame.dir/src/Components.cpp.o"
   "/home/bastian/projects/VoxelGame/src/Definitions.cpp" "/home/bastian/projects/VoxelGame/build/CMakeFiles/VoxelGame.dir/src/Definitions.cpp.o"
   "/home/bastian/projects/VoxelGame/src/Event.cpp" "/home/bastian/projects/VoxelGame/build/CMakeFiles/VoxelGame.dir/src/Event.cpp.o"
   "/home/bastian/projects/VoxelGame/src/EventDispatcher.cpp" "/home/bastian/projects/VoxelGame/build/CMakeFiles/VoxelGame.dir/src/EventDispatcher.cpp.o"

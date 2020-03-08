@@ -8,6 +8,10 @@
 #include "../include/Utility.h"
 #include "../include/Definitions.h"
 
+#include "../include/Components/ChunkComponent.h"
+#include "../include/Components/GeometryComponent.h"
+#include "../include/Components/TransformationComponent.h"
+
 void ChunkCreateSystem::updateChunkBlocks(ChunkComponent& chunk) {
     chunk.blocks = new Block**[Definitions::CHUNK_SIZE];
     for (int x = 0; x < Definitions::CHUNK_SIZE; x++) {
@@ -33,7 +37,7 @@ void ChunkCreateSystem::updateChunkVertices(ChunkComponent& chunk, GeometryCompo
                 faceCountPerPass = 0;
                 bool draw = false;
 
-                BlockUVs blockUVs = ChunkComponent::blockUVSArray[(int)chunk.blocks[x][y][z].type];
+                BlockUVs blockUVs = blockUVsArray[(int)chunk.blocks[x][y][z].type];
 
                 // negative X
                 if (x > 0) {

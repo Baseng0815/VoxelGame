@@ -1,8 +1,8 @@
 #include "../include/Font.h"
 
 #include <iostream>
-#include <ft2build.h>
-#include FT_FREETYPE_H
+#include <freetype2/ft2build.h>
+#include <freetype2/freetype/freetype.h>
 
 void Font::init(const char *file) {
     FT_Library ft;

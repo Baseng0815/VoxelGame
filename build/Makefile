@@ -312,33 +312,6 @@ src/Colors.cpp.s:
 	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/Colors.cpp.s
 .PHONY : src/Colors.cpp.s
 
-src/Components.o: src/Components.cpp.o
-
-.PHONY : src/Components.o
-
-# target to build an object file
-src/Components.cpp.o:
-	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/Components.cpp.o
-.PHONY : src/Components.cpp.o
-
-src/Components.i: src/Components.cpp.i
-
-.PHONY : src/Components.i
-
-# target to preprocess a source file
-src/Components.cpp.i:
-	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/Components.cpp.i
-.PHONY : src/Components.cpp.i
-
-src/Components.s: src/Components.cpp.s
-
-.PHONY : src/Components.s
-
-# target to generate assembly for a file
-src/Components.cpp.s:
-	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/Components.cpp.s
-.PHONY : src/Components.cpp.s
-
 src/Definitions.o: src/Definitions.cpp.o
 
 .PHONY : src/Definitions.o
@@ -1098,9 +1071,6 @@ help:
 	@echo "... src/Colors.o"
 	@echo "... src/Colors.i"
 	@echo "... src/Colors.s"
-	@echo "... src/Components.o"
-	@echo "... src/Components.i"
-	@echo "... src/Components.s"
 	@echo "... src/Definitions.o"
 	@echo "... src/Definitions.i"
 	@echo "... src/Definitions.s"

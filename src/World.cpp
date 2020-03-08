@@ -7,19 +7,19 @@
 void World::handleEnterChunk(Event* e) {
     EnterChunkEvent event = *e->get<EnterChunkEvent>();
     int dx = event.newX - event.oldX;
-    int dy = event.newY - event.oldY;
+    int dz = event.newZ - event.oldZ;
 
     // remove chunks which have gone out of range
     for (auto it = m_chunks.begin(); it != m_chunks.end(); ++it) {
         if (std::abs(event.newX - it->first.x) > Definitions::CHUNK_PRELOAD_SIZE ||
-            std::abs(event.newY - it->first.y) > Definitions::CHUNK_PRELOAD_SIZE)
+            std::abs(event.newZ - it->first.y) > Definitions::CHUNK_PRELOAD_SIZE)
             it->second.queueDestruction();
     }
 
     // insert new chunks which have come into range
     glm::vec2 pos;
     for (int x = event.newX - Definitions::CHUNK_PRELOAD_SIZE; x <= event.newX + (int)Definitions::CHUNK_PRELOAD_SIZE; x++) {
-        for (int y = event.newY - Definitions::CHUNK_PRELOAD_SIZE; y <= event.newY + (int)Definitions::CHUNK_PRELOAD_SIZE; y++) {
+        for (int y = event.newZ - Definitions::CHUNK_PRELOAD_SIZE; y <= event.newZ + (int)Definitions::CHUNK_PRELOAD_SIZE; y++) {
             pos.x = x; pos.y = y;
             if (!m_chunks.count(pos))
                 m_chunks.insert(std::make_pair(pos, Chunk(pos)));

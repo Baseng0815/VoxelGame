@@ -3,32 +3,13 @@
 #include <GL/glew.h>
 #include <entt/entt.hpp>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/transform.hpp>
-
 #include <mutex>
 #include <future>
 
-#include "Vertex.h"
-#include "TextureAtlas.h"
+#include "../Vertex.h"
+#include "../TextureAtlas.h"
 
 class Block;
-
-struct TransformationComponent {
-    glm::vec3 position;
-    glm::vec3 rotation;
-    glm::vec3 scale;
-
-    glm::mat4 getModelMatrix() const;
-};
-
-struct GeometryComponent {
-    unsigned int drawCount;
-
-    //bool useElementDrawing;
-    GLuint vao, vbo, ebo;
-};
 
 struct ChunkComponent {
     Block*** blocks = nullptr;
@@ -47,8 +28,4 @@ struct ChunkComponent {
     ChunkComponent() = default;
     ChunkComponent(ChunkComponent&& other);
     ChunkComponent& operator=(const ChunkComponent& other);
-
-    static std::atomic_int constructionCount;
-    static std::atomic_int chunkCount;
-    static BlockUVsArray blockUVSArray;
 };

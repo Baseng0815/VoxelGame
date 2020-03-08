@@ -6,7 +6,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/VoxelGame.dir/src/Chunk.cpp.o"
   "CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o"
   "CMakeFiles/VoxelGame.dir/src/Colors.cpp.o"
-  "CMakeFiles/VoxelGame.dir/src/Components.cpp.o"
   "CMakeFiles/VoxelGame.dir/src/Definitions.cpp.o"
   "CMakeFiles/VoxelGame.dir/src/Event.cpp.o"
   "CMakeFiles/VoxelGame.dir/src/EventDispatcher.cpp.o"

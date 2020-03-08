@@ -19,5 +19,5 @@ public:
     void update(int dt);
     void handleEvent(Event* e);
 
-    entt::registry& getRegistry() const;
+    entt::registry& getRegistry();
 };

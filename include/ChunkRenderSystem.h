@@ -1,22 +1,14 @@
-#pragma once
-
-#include "World.h"
-#include "Skybox.h"
-#include "Camera.h"
+#include "System.h"
 #include "GBuffer.h"
-#include "RenderQuad.h"
 #include "TextureAtlas.h"
-
-#include "GUIRenderer.h"
+#include "RenderQuad.h"
 
 #include "BlockShader.h"
-#include "SkyboxShader.h"
 #include "LightingShader.h"
 
-class Scene;
 class Event;
 
-class MasterRenderer {
+class ChunkRenderSystem {
     private:
         // first render pass
         BlockShader m_blockShader;
@@ -27,18 +19,17 @@ class MasterRenderer {
         GBuffer m_gBuffer;
         RenderQuad m_renderQuad;
 
-        // skybox
-        SkyboxShader m_skyboxShader;
-        Skybox m_skybox;
-
         TextureAtlas m_textureAtlas;
 
-        GUIRenderer m_guiRenderer;
+        Camera m_camera;
 
         void handleFramebufferSize(Event* e);
 
     public:
-        void init();
+        ChunkRenderSystem(SystemManager* systemManager);
 
-        void render();
-};
+        void init() override;
+        void update(int dt) override;
+
+        ~ChunkRenderSystem();
+}

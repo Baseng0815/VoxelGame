@@ -36,7 +36,6 @@ Application::Application() {
     Definitions::loadData();
 
     m_masterRenderer.init();
-    m_scene.world.init(WorldType::WORLD_NORMAL);
 
     m_systemManager.init();
 }
@@ -67,19 +66,15 @@ void Application::run() {
         m_prevTime = currentTime;
         m_time += m_deltaTime;
 
-        // updating
-        m_scene.player.update(m_deltaTime);
-        m_scene.world.update(m_deltaTime);
-
-        // drawing
-        m_window.clear();
-
+        // updating and drawing
         auto startTime = std::chrono::high_resolution_clock::now();
-        m_masterRenderer.render(m_scene);
+
+        m_window.clear();
+        m_systemManager.update(m_deltaTime);
+        m_window.display();
+
         auto endTime = std::chrono::high_resolution_clock::now();
         m_frameTime += std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
-
-        m_window.display();
 
         m_frameCounter++;
     }
