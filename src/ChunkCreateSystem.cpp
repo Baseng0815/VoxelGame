@@ -12,6 +12,37 @@
 #include "../include/Components/GeometryComponent.h"
 #include "../include/Components/TransformationComponent.h"
 
+void ChunkCreateSystem::handleEnterChunk(EnterChunkEvent* e) {
+    EnterChunkEvent event = *e->get<EnterChunkEvent>();
+
+    entt::registry& registry = m_systemManager->getRegistry();
+    auto view = registry.view<TransformationComponent, GeometryComponent, ChunkComponent>();
+
+    for (auto entity : view) {
+        TransformationComponent& transformation = view.get<TransformationComponent>(entity);
+        GeometryComponent& geometry             = view.get<GeometryComponent>(entity);
+        ChunkComponent& chunk                   = view.get<ChunkComponent>(entity);
+
+        if (std::abs(event.newX - transformation.position.x) > Definitions::CHUNK_PRELOAD_SIZE ||
+            std::abs(event.newZ - transformation.position.z) > Definitions::CHUNK_PRELOAD_SIZE)
+                m_registry->destroy(entity);
+    }
+
+    // create new chunks which have come into range
+    for (int x = event.newX - Definitions::CHUNK_PRELOAD_SIZE; x <= event.newX + (int)Definitions::CHUNK_PRELOAD_SIZE; x++) {
+        for (int z = event.newZ - Definitions::CHUNK_PRELOAD_SIZE; z <= event.newZ + (int)Definitions::CHUNK_PRELOAD_SIZE; z++) {
+            glm::vec2 pos(x, z);
+            if (!std::count(loadedChunks.begin(), loadedChunks.end(), pos)) {
+                auto entity = m_registry->create();
+                m_registry->assign<TransformationComponent>(entity);
+                m_registry->assign<GeometryComponent>(entity);
+                m_registry->assign<ChunkComponent>(entity);
+                loadedChunks.push_back(pos);
+            }
+        }
+    }
+}
+
 void ChunkCreateSystem::updateChunkBlocks(ChunkComponent& chunk) {
     chunk.blocks = new Block**[Definitions::CHUNK_SIZE];
     for (int x = 0; x < Definitions::CHUNK_SIZE; x++) {
@@ -179,39 +210,9 @@ void ChunkCreateSystem::updateChunkBuffers(ChunkComponent& chunk, GeometryCompon
     chunk.indices.clear();
 }
 
-void ChunkCreateSystem::handleEnterChunk(EnterChunkEvent* e) {
-    EnterChunkEvent event = *e->get<EnterChunkEvent>();
 
-    entt::registry& registry = m_systemManager->getRegistry();
-    auto view = registry.view<TransformationComponent, GeometryComponent, ChunkComponent>();
-
-    for (auto entity : view) {
-        TransformationComponent& transformation = view.get<TransformationComponent>(entity);
-        GeometryComponent& geometry             = view.get<GeometryComponent>(entity);
-        ChunkComponent& chunk                   = view.get<ChunkComponent>(entity);
-
-        if (std::abs(event.newX - transformation.position.x) > Definitions::CHUNK_PRELOAD_SIZE ||
-            std::abs(event.newZ - transformation.position.z) > Definitions::CHUNK_PRELOAD_SIZE)
-                m_registry->destroy(entity);
-    }
-
-    // create new chunks which have come into range
-    for (int x = event.newX - Definitions::CHUNK_PRELOAD_SIZE; x <= event.newX + (int)Definitions::CHUNK_PRELOAD_SIZE; x++) {
-        for (int z = event.newZ - Definitions::CHUNK_PRELOAD_SIZE; z <= event.newZ + (int)Definitions::CHUNK_PRELOAD_SIZE; z++) {
-            glm::vec2 pos(x, z);
-            if (!std::count(loadedChunks.begin(), loadedChunks.end(), pos)) {
-                auto entity = m_registry->create();
-                m_registry->assign<TransformationComponent>(entity);
-                m_registry->assign<GeometryComponent>(entity);
-                m_registry->assign<ChunkComponent>(entity);
-                loadedChunks.push_back(pos);
-            }
-        }
-    }
-}
-
-ChunkCreateSystem::ChunkCreateSystem(SystemManager* systemManager, WorldType type)
-    : System(systemManager) {
+ChunkCreateSystem::ChunkCreateSystem(SystemManager* systemManager, SharedContext* context, WorldType type)
+    : System(systemManager, context) {
 
 }
 

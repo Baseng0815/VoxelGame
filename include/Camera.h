@@ -8,19 +8,19 @@ enum ProjectionType {
     PROJECTION_PERSPECTIVE, PROJECTION_ORTHO
 };
 
-class Event;
-
 class Camera {
     private:
-        float m_yaw, m_pitch, m_fov;
+        float m_yaw = 0, m_pitch = 0, m_fov = 0;
         int m_width = Definitions::WINDOW_WIDTH, m_height = Definitions::WINDOW_HEIGHT;
 
         const float MOUSE_SENSITIVITY = 0.2f;
         const float MOUSE_SCROLL = 2.0f;
         const float MOVE_SPEED = 0.01f;
 
+        glm::vec3 m_velocity;
         glm::vec3 m_position, m_up, m_right;
         glm::mat4 m_projectionPerspective, m_projectionOrtho, m_viewMatrix;
+
 
         // recalculate view matrix, front, up and right vectors
         // return new front vector
@@ -29,11 +29,15 @@ class Camera {
         void resize();
 
     public:
-        Camera(float fov);
+        Camera();
 
-        void handleCursorPos(Event* event);
-        void handleScroll(Event* event);
-        void handleFramebufferSize(Event* event);
+        void handleKey(int key, int action);
+        void handleCursorPos(int dx, int dy);
+        void handleScroll(double dy);
+        void handleFramebufferSize(int width, int height);
+
+        // dt in milliseconds
+        void updatePosition(int dt);
 
         glm::mat4 getProjectionMatrix(ProjectionType type) const;
         glm::mat4 getViewMatrix() const;

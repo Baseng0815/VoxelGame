@@ -27,22 +27,55 @@ void Camera::resize() {
             0.0f, static_cast<GLfloat>(m_height));
 }
 
-Camera::Camera(float fov) {
-    m_fov = fov;
-
-    ADD_EVENT(Camera::handleCursorPos, CURSOR_EVENT)
-    ADD_EVENT(Camera::handleScroll, SCROLL_EVENT)
-    ADD_EVENT(Camera::handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT)
-
+Camera::Camera() {
     resize();
     update(glm::vec3(0, 0, 0));
 }
 
-void Camera::handleCursorPos(Event* e) {
-    CursorEvent* kE = e->get<CursorEvent>();
-    double dx = kE->dx;
-    double dy = kE->dy;
+void Camera::handleKey(int key, int action) {
+    switch (key) {
+        case GLFW_KEY_W:
+            if (action == GLFW_PRESS)
+                m_velocity.z = -1;
+            else if (action == GLFW_RELEASE)
+                m_velocity.z = 0;
+            break;
+        case GLFW_KEY_S:
+            if (action == GLFW_PRESS)
+                m_velocity.z = 1;
+            else if (action == GLFW_RELEASE)
+                m_velocity.z = 0;
+            break;
+        case GLFW_KEY_A:
+            if (action == GLFW_PRESS)
+                m_velocity.x = -1;
+            else if (action == GLFW_RELEASE)
+                m_velocity.x = 0;
+            break;
+        case GLFW_KEY_D:
+            if (action == GLFW_PRESS)
+                m_velocity.x = 1;
+            else if (action == GLFW_RELEASE)
+                m_velocity.x = 0;
+            break;
+        case GLFW_KEY_LEFT_SHIFT:
+            if (action == GLFW_PRESS)
+                m_velocity.y = -1;
+            else if (action == GLFW_RELEASE)
+                m_velocity.y = 0;
+            break;
+        case GLFW_KEY_SPACE:
+            if (action == GLFW_PRESS)
+                m_velocity.y = 1;
+            else if (action == GLFW_RELEASE)
+                m_velocity.y = 0;
+            break;
+        default:
+            break;
+    }
+}
 
+void Camera::handleCursorPos(int dx, int dy) {
     dx *= MOUSE_SENSITIVITY;
     dy *= MOUSE_SENSITIVITY;
 
@@ -53,10 +86,7 @@ void Camera::handleCursorPos(Event* e) {
     else if (m_pitch < -89) m_pitch = -89;
 }
 
-void Camera::handleScroll(Event *e) {
-    ScrollEvent* sE = e->get<ScrollEvent>();
-    double dy = sE->dy;
-
+void Camera::handleScroll(double dy) {
     m_fov -= dy;
 
     if (m_fov > 179) m_fov = 179;
@@ -65,12 +95,16 @@ void Camera::handleScroll(Event *e) {
     resize();
 }
 
-void Camera::handleFramebufferSize(Event* e) {
-    FramebufferSizeEvent* fbsE = e->get<FramebufferSizeEvent>();
-
-    m_width = fbsE->width;
-    m_height = fbsE->height;
+void Camera::handleFramebufferSize(int width, int height) {
+    m_width = width;
+    m_height = height;
     resize();
+}
+
+void Camera::updatePosition(int dt) {
+    m_position += m_right * glm::vec3(m_velocity.x, 0, 0) +
+                  m_front * glm::vec3(0, 0, m_velocity.z) +
+                  glm::vec3(0, m_velocity.y, 0);
 }
 
 glm::mat4 Camera::getProjectionMatrix(ProjectionType type) const {

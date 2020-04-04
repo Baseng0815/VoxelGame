@@ -8,8 +8,8 @@ void ChunkRenderSystem::handleFramebufferSize(Event* e) {
     m_gBuffer.resize(fbsE.width, fbsE.height);
 }
 
-ChunkRenderSystem::ChunkRenderSystem(SystemManager* systemManager)
-    : System(systemManager) {}
+ChunkRenderSystem::ChunkRenderSystem(SystemManager* systemManager, SharedContext* context)
+    : System(systemManager, context) {}
 
 void ChunkRenderSystem::init() {
     ADD_EVENT(ChunkRenderSystem::handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT);

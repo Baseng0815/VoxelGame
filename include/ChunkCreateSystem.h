@@ -33,10 +33,9 @@ class ChunkCreateSystem : public System {
         void updateChunkBuffers(ChunkComponent& chunk, GeometryComponent& geometryComponent);
 
     public:
-        ChunkCreateSystem(SystemManager* systemManager, WorldType worldType);
+        ChunkCreateSystem(SystemManager* systemManager, SharedContext context, WorldType worldType);
 
         void update(int dt) override;
-        void handleEvent(Event* e) override;
 
         ~ChunkCreateSystem();
 };

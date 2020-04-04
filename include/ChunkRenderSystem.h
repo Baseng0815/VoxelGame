@@ -26,7 +26,7 @@ class ChunkRenderSystem {
         void handleFramebufferSize(Event* e);
 
     public:
-        ChunkRenderSystem(SystemManager* systemManager);
+        ChunkRenderSystem(SystemManager* systemManager, SharedContext* context);
 
         void init() override;
         void update(int dt) override;
