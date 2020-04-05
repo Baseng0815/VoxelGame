@@ -7,13 +7,13 @@
 void InputSystem::handleKeyPressEvent(Event* e) {
     KeyEvent keyEvent = *e->get<KeyEvent>();
 
-    // TODO add player
-    m_context->camera.handle
-
+    m_context->camera.handleKey(keyEvent.key, keyEvent.action);
 }
 
 void InputSystem::handleMouseMoveEvent(Event* e) {
+    CursorEvent cursorEvent = *e->get<CursorEvent>();
 
+    m_context->camera.handleCursorPos(cursorEvent.dx, cursorEvent.dy);
 }
 
 InputSystem::InputSystem(SystemManager* systemManager, SharedContext* context)

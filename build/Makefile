@@ -285,6 +285,33 @@ src/ChunkCreateSystem.cpp.s:
 	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.s
 .PHONY : src/ChunkCreateSystem.cpp.s
 
+src/ChunkRenderSystem.o: src/ChunkRenderSystem.cpp.o
+
+.PHONY : src/ChunkRenderSystem.o
+
+# target to build an object file
+src/ChunkRenderSystem.cpp.o:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/ChunkRenderSystem.cpp.o
+.PHONY : src/ChunkRenderSystem.cpp.o
+
+src/ChunkRenderSystem.i: src/ChunkRenderSystem.cpp.i
+
+.PHONY : src/ChunkRenderSystem.i
+
+# target to preprocess a source file
+src/ChunkRenderSystem.cpp.i:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/ChunkRenderSystem.cpp.i
+.PHONY : src/ChunkRenderSystem.cpp.i
+
+src/ChunkRenderSystem.s: src/ChunkRenderSystem.cpp.s
+
+.PHONY : src/ChunkRenderSystem.s
+
+# target to generate assembly for a file
+src/ChunkRenderSystem.cpp.s:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/ChunkRenderSystem.cpp.s
+.PHONY : src/ChunkRenderSystem.cpp.s
+
 src/Colors.o: src/Colors.cpp.o
 
 .PHONY : src/Colors.o
@@ -501,6 +528,33 @@ src/GUIShader.cpp.s:
 	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/GUIShader.cpp.s
 .PHONY : src/GUIShader.cpp.s
 
+src/InputSystem.o: src/InputSystem.cpp.o
+
+.PHONY : src/InputSystem.o
+
+# target to build an object file
+src/InputSystem.cpp.o:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/InputSystem.cpp.o
+.PHONY : src/InputSystem.cpp.o
+
+src/InputSystem.i: src/InputSystem.cpp.i
+
+.PHONY : src/InputSystem.i
+
+# target to preprocess a source file
+src/InputSystem.cpp.i:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/InputSystem.cpp.i
+.PHONY : src/InputSystem.cpp.i
+
+src/InputSystem.s: src/InputSystem.cpp.s
+
+.PHONY : src/InputSystem.s
+
+# target to generate assembly for a file
+src/InputSystem.cpp.s:
+	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/InputSystem.cpp.s
+.PHONY : src/InputSystem.cpp.s
+
 src/Light.o: src/Light.cpp.o
 
 .PHONY : src/Light.o
@@ -662,33 +716,6 @@ src/OreData.s: src/OreData.cpp.s
 src/OreData.cpp.s:
 	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/OreData.cpp.s
 .PHONY : src/OreData.cpp.s
-
-src/Player.o: src/Player.cpp.o
-
-.PHONY : src/Player.o
-
-# target to build an object file
-src/Player.cpp.o:
-	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/Player.cpp.o
-.PHONY : src/Player.cpp.o
-
-src/Player.i: src/Player.cpp.i
-
-.PHONY : src/Player.i
-
-# target to preprocess a source file
-src/Player.cpp.i:
-	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/Player.cpp.i
-.PHONY : src/Player.cpp.i
-
-src/Player.s: src/Player.cpp.s
-
-.PHONY : src/Player.s
-
-# target to generate assembly for a file
-src/Player.cpp.s:
-	$(MAKE) -f CMakeFiles/VoxelGame.dir/build.make CMakeFiles/VoxelGame.dir/src/Player.cpp.s
-.PHONY : src/Player.cpp.s
 
 src/RenderQuad.o: src/RenderQuad.cpp.o
 
@@ -1068,6 +1095,9 @@ help:
 	@echo "... src/ChunkCreateSystem.o"
 	@echo "... src/ChunkCreateSystem.i"
 	@echo "... src/ChunkCreateSystem.s"
+	@echo "... src/ChunkRenderSystem.o"
+	@echo "... src/ChunkRenderSystem.i"
+	@echo "... src/ChunkRenderSystem.s"
 	@echo "... src/Colors.o"
 	@echo "... src/Colors.i"
 	@echo "... src/Colors.s"
@@ -1092,6 +1122,9 @@ help:
 	@echo "... src/GUIShader.o"
 	@echo "... src/GUIShader.i"
 	@echo "... src/GUIShader.s"
+	@echo "... src/InputSystem.o"
+	@echo "... src/InputSystem.i"
+	@echo "... src/InputSystem.s"
 	@echo "... src/Light.o"
 	@echo "... src/Light.i"
 	@echo "... src/Light.s"
@@ -1110,9 +1143,6 @@ help:
 	@echo "... src/OreData.o"
 	@echo "... src/OreData.i"
 	@echo "... src/OreData.s"
-	@echo "... src/Player.o"
-	@echo "... src/Player.i"
-	@echo "... src/Player.s"
 	@echo "... src/RenderQuad.o"
 	@echo "... src/RenderQuad.i"
 	@echo "... src/RenderQuad.s"

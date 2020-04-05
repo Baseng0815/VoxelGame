@@ -1,6 +1,8 @@
 #include "../include/Application.h"
 #include "../include/EventDispatcher.h"
 
+#include <iostream>
+
 void Application::handleKeys(Event* event) {
     KeyEvent* kE = event->get<KeyEvent>();
 
@@ -35,9 +37,10 @@ Application::Application() {
 
     Definitions::loadData();
 
-    m_masterRenderer.init();
+    // init context data here
+    m_context.textureAtlas.init("Resources/Textures/textureAtlas0.png");
 
-    m_systemManager.init();
+    m_systemManager.init(&m_context);
 }
 
 Application::~Application() {
@@ -52,9 +55,7 @@ void Application::run() {
 
         // fps and render time
         if (m_time > 1000) {
-            m_fpsText.text = std::to_string(m_frameCounter / (float)m_time * 1000) + " fps";
-            m_renderTimeText.text = std::to_string(m_frameTime / m_frameCounter) + " mcrs render time";
-
+            std::cout << m_frameCounter / (float)m_time * 1000 << " fps" << std::endl;
             m_frameTime = 0;
             m_frameCounter = 0;
             m_time = 0;

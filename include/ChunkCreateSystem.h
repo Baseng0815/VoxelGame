@@ -14,7 +14,7 @@ struct ChunkHashFunction {
     }
 };
 
-class EnterChunkEvent;
+class Event;
 class ChunkComponent;
 class GeometryComponent;
 
@@ -24,16 +24,15 @@ class ChunkCreateSystem : public System {
 
         std::atomic_int constructionCount;
         std::vector<glm::vec2> loadedChunks;
-        BlockUVsArray blockUVsArray;
 
-        void handleEnterChunk(EnterChunkEvent*);
+        void handleEnterChunk(Event*);
 
         void updateChunkBlocks(ChunkComponent& chunk);
         void updateChunkVertices(ChunkComponent& chunk, GeometryComponent& geometryComponent);
         void updateChunkBuffers(ChunkComponent& chunk, GeometryComponent& geometryComponent);
 
     public:
-        ChunkCreateSystem(SystemManager* systemManager, SharedContext context, WorldType worldType);
+        ChunkCreateSystem(SystemManager* systemManager, SharedContext *context, WorldType worldType);
 
         void update(int dt) override;
 

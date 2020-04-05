@@ -1,5 +1,6 @@
 #include "../include/ChunkRenderSystem.h"
 
+#include "../include/SharedContext.h"
 #include "../include/EventDispatcher.h"
 
 void ChunkRenderSystem::handleFramebufferSize(Event* e) {
@@ -13,6 +14,17 @@ ChunkRenderSystem::ChunkRenderSystem(SystemManager* systemManager, SharedContext
 
 void ChunkRenderSystem::init() {
     ADD_EVENT(ChunkRenderSystem::handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT);
+
+
+    m_blockShader.init();
+    m_lightingShader.init();
+
+    m_light.color = glm::vec3(1, 1, 1);
+    m_light.position = glm::vec3(10, 10, 10);
+    m_gBuffer.init();
+    m_renderQuad.init();
+
+    m_guiRenderer.init();
 }
 
 void ChunkRenderSystem::update(int dt) {
@@ -26,14 +38,12 @@ void ChunkRenderSystem::update(int dt) {
 
     // geometry pass: scene's geometry and color data
     m_blockShader.bind();
-    m_textureAtlas.bind();
+    m_context->textureAtlas.bind();
 
-    const Camera& camera = scene.player.getCamera();
-    const World& world = scene.world;
+    m_blockShader.uploadViewMatrix(m_context->camera.getViewMatrix());
+    m_blockShader.uploadProjectionMatrix(m_context->camera.getProjectionMatrix(PROJECTION_PERSPECTIVE));
 
-    m_blockShader.uploadViewMatrix(camera.getViewMatrix());
-    m_blockShader.uploadProjectionMatrix(camera.getProjectionMatrix(PROJECTION_PERSPECTIVE));
-
+    // TODO introduct component chunk rendering
     for (auto it = world.m_chunks.begin(); it != world.m_chunks.end(); it++)
         it->second.render(m_blockShader, it->first);
 
@@ -54,8 +64,8 @@ void ChunkRenderSystem::update(int dt) {
 
     // skybox
     m_skyboxShader.bind();
-    m_skyboxShader.uploadViewMatrix(camera.getViewMatrix());
-    m_skyboxShader.uploadProjectionMatrix(camera.getProjectionMatrix(PROJECTION_PERSPECTIVE));
+    m_skyboxShader.uploadViewMatrix(m_context->camera.getViewMatrix());
+    m_skyboxShader.uploadProjectionMatrix(m_context->camera.getProjectionMatrix(PROJECTION_PERSPECTIVE));
     m_skybox.render();
 
     // GUI elements

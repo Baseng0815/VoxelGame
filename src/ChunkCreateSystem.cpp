@@ -1,23 +1,24 @@
 #include "../include/ChunkCreateSystem.h"
 
-#include "../include/Event.h"
 #include "../include/Block.h"
-#include "../include/TextureAtlas.h"
+#include "../include/SharedContext.h"
 #include "../include/SystemManager.h"
 
 #include "../include/Utility.h"
 #include "../include/Definitions.h"
+#include "../include/EventDispatcher.h"
 
 #include "../include/Components/ChunkComponent.h"
 #include "../include/Components/GeometryComponent.h"
 #include "../include/Components/TransformationComponent.h"
 
-void ChunkCreateSystem::handleEnterChunk(EnterChunkEvent* e) {
+void ChunkCreateSystem::handleEnterChunk(Event* e) {
     EnterChunkEvent event = *e->get<EnterChunkEvent>();
 
     entt::registry& registry = m_systemManager->getRegistry();
     auto view = registry.view<TransformationComponent, GeometryComponent, ChunkComponent>();
 
+    // delete old chunks which have come out of range
     for (auto entity : view) {
         TransformationComponent& transformation = view.get<TransformationComponent>(entity);
         GeometryComponent& geometry             = view.get<GeometryComponent>(entity);
@@ -68,7 +69,7 @@ void ChunkCreateSystem::updateChunkVertices(ChunkComponent& chunk, GeometryCompo
                 faceCountPerPass = 0;
                 bool draw = false;
 
-                BlockUVs blockUVs = blockUVsArray[(int)chunk.blocks[x][y][z].type];
+                BlockUVs blockUVs = (*m_context->textureAtlas.getBlockTextureCoordinates())[(int)chunk.blocks[x][y][z].type];
 
                 // negative X
                 if (x > 0) {
@@ -213,7 +214,7 @@ void ChunkCreateSystem::updateChunkBuffers(ChunkComponent& chunk, GeometryCompon
 
 ChunkCreateSystem::ChunkCreateSystem(SystemManager* systemManager, SharedContext* context, WorldType type)
     : System(systemManager, context) {
-
+    ADD_EVENT(ChunkCreateSystem::handleEnterChunk, ENTER_CHUNK_EVENT);
 }
 
 void ChunkCreateSystem::update(int dt) {
@@ -267,9 +268,3 @@ void ChunkCreateSystem::update(int dt) {
         }
     };
 }
-
-void ChunkCreateSystem::handleEvent(Event* e) {
-    if (e->type() == EventType::ENTER_CHUNK_EVENT)
-        handleEnterChunk(e->get<EnterChunkEvent>());
-}
-

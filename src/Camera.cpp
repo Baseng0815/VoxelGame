@@ -8,17 +8,18 @@
 
 using namespace std::placeholders;
 
-glm::vec3 Camera::update(glm::vec3 position) {
+void Camera::update() {
     glm::vec3 front;
     front.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
     front.y = sin(glm::radians(m_pitch));
     front.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
-    front = glm::normalize(front);
+    m_front = glm::normalize(front);
     m_right = glm::normalize(glm::cross(front, glm::vec3(0, 1, 0)));
     m_up = glm::normalize(glm::cross(m_right, front));
 
-    m_viewMatrix = glm::lookAt(position, position + front, m_up);
-    return front;
+    m_viewMatrix = glm::lookAt(m_position, m_position + m_front, m_up);
+
+    m_front_noY = glm::cross(m_right, glm::vec3(0, -1, 0));
 }
 
 void Camera::resize() {
@@ -27,9 +28,10 @@ void Camera::resize() {
             0.0f, static_cast<GLfloat>(m_height));
 }
 
-Camera::Camera() {
+Camera::Camera(float fov)
+    : m_fov(fov) {
     resize();
-    update(glm::vec3(0, 0, 0));
+    update();
 }
 
 void Camera::handleKey(int key, int action) {
@@ -102,9 +104,10 @@ void Camera::handleFramebufferSize(int width, int height) {
 }
 
 void Camera::updatePosition(int dt) {
-    m_position += m_right * glm::vec3(m_velocity.x, 0, 0) +
-                  m_front * glm::vec3(0, 0, m_velocity.z) +
-                  glm::vec3(0, m_velocity.y, 0);
+    m_position += (m_velocity.x * m_right
+        + m_velocity.y * glm::vec3(0, 1, 0)
+        + m_velocity.z * m_front_noY)
+        * (dt / 1000.f * Definitions::CAM_SPEED);
 }
 
 glm::mat4 Camera::getProjectionMatrix(ProjectionType type) const {

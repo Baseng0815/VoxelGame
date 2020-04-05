@@ -8,7 +8,7 @@
 
 class Event;
 
-class ChunkRenderSystem {
+class ChunkRenderSystem : public System {
     private:
         // first render pass
         BlockShader m_blockShader;
@@ -20,8 +20,6 @@ class ChunkRenderSystem {
         RenderQuad m_renderQuad;
 
         TextureAtlas m_textureAtlas;
-
-        Camera m_camera;
 
         void handleFramebufferSize(Event* e);
 

@@ -13,20 +13,10 @@ CMakeFiles/VoxelGame.dir/src/Application.cpp.o
  /home/bastian/projects/VoxelGame/include/Definitions.h
  /home/bastian/projects/VoxelGame/include/Event.h
  /home/bastian/projects/VoxelGame/include/EventDispatcher.h
- /home/bastian/projects/VoxelGame/include/Font.h
- /home/bastian/projects/VoxelGame/include/GBuffer.h
- /home/bastian/projects/VoxelGame/include/GUIRenderer.h
- /home/bastian/projects/VoxelGame/include/GUIShader.h
- /home/bastian/projects/VoxelGame/include/Light.h
- /home/bastian/projects/VoxelGame/include/LightingShader.h
- /home/bastian/projects/VoxelGame/include/MasterRenderer.h
  /home/bastian/projects/VoxelGame/include/OreData.h
- /home/bastian/projects/VoxelGame/include/RenderQuad.h
  /home/bastian/projects/VoxelGame/include/Shader.h
- /home/bastian/projects/VoxelGame/include/Skybox.h
- /home/bastian/projects/VoxelGame/include/SkyboxShader.h
+ /home/bastian/projects/VoxelGame/include/SharedContext.h
  /home/bastian/projects/VoxelGame/include/SystemManager.h
- /home/bastian/projects/VoxelGame/include/Text.h
  /home/bastian/projects/VoxelGame/include/TextureAtlas.h
  /home/bastian/projects/VoxelGame/include/Vertex.h
  /home/bastian/projects/VoxelGame/include/Window.h
@@ -71,20 +61,46 @@ CMakeFiles/VoxelGame.dir/src/ChunkCreateSystem.cpp.o
  /home/bastian/projects/VoxelGame/include/BiomeInfo.h
  /home/bastian/projects/VoxelGame/include/Block.h
  /home/bastian/projects/VoxelGame/include/BlockData.h
+ /home/bastian/projects/VoxelGame/include/Camera.h
  /home/bastian/projects/VoxelGame/include/ChunkCreateSystem.h
+ /home/bastian/projects/VoxelGame/include/Colors.h
  /home/bastian/projects/VoxelGame/include/Components/ChunkComponent.h
  /home/bastian/projects/VoxelGame/include/Components/GeometryComponent.h
  /home/bastian/projects/VoxelGame/include/Components/TransformationComponent.h
  /home/bastian/projects/VoxelGame/include/Definitions.h
  /home/bastian/projects/VoxelGame/include/Event.h
+ /home/bastian/projects/VoxelGame/include/EventDispatcher.h
  /home/bastian/projects/VoxelGame/include/OreData.h
+ /home/bastian/projects/VoxelGame/include/SharedContext.h
  /home/bastian/projects/VoxelGame/include/System.h
  /home/bastian/projects/VoxelGame/include/SystemManager.h
  /home/bastian/projects/VoxelGame/include/TextureAtlas.h
  /home/bastian/projects/VoxelGame/include/Utility.h
  /home/bastian/projects/VoxelGame/include/Vertex.h
+ /home/bastian/projects/VoxelGame/include/Window.h
  /home/bastian/projects/VoxelGame/include/WorldGenerator.h
  /home/bastian/projects/VoxelGame/src/ChunkCreateSystem.cpp
+CMakeFiles/VoxelGame.dir/src/ChunkRenderSystem.cpp.o
+ /home/bastian/projects/VoxelGame/include/BiomeInfo.h
+ /home/bastian/projects/VoxelGame/include/BlockData.h
+ /home/bastian/projects/VoxelGame/include/BlockShader.h
+ /home/bastian/projects/VoxelGame/include/Camera.h
+ /home/bastian/projects/VoxelGame/include/ChunkRenderSystem.h
+ /home/bastian/projects/VoxelGame/include/Colors.h
+ /home/bastian/projects/VoxelGame/include/Definitions.h
+ /home/bastian/projects/VoxelGame/include/Event.h
+ /home/bastian/projects/VoxelGame/include/EventDispatcher.h
+ /home/bastian/projects/VoxelGame/include/GBuffer.h
+ /home/bastian/projects/VoxelGame/include/Light.h
+ /home/bastian/projects/VoxelGame/include/LightingShader.h
+ /home/bastian/projects/VoxelGame/include/OreData.h
+ /home/bastian/projects/VoxelGame/include/RenderQuad.h
+ /home/bastian/projects/VoxelGame/include/Shader.h
+ /home/bastian/projects/VoxelGame/include/SharedContext.h
+ /home/bastian/projects/VoxelGame/include/System.h
+ /home/bastian/projects/VoxelGame/include/TextureAtlas.h
+ /home/bastian/projects/VoxelGame/include/Window.h
+ /home/bastian/projects/VoxelGame/src/ChunkRenderSystem.cpp
 CMakeFiles/VoxelGame.dir/src/Colors.cpp.o
  /home/bastian/projects/VoxelGame/include/Colors.h
  /home/bastian/projects/VoxelGame/src/Colors.cpp
@@ -109,20 +125,10 @@ CMakeFiles/VoxelGame.dir/src/EventDispatcher.cpp.o
  /home/bastian/projects/VoxelGame/include/Definitions.h
  /home/bastian/projects/VoxelGame/include/Event.h
  /home/bastian/projects/VoxelGame/include/EventDispatcher.h
- /home/bastian/projects/VoxelGame/include/Font.h
- /home/bastian/projects/VoxelGame/include/GBuffer.h
- /home/bastian/projects/VoxelGame/include/GUIRenderer.h
- /home/bastian/projects/VoxelGame/include/GUIShader.h
- /home/bastian/projects/VoxelGame/include/Light.h
- /home/bastian/projects/VoxelGame/include/LightingShader.h
- /home/bastian/projects/VoxelGame/include/MasterRenderer.h
  /home/bastian/projects/VoxelGame/include/OreData.h
- /home/bastian/projects/VoxelGame/include/RenderQuad.h
  /home/bastian/projects/VoxelGame/include/Shader.h
- /home/bastian/projects/VoxelGame/include/Skybox.h
- /home/bastian/projects/VoxelGame/include/SkyboxShader.h
+ /home/bastian/projects/VoxelGame/include/SharedContext.h
  /home/bastian/projects/VoxelGame/include/SystemManager.h
- /home/bastian/projects/VoxelGame/include/Text.h
  /home/bastian/projects/VoxelGame/include/TextureAtlas.h
  /home/bastian/projects/VoxelGame/include/Vertex.h
  /home/bastian/projects/VoxelGame/include/Window.h
@@ -152,6 +158,21 @@ CMakeFiles/VoxelGame.dir/src/GUIShader.cpp.o
  /home/bastian/projects/VoxelGame/include/GUIShader.h
  /home/bastian/projects/VoxelGame/include/Shader.h
  /home/bastian/projects/VoxelGame/src/GUIShader.cpp
+CMakeFiles/VoxelGame.dir/src/InputSystem.cpp.o
+ /home/bastian/projects/VoxelGame/include/BiomeInfo.h
+ /home/bastian/projects/VoxelGame/include/BlockData.h
+ /home/bastian/projects/VoxelGame/include/Camera.h
+ /home/bastian/projects/VoxelGame/include/Colors.h
+ /home/bastian/projects/VoxelGame/include/Definitions.h
+ /home/bastian/projects/VoxelGame/include/Event.h
+ /home/bastian/projects/VoxelGame/include/EventDispatcher.h
+ /home/bastian/projects/VoxelGame/include/InputSystem.h
+ /home/bastian/projects/VoxelGame/include/OreData.h
+ /home/bastian/projects/VoxelGame/include/SharedContext.h
+ /home/bastian/projects/VoxelGame/include/System.h
+ /home/bastian/projects/VoxelGame/include/TextureAtlas.h
+ /home/bastian/projects/VoxelGame/include/Window.h
+ /home/bastian/projects/VoxelGame/src/InputSystem.cpp
 CMakeFiles/VoxelGame.dir/src/Light.cpp.o
  /home/bastian/projects/VoxelGame/include/Light.h
  /home/bastian/projects/VoxelGame/src/Light.cpp
@@ -209,18 +230,6 @@ CMakeFiles/VoxelGame.dir/src/MasterRenderer.cpp.o
 CMakeFiles/VoxelGame.dir/src/OreData.cpp.o
  /home/bastian/projects/VoxelGame/include/OreData.h
  /home/bastian/projects/VoxelGame/src/OreData.cpp
-CMakeFiles/VoxelGame.dir/src/Player.cpp.o
- /home/bastian/projects/VoxelGame/include/BiomeInfo.h
- /home/bastian/projects/VoxelGame/include/BlockData.h
- /home/bastian/projects/VoxelGame/include/Camera.h
- /home/bastian/projects/VoxelGame/include/Colors.h
- /home/bastian/projects/VoxelGame/include/Definitions.h
- /home/bastian/projects/VoxelGame/include/Event.h
- /home/bastian/projects/VoxelGame/include/EventDispatcher.h
- /home/bastian/projects/VoxelGame/include/OreData.h
- /home/bastian/projects/VoxelGame/include/Player.h
- /home/bastian/projects/VoxelGame/include/Window.h
- /home/bastian/projects/VoxelGame/src/Player.cpp
 CMakeFiles/VoxelGame.dir/src/RenderQuad.cpp.o
  /home/bastian/projects/VoxelGame/include/RenderQuad.h
  /home/bastian/projects/VoxelGame/include/Utility.h
@@ -243,9 +252,17 @@ CMakeFiles/VoxelGame.dir/src/System.cpp.o
 CMakeFiles/VoxelGame.dir/src/SystemManager.cpp.o
  /home/bastian/projects/VoxelGame/include/BiomeInfo.h
  /home/bastian/projects/VoxelGame/include/BlockData.h
+ /home/bastian/projects/VoxelGame/include/BlockShader.h
  /home/bastian/projects/VoxelGame/include/ChunkCreateSystem.h
+ /home/bastian/projects/VoxelGame/include/ChunkRenderSystem.h
  /home/bastian/projects/VoxelGame/include/Definitions.h
+ /home/bastian/projects/VoxelGame/include/GBuffer.h
+ /home/bastian/projects/VoxelGame/include/InputSystem.h
+ /home/bastian/projects/VoxelGame/include/Light.h
+ /home/bastian/projects/VoxelGame/include/LightingShader.h
  /home/bastian/projects/VoxelGame/include/OreData.h
+ /home/bastian/projects/VoxelGame/include/RenderQuad.h
+ /home/bastian/projects/VoxelGame/include/Shader.h
  /home/bastian/projects/VoxelGame/include/System.h
  /home/bastian/projects/VoxelGame/include/SystemManager.h
  /home/bastian/projects/VoxelGame/include/TextureAtlas.h
@@ -314,20 +331,10 @@ CMakeFiles/VoxelGame.dir/src/main.cpp.o
  /home/bastian/projects/VoxelGame/include/Chunk.h
  /home/bastian/projects/VoxelGame/include/Colors.h
  /home/bastian/projects/VoxelGame/include/Definitions.h
- /home/bastian/projects/VoxelGame/include/Font.h
- /home/bastian/projects/VoxelGame/include/GBuffer.h
- /home/bastian/projects/VoxelGame/include/GUIRenderer.h
- /home/bastian/projects/VoxelGame/include/GUIShader.h
- /home/bastian/projects/VoxelGame/include/Light.h
- /home/bastian/projects/VoxelGame/include/LightingShader.h
- /home/bastian/projects/VoxelGame/include/MasterRenderer.h
  /home/bastian/projects/VoxelGame/include/OreData.h
- /home/bastian/projects/VoxelGame/include/RenderQuad.h
  /home/bastian/projects/VoxelGame/include/Shader.h
- /home/bastian/projects/VoxelGame/include/Skybox.h
- /home/bastian/projects/VoxelGame/include/SkyboxShader.h
+ /home/bastian/projects/VoxelGame/include/SharedContext.h
  /home/bastian/projects/VoxelGame/include/SystemManager.h
- /home/bastian/projects/VoxelGame/include/Text.h
  /home/bastian/projects/VoxelGame/include/TextureAtlas.h
  /home/bastian/projects/VoxelGame/include/Vertex.h
  /home/bastian/projects/VoxelGame/include/Window.h

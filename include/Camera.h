@@ -18,18 +18,21 @@ class Camera {
         const float MOVE_SPEED = 0.01f;
 
         glm::vec3 m_velocity;
-        glm::vec3 m_position, m_up, m_right;
+        glm::vec3 m_position, m_up, m_right, m_front;
         glm::mat4 m_projectionPerspective, m_projectionOrtho, m_viewMatrix;
+
+        // used for movement
+        glm::vec3 m_front_noY;
 
 
         // recalculate view matrix, front, up and right vectors
         // return new front vector
-        glm::vec3 update(glm::vec3 position);
+        void update();
 
         void resize();
 
     public:
-        Camera();
+        Camera(float fov);
 
         void handleKey(int key, int action);
         void handleCursorPos(int dx, int dy);

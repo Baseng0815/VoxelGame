@@ -5,6 +5,7 @@
 
 class System;
 class Event;
+class SharedContext;
 
 class SystemManager {
 private:
@@ -13,7 +14,7 @@ private:
     entt::registry m_entityRegistry;
 
 public:
-    void init();
+    void init(SharedContext* context);
     ~SystemManager();
 
     void update(int dt);

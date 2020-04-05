@@ -37,3 +37,9 @@ Debug/*
 *.exe
 *.out
 *.app
+
+*.vim
+CMakeFiles/*
+CMakeLists.txt
+*.sln
+build/*
