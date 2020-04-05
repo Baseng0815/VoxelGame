@@ -1,3 +1,0 @@
-/home/bastian/projects/VoxelGame/CMakeFiles/rebuild_cache.dir
-/home/bastian/projects/VoxelGame/CMakeFiles/VoxelGame.dir
-/home/bastian/projects/VoxelGame/CMakeFiles/edit_cache.dir
