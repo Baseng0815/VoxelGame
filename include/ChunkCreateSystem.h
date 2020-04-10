@@ -34,6 +34,7 @@ class ChunkCreateSystem : public System {
     public:
         ChunkCreateSystem(SystemManager* systemManager, SharedContext *context, WorldType worldType);
 
+        void init() override;
         void update(int dt) override;
 
         ~ChunkCreateSystem();

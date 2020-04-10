@@ -18,7 +18,7 @@ void Window::init(Application* app) {
     glfwSwapInterval(1);
 }
 
-void Window::clear(Color clearColor) {
+void Window::clear(glm::vec3 clearColor) {
     glClearColor(clearColor.r, clearColor.g, clearColor.b, 1);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 }

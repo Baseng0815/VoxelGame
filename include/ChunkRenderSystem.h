@@ -30,4 +30,4 @@ class ChunkRenderSystem : public System {
         void update(int dt) override;
 
         ~ChunkRenderSystem();
-}
+};

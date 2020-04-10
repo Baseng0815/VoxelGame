@@ -18,7 +18,6 @@ public:
     ~SystemManager();
 
     void update(int dt);
-    void handleEvent(Event* e);
 
     entt::registry& getRegistry();
 };

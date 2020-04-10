@@ -23,3 +23,7 @@ void InputSystem::init() {
     ADD_EVENT(InputSystem::handleKeyPressEvent, KEY_EVENT);
     ADD_EVENT(InputSystem::handleMouseMoveEvent, CURSOR_EVENT);
 }
+
+void InputSystem::update(int dt) {
+
+}

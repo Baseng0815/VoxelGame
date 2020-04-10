@@ -19,4 +19,4 @@ class InputSystem : public System {
 
         ~InputSystem() = default;
 
-}
+};

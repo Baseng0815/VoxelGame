@@ -1,7 +1,12 @@
 #include "../include/ChunkRenderSystem.h"
 
 #include "../include/SharedContext.h"
+#include "../include/SystemManager.h"
 #include "../include/EventDispatcher.h"
+
+#include "../include/Components/ChunkComponent.h"
+#include "../include/Components/GeometryComponent.h"
+#include "../include/Components/TransformationComponent.h"
 
 void ChunkRenderSystem::handleFramebufferSize(Event* e) {
     FramebufferSizeEvent fbsE = *e->get<FramebufferSizeEvent>();
@@ -23,8 +28,6 @@ void ChunkRenderSystem::init() {
     m_light.position = glm::vec3(10, 10, 10);
     m_gBuffer.init();
     m_renderQuad.init();
-
-    m_guiRenderer.init();
 }
 
 void ChunkRenderSystem::update(int dt) {
@@ -43,9 +46,21 @@ void ChunkRenderSystem::update(int dt) {
     m_blockShader.uploadViewMatrix(m_context->camera.getViewMatrix());
     m_blockShader.uploadProjectionMatrix(m_context->camera.getProjectionMatrix(PROJECTION_PERSPECTIVE));
 
-    // TODO introduct component chunk rendering
-    for (auto it = world.m_chunks.begin(); it != world.m_chunks.end(); it++)
-        it->second.render(m_blockShader, it->first);
+    entt::registry& registry = m_systemManager->getRegistry();
+    auto view = registry.view<TransformationComponent, GeometryComponent, ChunkComponent>();
+
+    for (auto entity : view) {
+        TransformationComponent& transformation = view.get<TransformationComponent>(entity);
+        GeometryComponent& geometry             = view.get<GeometryComponent>(entity);
+        ChunkComponent& chunk                   = view.get<ChunkComponent>(entity);
+
+        if (chunk.buffersInitialized) {
+            std::lock_guard<std::mutex> vaoLock(chunk.vaoMutex);
+            m_blockShader.uploadModelMatrix(transformation.getModelMatrix());
+                glBindVertexArray(geometry.vao);
+            glDrawElements(GL_TRIANGLES, geometry.drawCount, GL_UNSIGNED_INT, nullptr);
+        }
+    }
 
     // lighting pass
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -62,11 +77,12 @@ void ChunkRenderSystem::update(int dt) {
             GL_DEPTH_BUFFER_BIT, GL_NEAREST);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    // skybox
+    // TODO add skybox
+    /*
     m_skyboxShader.bind();
     m_skyboxShader.uploadViewMatrix(m_context->camera.getViewMatrix());
     m_skyboxShader.uploadProjectionMatrix(m_context->camera.getProjectionMatrix(PROJECTION_PERSPECTIVE));
     m_skybox.render();
-
+    */
     // GUI elements
 }

@@ -24,7 +24,7 @@ public:
     // init GLFW
     void init(Application* app);
 
-    void clear(Color clearColor = Colors::Black);
+    void clear(glm::vec3 clearColor = Colors::Black);
     void display();
 
     void toggleFullscreen();

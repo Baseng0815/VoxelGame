@@ -21,11 +21,6 @@ void SystemManager::update(int dt) {
         system->update(dt);
 }
 
-void SystemManager::handleEvent(Event *e) {
-    for (auto system : m_systems)
-        system->handleEvent(e);
-}
-
 entt::registry& SystemManager::getRegistry() {
     return m_entityRegistry;
 }

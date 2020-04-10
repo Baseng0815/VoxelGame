@@ -1,0 +1,1612 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_FILESEP	slash	/slash or backslash/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/a3c87ab5/
+$(VERBOSE).SILENT	build/Makefile	/^$(VERBOSE).SILENT:$/;"	t
+0	Resources/Misc/BiomeInfo.json	/^	"0": {$/;"	o
+0	Resources/Misc/BlockData.json	/^  "0": {$/;"	o
+1	Resources/Misc/BlockData.json	/^  "1": {$/;"	o
+10	Resources/Misc/BlockData.json	/^  "10": {$/;"	o
+11	Resources/Misc/BlockData.json	/^  "11": {$/;"	o
+12	Resources/Misc/BlockData.json	/^  "12": {$/;"	o
+13	Resources/Misc/BlockData.json	/^  "13": {$/;"	o
+14	Resources/Misc/BlockData.json	/^  "14": {$/;"	o
+15	Resources/Misc/BlockData.json	/^  "15": {$/;"	o
+16	Resources/Misc/BlockData.json	/^  "16": {$/;"	o
+17	Resources/Misc/BlockData.json	/^  "17": {$/;"	o
+18	Resources/Misc/BlockData.json	/^  "18": {$/;"	o
+19	Resources/Misc/BlockData.json	/^  "19": {$/;"	o
+2	Resources/Misc/BlockData.json	/^  "2": {$/;"	o
+20	Resources/Misc/BlockData.json	/^  "20": {$/;"	o
+21	Resources/Misc/BlockData.json	/^  "21": {$/;"	o
+3	Resources/Misc/BlockData.json	/^  "3": {$/;"	o
+4	Resources/Misc/BlockData.json	/^  "4": {$/;"	o
+5	Resources/Misc/BlockData.json	/^  "5": {$/;"	o
+6	Resources/Misc/BlockData.json	/^  "6": {$/;"	o
+7	Resources/Misc/BlockData.json	/^  "7": {$/;"	o
+8	Resources/Misc/BlockData.json	/^  "8": {$/;"	o
+9	Resources/Misc/BlockData.json	/^  "9": {$/;"	o
+ADD_EVENT	include/EventDispatcher.h	/^#define ADD_EVENT(/;"	d
+ARCHITECTURE_ID	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#   define ARCHITECTURE_ID /;"	d	file:
+ARCHITECTURE_ID	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#  define ARCHITECTURE_ID /;"	d	file:
+ARCHITECTURE_ID	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#  define ARCHITECTURE_ID$/;"	d	file:
+ARCHITECTURE_ID	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#   define ARCHITECTURE_ID /;"	d	file:
+ARCHITECTURE_ID	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define ARCHITECTURE_ID /;"	d	file:
+ARCHITECTURE_ID	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define ARCHITECTURE_ID$/;"	d	file:
+ARCHITECTURE_ID	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#   define ARCHITECTURE_ID /;"	d	file:
+ARCHITECTURE_ID	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#  define ARCHITECTURE_ID /;"	d	file:
+ARCHITECTURE_ID	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#  define ARCHITECTURE_ID$/;"	d	file:
+ARCHITECTURE_ID	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#   define ARCHITECTURE_ID /;"	d	file:
+ARCHITECTURE_ID	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define ARCHITECTURE_ID /;"	d	file:
+ARCHITECTURE_ID	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define ARCHITECTURE_ID$/;"	d	file:
+AddGradientPoint	src/noiseutils.cpp	/^void GradientColor::AddGradientPoint (double gradientPos,$/;"	f	class:GradientColor	typeref:typename:void
+AddGradientPoint	src/noiseutils.cpp	/^void RendererImage::AddGradientPoint (double gradientPos,$/;"	f	class:RendererImage	typeref:typename:void
+Application	include/Application.h	/^class Application {$/;"	c
+Application	src/Application.cpp	/^Application::Application() {$/;"	f	class:Application
+BIOME_FLAT	include/BiomeInfo.h	/^    BIOME_FLAT, NUM_BIOMES$/;"	e	enum:BiomeID
+BIOME_INFO	include/Definitions.h	/^    static std::array<BiomeInfo, (int)BiomeID::NUM_BIOMES> BIOME_INFO;$/;"	m	class:Definitions	typeref:typename:std::array<BiomeInfo,(int)BiomeID::NUM_BIOMES>
+BIOME_INFO	src/Definitions.cpp	/^std::array<BiomeInfo, (int)BiomeID::NUM_BIOMES> Definitions::BIOME_INFO;$/;"	m	class:Definitions	typeref:typename:std::array<BiomeInfo,(int)BiomeID::NUM_BIOMES>
+BLOCK_AIR	include/BlockData.h	/^	BLOCK_AIR, BLOCK_GRASS, BLOCK_STONE, BLOCK_WOOD, BLOCK_STONE_BRICKS, BLOCK_STONE_FRAMED,$/;"	e	enum:BlockType
+BLOCK_BOOLSHELF	include/BlockData.h	/^	BLOCK_BOOLSHELF, BLOCK_STONE_MOSSY, BLOCK_DIRT,$/;"	e	enum:BlockType
+BLOCK_BRICKS	include/BlockData.h	/^	BLOCK_BRICKS, BLOCK_TNT, BLOCK_STONE_CRACKED, BLOCK_STONE_COBBLE, BLOCK_SAND, BLOCK_GRAVEL,$/;"	e	enum:BlockType
+BLOCK_DATA	include/Definitions.h	/^    static std::array<BlockData, (int)BlockType::NUM_BLOCKS> BLOCK_DATA;$/;"	m	class:Definitions	typeref:typename:std::array<BlockData,(int)BlockType::NUM_BLOCKS>
+BLOCK_DATA	src/Definitions.cpp	/^std::array<BlockData, (int)BlockType::NUM_BLOCKS> Definitions::BLOCK_DATA;$/;"	m	class:Definitions	typeref:typename:std::array<BlockData,(int)BlockType::NUM_BLOCKS>
+BLOCK_DIAMOND	include/BlockData.h	/^	BLOCK_IRON, BLOCK_GOLD, BLOCK_DIAMOND, BLOCK_EMERALD, BLOCK_ORE_GOLD, BLOCK_ORE_IRON, BLOCK_ORE/;"	e	enum:BlockType
+BLOCK_DIRT	include/BlockData.h	/^	BLOCK_BOOLSHELF, BLOCK_STONE_MOSSY, BLOCK_DIRT,$/;"	e	enum:BlockType
+BLOCK_EMERALD	include/BlockData.h	/^	BLOCK_IRON, BLOCK_GOLD, BLOCK_DIAMOND, BLOCK_EMERALD, BLOCK_ORE_GOLD, BLOCK_ORE_IRON, BLOCK_ORE/;"	e	enum:BlockType
+BLOCK_GOLD	include/BlockData.h	/^	BLOCK_IRON, BLOCK_GOLD, BLOCK_DIAMOND, BLOCK_EMERALD, BLOCK_ORE_GOLD, BLOCK_ORE_IRON, BLOCK_ORE/;"	e	enum:BlockType
+BLOCK_GRASS	include/BlockData.h	/^	BLOCK_AIR, BLOCK_GRASS, BLOCK_STONE, BLOCK_WOOD, BLOCK_STONE_BRICKS, BLOCK_STONE_FRAMED,$/;"	e	enum:BlockType
+BLOCK_GRAVEL	include/BlockData.h	/^	BLOCK_BRICKS, BLOCK_TNT, BLOCK_STONE_CRACKED, BLOCK_STONE_COBBLE, BLOCK_SAND, BLOCK_GRAVEL,$/;"	e	enum:BlockType
+BLOCK_IRON	include/BlockData.h	/^	BLOCK_IRON, BLOCK_GOLD, BLOCK_DIAMOND, BLOCK_EMERALD, BLOCK_ORE_GOLD, BLOCK_ORE_IRON, BLOCK_ORE/;"	e	enum:BlockType
+BLOCK_ORE_COAL	include/BlockData.h	/^	BLOCK_IRON, BLOCK_GOLD, BLOCK_DIAMOND, BLOCK_EMERALD, BLOCK_ORE_GOLD, BLOCK_ORE_IRON, BLOCK_ORE/;"	e	enum:BlockType
+BLOCK_ORE_GOLD	include/BlockData.h	/^	BLOCK_IRON, BLOCK_GOLD, BLOCK_DIAMOND, BLOCK_EMERALD, BLOCK_ORE_GOLD, BLOCK_ORE_IRON, BLOCK_ORE/;"	e	enum:BlockType
+BLOCK_ORE_IRON	include/BlockData.h	/^	BLOCK_IRON, BLOCK_GOLD, BLOCK_DIAMOND, BLOCK_EMERALD, BLOCK_ORE_GOLD, BLOCK_ORE_IRON, BLOCK_ORE/;"	e	enum:BlockType
+BLOCK_SAND	include/BlockData.h	/^	BLOCK_BRICKS, BLOCK_TNT, BLOCK_STONE_CRACKED, BLOCK_STONE_COBBLE, BLOCK_SAND, BLOCK_GRAVEL,$/;"	e	enum:BlockType
+BLOCK_STONE	include/BlockData.h	/^	BLOCK_AIR, BLOCK_GRASS, BLOCK_STONE, BLOCK_WOOD, BLOCK_STONE_BRICKS, BLOCK_STONE_FRAMED,$/;"	e	enum:BlockType
+BLOCK_STONE_BRICKS	include/BlockData.h	/^	BLOCK_AIR, BLOCK_GRASS, BLOCK_STONE, BLOCK_WOOD, BLOCK_STONE_BRICKS, BLOCK_STONE_FRAMED,$/;"	e	enum:BlockType
+BLOCK_STONE_COBBLE	include/BlockData.h	/^	BLOCK_BRICKS, BLOCK_TNT, BLOCK_STONE_CRACKED, BLOCK_STONE_COBBLE, BLOCK_SAND, BLOCK_GRAVEL,$/;"	e	enum:BlockType
+BLOCK_STONE_CRACKED	include/BlockData.h	/^	BLOCK_BRICKS, BLOCK_TNT, BLOCK_STONE_CRACKED, BLOCK_STONE_COBBLE, BLOCK_SAND, BLOCK_GRAVEL,$/;"	e	enum:BlockType
+BLOCK_STONE_FRAMED	include/BlockData.h	/^	BLOCK_AIR, BLOCK_GRASS, BLOCK_STONE, BLOCK_WOOD, BLOCK_STONE_BRICKS, BLOCK_STONE_FRAMED,$/;"	e	enum:BlockType
+BLOCK_STONE_MOSSY	include/BlockData.h	/^	BLOCK_BOOLSHELF, BLOCK_STONE_MOSSY, BLOCK_DIRT,$/;"	e	enum:BlockType
+BLOCK_TNT	include/BlockData.h	/^	BLOCK_BRICKS, BLOCK_TNT, BLOCK_STONE_CRACKED, BLOCK_STONE_COBBLE, BLOCK_SAND, BLOCK_GRAVEL,$/;"	e	enum:BlockType
+BLOCK_WOOD	include/BlockData.h	/^	BLOCK_AIR, BLOCK_GRASS, BLOCK_STONE, BLOCK_WOOD, BLOCK_STONE_BRICKS, BLOCK_STONE_FRAMED,$/;"	e	enum:BlockType
+BMP_HEADER_SIZE	src/noiseutils.cpp	/^const int BMP_HEADER_SIZE = 54;$/;"	v	typeref:typename:const int
+BUFFER_OFFSET	include/Utility.h	/^#define BUFFER_OFFSET(/;"	d
+BiomeID	include/BiomeInfo.h	/^enum class BiomeID : char {$/;"	g	typeref:typename:char
+BiomeInfo	include/BiomeInfo.h	/^struct BiomeInfo {$/;"	s
+Black	include/Colors.h	/^	static const Color Red, Green, Blue, Orange, White, Black, Grey, Yellow;$/;"	m	struct:Colors	typeref:typename:const Color
+Black	src/Colors.cpp	/^const Color Colors::Black = Color(0, 0, 0);$/;"	m	class:Colors	typeref:typename:const Color
+BlendChannel	src/noiseutils.cpp	/^    inline noise::uint8 BlendChannel (const uint8 channel0,$/;"	f	namespace:noise::utils	typeref:typename:noise::uint8
+Block	include/Block.h	/^struct Block {$/;"	s
+Block	src/Block.cpp	/^Block::Block(BlockType type)$/;"	f	class:Block
+BlockData	include/BlockData.h	/^struct BlockData {$/;"	s
+BlockShader	include/BlockShader.h	/^class BlockShader : public Shader {$/;"	c
+BlockType	include/BlockData.h	/^enum class BlockType : char {$/;"	g	typeref:typename:char
+BlockUVs	include/TextureAtlas.h	/^typedef std::array<FaceUVs, 6> BlockUVs;$/;"	t	typeref:typename:std::array<FaceUVs,6>
+BlockUVsArray	include/TextureAtlas.h	/^typedef std::array<BlockUVs, (int)BlockType::NUM_BLOCKS> BlockUVsArray;$/;"	t
+Blue	include/Colors.h	/^	static const Color Red, Green, Blue, Orange, White, Black, Grey, Yellow;$/;"	m	struct:Colors	typeref:typename:const Color
+Blue	src/Colors.cpp	/^const Color Colors::Blue = Color(0, 0, 1);$/;"	m	class:Colors	typeref:typename:const Color
+Build	src/noiseutils.cpp	/^void NoiseMapBuilderCylinder::Build ()$/;"	f	class:NoiseMapBuilderCylinder	typeref:typename:void
+Build	src/noiseutils.cpp	/^void NoiseMapBuilderPlane::Build ()$/;"	f	class:NoiseMapBuilderPlane	typeref:typename:void
+Build	src/noiseutils.cpp	/^void NoiseMapBuilderSphere::Build ()$/;"	f	class:NoiseMapBuilderSphere	typeref:typename:void
+BuildGrayscaleGradient	src/noiseutils.cpp	/^void RendererImage::BuildGrayscaleGradient ()$/;"	f	class:RendererImage	typeref:typename:void
+BuildTerrainGradient	src/noiseutils.cpp	/^void RendererImage::BuildTerrainGradient ()$/;"	f	class:RendererImage	typeref:typename:void
+CAM_SPEED	include/Definitions.h	/^    static constexpr float CAM_SPEED = 16.f;$/;"	m	class:Definitions	typeref:typename:float
+CHUNK_HEIGHT	include/Definitions.h	/^    static constexpr unsigned int CHUNK_HEIGHT = 256;$/;"	m	class:Definitions	typeref:typename:unsigned int
+CHUNK_MAX_LOADING	include/Definitions.h	/^    static constexpr unsigned int CHUNK_MAX_LOADING = 8;$/;"	m	class:Definitions	typeref:typename:unsigned int
+CHUNK_PRELOAD_SIZE	include/Definitions.h	/^    static constexpr unsigned int CHUNK_PRELOAD_SIZE = 5;$/;"	m	class:Definitions	typeref:typename:unsigned int
+CHUNK_SIZE	include/Definitions.h	/^    static constexpr unsigned int CHUNK_SIZE = 16;$/;"	m	class:Definitions	typeref:typename:unsigned int
+CMAKE_AR	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_AR "\/usr\/bin\/ar")$/;"	v
+CMAKE_AR	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_AR "\/usr\/bin\/ar")$/;"	v
+CMAKE_AR	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_AR "\/usr\/bin\/ar")$/;"	v
+CMAKE_AR	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_AR "\/usr\/bin\/ar")$/;"	v
+CMAKE_ARCHIVE_OUTPUT_DIRECTORY	CMakeLists.txt	/^set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}\/lib")$/;"	v
+CMAKE_BINARY_DIR	build/Makefile	/^CMAKE_BINARY_DIR = \/home\/bastian\/projects\/VoxelGame\/build$/;"	m
+CMAKE_C11_COMPILE_FEATURES	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C11_COMPILE_FEATURES "c_std_11;c_static_assert")$/;"	v
+CMAKE_C11_COMPILE_FEATURES	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C11_COMPILE_FEATURES "c_std_11;c_static_assert")$/;"	v
+CMAKE_C90_COMPILE_FEATURES	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C90_COMPILE_FEATURES "c_std_90;c_function_prototypes")$/;"	v
+CMAKE_C90_COMPILE_FEATURES	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C90_COMPILE_FEATURES "c_std_90;c_function_prototypes")$/;"	v
+CMAKE_C99_COMPILE_FEATURES	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C99_COMPILE_FEATURES "c_std_99;c_restrict;c_variadic_macros")$/;"	v
+CMAKE_C99_COMPILE_FEATURES	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C99_COMPILE_FEATURES "c_std_99;c_restrict;c_variadic_macros")$/;"	v
+CMAKE_CL_SHOWINCLUDES_PREFIX	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^  set(CMAKE_CL_SHOWINCLUDES_PREFIX "${CMAKE_C_CL_SHOWINCLUDES_PREFIX}")$/;"	v
+CMAKE_CL_SHOWINCLUDES_PREFIX	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^  set(CMAKE_CL_SHOWINCLUDES_PREFIX "${CMAKE_CXX_CL_SHOWINCLUDES_PREFIX}")$/;"	v
+CMAKE_CL_SHOWINCLUDES_PREFIX	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^  set(CMAKE_CL_SHOWINCLUDES_PREFIX "${CMAKE_C_CL_SHOWINCLUDES_PREFIX}")$/;"	v
+CMAKE_CL_SHOWINCLUDES_PREFIX	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^  set(CMAKE_CL_SHOWINCLUDES_PREFIX "${CMAKE_CXX_CL_SHOWINCLUDES_PREFIX}")$/;"	v
+CMAKE_COMMAND	build/Makefile	/^CMAKE_COMMAND = \/usr\/bin\/cmake$/;"	m
+CMAKE_COMPILER_IS_CYGWIN	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_COMPILER_IS_CYGWIN )$/;"	v
+CMAKE_COMPILER_IS_CYGWIN	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_COMPILER_IS_CYGWIN )$/;"	v
+CMAKE_COMPILER_IS_CYGWIN	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_COMPILER_IS_CYGWIN )$/;"	v
+CMAKE_COMPILER_IS_CYGWIN	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_COMPILER_IS_CYGWIN )$/;"	v
+CMAKE_COMPILER_IS_GNUCC	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_COMPILER_IS_GNUCC 1)$/;"	v
+CMAKE_COMPILER_IS_GNUCC	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_COMPILER_IS_GNUCC 1)$/;"	v
+CMAKE_COMPILER_IS_GNUCXX	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_COMPILER_IS_GNUCXX 1)$/;"	v
+CMAKE_COMPILER_IS_GNUCXX	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_COMPILER_IS_GNUCXX 1)$/;"	v
+CMAKE_COMPILER_IS_MINGW	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_COMPILER_IS_MINGW )$/;"	v
+CMAKE_COMPILER_IS_MINGW	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_COMPILER_IS_MINGW )$/;"	v
+CMAKE_COMPILER_IS_MINGW	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_COMPILER_IS_MINGW )$/;"	v
+CMAKE_COMPILER_IS_MINGW	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_COMPILER_IS_MINGW )$/;"	v
+CMAKE_CROSSCOMPILING	CMakeFiles/3.16.2/CMakeSystem.cmake	/^set(CMAKE_CROSSCOMPILING "FALSE")$/;"	v
+CMAKE_CROSSCOMPILING	build/CMakeFiles/3.16.5/CMakeSystem.cmake	/^set(CMAKE_CROSSCOMPILING "FALSE")$/;"	v
+CMAKE_CROSSCOMPILING	build/cmake_install.cmake	/^  set(CMAKE_CROSSCOMPILING "FALSE")$/;"	v
+CMAKE_CXX11_COMPILE_FEATURES	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX11_COMPILE_FEATURES "cxx_std_11;cxx_alias_templates;cxx_alignas;cxx_alignof;cxx_att/;"	v
+CMAKE_CXX11_COMPILE_FEATURES	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX11_COMPILE_FEATURES "cxx_std_11;cxx_alias_templates;cxx_alignas;cxx_alignof;cxx_att/;"	v
+CMAKE_CXX14_COMPILE_FEATURES	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX14_COMPILE_FEATURES "cxx_std_14;cxx_aggregate_default_initializers;cxx_attribute_de/;"	v
+CMAKE_CXX14_COMPILE_FEATURES	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX14_COMPILE_FEATURES "cxx_std_14;cxx_aggregate_default_initializers;cxx_attribute_de/;"	v
+CMAKE_CXX17_COMPILE_FEATURES	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX17_COMPILE_FEATURES "cxx_std_17")$/;"	v
+CMAKE_CXX17_COMPILE_FEATURES	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX17_COMPILE_FEATURES "cxx_std_17")$/;"	v
+CMAKE_CXX20_COMPILE_FEATURES	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX20_COMPILE_FEATURES "cxx_std_20")$/;"	v
+CMAKE_CXX20_COMPILE_FEATURES	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX20_COMPILE_FEATURES "cxx_std_20")$/;"	v
+CMAKE_CXX98_COMPILE_FEATURES	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX98_COMPILE_FEATURES "cxx_std_98;cxx_template_template_parameters")$/;"	v
+CMAKE_CXX98_COMPILE_FEATURES	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX98_COMPILE_FEATURES "cxx_std_98;cxx_template_template_parameters")$/;"	v
+CMAKE_CXX_ABI_COMPILED	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_ABI_COMPILED TRUE)$/;"	v
+CMAKE_CXX_ABI_COMPILED	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_ABI_COMPILED TRUE)$/;"	v
+CMAKE_CXX_CL_SHOWINCLUDES_PREFIX	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_CL_SHOWINCLUDES_PREFIX "")$/;"	v
+CMAKE_CXX_CL_SHOWINCLUDES_PREFIX	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_CL_SHOWINCLUDES_PREFIX "")$/;"	v
+CMAKE_CXX_COMPILER	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER "\/usr\/bin\/c++")$/;"	v
+CMAKE_CXX_COMPILER	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER "\/usr\/bin\/c++")$/;"	v
+CMAKE_CXX_COMPILER_ABI	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_ABI "ELF")$/;"	v
+CMAKE_CXX_COMPILER_ABI	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_ABI "ELF")$/;"	v
+CMAKE_CXX_COMPILER_AR	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_AR "\/usr\/bin\/gcc-ar")$/;"	v
+CMAKE_CXX_COMPILER_AR	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_AR "\/usr\/bin\/gcc-ar")$/;"	v
+CMAKE_CXX_COMPILER_ARG1	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_ARG1 "")$/;"	v
+CMAKE_CXX_COMPILER_ARG1	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_ARG1 "")$/;"	v
+CMAKE_CXX_COMPILER_ENV_VAR	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_ENV_VAR "CXX")$/;"	v
+CMAKE_CXX_COMPILER_ENV_VAR	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_ENV_VAR "CXX")$/;"	v
+CMAKE_CXX_COMPILER_FRONTEND_VARIANT	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_FRONTEND_VARIANT "")$/;"	v
+CMAKE_CXX_COMPILER_FRONTEND_VARIANT	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_FRONTEND_VARIANT "")$/;"	v
+CMAKE_CXX_COMPILER_ID	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_ID "GNU")$/;"	v
+CMAKE_CXX_COMPILER_ID	CMakeFiles/VoxelGame.dir/DependInfo.cmake	/^set(CMAKE_CXX_COMPILER_ID "GNU")$/;"	v
+CMAKE_CXX_COMPILER_ID	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_ID "GNU")$/;"	v
+CMAKE_CXX_COMPILER_ID	build/CMakeFiles/VoxelGame.dir/DependInfo.cmake	/^set(CMAKE_CXX_COMPILER_ID "GNU")$/;"	v
+CMAKE_CXX_COMPILER_ID_RUN	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_ID_RUN 1)$/;"	v
+CMAKE_CXX_COMPILER_ID_RUN	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_ID_RUN 1)$/;"	v
+CMAKE_CXX_COMPILER_LOADED	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_LOADED 1)$/;"	v
+CMAKE_CXX_COMPILER_LOADED	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_LOADED 1)$/;"	v
+CMAKE_CXX_COMPILER_RANLIB	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_RANLIB "\/usr\/bin\/gcc-ranlib")$/;"	v
+CMAKE_CXX_COMPILER_RANLIB	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_RANLIB "\/usr\/bin\/gcc-ranlib")$/;"	v
+CMAKE_CXX_COMPILER_VERSION	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_VERSION "9.2.0")$/;"	v
+CMAKE_CXX_COMPILER_VERSION	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_VERSION "9.2.1")$/;"	v
+CMAKE_CXX_COMPILER_VERSION_INTERNAL	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_VERSION_INTERNAL "")$/;"	v
+CMAKE_CXX_COMPILER_VERSION_INTERNAL	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_VERSION_INTERNAL "")$/;"	v
+CMAKE_CXX_COMPILER_WORKS	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_WORKS TRUE)$/;"	v
+CMAKE_CXX_COMPILER_WORKS	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_WORKS TRUE)$/;"	v
+CMAKE_CXX_COMPILER_WRAPPER	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_WRAPPER "")$/;"	v
+CMAKE_CXX_COMPILER_WRAPPER	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILER_WRAPPER "")$/;"	v
+CMAKE_CXX_COMPILE_FEATURES	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILE_FEATURES "cxx_std_98;cxx_template_template_parameters;cxx_std_11;cxx_alias/;"	v
+CMAKE_CXX_COMPILE_FEATURES	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_COMPILE_FEATURES "cxx_std_98;cxx_template_template_parameters;cxx_std_11;cxx_alias/;"	v
+CMAKE_CXX_FLAGS	CMakeLists.txt	/^set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -lm -pthread -ggdb")$/;"	v
+CMAKE_CXX_IGNORE_EXTENSIONS	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_IGNORE_EXTENSIONS inl;h;hpp;HPP;H;o;O;obj;OBJ;def;DEF;rc;RC)$/;"	v
+CMAKE_CXX_IGNORE_EXTENSIONS	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_IGNORE_EXTENSIONS inl;h;hpp;HPP;H;o;O;obj;OBJ;def;DEF;rc;RC)$/;"	v
+CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES "\/usr\/include\/c++\/9.2.0;\/usr\/include\/c++\/9.2./;"	v
+CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES "\/usr\/include\/c++\/9.2.1;\/usr\/include\/c++\/9.2./;"	v
+CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "\/usr\/lib\/gcc\/x86_64-pc-linux-gnu\/9.2.0;\/usr\/lib;/;"	v
+CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "\/usr\/lib\/gcc\/x86_64-pc-linux-gnu\/9.2.1;\/usr\/lib;/;"	v
+CMAKE_CXX_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")$/;"	v
+CMAKE_CXX_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")$/;"	v
+CMAKE_CXX_IMPLICIT_LINK_LIBRARIES	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_IMPLICIT_LINK_LIBRARIES "stdc++;m;gcc_s;gcc;c;gcc_s;gcc")$/;"	v
+CMAKE_CXX_IMPLICIT_LINK_LIBRARIES	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_IMPLICIT_LINK_LIBRARIES "stdc++;m;gcc_s;gcc;c;gcc_s;gcc")$/;"	v
+CMAKE_CXX_INCLUDE_REGEX_COMPLAIN	CMakeFiles/CMakeDirectoryInformation.cmake	/^set(CMAKE_CXX_INCLUDE_REGEX_COMPLAIN ${CMAKE_C_INCLUDE_REGEX_COMPLAIN})$/;"	v
+CMAKE_CXX_INCLUDE_REGEX_COMPLAIN	build/CMakeFiles/CMakeDirectoryInformation.cmake	/^set(CMAKE_CXX_INCLUDE_REGEX_COMPLAIN ${CMAKE_C_INCLUDE_REGEX_COMPLAIN})$/;"	v
+CMAKE_CXX_INCLUDE_REGEX_SCAN	CMakeFiles/CMakeDirectoryInformation.cmake	/^set(CMAKE_CXX_INCLUDE_REGEX_SCAN ${CMAKE_C_INCLUDE_REGEX_SCAN})$/;"	v
+CMAKE_CXX_INCLUDE_REGEX_SCAN	build/CMakeFiles/CMakeDirectoryInformation.cmake	/^set(CMAKE_CXX_INCLUDE_REGEX_SCAN ${CMAKE_C_INCLUDE_REGEX_SCAN})$/;"	v
+CMAKE_CXX_LIBRARY_ARCHITECTURE	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_LIBRARY_ARCHITECTURE "")$/;"	v
+CMAKE_CXX_LIBRARY_ARCHITECTURE	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_LIBRARY_ARCHITECTURE "")$/;"	v
+CMAKE_CXX_LINKER_PREFERENCE	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_LINKER_PREFERENCE 30)$/;"	v
+CMAKE_CXX_LINKER_PREFERENCE	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_LINKER_PREFERENCE 30)$/;"	v
+CMAKE_CXX_LINKER_PREFERENCE_PROPAGATES	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_LINKER_PREFERENCE_PROPAGATES 1)$/;"	v
+CMAKE_CXX_LINKER_PREFERENCE_PROPAGATES	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_LINKER_PREFERENCE_PROPAGATES 1)$/;"	v
+CMAKE_CXX_PLATFORM_ID	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_PLATFORM_ID "Linux")$/;"	v
+CMAKE_CXX_PLATFORM_ID	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_PLATFORM_ID "Linux")$/;"	v
+CMAKE_CXX_SIMULATE_ID	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_SIMULATE_ID "")$/;"	v
+CMAKE_CXX_SIMULATE_ID	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_SIMULATE_ID "")$/;"	v
+CMAKE_CXX_SIMULATE_VERSION	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_SIMULATE_VERSION "")$/;"	v
+CMAKE_CXX_SIMULATE_VERSION	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_SIMULATE_VERSION "")$/;"	v
+CMAKE_CXX_SIZEOF_DATA_PTR	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_SIZEOF_DATA_PTR "8")$/;"	v
+CMAKE_CXX_SIZEOF_DATA_PTR	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_SIZEOF_DATA_PTR "8")$/;"	v
+CMAKE_CXX_SOURCE_FILE_EXTENSIONS	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_SOURCE_FILE_EXTENSIONS C;M;c++;cc;cpp;cxx;m;mm;CPP)$/;"	v
+CMAKE_CXX_SOURCE_FILE_EXTENSIONS	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_SOURCE_FILE_EXTENSIONS C;M;c++;cc;cpp;cxx;m;mm;CPP)$/;"	v
+CMAKE_CXX_STANDARD_COMPUTED_DEFAULT	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_STANDARD_COMPUTED_DEFAULT "14")$/;"	v
+CMAKE_CXX_STANDARD_COMPUTED_DEFAULT	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_CXX_STANDARD_COMPUTED_DEFAULT "14")$/;"	v
+CMAKE_CXX_TARGET_INCLUDE_PATH	CMakeFiles/VoxelGame.dir/DependInfo.cmake	/^set(CMAKE_CXX_TARGET_INCLUDE_PATH$/;"	v
+CMAKE_CXX_TARGET_INCLUDE_PATH	build/CMakeFiles/VoxelGame.dir/DependInfo.cmake	/^set(CMAKE_CXX_TARGET_INCLUDE_PATH$/;"	v
+CMAKE_C_ABI_COMPILED	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_ABI_COMPILED TRUE)$/;"	v
+CMAKE_C_ABI_COMPILED	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_ABI_COMPILED TRUE)$/;"	v
+CMAKE_C_CL_SHOWINCLUDES_PREFIX	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_CL_SHOWINCLUDES_PREFIX "")$/;"	v
+CMAKE_C_CL_SHOWINCLUDES_PREFIX	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_CL_SHOWINCLUDES_PREFIX "")$/;"	v
+CMAKE_C_COMPILER	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER "\/usr\/bin\/cc")$/;"	v
+CMAKE_C_COMPILER	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER "\/usr\/bin\/cc")$/;"	v
+CMAKE_C_COMPILER_ABI	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_ABI "ELF")$/;"	v
+CMAKE_C_COMPILER_ABI	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_ABI "ELF")$/;"	v
+CMAKE_C_COMPILER_AR	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_AR "\/usr\/bin\/gcc-ar")$/;"	v
+CMAKE_C_COMPILER_AR	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_AR "\/usr\/bin\/gcc-ar")$/;"	v
+CMAKE_C_COMPILER_ARG1	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_ARG1 "")$/;"	v
+CMAKE_C_COMPILER_ARG1	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_ARG1 "")$/;"	v
+CMAKE_C_COMPILER_ENV_VAR	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_ENV_VAR "CC")$/;"	v
+CMAKE_C_COMPILER_ENV_VAR	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_ENV_VAR "CC")$/;"	v
+CMAKE_C_COMPILER_FRONTEND_VARIANT	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_FRONTEND_VARIANT "")$/;"	v
+CMAKE_C_COMPILER_FRONTEND_VARIANT	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_FRONTEND_VARIANT "")$/;"	v
+CMAKE_C_COMPILER_ID	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_ID "GNU")$/;"	v
+CMAKE_C_COMPILER_ID	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_ID "GNU")$/;"	v
+CMAKE_C_COMPILER_ID_RUN	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_ID_RUN 1)$/;"	v
+CMAKE_C_COMPILER_ID_RUN	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_ID_RUN 1)$/;"	v
+CMAKE_C_COMPILER_LOADED	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_LOADED 1)$/;"	v
+CMAKE_C_COMPILER_LOADED	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_LOADED 1)$/;"	v
+CMAKE_C_COMPILER_RANLIB	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_RANLIB "\/usr\/bin\/gcc-ranlib")$/;"	v
+CMAKE_C_COMPILER_RANLIB	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_RANLIB "\/usr\/bin\/gcc-ranlib")$/;"	v
+CMAKE_C_COMPILER_VERSION	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_VERSION "9.2.0")$/;"	v
+CMAKE_C_COMPILER_VERSION	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_VERSION "9.2.1")$/;"	v
+CMAKE_C_COMPILER_VERSION_INTERNAL	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_VERSION_INTERNAL "")$/;"	v
+CMAKE_C_COMPILER_VERSION_INTERNAL	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_VERSION_INTERNAL "")$/;"	v
+CMAKE_C_COMPILER_WORKS	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_WORKS TRUE)$/;"	v
+CMAKE_C_COMPILER_WORKS	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_WORKS TRUE)$/;"	v
+CMAKE_C_COMPILER_WRAPPER	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_WRAPPER "")$/;"	v
+CMAKE_C_COMPILER_WRAPPER	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILER_WRAPPER "")$/;"	v
+CMAKE_C_COMPILE_FEATURES	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILE_FEATURES "c_std_90;c_function_prototypes;c_std_99;c_restrict;c_variadic_macr/;"	v
+CMAKE_C_COMPILE_FEATURES	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_COMPILE_FEATURES "c_std_90;c_function_prototypes;c_std_99;c_restrict;c_variadic_macr/;"	v
+CMAKE_C_IGNORE_EXTENSIONS	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_IGNORE_EXTENSIONS h;H;o;O;obj;OBJ;def;DEF;rc;RC)$/;"	v
+CMAKE_C_IGNORE_EXTENSIONS	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_IGNORE_EXTENSIONS h;H;o;O;obj;OBJ;def;DEF;rc;RC)$/;"	v
+CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES "\/usr\/lib\/gcc\/x86_64-pc-linux-gnu\/9.2.0\/include;\//;"	v
+CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_IMPLICIT_INCLUDE_DIRECTORIES "\/usr\/lib\/gcc\/x86_64-pc-linux-gnu\/9.2.1\/include;\//;"	v
+CMAKE_C_IMPLICIT_LINK_DIRECTORIES	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES "\/usr\/lib\/gcc\/x86_64-pc-linux-gnu\/9.2.0;\/usr\/lib;\//;"	v
+CMAKE_C_IMPLICIT_LINK_DIRECTORIES	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES "\/usr\/lib\/gcc\/x86_64-pc-linux-gnu\/9.2.1;\/usr\/lib;\//;"	v
+CMAKE_C_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")$/;"	v
+CMAKE_C_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_IMPLICIT_LINK_FRAMEWORK_DIRECTORIES "")$/;"	v
+CMAKE_C_IMPLICIT_LINK_LIBRARIES	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_IMPLICIT_LINK_LIBRARIES "gcc;gcc_s;c;gcc;gcc_s")$/;"	v
+CMAKE_C_IMPLICIT_LINK_LIBRARIES	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_IMPLICIT_LINK_LIBRARIES "gcc;gcc_s;c;gcc;gcc_s")$/;"	v
+CMAKE_C_INCLUDE_REGEX_COMPLAIN	CMakeFiles/CMakeDirectoryInformation.cmake	/^set(CMAKE_C_INCLUDE_REGEX_COMPLAIN "^$")$/;"	v
+CMAKE_C_INCLUDE_REGEX_COMPLAIN	build/CMakeFiles/CMakeDirectoryInformation.cmake	/^set(CMAKE_C_INCLUDE_REGEX_COMPLAIN "^$")$/;"	v
+CMAKE_C_INCLUDE_REGEX_SCAN	CMakeFiles/CMakeDirectoryInformation.cmake	/^set(CMAKE_C_INCLUDE_REGEX_SCAN "^.*$")$/;"	v
+CMAKE_C_INCLUDE_REGEX_SCAN	build/CMakeFiles/CMakeDirectoryInformation.cmake	/^set(CMAKE_C_INCLUDE_REGEX_SCAN "^.*$")$/;"	v
+CMAKE_C_LIBRARY_ARCHITECTURE	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_LIBRARY_ARCHITECTURE "")$/;"	v
+CMAKE_C_LIBRARY_ARCHITECTURE	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_LIBRARY_ARCHITECTURE "")$/;"	v
+CMAKE_C_LINKER_PREFERENCE	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_LINKER_PREFERENCE 10)$/;"	v
+CMAKE_C_LINKER_PREFERENCE	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_LINKER_PREFERENCE 10)$/;"	v
+CMAKE_C_PLATFORM_ID	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_PLATFORM_ID "Linux")$/;"	v
+CMAKE_C_PLATFORM_ID	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_PLATFORM_ID "Linux")$/;"	v
+CMAKE_C_SIMULATE_ID	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_SIMULATE_ID "")$/;"	v
+CMAKE_C_SIMULATE_ID	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_SIMULATE_ID "")$/;"	v
+CMAKE_C_SIMULATE_VERSION	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_SIMULATE_VERSION "")$/;"	v
+CMAKE_C_SIMULATE_VERSION	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_SIMULATE_VERSION "")$/;"	v
+CMAKE_C_SIZEOF_DATA_PTR	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_SIZEOF_DATA_PTR "8")$/;"	v
+CMAKE_C_SIZEOF_DATA_PTR	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_SIZEOF_DATA_PTR "8")$/;"	v
+CMAKE_C_SOURCE_FILE_EXTENSIONS	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_SOURCE_FILE_EXTENSIONS c;m)$/;"	v
+CMAKE_C_SOURCE_FILE_EXTENSIONS	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_SOURCE_FILE_EXTENSIONS c;m)$/;"	v
+CMAKE_C_STANDARD_COMPUTED_DEFAULT	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_C_STANDARD_COMPUTED_DEFAULT "11")$/;"	v
+CMAKE_C_STANDARD_COMPUTED_DEFAULT	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_C_STANDARD_COMPUTED_DEFAULT "11")$/;"	v
+CMAKE_DEPENDS_CHECK_CXX	CMakeFiles/VoxelGame.dir/DependInfo.cmake	/^set(CMAKE_DEPENDS_CHECK_CXX$/;"	v
+CMAKE_DEPENDS_CHECK_CXX	build/CMakeFiles/VoxelGame.dir/DependInfo.cmake	/^set(CMAKE_DEPENDS_CHECK_CXX$/;"	v
+CMAKE_DEPENDS_GENERATOR	CMakeFiles/Makefile.cmake	/^set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")$/;"	v
+CMAKE_DEPENDS_GENERATOR	build/CMakeFiles/Makefile.cmake	/^set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")$/;"	v
+CMAKE_DEPENDS_LANGUAGES	CMakeFiles/VoxelGame.dir/DependInfo.cmake	/^set(CMAKE_DEPENDS_LANGUAGES$/;"	v
+CMAKE_DEPENDS_LANGUAGES	build/CMakeFiles/VoxelGame.dir/DependInfo.cmake	/^set(CMAKE_DEPENDS_LANGUAGES$/;"	v
+CMAKE_DEPEND_INFO_FILES	CMakeFiles/Makefile.cmake	/^set(CMAKE_DEPEND_INFO_FILES$/;"	v
+CMAKE_DEPEND_INFO_FILES	build/CMakeFiles/Makefile.cmake	/^set(CMAKE_DEPEND_INFO_FILES$/;"	v
+CMAKE_FORCE_UNIX_PATHS	CMakeFiles/CMakeDirectoryInformation.cmake	/^set(CMAKE_FORCE_UNIX_PATHS 1)$/;"	v
+CMAKE_FORCE_UNIX_PATHS	build/CMakeFiles/CMakeDirectoryInformation.cmake	/^set(CMAKE_FORCE_UNIX_PATHS 1)$/;"	v
+CMAKE_Fortran_TARGET_MODULE_DIR	CMakeFiles/VoxelGame.dir/DependInfo.cmake	/^set(CMAKE_Fortran_TARGET_MODULE_DIR "")$/;"	v
+CMAKE_Fortran_TARGET_MODULE_DIR	build/CMakeFiles/VoxelGame.dir/DependInfo.cmake	/^set(CMAKE_Fortran_TARGET_MODULE_DIR "")$/;"	v
+CMAKE_HOST_SYSTEM	CMakeFiles/3.16.2/CMakeSystem.cmake	/^set(CMAKE_HOST_SYSTEM "Linux-5.4.8-arch1-1")$/;"	v
+CMAKE_HOST_SYSTEM	build/CMakeFiles/3.16.5/CMakeSystem.cmake	/^set(CMAKE_HOST_SYSTEM "Linux-5.5.8-arch1-1")$/;"	v
+CMAKE_HOST_SYSTEM_NAME	CMakeFiles/3.16.2/CMakeSystem.cmake	/^set(CMAKE_HOST_SYSTEM_NAME "Linux")$/;"	v
+CMAKE_HOST_SYSTEM_NAME	build/CMakeFiles/3.16.5/CMakeSystem.cmake	/^set(CMAKE_HOST_SYSTEM_NAME "Linux")$/;"	v
+CMAKE_HOST_SYSTEM_PROCESSOR	CMakeFiles/3.16.2/CMakeSystem.cmake	/^set(CMAKE_HOST_SYSTEM_PROCESSOR "x86_64")$/;"	v
+CMAKE_HOST_SYSTEM_PROCESSOR	build/CMakeFiles/3.16.5/CMakeSystem.cmake	/^set(CMAKE_HOST_SYSTEM_PROCESSOR "x86_64")$/;"	v
+CMAKE_HOST_SYSTEM_VERSION	CMakeFiles/3.16.2/CMakeSystem.cmake	/^set(CMAKE_HOST_SYSTEM_VERSION "5.4.8-arch1-1")$/;"	v
+CMAKE_HOST_SYSTEM_VERSION	build/CMakeFiles/3.16.5/CMakeSystem.cmake	/^set(CMAKE_HOST_SYSTEM_VERSION "5.5.8-arch1-1")$/;"	v
+CMAKE_INSTALL_COMPONENT	build/cmake_install.cmake	/^    set(CMAKE_INSTALL_COMPONENT "${COMPONENT}")$/;"	v
+CMAKE_INSTALL_COMPONENT	build/cmake_install.cmake	/^    set(CMAKE_INSTALL_COMPONENT)$/;"	v
+CMAKE_INSTALL_CONFIG_NAME	build/cmake_install.cmake	/^    set(CMAKE_INSTALL_CONFIG_NAME "")$/;"	v
+CMAKE_INSTALL_MANIFEST	build/cmake_install.cmake	/^  set(CMAKE_INSTALL_MANIFEST "install_manifest.txt")$/;"	v
+CMAKE_INSTALL_MANIFEST	build/cmake_install.cmake	/^  set(CMAKE_INSTALL_MANIFEST "install_manifest_${CMAKE_INSTALL_COMPONENT}.txt")$/;"	v
+CMAKE_INSTALL_PREFIX	build/cmake_install.cmake	/^  set(CMAKE_INSTALL_PREFIX "\/usr\/local")$/;"	v
+CMAKE_INSTALL_SO_NO_EXE	build/cmake_install.cmake	/^  set(CMAKE_INSTALL_SO_NO_EXE "0")$/;"	v
+CMAKE_INTERNAL_PLATFORM_ABI	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^  set(CMAKE_INTERNAL_PLATFORM_ABI "${CMAKE_C_COMPILER_ABI}")$/;"	v
+CMAKE_INTERNAL_PLATFORM_ABI	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^  set(CMAKE_INTERNAL_PLATFORM_ABI "${CMAKE_CXX_COMPILER_ABI}")$/;"	v
+CMAKE_INTERNAL_PLATFORM_ABI	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^  set(CMAKE_INTERNAL_PLATFORM_ABI "${CMAKE_C_COMPILER_ABI}")$/;"	v
+CMAKE_INTERNAL_PLATFORM_ABI	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^  set(CMAKE_INTERNAL_PLATFORM_ABI "${CMAKE_CXX_COMPILER_ABI}")$/;"	v
+CMAKE_LIBRARY_ARCHITECTURE	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^  set(CMAKE_LIBRARY_ARCHITECTURE "")$/;"	v
+CMAKE_LIBRARY_ARCHITECTURE	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^  set(CMAKE_LIBRARY_ARCHITECTURE "")$/;"	v
+CMAKE_LIBRARY_ARCHITECTURE	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^  set(CMAKE_LIBRARY_ARCHITECTURE "")$/;"	v
+CMAKE_LIBRARY_ARCHITECTURE	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^  set(CMAKE_LIBRARY_ARCHITECTURE "")$/;"	v
+CMAKE_LIBRARY_OUTPUT_DIRECTORY	CMakeLists.txt	/^set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}\/lib")$/;"	v
+CMAKE_LINKER	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_LINKER "\/usr\/bin\/ld")$/;"	v
+CMAKE_LINKER	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_LINKER "\/usr\/bin\/ld")$/;"	v
+CMAKE_LINKER	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_LINKER "\/usr\/bin\/ld")$/;"	v
+CMAKE_LINKER	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_LINKER "\/usr\/bin\/ld")$/;"	v
+CMAKE_MAKEFILE_DEPENDS	CMakeFiles/Makefile.cmake	/^set(CMAKE_MAKEFILE_DEPENDS$/;"	v
+CMAKE_MAKEFILE_DEPENDS	build/CMakeFiles/Makefile.cmake	/^set(CMAKE_MAKEFILE_DEPENDS$/;"	v
+CMAKE_MAKEFILE_OUTPUTS	CMakeFiles/Makefile.cmake	/^set(CMAKE_MAKEFILE_OUTPUTS$/;"	v
+CMAKE_MAKEFILE_OUTPUTS	build/CMakeFiles/Makefile.cmake	/^set(CMAKE_MAKEFILE_OUTPUTS$/;"	v
+CMAKE_MAKEFILE_PRODUCTS	CMakeFiles/Makefile.cmake	/^set(CMAKE_MAKEFILE_PRODUCTS$/;"	v
+CMAKE_MAKEFILE_PRODUCTS	build/CMakeFiles/Makefile.cmake	/^set(CMAKE_MAKEFILE_PRODUCTS$/;"	v
+CMAKE_MT	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_MT "")$/;"	v
+CMAKE_MT	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_MT "")$/;"	v
+CMAKE_MT	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_MT "")$/;"	v
+CMAKE_MT	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_MT "")$/;"	v
+CMAKE_RANLIB	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^set(CMAKE_RANLIB "\/usr\/bin\/ranlib")$/;"	v
+CMAKE_RANLIB	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^set(CMAKE_RANLIB "\/usr\/bin\/ranlib")$/;"	v
+CMAKE_RANLIB	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^set(CMAKE_RANLIB "\/usr\/bin\/ranlib")$/;"	v
+CMAKE_RANLIB	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^set(CMAKE_RANLIB "\/usr\/bin\/ranlib")$/;"	v
+CMAKE_RELATIVE_PATH_TOP_BINARY	CMakeFiles/CMakeDirectoryInformation.cmake	/^set(CMAKE_RELATIVE_PATH_TOP_BINARY "\/home\/bastian\/projects\/VoxelGame")$/;"	v
+CMAKE_RELATIVE_PATH_TOP_BINARY	build/CMakeFiles/CMakeDirectoryInformation.cmake	/^set(CMAKE_RELATIVE_PATH_TOP_BINARY "\/home\/bastian\/projects\/VoxelGame\/build")$/;"	v
+CMAKE_RELATIVE_PATH_TOP_SOURCE	CMakeFiles/CMakeDirectoryInformation.cmake	/^set(CMAKE_RELATIVE_PATH_TOP_SOURCE "\/home\/bastian\/projects\/VoxelGame")$/;"	v
+CMAKE_RELATIVE_PATH_TOP_SOURCE	build/CMakeFiles/CMakeDirectoryInformation.cmake	/^set(CMAKE_RELATIVE_PATH_TOP_SOURCE "\/home\/bastian\/projects\/VoxelGame")$/;"	v
+CMAKE_RUNTIME_OUTPUT_DIRECTORY	CMakeLists.txt	/^set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}\/bin")$/;"	v
+CMAKE_SIZEOF_VOID_P	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^  set(CMAKE_SIZEOF_VOID_P "${CMAKE_C_SIZEOF_DATA_PTR}")$/;"	v
+CMAKE_SIZEOF_VOID_P	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^  set(CMAKE_SIZEOF_VOID_P "${CMAKE_CXX_SIZEOF_DATA_PTR}")$/;"	v
+CMAKE_SIZEOF_VOID_P	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^  set(CMAKE_SIZEOF_VOID_P "${CMAKE_C_SIZEOF_DATA_PTR}")$/;"	v
+CMAKE_SIZEOF_VOID_P	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^  set(CMAKE_SIZEOF_VOID_P "${CMAKE_CXX_SIZEOF_DATA_PTR}")$/;"	v
+CMAKE_SOURCE_DIR	build/Makefile	/^CMAKE_SOURCE_DIR = \/home\/bastian\/projects\/VoxelGame$/;"	m
+CMAKE_SYSTEM	CMakeFiles/3.16.2/CMakeSystem.cmake	/^set(CMAKE_SYSTEM "Linux-5.4.8-arch1-1")$/;"	v
+CMAKE_SYSTEM	build/CMakeFiles/3.16.5/CMakeSystem.cmake	/^set(CMAKE_SYSTEM "Linux-5.5.8-arch1-1")$/;"	v
+CMAKE_SYSTEM_LOADED	CMakeFiles/3.16.2/CMakeSystem.cmake	/^set(CMAKE_SYSTEM_LOADED 1)$/;"	v
+CMAKE_SYSTEM_LOADED	build/CMakeFiles/3.16.5/CMakeSystem.cmake	/^set(CMAKE_SYSTEM_LOADED 1)$/;"	v
+CMAKE_SYSTEM_NAME	CMakeFiles/3.16.2/CMakeSystem.cmake	/^set(CMAKE_SYSTEM_NAME "Linux")$/;"	v
+CMAKE_SYSTEM_NAME	build/CMakeFiles/3.16.5/CMakeSystem.cmake	/^set(CMAKE_SYSTEM_NAME "Linux")$/;"	v
+CMAKE_SYSTEM_PROCESSOR	CMakeFiles/3.16.2/CMakeSystem.cmake	/^set(CMAKE_SYSTEM_PROCESSOR "x86_64")$/;"	v
+CMAKE_SYSTEM_PROCESSOR	build/CMakeFiles/3.16.5/CMakeSystem.cmake	/^set(CMAKE_SYSTEM_PROCESSOR "x86_64")$/;"	v
+CMAKE_SYSTEM_VERSION	CMakeFiles/3.16.2/CMakeSystem.cmake	/^set(CMAKE_SYSTEM_VERSION "5.4.8-arch1-1")$/;"	v
+CMAKE_SYSTEM_VERSION	build/CMakeFiles/3.16.5/CMakeSystem.cmake	/^set(CMAKE_SYSTEM_VERSION "5.5.8-arch1-1")$/;"	v
+CMAKE_TARGET_DEFINITIONS_CXX	CMakeFiles/VoxelGame.dir/DependInfo.cmake	/^set(CMAKE_TARGET_DEFINITIONS_CXX$/;"	v
+CMAKE_TARGET_LINKED_INFO_FILES	CMakeFiles/VoxelGame.dir/DependInfo.cmake	/^set(CMAKE_TARGET_LINKED_INFO_FILES$/;"	v
+CMAKE_TARGET_LINKED_INFO_FILES	build/CMakeFiles/VoxelGame.dir/DependInfo.cmake	/^set(CMAKE_TARGET_LINKED_INFO_FILES$/;"	v
+COMPILER_ID	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_ID /;"	d	file:
+COMPILER_ID	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_ID /;"	d	file:
+COMPILER_ID	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_ID /;"	d	file:
+COMPILER_ID	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_ID /;"	d	file:
+COMPILER_VERSION_INTERNAL	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_INTERNAL	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_INTERNAL	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_INTERNAL	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_INTERNAL	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_INTERNAL	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_INTERNAL	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_INTERNAL	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_INTERNAL /;"	d	file:
+COMPILER_VERSION_MAJOR	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^  # define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^  # define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^  # define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^  # define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MAJOR	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_MAJOR /;"	d	file:
+COMPILER_VERSION_MINOR	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^  # define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^  # define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^  # define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^  # define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_MINOR	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_MINOR /;"	d	file:
+COMPILER_VERSION_PATCH	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^  # define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#   define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^  # define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#   define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^  # define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#   define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^  # define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#   define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_PATCH	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_PATCH /;"	d	file:
+COMPILER_VERSION_TWEAK	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_TWEAK /;"	d	file:
+COMPILER_VERSION_TWEAK	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_TWEAK /;"	d	file:
+COMPILER_VERSION_TWEAK	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_TWEAK /;"	d	file:
+COMPILER_VERSION_TWEAK	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_TWEAK /;"	d	file:
+COMPILER_VERSION_TWEAK	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#  define COMPILER_VERSION_TWEAK /;"	d	file:
+COMPILER_VERSION_TWEAK	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^# define COMPILER_VERSION_TWEAK /;"	d	file:
+COMPILER_VERSION_TWEAK	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define COMPILER_VERSION_TWEAK /;"	d	file:
+COMPILER_VERSION_TWEAK	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define COMPILER_VERSION_TWEAK /;"	d	file:
+CURSOR_EVENT	include/Event.h	/^    KEY_EVENT, CURSOR_EVENT, SCROLL_EVENT, FRAMEBUFFER_SIZE_EVENT,$/;"	e	enum:EventType
+CXX_STD	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#      define CXX_STD /;"	d	file:
+CXX_STD	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#    define CXX_STD /;"	d	file:
+CXX_STD	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define CXX_STD /;"	d	file:
+CXX_STD	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#      define CXX_STD /;"	d	file:
+CXX_STD	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#    define CXX_STD /;"	d	file:
+CXX_STD	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define CXX_STD /;"	d	file:
+CYGWIN	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^  set(CYGWIN 1)$/;"	v
+CYGWIN	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^  set(CYGWIN 1)$/;"	v
+CYGWIN	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^  set(CYGWIN 1)$/;"	v
+CYGWIN	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^  set(CYGWIN 1)$/;"	v
+C_DIALECT	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#  define C_DIALECT /;"	d	file:
+C_DIALECT	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#  define C_DIALECT$/;"	d	file:
+C_DIALECT	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^# define C_DIALECT /;"	d	file:
+C_DIALECT	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#  define C_DIALECT /;"	d	file:
+C_DIALECT	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#  define C_DIALECT$/;"	d	file:
+C_DIALECT	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^# define C_DIALECT /;"	d	file:
+CalcDestColor	src/noiseutils.cpp	/^Color RendererImage::CalcDestColor (const Color& sourceColor,$/;"	f	class:RendererImage	typeref:typename:Color
+CalcLightIntensity	src/noiseutils.cpp	/^double RendererImage::CalcLightIntensity (double center, double left,$/;"	f	class:RendererImage	typeref:typename:double
+CalcMinMemUsage	include/noiseutils.h	/^        size_t CalcMinMemUsage (int width, int height) const$/;"	f	class:noise::utils::Image	typeref:typename:size_t
+CalcMinMemUsage	include/noiseutils.h	/^        size_t CalcMinMemUsage (int width, int height) const$/;"	f	class:noise::utils::NoiseMap	typeref:typename:size_t
+CalcNormalColor	src/noiseutils.cpp	/^Color RendererNormalMap::CalcNormalColor (double nc, double nr, double nu,$/;"	f	class:RendererNormalMap	typeref:typename:Color
+CalcStride	include/noiseutils.h	/^        size_t CalcStride (int width) const$/;"	f	class:noise::utils::Image	typeref:typename:size_t
+CalcStride	include/noiseutils.h	/^        size_t CalcStride (int width) const$/;"	f	class:noise::utils::NoiseMap	typeref:typename:size_t
+CalcWidthByteCount	src/noiseutils.cpp	/^int WriterBMP::CalcWidthByteCount (int width) const$/;"	f	class:WriterBMP	typeref:typename:int
+CalcWidthByteCount	src/noiseutils.cpp	/^int WriterTER::CalcWidthByteCount (int width) const$/;"	f	class:WriterTER	typeref:typename:int
+Callback	include/Event.h	/^typedef std::function<void(Event *e)> Callback;$/;"	t
+CallbackId	include/Event.h	/^typedef unsigned int CallbackId;$/;"	t	typeref:typename:unsigned int
+Camera	include/Camera.h	/^class Camera {$/;"	c
+Camera	src/Camera.cpp	/^Camera::Camera(float fov)$/;"	f	class:Camera
+Character	include/Font.h	/^struct Character {$/;"	s
+Chunk	include/Chunk.h	/^class Chunk {$/;"	c
+Chunk	src/Chunk.cpp	/^    Chunk::Chunk(const Chunk& other) {$/;"	f	class:Chunk
+Chunk	src/Chunk.cpp	/^Chunk::Chunk(glm::vec2 position)$/;"	f	class:Chunk
+ChunkComponent	include/Components/ChunkComponent.h	/^struct ChunkComponent {$/;"	s
+ChunkComponent	src/Components/ChunkComponent.cpp	/^ChunkComponent::ChunkComponent(ChunkComponent&& other) {$/;"	f	class:ChunkComponent
+ChunkCreateSystem	include/ChunkCreateSystem.h	/^class ChunkCreateSystem : public System {$/;"	c
+ChunkCreateSystem	src/ChunkCreateSystem.cpp	/^ChunkCreateSystem::ChunkCreateSystem(SystemManager* systemManager, SharedContext* context, World/;"	f	class:ChunkCreateSystem
+ChunkHashFunction	include/ChunkCreateSystem.h	/^struct ChunkHashFunction {$/;"	s
+ChunkMapArray	include/MapGenerator.h	/^typedef std::array<std::array<int, Definitions::CHUNK_SIZE>, Definitions::CHUNK_SIZE> ChunkMapAr/;"	t	typeref:typename:std::array<std::array<int,Definitions::CHUNK_SIZE>,Definitions::CHUNK_SIZE>
+ChunkRenderSystem	include/ChunkRenderSystem.h	/^class ChunkRenderSystem : public System {$/;"	c
+ChunkRenderSystem	src/ChunkRenderSystem.cpp	/^ChunkRenderSystem::ChunkRenderSystem(SystemManager* systemManager, SharedContext* context)$/;"	f	class:ChunkRenderSystem
+Clear	src/noiseutils.cpp	/^void GradientColor::Clear ()$/;"	f	class:GradientColor	typeref:typename:void
+Clear	src/noiseutils.cpp	/^void Image::Clear (const Color& value)$/;"	f	class:Image	typeref:typename:void
+Clear	src/noiseutils.cpp	/^void NoiseMap::Clear (float value)$/;"	f	class:NoiseMap	typeref:typename:void
+ClearGradient	src/noiseutils.cpp	/^void RendererImage::ClearGradient ()$/;"	f	class:RendererImage	typeref:typename:void
+Color	include/Colors.h	/^typedef glm::vec3 Color;$/;"	t	typeref:typename:glm::vec3
+Color	include/noiseutils.h	/^        Color ()$/;"	f	class:noise::utils::Color
+Color	include/noiseutils.h	/^        Color (noise::uint8 r, noise::uint8 g, noise::uint8 b,$/;"	f	class:noise::utils::Color
+Color	include/noiseutils.h	/^    class Color$/;"	c	namespace:noise::utils
+Colors	include/Colors.h	/^struct Colors {$/;"	s
+CopyImage	src/noiseutils.cpp	/^void Image::CopyImage (const Image& source)$/;"	f	class:Image	typeref:typename:void
+CopyNoiseMap	src/noiseutils.cpp	/^void NoiseMap::CopyNoiseMap (const NoiseMap& source)$/;"	f	class:NoiseMap	typeref:typename:void
+CursorEvent	include/Event.h	/^struct CursorEvent : public Event {$/;"	s
+CursorEvent	src/Event.cpp	/^CursorEvent::CursorEvent(Application* app, double x, double y, double dx, double dy)$/;"	f	class:CursorEvent
+DEC	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#define DEC(/;"	d	file:
+DEC	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define DEC(/;"	d	file:
+DEC	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#define DEC(/;"	d	file:
+DEC	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define DEC(/;"	d	file:
+DEFAULT_LIGHT_AZIMUTH	src/noiseutils.cpp	/^const double DEFAULT_LIGHT_AZIMUTH = 45.0;$/;"	v	typeref:typename:const double
+DEFAULT_LIGHT_CONTRAST	src/noiseutils.cpp	/^const double DEFAULT_LIGHT_CONTRAST  =  1.0;$/;"	v	typeref:typename:const double
+DEFAULT_LIGHT_ELEVATION	src/noiseutils.cpp	/^const double DEFAULT_LIGHT_ELEVATION = 45.0;$/;"	v	typeref:typename:const double
+DEFAULT_METERS_PER_POINT	include/noiseutils.h	/^    const double DEFAULT_METERS_PER_POINT = 30.0;$/;"	v	namespace:noise::utils	typeref:typename:const double
+DEFAULT_METRES_PER_POINT	include/noiseutils.h	/^    const double DEFAULT_METRES_PER_POINT = DEFAULT_METERS_PER_POINT;$/;"	v	namespace:noise::utils	typeref:typename:const double
+Definitions	include/Definitions.h	/^class Definitions {$/;"	c
+DeleteImageAndReset	src/noiseutils.cpp	/^void Image::DeleteImageAndReset ()$/;"	f	class:Image	typeref:typename:void
+DeleteNoiseMapAndReset	src/noiseutils.cpp	/^void NoiseMap::DeleteNoiseMapAndReset ()$/;"	f	class:NoiseMap	typeref:typename:void
+ENTER_CHUNK_EVENT	include/Event.h	/^    ENTER_CHUNK_EVENT$/;"	e	enum:EventType
+EQUALS	build/Makefile	/^EQUALS = =$/;"	m
+EnableLight	include/noiseutils.h	/^        void EnableLight (bool enable = true)$/;"	f	class:noise::utils::RendererImage	typeref:typename:void
+EnableSeamless	include/noiseutils.h	/^        void EnableSeamless (bool enable = true)$/;"	f	class:noise::utils::NoiseMapBuilderPlane	typeref:typename:void
+EnableWrap	include/noiseutils.h	/^        void EnableWrap (bool enable = true)$/;"	f	class:noise::utils::RendererImage	typeref:typename:void
+EnableWrap	include/noiseutils.h	/^        void EnableWrap (bool enable = true)$/;"	f	class:noise::utils::RendererNormalMap	typeref:typename:void
+EnterChunkEvent	include/Event.h	/^struct EnterChunkEvent : public Event {$/;"	s
+EnterChunkEvent	src/Event.cpp	/^EnterChunkEvent::EnterChunkEvent(Application* app, int oldX, int oldZ, int newX, int newZ) : app/;"	f	class:EnterChunkEvent
+Event	include/Event.h	/^struct Event {$/;"	s
+EventDispatcher	include/EventDispatcher.h	/^class EventDispatcher {$/;"	c
+EventType	include/Event.h	/^enum EventType {$/;"	g
+FRAMEBUFFER_SIZE_EVENT	include/Event.h	/^    KEY_EVENT, CURSOR_EVENT, SCROLL_EVENT, FRAMEBUFFER_SIZE_EVENT,$/;"	e	enum:EventType
+FaceUVs	include/TextureAtlas.h	/^typedef std::array<glm::vec2, 4> FaceUVs;$/;"	t	typeref:typename:std::array<glm::vec2,4>
+FindInsertionPos	src/noiseutils.cpp	/^int GradientColor::FindInsertionPos (double gradientPos)$/;"	f	class:GradientColor	typeref:typename:int
+Font	include/Font.h	/^class Font {$/;"	c
+FramebufferSizeEvent	include/Event.h	/^struct FramebufferSizeEvent : public Event {$/;"	s
+FramebufferSizeEvent	src/Event.cpp	/^FramebufferSizeEvent::FramebufferSizeEvent(Application* app, int width, int height)$/;"	f	class:FramebufferSizeEvent
+GBuffer	include/GBuffer.h	/^class GBuffer {$/;"	c
+GLM_ENABLE_EXPERIMENTAL	src/Camera.cpp	/^#define GLM_ENABLE_EXPERIMENTAL$/;"	d	file:
+GLM_ENABLE_EXPERIMENTAL	src/Chunk.cpp	/^#define  GLM_ENABLE_EXPERIMENTAL$/;"	d	file:
+GUIRenderer	include/GUIRenderer.h	/^class GUIRenderer {$/;"	c
+GUIShader	include/GUIShader.h	/^class GUIShader : public Shader {$/;"	c
+G_CONSTANT	include/Definitions.h	/^    static constexpr float G_CONSTANT = 9.8f;$/;"	m	class:Definitions	typeref:typename:float
+GeometryComponent	include/Components/GeometryComponent.h	/^struct GeometryComponent {$/;"	s
+GetBorderValue	include/noiseutils.h	/^        Color GetBorderValue () const$/;"	f	class:noise::utils::Image	typeref:typename:Color
+GetBorderValue	include/noiseutils.h	/^        float GetBorderValue () const$/;"	f	class:noise::utils::NoiseMap	typeref:typename:float
+GetBumpHeight	include/noiseutils.h	/^        double GetBumpHeight () const$/;"	f	class:noise::utils::RendererNormalMap	typeref:typename:double
+GetColor	src/noiseutils.cpp	/^const Color& GradientColor::GetColor (double gradientPos) const$/;"	f	class:GradientColor	typeref:typename:const Color &
+GetConstSlabPtr	include/noiseutils.h	/^        const Color* GetConstSlabPtr () const$/;"	f	class:noise::utils::Image	typeref:typename:const Color *
+GetConstSlabPtr	include/noiseutils.h	/^        const Color* GetConstSlabPtr (int row) const$/;"	f	class:noise::utils::Image	typeref:typename:const Color *
+GetConstSlabPtr	include/noiseutils.h	/^        const Color* GetConstSlabPtr (int x, int y) const$/;"	f	class:noise::utils::Image	typeref:typename:const Color *
+GetConstSlabPtr	include/noiseutils.h	/^        const float* GetConstSlabPtr () const$/;"	f	class:noise::utils::NoiseMap	typeref:typename:const float *
+GetConstSlabPtr	include/noiseutils.h	/^        const float* GetConstSlabPtr (int row) const$/;"	f	class:noise::utils::NoiseMap	typeref:typename:const float *
+GetConstSlabPtr	include/noiseutils.h	/^        const float* GetConstSlabPtr (int x, int y) const$/;"	f	class:noise::utils::NoiseMap	typeref:typename:const float *
+GetDestFilename	include/noiseutils.h	/^        std::string GetDestFilename () const$/;"	f	class:noise::utils::WriterBMP	typeref:typename:std::string
+GetDestFilename	include/noiseutils.h	/^        std::string GetDestFilename () const$/;"	f	class:noise::utils::WriterTER	typeref:typename:std::string
+GetDestHeight	include/noiseutils.h	/^        double GetDestHeight () const$/;"	f	class:noise::utils::NoiseMapBuilder	typeref:typename:double
+GetDestWidth	include/noiseutils.h	/^        double GetDestWidth () const$/;"	f	class:noise::utils::NoiseMapBuilder	typeref:typename:double
+GetEastLonBound	include/noiseutils.h	/^        double GetEastLonBound () const$/;"	f	class:noise::utils::NoiseMapBuilderSphere	typeref:typename:double
+GetGradientPointArray	include/noiseutils.h	/^        const GradientPoint* GetGradientPointArray () const$/;"	f	class:noise::utils::GradientColor	typeref:typename:const GradientPoint *
+GetGradientPointCount	include/noiseutils.h	/^        int GetGradientPointCount () const$/;"	f	class:noise::utils::GradientColor	typeref:typename:int
+GetHeight	include/noiseutils.h	/^        int GetHeight () const$/;"	f	class:noise::utils::Image	typeref:typename:int
+GetHeight	include/noiseutils.h	/^        int GetHeight () const$/;"	f	class:noise::utils::NoiseMap	typeref:typename:int
+GetLightAzimuth	include/noiseutils.h	/^        double GetLightAzimuth () const$/;"	f	class:noise::utils::RendererImage	typeref:typename:double
+GetLightBrightness	include/noiseutils.h	/^        double GetLightBrightness () const$/;"	f	class:noise::utils::RendererImage	typeref:typename:double
+GetLightColor	include/noiseutils.h	/^        Color GetLightColor () const$/;"	f	class:noise::utils::RendererImage	typeref:typename:Color
+GetLightContrast	include/noiseutils.h	/^        double GetLightContrast () const$/;"	f	class:noise::utils::RendererImage	typeref:typename:double
+GetLightElev	include/noiseutils.h	/^        double GetLightElev () const$/;"	f	class:noise::utils::RendererImage	typeref:typename:double
+GetLightIntensity	include/noiseutils.h	/^        double GetLightIntensity () const$/;"	f	class:noise::utils::RendererImage	typeref:typename:double
+GetLowerAngleBound	include/noiseutils.h	/^        double GetLowerAngleBound () const$/;"	f	class:noise::utils::NoiseMapBuilderCylinder	typeref:typename:double
+GetLowerHeightBound	include/noiseutils.h	/^        double GetLowerHeightBound () const$/;"	f	class:noise::utils::NoiseMapBuilderCylinder	typeref:typename:double
+GetLowerXBound	include/noiseutils.h	/^        double GetLowerXBound () const$/;"	f	class:noise::utils::NoiseMapBuilderPlane	typeref:typename:double
+GetLowerZBound	include/noiseutils.h	/^        double GetLowerZBound () const$/;"	f	class:noise::utils::NoiseMapBuilderPlane	typeref:typename:double
+GetMemUsed	include/noiseutils.h	/^        size_t GetMemUsed () const$/;"	f	class:noise::utils::Image	typeref:typename:size_t
+GetMemUsed	include/noiseutils.h	/^        size_t GetMemUsed () const$/;"	f	class:noise::utils::NoiseMap	typeref:typename:size_t
+GetMetersPerPoint	include/noiseutils.h	/^        float GetMetersPerPoint () const$/;"	f	class:noise::utils::WriterTER	typeref:typename:float
+GetNorthLatBound	include/noiseutils.h	/^        double GetNorthLatBound () const$/;"	f	class:noise::utils::NoiseMapBuilderSphere	typeref:typename:double
+GetSlabPtr	include/noiseutils.h	/^        Color* GetSlabPtr ()$/;"	f	class:noise::utils::Image	typeref:typename:Color *
+GetSlabPtr	include/noiseutils.h	/^        Color* GetSlabPtr (int row)$/;"	f	class:noise::utils::Image	typeref:typename:Color *
+GetSlabPtr	include/noiseutils.h	/^        Color* GetSlabPtr (int x, int y)$/;"	f	class:noise::utils::Image	typeref:typename:Color *
+GetSlabPtr	include/noiseutils.h	/^        float* GetSlabPtr ()$/;"	f	class:noise::utils::NoiseMap	typeref:typename:float *
+GetSlabPtr	include/noiseutils.h	/^        float* GetSlabPtr (int row)$/;"	f	class:noise::utils::NoiseMap	typeref:typename:float *
+GetSlabPtr	include/noiseutils.h	/^        float* GetSlabPtr (int x, int y)$/;"	f	class:noise::utils::NoiseMap	typeref:typename:float *
+GetSouthLatBound	include/noiseutils.h	/^        double GetSouthLatBound () const$/;"	f	class:noise::utils::NoiseMapBuilderSphere	typeref:typename:double
+GetStride	include/noiseutils.h	/^        int GetStride () const$/;"	f	class:noise::utils::Image	typeref:typename:int
+GetStride	include/noiseutils.h	/^        int GetStride () const$/;"	f	class:noise::utils::NoiseMap	typeref:typename:int
+GetUpperAngleBound	include/noiseutils.h	/^        double GetUpperAngleBound () const$/;"	f	class:noise::utils::NoiseMapBuilderCylinder	typeref:typename:double
+GetUpperHeightBound	include/noiseutils.h	/^        double GetUpperHeightBound () const$/;"	f	class:noise::utils::NoiseMapBuilderCylinder	typeref:typename:double
+GetUpperXBound	include/noiseutils.h	/^        double GetUpperXBound () const$/;"	f	class:noise::utils::NoiseMapBuilderPlane	typeref:typename:double
+GetUpperZBound	include/noiseutils.h	/^        double GetUpperZBound () const$/;"	f	class:noise::utils::NoiseMapBuilderPlane	typeref:typename:double
+GetValue	src/noiseutils.cpp	/^Color Image::GetValue (int x, int y) const$/;"	f	class:Image	typeref:typename:Color
+GetValue	src/noiseutils.cpp	/^float NoiseMap::GetValue (int x, int y) const$/;"	f	class:NoiseMap	typeref:typename:float
+GetWestLonBound	include/noiseutils.h	/^        double GetWestLonBound () const$/;"	f	class:noise::utils::NoiseMapBuilderSphere	typeref:typename:double
+GetWidth	include/noiseutils.h	/^        int GetWidth () const$/;"	f	class:noise::utils::Image	typeref:typename:int
+GetWidth	include/noiseutils.h	/^        int GetWidth () const$/;"	f	class:noise::utils::NoiseMap	typeref:typename:int
+GradientColor	include/noiseutils.h	/^    class GradientColor$/;"	c	namespace:noise::utils
+GradientColor	src/noiseutils.cpp	/^GradientColor::GradientColor ()$/;"	f	class:GradientColor
+GradientPoint	include/noiseutils.h	/^    struct GradientPoint$/;"	s	namespace:noise::utils
+Green	include/Colors.h	/^	static const Color Red, Green, Blue, Orange, White, Black, Grey, Yellow;$/;"	m	struct:Colors	typeref:typename:const Color
+Green	src/Colors.cpp	/^const Color Colors::Green = Color(0, 1, 0);$/;"	m	class:Colors	typeref:typename:const Color
+Grey	include/Colors.h	/^	static const Color Red, Green, Blue, Orange, White, Black, Grey, Yellow;$/;"	m	struct:Colors	typeref:typename:const Color
+Grey	src/Colors.cpp	/^const Color Colors::Grey = Color(0.5, 0.5, 0.5);$/;"	m	class:Colors	typeref:typename:const Color
+HEX	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#define HEX(/;"	d	file:
+HEX	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define HEX(/;"	d	file:
+HEX	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#define HEX(/;"	d	file:
+HEX	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define HEX(/;"	d	file:
+HashFunction	include/World.h	/^struct HashFunction {$/;"	s
+ID_VOID_MAIN	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^# define ID_VOID_MAIN$/;"	d	file:
+ID_VOID_MAIN	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^# define ID_VOID_MAIN$/;"	d	file:
+Image	include/noiseutils.h	/^    class Image$/;"	c	namespace:noise::utils
+Image	src/noiseutils.cpp	/^Image::Image ()$/;"	f	class:Image
+Image	src/noiseutils.cpp	/^Image::Image (const Image& rhs)$/;"	f	class:Image
+Image	src/noiseutils.cpp	/^Image::Image (int width, int height)$/;"	f	class:Image
+InitObj	src/noiseutils.cpp	/^void Image::InitObj ()$/;"	f	class:Image	typeref:typename:void
+InitObj	src/noiseutils.cpp	/^void NoiseMap::InitObj ()$/;"	f	class:NoiseMap	typeref:typename:void
+InputSystem	include/InputSystem.h	/^class InputSystem : public System {$/;"	c
+InputSystem	src/InputSystem.cpp	/^InputSystem::InputSystem(SystemManager* systemManager, SharedContext* context)$/;"	f	class:InputSystem
+InsertAtPos	src/noiseutils.cpp	/^void GradientColor::InsertAtPos (int insertionPos, double gradientPos,$/;"	f	class:GradientColor	typeref:typename:void
+IsLightEnabled	include/noiseutils.h	/^        bool IsLightEnabled () const$/;"	f	class:noise::utils::RendererImage	typeref:typename:bool
+IsSeamlessEnabled	include/noiseutils.h	/^        bool IsSeamlessEnabled () const$/;"	f	class:noise::utils::NoiseMapBuilderPlane	typeref:typename:bool
+IsWrapEnabled	include/noiseutils.h	/^        bool IsWrapEnabled () const$/;"	f	class:noise::utils::RendererImage	typeref:typename:bool
+IsWrapEnabled	include/noiseutils.h	/^        bool IsWrapEnabled () const$/;"	f	class:noise::utils::RendererNormalMap	typeref:typename:bool
+KEY_EVENT	include/Event.h	/^    KEY_EVENT, CURSOR_EVENT, SCROLL_EVENT, FRAMEBUFFER_SIZE_EVENT,$/;"	e	enum:EventType
+KeyEvent	include/Event.h	/^struct KeyEvent : public Event {$/;"	s
+KeyEvent	src/Event.cpp	/^KeyEvent::KeyEvent(Application* app, int key, int scancode, int action, int mods)$/;"	f	class:KeyEvent
+LOG_FILE	include/Logger.h	/^    LOG_FILE = 1 << 1,$/;"	e	enum:LoggingMode
+LOG_NONE	include/Logger.h	/^    LOG_NONE = 1 << 0,$/;"	e	enum:LoggingMode
+LOG_STDOUT	include/Logger.h	/^    LOG_STDOUT = 1 << 2,$/;"	e	enum:LoggingMode
+Light	include/Light.h	/^struct Light {$/;"	s
+Light	src/Light.cpp	/^Light::Light(glm::vec3 direction, glm::vec3 color)$/;"	f	class:Light
+LightingShader	include/LightingShader.h	/^class LightingShader : public Shader {$/;"	c
+LinearInterpColor	src/noiseutils.cpp	/^    inline void LinearInterpColor (const Color& color0, const Color& color1,$/;"	f	namespace:noise::utils	typeref:typename:void
+Logger	include/Logger.h	/^class Logger {$/;"	c
+LoggingMode	include/Logger.h	/^enum LoggingMode {$/;"	g
+MAP_SEED_SIZE	include/Definitions.h	/^    static constexpr unsigned int MAP_SEED_SIZE = 256;$/;"	m	class:Definitions	typeref:typename:unsigned int
+MAX_FALL_SPEED	include/Definitions.h	/^    static constexpr float MAX_FALL_SPEED = 55.f;$/;"	m	class:Definitions	typeref:typename:float
+MINGW	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^  set(MINGW 1)$/;"	v
+MINGW	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^  set(MINGW 1)$/;"	v
+MINGW	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^  set(MINGW 1)$/;"	v
+MINGW	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^  set(MINGW 1)$/;"	v
+MOUSE_SCROLL	include/Camera.h	/^        const float MOUSE_SCROLL = 2.0f;$/;"	m	class:Camera	typeref:typename:const float
+MOUSE_SENSITIVITY	include/Camera.h	/^        const float MOUSE_SENSITIVITY = 0.2f;$/;"	m	class:Camera	typeref:typename:const float
+MOVE_SPEED	include/Camera.h	/^        const float MOVE_SPEED = 0.01f;$/;"	m	class:Camera	typeref:typename:const float
+MapGenerator	include/MapGenerator.h	/^class MapGenerator {$/;"	c
+MasterRenderer	include/MasterRenderer.h	/^class MasterRenderer {$/;"	c
+NOISEUTILS_H	include/noiseutils.h	/^#define NOISEUTILS_H$/;"	d
+NUM_BIOMES	include/BiomeInfo.h	/^    BIOME_FLAT, NUM_BIOMES$/;"	e	enum:BiomeID
+NUM_BLOCKS	include/BlockData.h	/^	NUM_BLOCKS$/;"	e	enum:BlockType
+NUM_SHADERS	include/Shader.h	/^        static const unsigned int NUM_SHADERS = 2;$/;"	m	class:Shader	typeref:typename:const unsigned int
+NoiseMap	include/noiseutils.h	/^    class NoiseMap$/;"	c	namespace:noise::utils
+NoiseMap	src/noiseutils.cpp	/^NoiseMap::NoiseMap ()$/;"	f	class:NoiseMap
+NoiseMap	src/noiseutils.cpp	/^NoiseMap::NoiseMap (const NoiseMap& rhs)$/;"	f	class:NoiseMap
+NoiseMap	src/noiseutils.cpp	/^NoiseMap::NoiseMap (int width, int height)$/;"	f	class:NoiseMap
+NoiseMapBuilder	include/noiseutils.h	/^    class NoiseMapBuilder$/;"	c	namespace:noise::utils
+NoiseMapBuilder	src/noiseutils.cpp	/^NoiseMapBuilder::NoiseMapBuilder ():$/;"	f	class:NoiseMapBuilder
+NoiseMapBuilderCylinder	include/noiseutils.h	/^    class NoiseMapBuilderCylinder: public NoiseMapBuilder$/;"	c	namespace:noise::utils
+NoiseMapBuilderCylinder	src/noiseutils.cpp	/^NoiseMapBuilderCylinder::NoiseMapBuilderCylinder ():$/;"	f	class:NoiseMapBuilderCylinder
+NoiseMapBuilderPlane	include/noiseutils.h	/^    class NoiseMapBuilderPlane: public NoiseMapBuilder$/;"	c	namespace:noise::utils
+NoiseMapBuilderPlane	src/noiseutils.cpp	/^NoiseMapBuilderPlane::NoiseMapBuilderPlane ():$/;"	f	class:NoiseMapBuilderPlane
+NoiseMapBuilderSphere	include/noiseutils.h	/^    class NoiseMapBuilderSphere: public NoiseMapBuilder$/;"	c	namespace:noise::utils
+NoiseMapBuilderSphere	src/noiseutils.cpp	/^NoiseMapBuilderSphere::NoiseMapBuilderSphere ():$/;"	f	class:NoiseMapBuilderSphere
+NoiseMapCallback	include/noiseutils.h	/^    typedef void(*NoiseMapCallback) (int row);$/;"	t	namespace:noise::utils	typeref:typename:void (*)(int row)
+Orange	include/Colors.h	/^	static const Color Red, Green, Blue, Orange, White, Black, Grey, Yellow;$/;"	m	struct:Colors	typeref:typename:const Color
+Orange	src/Colors.cpp	/^const Color Colors::Orange = Color(1, 0.5, 0);$/;"	m	class:Colors	typeref:typename:const Color
+OreData	include/OreData.h	/^struct OreData$/;"	s
+OreData	src/OreData.cpp	/^OreData::OreData(int count, int minHeight, int maxHeight, int size) {$/;"	f	class:OreData
+PLATFORM_ID	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#  define PLATFORM_ID /;"	d	file:
+PLATFORM_ID	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#  define PLATFORM_ID$/;"	d	file:
+PLATFORM_ID	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^# define PLATFORM_ID /;"	d	file:
+PLATFORM_ID	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^# define PLATFORM_ID$/;"	d	file:
+PLATFORM_ID	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define PLATFORM_ID /;"	d	file:
+PLATFORM_ID	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define PLATFORM_ID$/;"	d	file:
+PLATFORM_ID	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define PLATFORM_ID /;"	d	file:
+PLATFORM_ID	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define PLATFORM_ID$/;"	d	file:
+PLATFORM_ID	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#  define PLATFORM_ID /;"	d	file:
+PLATFORM_ID	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#  define PLATFORM_ID$/;"	d	file:
+PLATFORM_ID	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^# define PLATFORM_ID /;"	d	file:
+PLATFORM_ID	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^# define PLATFORM_ID$/;"	d	file:
+PLATFORM_ID	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define PLATFORM_ID /;"	d	file:
+PLATFORM_ID	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define PLATFORM_ID$/;"	d	file:
+PLATFORM_ID	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define PLATFORM_ID /;"	d	file:
+PLATFORM_ID	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^# define PLATFORM_ID$/;"	d	file:
+PROJECTION_ORTHO	include/Camera.h	/^    PROJECTION_PERSPECTIVE, PROJECTION_ORTHO$/;"	e	enum:ProjectionType
+PROJECTION_PERSPECTIVE	include/Camera.h	/^    PROJECTION_PERSPECTIVE, PROJECTION_ORTHO$/;"	e	enum:ProjectionType
+PlayerTagComponent	include/Components/PlayerTagComponent.h	/^struct PlayerTagComponent {}$/;"	s
+ProjectionType	include/Camera.h	/^enum ProjectionType {$/;"	g
+RASTER_MAX_HEIGHT	include/noiseutils.h	/^    const int RASTER_MAX_HEIGHT = 32767;$/;"	v	namespace:noise::utils	typeref:typename:const int
+RASTER_MAX_WIDTH	include/noiseutils.h	/^    const int RASTER_MAX_WIDTH = 32767;$/;"	v	namespace:noise::utils	typeref:typename:const int
+RASTER_STRIDE_BOUNDARY	include/noiseutils.h	/^    const int RASTER_STRIDE_BOUNDARY = 4;$/;"	v	namespace:noise::utils	typeref:typename:const int
+RM	build/Makefile	/^RM = \/usr\/bin\/cmake -E remove -f$/;"	m
+ReclaimMem	src/noiseutils.cpp	/^void Image::ReclaimMem ()$/;"	f	class:Image	typeref:typename:void
+ReclaimMem	src/noiseutils.cpp	/^void NoiseMap::ReclaimMem ()$/;"	f	class:NoiseMap	typeref:typename:void
+Red	include/Colors.h	/^	static const Color Red, Green, Blue, Orange, White, Black, Grey, Yellow;$/;"	m	struct:Colors	typeref:typename:const Color
+Red	src/Colors.cpp	/^const Color Colors::Red = Color(1, 0, 0);$/;"	m	class:Colors	typeref:typename:const Color
+Render	src/noiseutils.cpp	/^void RendererImage::Render ()$/;"	f	class:RendererImage	typeref:typename:void
+Render	src/noiseutils.cpp	/^void RendererNormalMap::Render ()$/;"	f	class:RendererNormalMap	typeref:typename:void
+RenderQuad	include/RenderQuad.h	/^class RenderQuad {$/;"	c
+RendererImage	include/noiseutils.h	/^    class RendererImage$/;"	c	namespace:noise::utils
+RendererImage	src/noiseutils.cpp	/^RendererImage::RendererImage ():$/;"	f	class:RendererImage
+RendererNormalMap	include/noiseutils.h	/^    class RendererNormalMap$/;"	c	namespace:noise::utils
+RendererNormalMap	src/noiseutils.cpp	/^RendererNormalMap::RendererNormalMap ():$/;"	f	class:RendererNormalMap
+SCROLL_EVENT	include/Event.h	/^    KEY_EVENT, CURSOR_EVENT, SCROLL_EVENT, FRAMEBUFFER_SIZE_EVENT,$/;"	e	enum:EventType
+SHELL	build/Makefile	/^SHELL = \/bin\/sh$/;"	m
+SIMULATE_ID	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_ID /;"	d	file:
+SIMULATE_ID	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_ID /;"	d	file:
+SIMULATE_ID	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_ID /;"	d	file:
+SIMULATE_ID	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_ID /;"	d	file:
+SIMULATE_VERSION_MAJOR	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_VERSION_MAJOR /;"	d	file:
+SIMULATE_VERSION_MAJOR	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_VERSION_MAJOR /;"	d	file:
+SIMULATE_VERSION_MAJOR	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_VERSION_MAJOR /;"	d	file:
+SIMULATE_VERSION_MAJOR	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_VERSION_MAJOR /;"	d	file:
+SIMULATE_VERSION_MINOR	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_VERSION_MINOR /;"	d	file:
+SIMULATE_VERSION_MINOR	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_VERSION_MINOR /;"	d	file:
+SIMULATE_VERSION_MINOR	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_VERSION_MINOR /;"	d	file:
+SIMULATE_VERSION_MINOR	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_VERSION_MINOR /;"	d	file:
+SIMULATE_VERSION_PATCH	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_VERSION_PATCH /;"	d	file:
+SIMULATE_VERSION_PATCH	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_VERSION_PATCH /;"	d	file:
+SIMULATE_VERSION_PATCH	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#  define SIMULATE_VERSION_PATCH /;"	d	file:
+SIMULATE_VERSION_PATCH	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#  define SIMULATE_VERSION_PATCH /;"	d	file:
+STRINGIFY	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#define STRINGIFY(/;"	d	file:
+STRINGIFY	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define STRINGIFY(/;"	d	file:
+STRINGIFY	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#define STRINGIFY(/;"	d	file:
+STRINGIFY	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define STRINGIFY(/;"	d	file:
+STRINGIFY_HELPER	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^#define STRINGIFY_HELPER(/;"	d	file:
+STRINGIFY_HELPER	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define STRINGIFY_HELPER(/;"	d	file:
+STRINGIFY_HELPER	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^#define STRINGIFY_HELPER(/;"	d	file:
+STRINGIFY_HELPER	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^#define STRINGIFY_HELPER(/;"	d	file:
+SUFFIXES	build/Makefile	/^SUFFIXES =$/;"	m
+ScrollEvent	include/Event.h	/^struct ScrollEvent : public Event {$/;"	s
+ScrollEvent	src/Event.cpp	/^ScrollEvent::ScrollEvent(Application* app, double dx, double dy)$/;"	f	class:ScrollEvent
+SessionLoad	Session.vim	/^let SessionLoad = 1$/;"	v
+SetBackgroundImage	include/noiseutils.h	/^        void SetBackgroundImage (const Image& backgroundImage)$/;"	f	class:noise::utils::RendererImage	typeref:typename:void
+SetBorderValue	include/noiseutils.h	/^        void SetBorderValue (const Color& borderValue)$/;"	f	class:noise::utils::Image	typeref:typename:void
+SetBorderValue	include/noiseutils.h	/^        void SetBorderValue (float borderValue)$/;"	f	class:noise::utils::NoiseMap	typeref:typename:void
+SetBounds	include/noiseutils.h	/^        void SetBounds (double lowerAngleBound, double upperAngleBound,$/;"	f	class:noise::utils::NoiseMapBuilderCylinder	typeref:typename:void
+SetBounds	include/noiseutils.h	/^        void SetBounds (double lowerXBound, double upperXBound,$/;"	f	class:noise::utils::NoiseMapBuilderPlane	typeref:typename:void
+SetBounds	include/noiseutils.h	/^        void SetBounds (double southLatBound, double northLatBound,$/;"	f	class:noise::utils::NoiseMapBuilderSphere	typeref:typename:void
+SetBumpHeight	include/noiseutils.h	/^        void SetBumpHeight (double bumpHeight)$/;"	f	class:noise::utils::RendererNormalMap	typeref:typename:void
+SetCallback	src/noiseutils.cpp	/^void NoiseMapBuilder::SetCallback (NoiseMapCallback pCallback)$/;"	f	class:NoiseMapBuilder	typeref:typename:void
+SetDestFilename	include/noiseutils.h	/^        void SetDestFilename (const std::string& filename)$/;"	f	class:noise::utils::WriterBMP	typeref:typename:void
+SetDestFilename	include/noiseutils.h	/^        void SetDestFilename (const std::string& filename)$/;"	f	class:noise::utils::WriterTER	typeref:typename:void
+SetDestImage	include/noiseutils.h	/^        void SetDestImage (Image& destImage)$/;"	f	class:noise::utils::RendererImage	typeref:typename:void
+SetDestImage	include/noiseutils.h	/^        void SetDestImage (Image& destImage)$/;"	f	class:noise::utils::RendererNormalMap	typeref:typename:void
+SetDestNoiseMap	include/noiseutils.h	/^        void SetDestNoiseMap (NoiseMap& destNoiseMap)$/;"	f	class:noise::utils::NoiseMapBuilder	typeref:typename:void
+SetDestSize	include/noiseutils.h	/^        void SetDestSize (int destWidth, int destHeight)$/;"	f	class:noise::utils::NoiseMapBuilder	typeref:typename:void
+SetLightAzimuth	include/noiseutils.h	/^        void SetLightAzimuth (double lightAzimuth)$/;"	f	class:noise::utils::RendererImage	typeref:typename:void
+SetLightBrightness	include/noiseutils.h	/^        void SetLightBrightness (double lightBrightness)$/;"	f	class:noise::utils::RendererImage	typeref:typename:void
+SetLightColor	include/noiseutils.h	/^        void SetLightColor (const Color& lightColor)$/;"	f	class:noise::utils::RendererImage	typeref:typename:void
+SetLightContrast	include/noiseutils.h	/^        void SetLightContrast (double lightContrast)$/;"	f	class:noise::utils::RendererImage	typeref:typename:void
+SetLightElev	include/noiseutils.h	/^        void SetLightElev (double lightElev)$/;"	f	class:noise::utils::RendererImage	typeref:typename:void
+SetLightIntensity	include/noiseutils.h	/^        void SetLightIntensity (double lightIntensity)$/;"	f	class:noise::utils::RendererImage	typeref:typename:void
+SetMetersPerPoint	include/noiseutils.h	/^        void SetMetersPerPoint (float metersPerPoint)$/;"	f	class:noise::utils::WriterTER	typeref:typename:void
+SetSize	src/noiseutils.cpp	/^void Image::SetSize (int width, int height)$/;"	f	class:Image	typeref:typename:void
+SetSize	src/noiseutils.cpp	/^void NoiseMap::SetSize (int width, int height)$/;"	f	class:NoiseMap	typeref:typename:void
+SetSourceImage	include/noiseutils.h	/^        void SetSourceImage (Image& sourceImage)$/;"	f	class:noise::utils::WriterBMP	typeref:typename:void
+SetSourceModule	include/noiseutils.h	/^        void SetSourceModule (const module::Module& sourceModule)$/;"	f	class:noise::utils::NoiseMapBuilder	typeref:typename:void
+SetSourceNoiseMap	include/noiseutils.h	/^        void SetSourceNoiseMap (NoiseMap& sourceNoiseMap)$/;"	f	class:noise::utils::WriterTER	typeref:typename:void
+SetSourceNoiseMap	include/noiseutils.h	/^        void SetSourceNoiseMap (const NoiseMap& sourceNoiseMap)$/;"	f	class:noise::utils::RendererImage	typeref:typename:void
+SetSourceNoiseMap	include/noiseutils.h	/^        void SetSourceNoiseMap (const NoiseMap& sourceNoiseMap)$/;"	f	class:noise::utils::RendererNormalMap	typeref:typename:void
+SetValue	src/noiseutils.cpp	/^void Image::SetValue (int x, int y, const Color& value)$/;"	f	class:Image	typeref:typename:void
+SetValue	src/noiseutils.cpp	/^void NoiseMap::SetValue (int x, int y, float value)$/;"	f	class:NoiseMap	typeref:typename:void
+Shader	include/Shader.h	/^class Shader {$/;"	c
+SharedContext	include/SharedContext.h	/^    SharedContext()$/;"	f	struct:SharedContext
+SharedContext	include/SharedContext.h	/^struct SharedContext {$/;"	s
+Skybox	include/Skybox.h	/^class Skybox {$/;"	c
+SkyboxShader	include/SkyboxShader.h	/^class SkyboxShader : public Shader {$/;"	c
+System	include/System.h	/^class System {$/;"	c
+System	src/System.cpp	/^System::System(SystemManager* systemManager, SharedContext* context)$/;"	f	class:System
+SystemManager	include/SystemManager.h	/^class SystemManager {$/;"	c
+TARGET	src/CMakeLists.txt	/^set(TARGET target_name)$/;"	v
+TYPE	include/Event.h	/^    static constexpr EventType TYPE = CURSOR_EVENT;$/;"	m	struct:CursorEvent	typeref:typename:EventType
+TYPE	include/Event.h	/^    static constexpr EventType TYPE = ENTER_CHUNK_EVENT;$/;"	m	struct:EnterChunkEvent	typeref:typename:EventType
+TYPE	include/Event.h	/^    static constexpr EventType TYPE = FRAMEBUFFER_SIZE_EVENT;$/;"	m	struct:FramebufferSizeEvent	typeref:typename:EventType
+TYPE	include/Event.h	/^    static constexpr EventType TYPE = KEY_EVENT;$/;"	m	struct:KeyEvent	typeref:typename:EventType
+TYPE	include/Event.h	/^    static constexpr EventType TYPE = SCROLL_EVENT;$/;"	m	struct:ScrollEvent	typeref:typename:EventType
+TakeOwnership	src/noiseutils.cpp	/^void Image::TakeOwnership (Image& source)$/;"	f	class:Image	typeref:typename:void
+TakeOwnership	src/noiseutils.cpp	/^void NoiseMap::TakeOwnership (NoiseMap& source)$/;"	f	class:NoiseMap	typeref:typename:void
+Text	include/Text.h	/^struct Text {$/;"	s
+TextureAtlas	include/TextureAtlas.h	/^class TextureAtlas {$/;"	c
+TransformationComponent	include/Components/TransformationComponent.h	/^struct TransformationComponent {$/;"	s
+UNIX	CMakeFiles/3.16.2/CMakeCCompiler.cmake	/^  set(UNIX 1)$/;"	v
+UNIX	CMakeFiles/3.16.2/CMakeCXXCompiler.cmake	/^  set(UNIX 1)$/;"	v
+UNIX	build/CMakeFiles/3.16.5/CMakeCCompiler.cmake	/^  set(UNIX 1)$/;"	v
+UNIX	build/CMakeFiles/3.16.5/CMakeCXXCompiler.cmake	/^  set(UNIX 1)$/;"	v
+UnpackFloat	src/noiseutils.cpp	/^    inline noise::uint8* UnpackFloat (noise::uint8* bytes, float value)$/;"	f	namespace:noise::utils	typeref:typename:noise::uint8 *
+UnpackLittle16	src/noiseutils.cpp	/^    inline noise::uint8* UnpackLittle16 (noise::uint8* bytes,$/;"	f	namespace:noise::utils	typeref:typename:noise::uint8 *
+UnpackLittle32	src/noiseutils.cpp	/^    inline noise::uint8* UnpackLittle32 (noise::uint8* bytes,$/;"	f	namespace:noise::utils	typeref:typename:noise::uint8 *
+Vertex	include/Vertex.h	/^struct Vertex {$/;"	s
+Vertex	src/Vertex.cpp	/^Vertex::Vertex(glm::vec3 position, glm::vec3 normal, glm::vec2 texCoords)$/;"	f	class:Vertex
+VoxelGame	CMakeLists.txt	/^add_executable(VoxelGame ${SOURCES})$/;"	t
+VoxelGame	CMakeLists.txt	/^project(VoxelGame VERSION 1.0.0)$/;"	p
+VoxelGame	build/Makefile	/^VoxelGame: cmake_check_build_system$/;"	t
+VoxelGame/fast	build/Makefile	/^VoxelGame\/fast:$/;"	t
+WINDOW_HEIGHT	include/Definitions.h	/^    static constexpr unsigned int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600;$/;"	m	class:Definitions	typeref:typename:unsigned int
+WINDOW_WIDTH	include/Definitions.h	/^    static constexpr unsigned int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600;$/;"	m	class:Definitions	typeref:typename:unsigned int
+WORLD_FLAT	include/WorldGenerator.h	/^	WORLD_FLAT,$/;"	e	enum:WorldType
+WORLD_NORMAL	include/WorldGenerator.h	/^	WORLD_NORMAL$/;"	e	enum:WorldType
+White	include/Colors.h	/^	static const Color Red, Green, Blue, Orange, White, Black, Grey, Yellow;$/;"	m	struct:Colors	typeref:typename:const Color
+White	src/Colors.cpp	/^const Color Colors::White = Color(1, 1, 1);$/;"	m	class:Colors	typeref:typename:const Color
+Window	include/Window.h	/^class Window {$/;"	c
+World	include/World.h	/^class World {$/;"	c
+WorldGenerator	include/WorldGenerator.h	/^class WorldGenerator {$/;"	c
+WorldType	include/WorldGenerator.h	/^enum class WorldType : char {$/;"	g	typeref:typename:char
+WriteDestFile	src/noiseutils.cpp	/^void WriterBMP::WriteDestFile ()$/;"	f	class:WriterBMP	typeref:typename:void
+WriteDestFile	src/noiseutils.cpp	/^void WriterTER::WriteDestFile ()$/;"	f	class:WriterTER	typeref:typename:void
+WriterBMP	include/noiseutils.h	/^        WriterBMP ():$/;"	f	class:noise::utils::WriterBMP
+WriterBMP	include/noiseutils.h	/^    class WriterBMP$/;"	c	namespace:noise::utils
+WriterTER	include/noiseutils.h	/^        WriterTER ():$/;"	f	class:noise::utils::WriterTER
+WriterTER	include/noiseutils.h	/^    class WriterTER$/;"	c	namespace:noise::utils
+Yellow	include/Colors.h	/^	static const Color Red, Green, Blue, Orange, White, Black, Grey, Yellow;$/;"	m	struct:Colors	typeref:typename:const Color
+Yellow	src/Colors.cpp	/^const Color Colors::Yellow = Color(1, 1, 0);$/;"	m	class:Colors	typeref:typename:const Color
+__anond5dec05f0102	src/ChunkCreateSystem.cpp	/^                    chunk.futures.push_back(std::async(std::launch::async, [this, &chunk]() {$/;"	f	function:ChunkCreateSystem::update	file:
+__anond5dec05f0202	src/ChunkCreateSystem.cpp	/^                    chunk.futures.push_back(std::async(std::launch::async, [this, &chunk, &geome/;"	f	function:ChunkCreateSystem::update	file:
+__anondfc75fe60102	src/Chunk.cpp	/^                m_futures.push_back(std::async(std::launch::async, [this]() {$/;"	f	function:Chunk::update	file:
+__anondfc75fe60202	src/Chunk.cpp	/^                m_futures.push_back(std::async(std::launch::async, [this]() {$/;"	f	function:Chunk::update	file:
+action	include/Event.h	/^    int action;$/;"	m	struct:KeyEvent	typeref:typename:int
+addCallback	src/EventDispatcher.cpp	/^CallbackId EventDispatcher::addCallback(Callback callback, EventType callbackType) {$/;"	f	class:EventDispatcher	typeref:typename:CallbackId
+advance	include/Font.h	/^    GLuint advance; \/\/ offset to next glyph$/;"	m	struct:Character	typeref:typename:GLuint
+all	build/Makefile	/^all: cmake_check_build_system$/;"	t
+alpha	include/noiseutils.h	/^        noise::uint8 alpha;$/;"	m	class:noise::utils::Color	typeref:typename:noise::uint8
+app	include/Event.h	/^    Application* app;$/;"	m	struct:CursorEvent	typeref:typename:Application *
+app	include/Event.h	/^    Application* app;$/;"	m	struct:EnterChunkEvent	typeref:typename:Application *
+app	include/Event.h	/^    Application* app;$/;"	m	struct:FramebufferSizeEvent	typeref:typename:Application *
+app	include/Event.h	/^    Application* app;$/;"	m	struct:KeyEvent	typeref:typename:Application *
+app	include/Event.h	/^    Application* app;$/;"	m	struct:ScrollEvent	typeref:typename:Application *
+attachToWindow	src/EventDispatcher.cpp	/^void EventDispatcher::attachToWindow(const Window& window) {$/;"	f	class:EventDispatcher	typeref:typename:void
+baseFlatTerrain	include/WorldGenerator.h	/^	Billow baseFlatTerrain;$/;"	m	class:WorldGenerator	typeref:typename:Billow
+baseHeight	Resources/Misc/BiomeInfo.json	/^		"baseHeight": 60,$/;"	n	object:0
+baseHeight	include/BiomeInfo.h	/^    int baseHeight;$/;"	m	struct:BiomeInfo	typeref:typename:int
+bearing	include/Font.h	/^    glm::ivec2 bearing; \/\/ offset from baseline to left\/top$/;"	m	struct:Character	typeref:typename:glm::ivec2
+bind	src/Shader.cpp	/^void Shader::bind() const {$/;"	f	class:Shader	typeref:typename:void
+bind	src/TextureAtlas.cpp	/^void TextureAtlas::bind() {$/;"	f	class:TextureAtlas	typeref:typename:void
+bindFramebuffer	src/GBuffer.cpp	/^void GBuffer::bindFramebuffer(bool readOnly) {$/;"	f	class:GBuffer	typeref:typename:void
+bindTextures	src/GBuffer.cpp	/^void GBuffer::bindTextures() {$/;"	f	class:GBuffer	typeref:typename:void
+biomes	include/WorldGenerator.h	/^	std::unordered_map<BiomeID, BiomeInfo> biomes;$/;"	m	class:WorldGenerator	typeref:typename:std::unordered_map<BiomeID,BiomeInfo>
+blockMutex	include/Components/ChunkComponent.h	/^    std::mutex blockMutex, vaoMutex;$/;"	m	struct:ChunkComponent	typeref:typename:std::mutex
+blocks	include/Components/ChunkComponent.h	/^    Block*** blocks = nullptr;$/;"	m	struct:ChunkComponent	typeref:typename:Block ***
+blue	include/noiseutils.h	/^        noise::uint8 blue;$/;"	m	class:noise::utils::Color	typeref:typename:noise::uint8
+buffersInitialized	include/Components/ChunkComponent.h	/^    bool buffersInitialized = false;$/;"	m	struct:ChunkComponent	typeref:typename:bool
+buffersOutdated	include/Components/ChunkComponent.h	/^    bool buffersOutdated    = false;$/;"	m	struct:ChunkComponent	typeref:typename:bool
+camera	include/SharedContext.h	/^    Camera camera;$/;"	m	struct:SharedContext	typeref:typename:Camera
+caveLenght	include/WorldGenerator.h	/^	int caveLenght;$/;"	m	class:WorldGenerator	typeref:typename:int
+cavePerlin	include/WorldGenerator.h	/^	Perlin cavePerlin;$/;"	m	class:WorldGenerator	typeref:typename:Perlin
+caveSize	include/WorldGenerator.h	/^	int caveSize;$/;"	m	class:WorldGenerator	typeref:typename:int
+checkShaderError	src/Shader.cpp	/^void Shader::checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::string errorMessa/;"	f	class:Shader	typeref:typename:void
+chunkCount	src/World.cpp	/^int World::chunkCount() const {$/;"	f	class:World	typeref:typename:int
+clean	build/Makefile	/^clean:$/;"	t
+clean/fast	build/Makefile	/^clean\/fast: clean$/;"	t
+cleanUp	src/Chunk.cpp	/^void Chunk::cleanUp() {$/;"	f	class:Chunk	typeref:typename:void
+cleanUp	src/GBuffer.cpp	/^void GBuffer::cleanUp() {$/;"	f	class:GBuffer	typeref:typename:void
+clear	src/Window.cpp	/^void Window::clear(Color clearColor) {$/;"	f	class:Window	typeref:typename:void
+close	src/Window.cpp	/^void Window::close() {$/;"	f	class:Window	typeref:typename:void
+cmake_check_build_system	build/Makefile	/^cmake_check_build_system:$/;"	t
+cmake_force	build/Makefile	/^cmake_force:$/;"	t
+color	include/Light.h	/^    glm::vec3 color;$/;"	m	struct:Light	typeref:typename:glm::vec3
+color	include/Text.h	/^	Color color = Colors::White;$/;"	m	struct:Text	typeref:typename:Color
+color	include/noiseutils.h	/^      Color color;$/;"	m	struct:noise::utils::GradientPoint	typeref:typename:Color
+const	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^# define const$/;"	d	file:
+const	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^# define const$/;"	d	file:
+constructionCount	include/Chunk.h	/^    static std::atomic_int constructionCount;$/;"	m	class:Chunk	typeref:typename:std::atomic_int
+constructionCount	include/ChunkCreateSystem.h	/^        std::atomic_int constructionCount;$/;"	m	class:ChunkCreateSystem	typeref:typename:std::atomic_int
+constructionCount	src/Chunk.cpp	/^std::atomic_int Chunk::constructionCount = { 0 };$/;"	m	class:Chunk	typeref:typename:std::atomic_int
+createBlocks	src/Chunk.cpp	/^void Chunk::createBlocks() {$/;"	f	class:Chunk	typeref:typename:void
+createShader	src/Shader.cpp	/^GLuint Shader::createShader(std::string text, GLenum type) {$/;"	f	class:Shader	typeref:typename:GLuint
+cursorPosCallback	src/EventDispatcher.cpp	/^void EventDispatcher::cursorPosCallback(GLFWwindow* window, double xpos, double ypos) {$/;"	f	class:EventDispatcher	typeref:typename:void
+default_target	build/Makefile	/^default_target: all$/;"	t
+depend	build/Makefile	/^depend:$/;"	t
+destructionReady	src/Chunk.cpp	/^bool Chunk::destructionReady() const {$/;"	f	class:Chunk	typeref:typename:bool
+dispatch	src/EventDispatcher.cpp	/^void EventDispatcher::dispatch(Event *e) {$/;"	f	class:EventDispatcher	typeref:typename:void
+display	src/Window.cpp	/^void Window::display() {$/;"	f	class:Window	typeref:typename:void
+drawBlock	include/BlockData.h	/^	bool drawBlock = true;$/;"	m	struct:BlockData	typeref:typename:bool
+drawCount	include/Components/GeometryComponent.h	/^    unsigned int drawCount;$/;"	m	struct:GeometryComponent	typeref:typename:unsigned int
+dx	include/Event.h	/^    double dx, dy;$/;"	m	struct:CursorEvent	typeref:typename:double
+dx	include/Event.h	/^    double dx, dy;$/;"	m	struct:ScrollEvent	typeref:typename:double
+dy	include/Event.h	/^    double dx, dy;$/;"	m	struct:CursorEvent	typeref:typename:double
+dy	include/Event.h	/^    double dx, dy;$/;"	m	struct:ScrollEvent	typeref:typename:double
+ebo	include/Components/GeometryComponent.h	/^    GLuint vao, vbo, ebo;$/;"	m	struct:GeometryComponent	typeref:typename:GLuint
+edit_cache	build/Makefile	/^edit_cache:$/;"	t
+edit_cache/fast	build/Makefile	/^edit_cache\/fast: edit_cache$/;"	t
+flatTerrain	include/WorldGenerator.h	/^	ScaleBias flatTerrain;$/;"	m	class:WorldGenerator	typeref:typename:ScaleBias
+framebufferSizeCallback	src/EventDispatcher.cpp	/^void EventDispatcher::framebufferSizeCallback(GLFWwindow* window, int width, int height) {$/;"	f	class:EventDispatcher	typeref:typename:void
+futures	include/Components/ChunkComponent.h	/^    std::vector<std::future<void>> futures;$/;"	m	struct:ChunkComponent	typeref:typename:std::vector<std::future<void>>
+g:this_obsession	Session.vim	/^let g:this_obsession = v:this_session$/;"	v
+g:this_session	Session.vim	/^let g:this_session = v:this_session$/;"	v
+generateBlocks	src/WorldGenerator.cpp	/^void WorldGenerator::generateBlocks(glm::vec2 position, Block*** blocks) const {$/;"	f	class:WorldGenerator	typeref:typename:void
+generateChunkMap	src/MapGenerator.cpp	/^ChunkMapArray&& MapGenerator::generateChunkMap(int x, int y) {$/;"	f	class:MapGenerator	typeref:typename:ChunkMapArray &&
+generateOre	src/WorldGenerator.cpp	/^void WorldGenerator::generateOre(int x, int y, int z, int size, BlockType block, Block*** blocks/;"	f	class:WorldGenerator	typeref:typename:void
+generateSeed	src/MapGenerator.cpp	/^void MapGenerator::generateSeed() {$/;"	f	class:MapGenerator	typeref:typename:void
+generateTerrain	src/WorldGenerator.cpp	/^void WorldGenerator::generateTerrain(glm::vec2 position, Block*** blocks) const {$/;"	f	class:WorldGenerator	typeref:typename:void
+generateUnderground	src/WorldGenerator.cpp	/^void WorldGenerator::generateUnderground(glm::vec2 position, Block*** blocks) const {$/;"	f	class:WorldGenerator	typeref:typename:void
+generationCounts	include/OreData.h	/^    int generationCounts = 0;$/;"	m	struct:OreData	typeref:typename:int
+get	src/Event.cpp	/^T* Event::get() {$/;"	f	class:Event	typeref:typename:T *
+getBlock	src/Chunk.cpp	/^Block Chunk::getBlock(int x, int y, int z) const {$/;"	f	class:Chunk	typeref:typename:Block
+getBlock	src/World.cpp	/^Block World::getBlock(int x, int y, int z) const {$/;"	f	class:World	typeref:typename:Block
+getBlockTextureCoordinates	src/TextureAtlas.cpp	/^const BlockUVsArray* TextureAtlas::getBlockTextureCoordinates() {$/;"	f	class:TextureAtlas	typeref:typename:const BlockUVsArray *
+getCharacter	src/Font.cpp	/^const Character& Font::getCharacter(char c) const {$/;"	f	class:Font	typeref:typename:const Character &
+getHandle	src/Window.cpp	/^GLFWwindow* Window::getHandle() const {$/;"	f	class:Window	typeref:typename:GLFWwindow *
+getKey	src/Window.cpp	/^bool Window::getKey(int key) const {$/;"	f	class:Window	typeref:typename:bool
+getModelMatrix	src/Components/Components.cpp	/^glm::mat4 TransformationComponent::getModelMatrix() const {$/;"	f	class:TransformationComponent	typeref:typename:glm::mat4
+getPosition	src/Camera.cpp	/^glm::vec3 Camera::getPosition() const {$/;"	f	class:Camera	typeref:typename:glm::vec3
+getProjectionMatrix	src/Camera.cpp	/^glm::mat4 Camera::getProjectionMatrix(ProjectionType type) const {$/;"	f	class:Camera	typeref:typename:glm::mat4
+getRegistry	src/SystemManager.cpp	/^entt::registry& SystemManager::getRegistry() {$/;"	f	class:SystemManager	typeref:typename:entt::registry &
+getTerrainHeight	src/World.cpp	/^int World::getTerrainHeight(int x, int y) {$/;"	f	class:World	typeref:typename:int
+getViewMatrix	src/Camera.cpp	/^glm::mat4 Camera::getViewMatrix() const {$/;"	f	class:Camera	typeref:typename:glm::mat4
+green	include/noiseutils.h	/^        noise::uint8 green;$/;"	m	class:noise::utils::Color	typeref:typename:noise::uint8
+handleCursorPos	src/Camera.cpp	/^void Camera::handleCursorPos(int dx, int dy) {$/;"	f	class:Camera	typeref:typename:void
+handleEnterChunk	src/ChunkCreateSystem.cpp	/^void ChunkCreateSystem::handleEnterChunk(Event* e) {$/;"	f	class:ChunkCreateSystem	typeref:typename:void
+handleEnterChunk	src/World.cpp	/^void World::handleEnterChunk(Event* e) {$/;"	f	class:World	typeref:typename:void
+handleEvent	src/SystemManager.cpp	/^void SystemManager::handleEvent(Event *e) {$/;"	f	class:SystemManager	typeref:typename:void
+handleFramebufferSize	src/Camera.cpp	/^void Camera::handleFramebufferSize(int width, int height) {$/;"	f	class:Camera	typeref:typename:void
+handleFramebufferSize	src/ChunkRenderSystem.cpp	/^void ChunkRenderSystem::handleFramebufferSize(Event* e) {$/;"	f	class:ChunkRenderSystem	typeref:typename:void
+handleKey	src/Camera.cpp	/^void Camera::handleKey(int key, int action) {$/;"	f	class:Camera	typeref:typename:void
+handleKeyPressEvent	src/InputSystem.cpp	/^void InputSystem::handleKeyPressEvent(Event* e) {$/;"	f	class:InputSystem	typeref:typename:void
+handleKeys	src/Application.cpp	/^void Application::handleKeys(Event* event) {$/;"	f	class:Application	typeref:typename:void
+handleMouseMoveEvent	src/InputSystem.cpp	/^void InputSystem::handleMouseMoveEvent(Event* e) {$/;"	f	class:InputSystem	typeref:typename:void
+handleScroll	src/Camera.cpp	/^void Camera::handleScroll(double dy) {$/;"	f	class:Camera	typeref:typename:void
+height	include/Event.h	/^    int width, height;$/;"	m	struct:FramebufferSizeEvent	typeref:typename:int
+height	include/GBuffer.h	/^        int width = Definitions::WINDOW_WIDTH, height = Definitions::WINDOW_HEIGHT;$/;"	m	class:GBuffer	typeref:typename:int
+heightAmplitude	Resources/Misc/BiomeInfo.json	/^		"heightAmplitude": 5,$/;"	n	object:0
+heightAmplitude	include/BiomeInfo.h	/^    int heightAmplitude;$/;"	m	struct:BiomeInfo	typeref:typename:int
+help	build/Makefile	/^help:$/;"	t
+id	include/BiomeInfo.h	/^    BiomeID id;$/;"	m	struct:BiomeInfo	typeref:typename:BiomeID
+indices	include/Components/ChunkComponent.h	/^    std::vector<unsigned int> indices;$/;"	m	struct:ChunkComponent	typeref:typename:std::vector<unsigned int>
+info_arch	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";$/;"	v	typeref:typename:char const *
+info_arch	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";$/;"	v	typeref:typename:char const *
+info_arch	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";$/;"	v	typeref:typename:char const *
+info_arch	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_arch = "INFO" ":" "arch[" ARCHITECTURE_ID "]";$/;"	v	typeref:typename:char const *
+info_compiler	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^char const* info_compiler = "INFO" ":" "compiler[" COMPILER_ID "]";$/;"	v	typeref:typename:char const *
+info_compiler	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_compiler = "INFO" ":" "compiler[" COMPILER_ID "]";$/;"	v	typeref:typename:char const *
+info_compiler	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^char const* info_compiler = "INFO" ":" "compiler[" COMPILER_ID "]";$/;"	v	typeref:typename:char const *
+info_compiler	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_compiler = "INFO" ":" "compiler[" COMPILER_ID "]";$/;"	v	typeref:typename:char const *
+info_cray	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^char const *info_cray = "INFO" ":" "compiler_wrapper[CrayPrgEnv]";$/;"	v	typeref:typename:char const *
+info_cray	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const *info_cray = "INFO" ":" "compiler_wrapper[CrayPrgEnv]";$/;"	v	typeref:typename:char const *
+info_cray	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^char const *info_cray = "INFO" ":" "compiler_wrapper[CrayPrgEnv]";$/;"	v	typeref:typename:char const *
+info_cray	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const *info_cray = "INFO" ":" "compiler_wrapper[CrayPrgEnv]";$/;"	v	typeref:typename:char const *
+info_language_dialect_default	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^const char* info_language_dialect_default =$/;"	v	typeref:typename:const char *
+info_language_dialect_default	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^const char* info_language_dialect_default = "INFO" ":" "dialect_default["$/;"	v	typeref:typename:const char *
+info_language_dialect_default	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^const char* info_language_dialect_default =$/;"	v	typeref:typename:const char *
+info_language_dialect_default	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^const char* info_language_dialect_default = "INFO" ":" "dialect_default["$/;"	v	typeref:typename:const char *
+info_platform	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^char const* info_platform = "INFO" ":" "platform[" PLATFORM_ID "]";$/;"	v	typeref:typename:char const *
+info_platform	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_platform = "INFO" ":" "platform[" PLATFORM_ID "]";$/;"	v	typeref:typename:char const *
+info_platform	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^char const* info_platform = "INFO" ":" "platform[" PLATFORM_ID "]";$/;"	v	typeref:typename:char const *
+info_platform	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_platform = "INFO" ":" "platform[" PLATFORM_ID "]";$/;"	v	typeref:typename:char const *
+info_simulate	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^char const* info_simulate = "INFO" ":" "simulate[" SIMULATE_ID "]";$/;"	v	typeref:typename:char const *
+info_simulate	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_simulate = "INFO" ":" "simulate[" SIMULATE_ID "]";$/;"	v	typeref:typename:char const *
+info_simulate	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^char const* info_simulate = "INFO" ":" "simulate[" SIMULATE_ID "]";$/;"	v	typeref:typename:char const *
+info_simulate	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* info_simulate = "INFO" ":" "simulate[" SIMULATE_ID "]";$/;"	v	typeref:typename:char const *
+info_simulate_version	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^char const info_simulate_version[] = {$/;"	v	typeref:typename:char const[]
+info_simulate_version	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_simulate_version[] = {$/;"	v	typeref:typename:char const[]
+info_simulate_version	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^char const info_simulate_version[] = {$/;"	v	typeref:typename:char const[]
+info_simulate_version	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_simulate_version[] = {$/;"	v	typeref:typename:char const[]
+info_version	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^char const info_version[] = {$/;"	v	typeref:typename:char const[]
+info_version	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_version[] = {$/;"	v	typeref:typename:char const[]
+info_version	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^char const info_version[] = {$/;"	v	typeref:typename:char const[]
+info_version	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_version[] = {$/;"	v	typeref:typename:char const[]
+info_version_internal	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^char const info_version_internal[] = {$/;"	v	typeref:typename:char const[]
+info_version_internal	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_version_internal[] = {$/;"	v	typeref:typename:char const[]
+info_version_internal	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^char const info_version_internal[] = {$/;"	v	typeref:typename:char const[]
+info_version_internal	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const info_version_internal[] = {$/;"	v	typeref:typename:char const[]
+init	src/BlockShader.cpp	/^void BlockShader::init() {$/;"	f	class:BlockShader	typeref:typename:void
+init	src/ChunkRenderSystem.cpp	/^void ChunkRenderSystem::init() {$/;"	f	class:ChunkRenderSystem	typeref:typename:void
+init	src/Font.cpp	/^void Font::init(const char *file) {$/;"	f	class:Font	typeref:typename:void
+init	src/GBuffer.cpp	/^void GBuffer::init() {$/;"	f	class:GBuffer	typeref:typename:void
+init	src/GUIRenderer.cpp	/^void GUIRenderer::init() {$/;"	f	class:GUIRenderer	typeref:typename:void
+init	src/GUIShader.cpp	/^void GUIShader::init() {$/;"	f	class:GUIShader	typeref:typename:void
+init	src/InputSystem.cpp	/^void InputSystem::init() {$/;"	f	class:InputSystem	typeref:typename:void
+init	src/LightingShader.cpp	/^void LightingShader::init() {$/;"	f	class:LightingShader	typeref:typename:void
+init	src/RenderQuad.cpp	/^void RenderQuad::init() {$/;"	f	class:RenderQuad	typeref:typename:void
+init	src/Shader.cpp	/^void Shader::init(std::string fileName, std::vector<std::string> attribs) {$/;"	f	class:Shader	typeref:typename:void
+init	src/Skybox.cpp	/^void Skybox::init() {$/;"	f	class:Skybox	typeref:typename:void
+init	src/SkyboxShader.cpp	/^void SkyboxShader::init() {$/;"	f	class:SkyboxShader	typeref:typename:void
+init	src/SystemManager.cpp	/^void SystemManager::init(SharedContext* context) {$/;"	f	class:SystemManager	typeref:typename:void
+init	src/TextureAtlas.cpp	/^void TextureAtlas::init(const char *fileName, int tileSize) {$/;"	f	class:TextureAtlas	typeref:typename:void
+init	src/Window.cpp	/^void Window::init(Application* app) {$/;"	f	class:Window	typeref:typename:void
+init	src/World.cpp	/^void World::init(WorldType worldType) {$/;"	f	class:World	typeref:typename:void
+init	src/WorldGenerator.cpp	/^void WorldGenerator::init(WorldType worldType) {$/;"	f	class:WorldGenerator	typeref:typename:void
+json	src/Definitions.cpp	/^using json = nlohmann::json;$/;"	t	typeref:typename:nlohmann::json	file:
+key	include/Event.h	/^    int key;$/;"	m	struct:KeyEvent	typeref:typename:int
+keyCallback	src/EventDispatcher.cpp	/^void EventDispatcher::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mod/;"	f	class:EventDispatcher	typeref:typename:void
+loadData	src/Definitions.cpp	/^void Definitions::loadData() {$/;"	f	class:Definitions	typeref:typename:void
+loadShader	src/Shader.cpp	/^std::string Shader::loadShader(std::string fileName) {$/;"	f	class:Shader	typeref:typename:std::string
+loadedChunks	include/ChunkCreateSystem.h	/^        std::vector<glm::vec2> loadedChunks;$/;"	m	class:ChunkCreateSystem	typeref:typename:std::vector<glm::vec2>
+logString	src/Logger.cpp	/^void Logger::logString(const std::string& message) {$/;"	f	class:Logger	typeref:typename:void
+m_blockMutex	include/Chunk.h	/^    mutable std::mutex m_blockMutex;$/;"	m	class:Chunk	typeref:typename:std::mutex
+m_blockShader	include/ChunkRenderSystem.h	/^        BlockShader m_blockShader;$/;"	m	class:ChunkRenderSystem	typeref:typename:BlockShader
+m_blockShader	include/MasterRenderer.h	/^        BlockShader m_blockShader;$/;"	m	class:MasterRenderer	typeref:typename:BlockShader
+m_blockUVArray	include/Chunk.h	/^    static const BlockUVsArray* m_blockUVArray;$/;"	m	class:Chunk	typeref:typename:const BlockUVsArray *
+m_blockUVArray	src/Chunk.cpp	/^const BlockUVsArray* Chunk::m_blockUVArray;$/;"	m	class:Chunk	typeref:typename:const BlockUVsArray *
+m_blockUVsArray	include/TextureAtlas.h	/^        BlockUVsArray m_blockUVsArray;$/;"	m	class:TextureAtlas	typeref:typename:BlockUVsArray
+m_blocks	include/Chunk.h	/^    Block*** m_blocks = nullptr;$/;"	m	class:Chunk	typeref:typename:Block ***
+m_borderValue	include/noiseutils.h	/^        Color m_borderValue;$/;"	m	class:noise::utils::Image	typeref:typename:Color
+m_borderValue	include/noiseutils.h	/^        float m_borderValue;$/;"	m	class:noise::utils::NoiseMap	typeref:typename:float
+m_buffersInitialized	include/Chunk.h	/^    bool m_buffersInitialized = false;$/;"	m	class:Chunk	typeref:typename:bool
+m_buffersOutdated	include/Chunk.h	/^    bool m_buffersOutdated = false;$/;"	m	class:Chunk	typeref:typename:bool
+m_bumpHeight	include/noiseutils.h	/^        double m_bumpHeight;$/;"	m	class:noise::utils::RendererNormalMap	typeref:typename:double
+m_callbacks	include/EventDispatcher.h	/^    static std::map<EventType, std::vector<std::pair<CallbackId, Callback>>> m_callbacks;$/;"	m	class:EventDispatcher	typeref:typename:std::map<EventType,std::vector<std::pair<CallbackId,Callback>>>
+m_callbacks	src/EventDispatcher.cpp	/^std::map<EventType, std::vector<std::pair<CallbackId, Callback>>> EventDispatcher::m_callbacks;$/;"	m	class:EventDispatcher	typeref:typename:std::map<EventType,std::vector<std::pair<CallbackId,Callback>>>
+m_cbCounter	include/EventDispatcher.h	/^    static CallbackId m_cbCounter;$/;"	m	class:EventDispatcher	typeref:typename:CallbackId
+m_cbCounter	src/EventDispatcher.cpp	/^CallbackId EventDispatcher::m_cbCounter = 0;$/;"	m	class:EventDispatcher	typeref:typename:CallbackId
+m_characters	include/Font.h	/^        std::map<char, Character> m_characters;$/;"	m	class:Font	typeref:typename:std::map<char,Character>
+m_chunks	include/World.h	/^    std::unordered_map<glm::vec2, Chunk, HashFunction, HashFunction> m_chunks;$/;"	m	class:World	typeref:typename:std::unordered_map<glm::vec2,Chunk,HashFunction,HashFunction>
+m_context	include/Application.h	/^    SharedContext m_context;$/;"	m	class:Application	typeref:typename:SharedContext
+m_context	include/System.h	/^        SharedContext* m_context;$/;"	m	class:System	typeref:typename:SharedContext *
+m_cosAzimuth	include/noiseutils.h	/^        mutable double m_cosAzimuth;$/;"	m	class:noise::utils::RendererImage	typeref:typename:double
+m_cosElev	include/noiseutils.h	/^        mutable double m_cosElev;$/;"	m	class:noise::utils::RendererImage	typeref:typename:double
+m_deltaTime	include/Application.h	/^    int m_prevTime = 0, m_deltaTime = 0;$/;"	m	class:Application	typeref:typename:int
+m_destFilename	include/noiseutils.h	/^        std::string m_destFilename;$/;"	m	class:noise::utils::WriterBMP	typeref:typename:std::string
+m_destFilename	include/noiseutils.h	/^        std::string m_destFilename;$/;"	m	class:noise::utils::WriterTER	typeref:typename:std::string
+m_destHeight	include/noiseutils.h	/^        int m_destHeight;$/;"	m	class:noise::utils::NoiseMapBuilder	typeref:typename:int
+m_destWidth	include/noiseutils.h	/^        int m_destWidth;$/;"	m	class:noise::utils::NoiseMapBuilder	typeref:typename:int
+m_drawCount	include/Chunk.h	/^    unsigned int m_drawCount;$/;"	m	class:Chunk	typeref:typename:unsigned int
+m_eastLonBound	include/noiseutils.h	/^        double m_eastLonBound;$/;"	m	class:noise::utils::NoiseMapBuilderSphere	typeref:typename:double
+m_ebo	include/Chunk.h	/^    GLuint m_vbo, m_ebo;$/;"	m	class:Chunk	typeref:typename:GLuint
+m_ebo	include/Skybox.h	/^    GLuint m_vbo, m_ebo;$/;"	m	class:Skybox	typeref:typename:GLuint
+m_entityRegistry	include/SystemManager.h	/^    entt::registry m_entityRegistry;$/;"	m	class:SystemManager	typeref:typename:entt::registry
+m_events	include/Window.h	/^    std::queue<Event*> m_events;$/;"	m	class:Window	typeref:typename:std::queue<Event * >
+m_faceUVs	include/TextureAtlas.h	/^        std::vector<FaceUVs> m_faceUVs;$/;"	m	class:TextureAtlas	typeref:typename:std::vector<FaceUVs>
+m_fileStream	include/Logger.h	/^        static std::ofstream m_fileStream;$/;"	m	class:Logger	typeref:typename:std::ofstream
+m_firstMouse	include/EventDispatcher.h	/^    static bool m_firstMouse;$/;"	m	class:EventDispatcher	typeref:typename:bool
+m_firstMouse	src/EventDispatcher.cpp	/^bool EventDispatcher::m_firstMouse = true;$/;"	m	class:EventDispatcher	typeref:typename:bool
+m_font	include/GUIRenderer.h	/^        Font m_font;$/;"	m	class:GUIRenderer	typeref:typename:Font
+m_fov	include/Camera.h	/^        float m_yaw = 0, m_pitch = 0, m_fov = 0;$/;"	m	class:Camera	typeref:typename:float
+m_frameCounter	include/Application.h	/^    int m_time = 0, m_frameCounter = 0;$/;"	m	class:Application	typeref:typename:int
+m_frameTime	include/Application.h	/^    int m_frameTime = 0;$/;"	m	class:Application	typeref:typename:int
+m_front	include/Camera.h	/^        glm::vec3 m_position, m_up, m_right, m_front;$/;"	m	class:Camera	typeref:typename:glm::vec3
+m_front_noY	include/Camera.h	/^        glm::vec3 m_front_noY;$/;"	m	class:Camera	typeref:typename:glm::vec3
+m_futures	include/Chunk.h	/^    std::vector<std::future<void>> m_futures;$/;"	m	class:Chunk	typeref:typename:std::vector<std::future<void>>
+m_gAlbedo	include/GBuffer.h	/^        GLuint m_gPos, m_gNorm, m_gAlbedo;$/;"	m	class:GBuffer	typeref:typename:GLuint
+m_gBuffer	include/ChunkRenderSystem.h	/^        GBuffer m_gBuffer;$/;"	m	class:ChunkRenderSystem	typeref:typename:GBuffer
+m_gBuffer	include/GBuffer.h	/^        GLuint m_gBuffer;$/;"	m	class:GBuffer	typeref:typename:GLuint
+m_gBuffer	include/MasterRenderer.h	/^        GBuffer m_gBuffer;$/;"	m	class:MasterRenderer	typeref:typename:GBuffer
+m_gNorm	include/GBuffer.h	/^        GLuint m_gPos, m_gNorm, m_gAlbedo;$/;"	m	class:GBuffer	typeref:typename:GLuint
+m_gPos	include/GBuffer.h	/^        GLuint m_gPos, m_gNorm, m_gAlbedo;$/;"	m	class:GBuffer	typeref:typename:GLuint
+m_generator	include/ChunkCreateSystem.h	/^        WorldGenerator m_generator;$/;"	m	class:ChunkCreateSystem	typeref:typename:WorldGenerator
+m_generator	include/World.h	/^    WorldGenerator m_generator;$/;"	m	class:World	typeref:typename:WorldGenerator
+m_gradient	include/noiseutils.h	/^        GradientColor m_gradient;$/;"	m	class:noise::utils::RendererImage	typeref:typename:GradientColor
+m_gradientPointCount	include/noiseutils.h	/^        int m_gradientPointCount;$/;"	m	class:noise::utils::GradientColor	typeref:typename:int
+m_guiRenderer	include/MasterRenderer.h	/^        GUIRenderer m_guiRenderer;$/;"	m	class:MasterRenderer	typeref:typename:GUIRenderer
+m_guiShader	include/GUIRenderer.h	/^        GUIShader m_guiShader;$/;"	m	class:GUIRenderer	typeref:typename:GUIShader
+m_height	include/Camera.h	/^        int m_width = Definitions::WINDOW_WIDTH, m_height = Definitions::WINDOW_HEIGHT;$/;"	m	class:Camera	typeref:typename:int
+m_height	include/TextureAtlas.h	/^        int m_width, m_height;$/;"	m	class:TextureAtlas	typeref:typename:int
+m_height	include/noiseutils.h	/^        int m_height;$/;"	m	class:noise::utils::Image	typeref:typename:int
+m_height	include/noiseutils.h	/^        int m_height;$/;"	m	class:noise::utils::NoiseMap	typeref:typename:int
+m_indices	include/Chunk.h	/^    std::vector<unsigned int> m_indices;$/;"	m	class:Chunk	typeref:typename:std::vector<unsigned int>
+m_isDestructing	include/Chunk.h	/^    bool m_isDestructing = false;$/;"	m	class:Chunk	typeref:typename:bool
+m_isFullscreen	include/Window.h	/^    bool m_isFullscreen = false;$/;"	m	class:Window	typeref:typename:bool
+m_isLightEnabled	include/noiseutils.h	/^        bool m_isLightEnabled;$/;"	m	class:noise::utils::RendererImage	typeref:typename:bool
+m_isRunning	include/Application.h	/^    bool m_isRunning = true;$/;"	m	class:Application	typeref:typename:bool
+m_isSeamlessEnabled	include/noiseutils.h	/^        bool m_isSeamlessEnabled;$/;"	m	class:noise::utils::NoiseMapBuilderPlane	typeref:typename:bool
+m_isWrapEnabled	include/noiseutils.h	/^        bool m_isWrapEnabled;$/;"	m	class:noise::utils::RendererImage	typeref:typename:bool
+m_isWrapEnabled	include/noiseutils.h	/^        bool m_isWrapEnabled;$/;"	m	class:noise::utils::RendererNormalMap	typeref:typename:bool
+m_light	include/ChunkRenderSystem.h	/^        Light m_light;$/;"	m	class:ChunkRenderSystem	typeref:typename:Light
+m_light	include/MasterRenderer.h	/^        Light m_light;$/;"	m	class:MasterRenderer	typeref:typename:Light
+m_lightAzimuth	include/noiseutils.h	/^        double m_lightAzimuth;$/;"	m	class:noise::utils::RendererImage	typeref:typename:double
+m_lightBrightness	include/noiseutils.h	/^        double m_lightBrightness;$/;"	m	class:noise::utils::RendererImage	typeref:typename:double
+m_lightColor	include/noiseutils.h	/^        Color m_lightColor;$/;"	m	class:noise::utils::RendererImage	typeref:typename:Color
+m_lightContrast	include/noiseutils.h	/^        double m_lightContrast;$/;"	m	class:noise::utils::RendererImage	typeref:typename:double
+m_lightElev	include/noiseutils.h	/^        double m_lightElev;$/;"	m	class:noise::utils::RendererImage	typeref:typename:double
+m_lightIntensity	include/noiseutils.h	/^        double m_lightIntensity;$/;"	m	class:noise::utils::RendererImage	typeref:typename:double
+m_lightingShader	include/ChunkRenderSystem.h	/^        LightingShader m_lightingShader;$/;"	m	class:ChunkRenderSystem	typeref:typename:LightingShader
+m_lightingShader	include/MasterRenderer.h	/^        LightingShader m_lightingShader;$/;"	m	class:MasterRenderer	typeref:typename:LightingShader
+m_locationLightColor	include/LightingShader.h	/^        GLint m_locationLightColor;$/;"	m	class:LightingShader	typeref:typename:GLint
+m_locationLightPos	include/LightingShader.h	/^        GLint m_locationLightPos;$/;"	m	class:LightingShader	typeref:typename:GLint
+m_locationModelMatrix	include/BlockShader.h	/^        GLint m_locationModelMatrix;$/;"	m	class:BlockShader	typeref:typename:GLint
+m_locationProjectionMatrix	include/BlockShader.h	/^        GLint m_locationProjectionMatrix;$/;"	m	class:BlockShader	typeref:typename:GLint
+m_locationProjectionMatrix	include/SkyboxShader.h	/^        GLint m_locationProjectionMatrix;$/;"	m	class:SkyboxShader	typeref:typename:GLint
+m_locationTextColor	include/GUIShader.h	/^        GLuint m_locationTextColor;$/;"	m	class:GUIShader	typeref:typename:GLuint
+m_locationViewMatrix	include/BlockShader.h	/^        GLint m_locationViewMatrix;$/;"	m	class:BlockShader	typeref:typename:GLint
+m_locationViewMatrix	include/SkyboxShader.h	/^        GLint m_locationViewMatrix;$/;"	m	class:SkyboxShader	typeref:typename:GLint
+m_lowerAngleBound	include/noiseutils.h	/^        double m_lowerAngleBound;$/;"	m	class:noise::utils::NoiseMapBuilderCylinder	typeref:typename:double
+m_lowerHeightBound	include/noiseutils.h	/^        double m_lowerHeightBound;$/;"	m	class:noise::utils::NoiseMapBuilderCylinder	typeref:typename:double
+m_lowerXBound	include/noiseutils.h	/^        double m_lowerXBound;$/;"	m	class:noise::utils::NoiseMapBuilderPlane	typeref:typename:double
+m_lowerZBound	include/noiseutils.h	/^        double m_lowerZBound;$/;"	m	class:noise::utils::NoiseMapBuilderPlane	typeref:typename:double
+m_memUsed	include/noiseutils.h	/^        size_t m_memUsed;$/;"	m	class:noise::utils::Image	typeref:typename:size_t
+m_memUsed	include/noiseutils.h	/^        size_t m_memUsed;$/;"	m	class:noise::utils::NoiseMap	typeref:typename:size_t
+m_metersPerPoint	include/noiseutils.h	/^        float m_metersPerPoint;$/;"	m	class:noise::utils::WriterTER	typeref:typename:float
+m_mode	include/Logger.h	/^        static int m_mode;$/;"	m	class:Logger	typeref:typename:int
+m_mode	src/Logger.cpp	/^int Logger::m_mode = LOG_NONE;$/;"	m	class:Logger	typeref:typename:int
+m_northLatBound	include/noiseutils.h	/^        double m_northLatBound;$/;"	m	class:noise::utils::NoiseMapBuilderSphere	typeref:typename:double
+m_numCols	include/TextureAtlas.h	/^        int m_numRows, m_numCols;$/;"	m	class:TextureAtlas	typeref:typename:int
+m_numRows	include/TextureAtlas.h	/^        int m_numRows, m_numCols;$/;"	m	class:TextureAtlas	typeref:typename:int
+m_pBackgroundImage	include/noiseutils.h	/^        const Image* m_pBackgroundImage;$/;"	m	class:noise::utils::RendererImage	typeref:typename:const Image *
+m_pCallback	include/noiseutils.h	/^        NoiseMapCallback m_pCallback;$/;"	m	class:noise::utils::NoiseMapBuilder	typeref:typename:NoiseMapCallback
+m_pDestImage	include/noiseutils.h	/^        Image* m_pDestImage;$/;"	m	class:noise::utils::RendererImage	typeref:typename:Image *
+m_pDestImage	include/noiseutils.h	/^        Image* m_pDestImage;$/;"	m	class:noise::utils::RendererNormalMap	typeref:typename:Image *
+m_pDestNoiseMap	include/noiseutils.h	/^        NoiseMap* m_pDestNoiseMap;$/;"	m	class:noise::utils::NoiseMapBuilder	typeref:typename:NoiseMap *
+m_pGradientPoints	include/noiseutils.h	/^        GradientPoint* m_pGradientPoints;$/;"	m	class:noise::utils::GradientColor	typeref:typename:GradientPoint *
+m_pImage	include/noiseutils.h	/^        Color* m_pImage;$/;"	m	class:noise::utils::Image	typeref:typename:Color *
+m_pNoiseMap	include/noiseutils.h	/^        float* m_pNoiseMap;$/;"	m	class:noise::utils::NoiseMap	typeref:typename:float *
+m_pSourceImage	include/noiseutils.h	/^        Image* m_pSourceImage;$/;"	m	class:noise::utils::WriterBMP	typeref:typename:Image *
+m_pSourceModule	include/noiseutils.h	/^        const module::Module* m_pSourceModule;$/;"	m	class:noise::utils::NoiseMapBuilder	typeref:typename:const module::Module *
+m_pSourceNoiseMap	include/noiseutils.h	/^        NoiseMap* m_pSourceNoiseMap;$/;"	m	class:noise::utils::WriterTER	typeref:typename:NoiseMap *
+m_pSourceNoiseMap	include/noiseutils.h	/^        const NoiseMap* m_pSourceNoiseMap;$/;"	m	class:noise::utils::RendererImage	typeref:typename:const NoiseMap *
+m_pSourceNoiseMap	include/noiseutils.h	/^        const NoiseMap* m_pSourceNoiseMap;$/;"	m	class:noise::utils::RendererNormalMap	typeref:typename:const NoiseMap *
+m_pitch	include/Camera.h	/^        float m_yaw = 0, m_pitch = 0, m_fov = 0;$/;"	m	class:Camera	typeref:typename:float
+m_position	include/Camera.h	/^        glm::vec3 m_position, m_up, m_right, m_front;$/;"	m	class:Camera	typeref:typename:glm::vec3
+m_position	include/Chunk.h	/^    glm::vec2 m_position;$/;"	m	class:Chunk	typeref:typename:glm::vec2
+m_prevHeight	include/Window.h	/^    int m_prevWidth, m_prevHeight;$/;"	m	class:Window	typeref:typename:int
+m_prevTime	include/Application.h	/^    int m_prevTime = 0, m_deltaTime = 0;$/;"	m	class:Application	typeref:typename:int
+m_prevWidth	include/Window.h	/^    int m_prevWidth, m_prevHeight;$/;"	m	class:Window	typeref:typename:int
+m_prevX	include/EventDispatcher.h	/^    static double m_prevX, m_prevY;$/;"	m	class:EventDispatcher	typeref:typename:double
+m_prevX	include/Window.h	/^    int m_prevX, m_prevY;$/;"	m	class:Window	typeref:typename:int
+m_prevX	src/EventDispatcher.cpp	/^double EventDispatcher::m_prevX;$/;"	m	class:EventDispatcher	typeref:typename:double
+m_prevY	include/EventDispatcher.h	/^    static double m_prevX, m_prevY;$/;"	m	class:EventDispatcher	typeref:typename:double
+m_prevY	include/Window.h	/^    int m_prevX, m_prevY;$/;"	m	class:Window	typeref:typename:int
+m_prevY	src/EventDispatcher.cpp	/^double EventDispatcher::m_prevY;$/;"	m	class:EventDispatcher	typeref:typename:double
+m_primaryMonitor	include/Window.h	/^    GLFWmonitor* m_primaryMonitor = nullptr;$/;"	m	class:Window	typeref:typename:GLFWmonitor *
+m_program	include/Shader.h	/^        GLuint m_program = 0;$/;"	m	class:Shader	typeref:typename:GLuint
+m_projectionOrtho	include/Camera.h	/^        glm::mat4 m_projectionPerspective, m_projectionOrtho, m_viewMatrix;$/;"	m	class:Camera	typeref:typename:glm::mat4
+m_projectionPerspective	include/Camera.h	/^        glm::mat4 m_projectionPerspective, m_projectionOrtho, m_viewMatrix;$/;"	m	class:Camera	typeref:typename:glm::mat4
+m_rboDepth	include/GBuffer.h	/^        GLuint m_rboDepth;$/;"	m	class:GBuffer	typeref:typename:GLuint
+m_recalcLightValues	include/noiseutils.h	/^        mutable bool m_recalcLightValues;$/;"	m	class:noise::utils::RendererImage	typeref:typename:bool
+m_registry	include/System.h	/^        entt::registry* m_registry;$/;"	m	class:System	typeref:typename:entt::registry *
+m_renderQuad	include/ChunkRenderSystem.h	/^        RenderQuad m_renderQuad;$/;"	m	class:ChunkRenderSystem	typeref:typename:RenderQuad
+m_renderQuad	include/MasterRenderer.h	/^        RenderQuad m_renderQuad;$/;"	m	class:MasterRenderer	typeref:typename:RenderQuad
+m_right	include/Camera.h	/^        glm::vec3 m_position, m_up, m_right, m_front;$/;"	m	class:Camera	typeref:typename:glm::vec3
+m_sinAzimuth	include/noiseutils.h	/^        mutable double m_sinAzimuth;$/;"	m	class:noise::utils::RendererImage	typeref:typename:double
+m_sinElev	include/noiseutils.h	/^        mutable double m_sinElev;$/;"	m	class:noise::utils::RendererImage	typeref:typename:double
+m_skybox	include/MasterRenderer.h	/^        Skybox m_skybox;$/;"	m	class:MasterRenderer	typeref:typename:Skybox
+m_skyboxShader	include/MasterRenderer.h	/^        SkyboxShader m_skyboxShader;$/;"	m	class:MasterRenderer	typeref:typename:SkyboxShader
+m_southLatBound	include/noiseutils.h	/^        double m_southLatBound;$/;"	m	class:noise::utils::NoiseMapBuilderSphere	typeref:typename:double
+m_stride	include/noiseutils.h	/^        int m_stride;$/;"	m	class:noise::utils::Image	typeref:typename:int
+m_stride	include/noiseutils.h	/^        int m_stride;$/;"	m	class:noise::utils::NoiseMap	typeref:typename:int
+m_systemManager	include/Application.h	/^    SystemManager m_systemManager;$/;"	m	class:Application	typeref:typename:SystemManager
+m_systemManager	include/System.h	/^        SystemManager* m_systemManager;$/;"	m	class:System	typeref:typename:SystemManager *
+m_systems	include/SystemManager.h	/^    std::vector<System*> m_systems;$/;"	m	class:SystemManager	typeref:typename:std::vector<System * >
+m_textVao	include/GUIRenderer.h	/^        GLuint m_textVao, m_textVbo;$/;"	m	class:GUIRenderer	typeref:typename:GLuint
+m_textVbo	include/GUIRenderer.h	/^        GLuint m_textVao, m_textVbo;$/;"	m	class:GUIRenderer	typeref:typename:GLuint
+m_texture	include/Skybox.h	/^    GLuint m_texture;$/;"	m	class:Skybox	typeref:typename:GLuint
+m_texture	include/TextureAtlas.h	/^        GLuint m_texture;$/;"	m	class:TextureAtlas	typeref:typename:GLuint
+m_textureAtlas	include/ChunkRenderSystem.h	/^        TextureAtlas m_textureAtlas;$/;"	m	class:ChunkRenderSystem	typeref:typename:TextureAtlas
+m_textureAtlas	include/MasterRenderer.h	/^        TextureAtlas m_textureAtlas;$/;"	m	class:MasterRenderer	typeref:typename:TextureAtlas
+m_time	include/Application.h	/^    int m_time = 0, m_frameCounter = 0;$/;"	m	class:Application	typeref:typename:int
+m_type	include/WorldGenerator.h	/^	WorldType m_type;$/;"	m	class:WorldGenerator	typeref:typename:WorldType
+m_up	include/Camera.h	/^        glm::vec3 m_position, m_up, m_right, m_front;$/;"	m	class:Camera	typeref:typename:glm::vec3
+m_upperAngleBound	include/noiseutils.h	/^        double m_upperAngleBound;$/;"	m	class:noise::utils::NoiseMapBuilderCylinder	typeref:typename:double
+m_upperHeightBound	include/noiseutils.h	/^        double m_upperHeightBound;$/;"	m	class:noise::utils::NoiseMapBuilderCylinder	typeref:typename:double
+m_upperXBound	include/noiseutils.h	/^        double m_upperXBound;$/;"	m	class:noise::utils::NoiseMapBuilderPlane	typeref:typename:double
+m_upperZBound	include/noiseutils.h	/^        double m_upperZBound;$/;"	m	class:noise::utils::NoiseMapBuilderPlane	typeref:typename:double
+m_uvXpT	include/TextureAtlas.h	/^        float m_uvXpT, m_uvYpT;$/;"	m	class:TextureAtlas	typeref:typename:float
+m_uvYpT	include/TextureAtlas.h	/^        float m_uvXpT, m_uvYpT;$/;"	m	class:TextureAtlas	typeref:typename:float
+m_vao	include/Chunk.h	/^    GLuint m_vao;$/;"	m	class:Chunk	typeref:typename:GLuint
+m_vao	include/RenderQuad.h	/^        GLuint m_vao;$/;"	m	class:RenderQuad	typeref:typename:GLuint
+m_vao	include/Skybox.h	/^    GLuint m_vao;$/;"	m	class:Skybox	typeref:typename:GLuint
+m_vaoMutex	include/Chunk.h	/^    mutable std::mutex m_vaoMutex;$/;"	m	class:Chunk	typeref:typename:std::mutex
+m_vbo	include/Chunk.h	/^    GLuint m_vbo, m_ebo;$/;"	m	class:Chunk	typeref:typename:GLuint
+m_vbo	include/RenderQuad.h	/^        GLuint m_vbo;$/;"	m	class:RenderQuad	typeref:typename:GLuint
+m_vbo	include/Skybox.h	/^    GLuint m_vbo, m_ebo;$/;"	m	class:Skybox	typeref:typename:GLuint
+m_velocity	include/Camera.h	/^        glm::vec3 m_velocity;$/;"	m	class:Camera	typeref:typename:glm::vec3
+m_vertices	include/Chunk.h	/^    std::vector<Vertex> m_vertices;$/;"	m	class:Chunk	typeref:typename:std::vector<Vertex>
+m_verticesOutdated	include/Chunk.h	/^    bool m_verticesOutdated = false;$/;"	m	class:Chunk	typeref:typename:bool
+m_viewMatrix	include/Camera.h	/^        glm::mat4 m_projectionPerspective, m_projectionOrtho, m_viewMatrix;$/;"	m	class:Camera	typeref:typename:glm::mat4
+m_westLonBound	include/noiseutils.h	/^        double m_westLonBound;$/;"	m	class:noise::utils::NoiseMapBuilderSphere	typeref:typename:double
+m_width	include/Camera.h	/^        int m_width = Definitions::WINDOW_WIDTH, m_height = Definitions::WINDOW_HEIGHT;$/;"	m	class:Camera	typeref:typename:int
+m_width	include/TextureAtlas.h	/^        int m_width, m_height;$/;"	m	class:TextureAtlas	typeref:typename:int
+m_width	include/noiseutils.h	/^        int m_width;$/;"	m	class:noise::utils::Image	typeref:typename:int
+m_width	include/noiseutils.h	/^        int m_width;$/;"	m	class:noise::utils::NoiseMap	typeref:typename:int
+m_window	include/Application.h	/^    Window m_window;$/;"	m	class:Application	typeref:typename:Window
+m_window	include/Window.h	/^    GLFWwindow* m_window = nullptr;$/;"	m	class:Window	typeref:typename:GLFWwindow *
+m_workingColor	include/noiseutils.h	/^        mutable Color m_workingColor;$/;"	m	class:noise::utils::GradientColor	typeref:typename:Color
+m_worldGenerator	include/Chunk.h	/^    static const WorldGenerator* m_worldGenerator;$/;"	m	class:Chunk	typeref:typename:const WorldGenerator *
+m_worldGenerator	src/Chunk.cpp	/^const WorldGenerator* Chunk::m_worldGenerator;$/;"	m	class:Chunk	typeref:typename:const WorldGenerator *
+m_yaw	include/Camera.h	/^        float m_yaw = 0, m_pitch = 0, m_fov = 0;$/;"	m	class:Camera	typeref:typename:float
+main	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^int main(argc, argv) int argc; char *argv[];$/;"	f
+main	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^void main() {}$/;"	f	typeref:typename:void
+main	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^int main(int argc, char* argv[])$/;"	f	typeref:typename:int
+main	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^int main(argc, argv) int argc; char *argv[];$/;"	f
+main	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^void main() {}$/;"	f	typeref:typename:void
+main	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^int main(int argc, char* argv[])$/;"	f	typeref:typename:int
+main	src/main.cpp	/^int main(int argc, char **argv) {$/;"	f	typeref:typename:int
+maxHeight	include/OreData.h	/^    int maxHeight = 0;$/;"	m	struct:OreData	typeref:typename:int
+maxTerrainHeight	include/MapGenerator.h	/^        int maxTerrainHeight = 60;$/;"	m	class:MapGenerator	typeref:typename:int
+minHeight	include/OreData.h	/^    int minHeight = 0;$/;"	m	struct:OreData	typeref:typename:int
+minTerrainHeight	include/MapGenerator.h	/^        int minTerrainHeight = 10;$/;"	m	class:MapGenerator	typeref:typename:int
+mods	include/Event.h	/^    int mods;$/;"	m	struct:KeyEvent	typeref:typename:int
+name	Resources/Misc/BiomeInfo.json	/^		"name": "Flat_Terrain"$/;"	s	object:0
+newX	include/Event.h	/^    int newX, newZ;$/;"	m	struct:EnterChunkEvent	typeref:typename:int
+newZ	include/Event.h	/^    int newX, newZ;$/;"	m	struct:EnterChunkEvent	typeref:typename:int
+nextEvent	src/Window.cpp	/^Event* Window::nextEvent() {$/;"	f	class:Window	typeref:typename:Event *
+noise	include/noiseutils.h	/^namespace noise$/;"	n
+noise	src/MapGenerator.cpp	/^float MapGenerator::noise(int x, int y) {$/;"	f	class:MapGenerator	typeref:typename:float
+noise	src/noiseutils.cpp	/^namespace noise$/;"	n	file:
+normal	include/Vertex.h	/^        glm::vec3 normal;$/;"	m	struct:Vertex	typeref:typename:glm::vec3
+octavesCount	include/MapGenerator.h	/^        int octavesCount = 5;$/;"	m	class:MapGenerator	typeref:typename:int
+oldX	include/Event.h	/^    int oldX, oldZ;$/;"	m	struct:EnterChunkEvent	typeref:typename:int
+oldZ	include/Event.h	/^    int oldX, oldZ;$/;"	m	struct:EnterChunkEvent	typeref:typename:int
+operator ()	include/ChunkCreateSystem.h	/^    bool operator()(const glm::vec2& l, const glm::vec2& r) const {$/;"	f	struct:ChunkHashFunction	typeref:typename:bool
+operator ()	include/ChunkCreateSystem.h	/^    size_t operator()(const glm::vec2& v) const {$/;"	f	struct:ChunkHashFunction	typeref:typename:size_t
+operator ()	include/World.h	/^    bool operator()(const glm::vec2& l, const glm::vec2& r) const {$/;"	f	struct:HashFunction	typeref:typename:bool
+operator ()	include/World.h	/^    size_t operator()(const glm::vec2& v) const {$/;"	f	struct:HashFunction	typeref:typename:size_t
+operator =	src/Components/ChunkComponent.cpp	/^ChunkComponent& ChunkComponent::operator=(const ChunkComponent& other) {$/;"	f	class:ChunkComponent	typeref:typename:ChunkComponent &
+operator =	src/noiseutils.cpp	/^Image& Image::operator= (const Image& rhs)$/;"	f	class:Image	typeref:typename:Image &
+operator =	src/noiseutils.cpp	/^NoiseMap& NoiseMap::operator= (const NoiseMap& rhs)$/;"	f	class:NoiseMap	typeref:typename:NoiseMap &
+oreData	include/BlockData.h	/^	OreData oreData = OreData(0, 0, 0, 0);$/;"	m	struct:BlockData	typeref:typename:OreData
+perlinNoise	include/WorldGenerator.h	/^	Perlin perlinNoise;$/;"	m	class:WorldGenerator	typeref:typename:Perlin
+pos	include/noiseutils.h	/^      double pos;$/;"	m	struct:noise::utils::GradientPoint	typeref:typename:double
+position	include/Components/TransformationComponent.h	/^    glm::vec3 position;$/;"	m	struct:TransformationComponent	typeref:typename:glm::vec3
+position	include/Light.h	/^    glm::vec3 position;$/;"	m	struct:Light	typeref:typename:glm::vec3
+position	include/Text.h	/^	glm::vec2 position = glm::vec2(0, 0);$/;"	m	struct:Text	typeref:typename:glm::vec2
+position	include/Vertex.h	/^        glm::vec3 position;$/;"	m	struct:Vertex	typeref:typename:glm::vec3
+preinstall	build/Makefile	/^preinstall: all$/;"	t
+preinstall/fast	build/Makefile	/^preinstall\/fast:$/;"	t
+qnxnto	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^char const* qnxnto = "INFO" ":" "qnxnto[]";$/;"	v	typeref:typename:char const *
+qnxnto	CMakeFiles/3.16.2/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* qnxnto = "INFO" ":" "qnxnto[]";$/;"	v	typeref:typename:char const *
+qnxnto	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^char const* qnxnto = "INFO" ":" "qnxnto[]";$/;"	v	typeref:typename:char const *
+qnxnto	build/CMakeFiles/3.16.5/CompilerIdCXX/CMakeCXXCompilerId.cpp	/^char const* qnxnto = "INFO" ":" "qnxnto[]";$/;"	v	typeref:typename:char const *
+queueDestruction	src/Chunk.cpp	/^void Chunk::queueDestruction() {$/;"	f	class:Chunk	typeref:typename:void
+raiseEvent	src/EventDispatcher.cpp	/^void EventDispatcher::raiseEvent(Event* e) {$/;"	f	class:EventDispatcher	typeref:typename:void
+rebuild_cache	build/Makefile	/^rebuild_cache:$/;"	t
+rebuild_cache/fast	build/Makefile	/^rebuild_cache\/fast: rebuild_cache$/;"	t
+red	include/noiseutils.h	/^        noise::uint8 red;$/;"	m	class:noise::utils::Color	typeref:typename:noise::uint8
+removeCallback	src/EventDispatcher.cpp	/^void EventDispatcher::removeCallback(CallbackId callbackId) {$/;"	f	class:EventDispatcher	typeref:typename:void
+render	src/Chunk.cpp	/^void Chunk::render(const BlockShader& shader, glm::vec2 position) const {$/;"	f	class:Chunk	typeref:typename:void
+render	src/GUIRenderer.cpp	/^void GUIRenderer::render(const std::vector<Text*>& text) const {$/;"	f	class:GUIRenderer	typeref:typename:void
+render	src/RenderQuad.cpp	/^void RenderQuad::render() {$/;"	f	class:RenderQuad	typeref:typename:void
+render	src/Skybox.cpp	/^void Skybox::render() {$/;"	f	class:Skybox	typeref:typename:void
+renderText	src/GUIRenderer.cpp	/^void GUIRenderer::renderText(const Text* text) const {$/;"	f	class:GUIRenderer	typeref:typename:void
+resize	src/Camera.cpp	/^void Camera::resize() {$/;"	f	class:Camera	typeref:typename:void
+resize	src/GBuffer.cpp	/^void GBuffer::resize(int width, int height) {$/;"	f	class:GBuffer	typeref:typename:void
+rotation	include/Components/TransformationComponent.h	/^    glm::vec3 rotation;$/;"	m	struct:TransformationComponent	typeref:typename:glm::vec3
+run	src/Application.cpp	/^void Application::run() {$/;"	f	class:Application	typeref:typename:void
+s:l	Session.vim	/^let s:l = 182 - ((11 * winheight(0) + 14) \/ 28)$/;"	v
+s:l	Session.vim	/^let s:l = 24 - ((23 * winheight(0) + 28) \/ 57)$/;"	v
+s:l	Session.vim	/^let s:l = 35 - ((21 * winheight(0) + 14) \/ 28)$/;"	v
+s:so_save	Session.vim	/^let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0$/;"	v
+s:sx	Session.vim	/^let s:sx = expand("<sfile>:p:r")."x.vim"$/;"	v
+s:wipebuf	Session.vim	/^  let s:wipebuf = bufnr('%')$/;"	v
+scale	include/Components/TransformationComponent.h	/^    glm::vec3 scale;$/;"	m	struct:TransformationComponent	typeref:typename:glm::vec3
+scale	include/Text.h	/^	float scale = 1;$/;"	m	struct:Text	typeref:typename:float
+scancode	include/Event.h	/^    int scancode;$/;"	m	struct:KeyEvent	typeref:typename:int
+scrollCallback	src/EventDispatcher.cpp	/^void EventDispatcher::scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {$/;"	f	class:EventDispatcher	typeref:typename:void
+setBlock	src/Chunk.cpp	/^void Chunk::setBlock(int x, int y, int z, Block block) {$/;"	f	class:Chunk	typeref:typename:void
+setBlock	src/World.cpp	/^void World::setBlock(int x, int y, int z, Block block) {$/;"	f	class:World	typeref:typename:void
+setBlockUVsArray	src/Chunk.cpp	/^void Chunk::setBlockUVsArray(const BlockUVsArray* array) {$/;"	f	class:Chunk	typeref:typename:void
+setLight	src/LightingShader.cpp	/^void LightingShader::setLight(Light light, int index) {$/;"	f	class:LightingShader	typeref:typename:void
+setLoggingMode	src/Logger.cpp	/^void Logger::setLoggingMode(int mode) {$/;"	f	class:Logger	typeref:typename:void
+setTextColor	src/GUIShader.cpp	/^void GUIShader::setTextColor(glm::vec3 color) const {$/;"	f	class:GUIShader	typeref:typename:void
+setWorldGenerator	src/Chunk.cpp	/^void Chunk::setWorldGenerator(const WorldGenerator* worldGenerator) {$/;"	f	class:Chunk	typeref:typename:void
+size	include/Font.h	/^    glm::ivec2 size; \/\/ size of glyph$/;"	m	struct:Character	typeref:typename:glm::ivec2
+size	include/OreData.h	/^    int size = 0;$/;"	m	struct:OreData	typeref:typename:int
+src/Application.cpp.i	build/Makefile	/^src\/Application.cpp.i:$/;"	t
+src/Application.cpp.o	build/Makefile	/^src\/Application.cpp.o:$/;"	t
+src/Application.cpp.s	build/Makefile	/^src\/Application.cpp.s:$/;"	t
+src/Application.i	build/Makefile	/^src\/Application.i: src\/Application.cpp.i$/;"	t
+src/Application.o	build/Makefile	/^src\/Application.o: src\/Application.cpp.o$/;"	t
+src/Application.s	build/Makefile	/^src\/Application.s: src\/Application.cpp.s$/;"	t
+src/Block.cpp.i	build/Makefile	/^src\/Block.cpp.i:$/;"	t
+src/Block.cpp.o	build/Makefile	/^src\/Block.cpp.o:$/;"	t
+src/Block.cpp.s	build/Makefile	/^src\/Block.cpp.s:$/;"	t
+src/Block.i	build/Makefile	/^src\/Block.i: src\/Block.cpp.i$/;"	t
+src/Block.o	build/Makefile	/^src\/Block.o: src\/Block.cpp.o$/;"	t
+src/Block.s	build/Makefile	/^src\/Block.s: src\/Block.cpp.s$/;"	t
+src/BlockShader.cpp.i	build/Makefile	/^src\/BlockShader.cpp.i:$/;"	t
+src/BlockShader.cpp.o	build/Makefile	/^src\/BlockShader.cpp.o:$/;"	t
+src/BlockShader.cpp.s	build/Makefile	/^src\/BlockShader.cpp.s:$/;"	t
+src/BlockShader.i	build/Makefile	/^src\/BlockShader.i: src\/BlockShader.cpp.i$/;"	t
+src/BlockShader.o	build/Makefile	/^src\/BlockShader.o: src\/BlockShader.cpp.o$/;"	t
+src/BlockShader.s	build/Makefile	/^src\/BlockShader.s: src\/BlockShader.cpp.s$/;"	t
+src/Camera.cpp.i	build/Makefile	/^src\/Camera.cpp.i:$/;"	t
+src/Camera.cpp.o	build/Makefile	/^src\/Camera.cpp.o:$/;"	t
+src/Camera.cpp.s	build/Makefile	/^src\/Camera.cpp.s:$/;"	t
+src/Camera.i	build/Makefile	/^src\/Camera.i: src\/Camera.cpp.i$/;"	t
+src/Camera.o	build/Makefile	/^src\/Camera.o: src\/Camera.cpp.o$/;"	t
+src/Camera.s	build/Makefile	/^src\/Camera.s: src\/Camera.cpp.s$/;"	t
+src/Chunk.cpp.i	build/Makefile	/^src\/Chunk.cpp.i:$/;"	t
+src/Chunk.cpp.o	build/Makefile	/^src\/Chunk.cpp.o:$/;"	t
+src/Chunk.cpp.s	build/Makefile	/^src\/Chunk.cpp.s:$/;"	t
+src/Chunk.i	build/Makefile	/^src\/Chunk.i: src\/Chunk.cpp.i$/;"	t
+src/Chunk.o	build/Makefile	/^src\/Chunk.o: src\/Chunk.cpp.o$/;"	t
+src/Chunk.s	build/Makefile	/^src\/Chunk.s: src\/Chunk.cpp.s$/;"	t
+src/ChunkCreateSystem.cpp.i	build/Makefile	/^src\/ChunkCreateSystem.cpp.i:$/;"	t
+src/ChunkCreateSystem.cpp.o	build/Makefile	/^src\/ChunkCreateSystem.cpp.o:$/;"	t
+src/ChunkCreateSystem.cpp.s	build/Makefile	/^src\/ChunkCreateSystem.cpp.s:$/;"	t
+src/ChunkCreateSystem.i	build/Makefile	/^src\/ChunkCreateSystem.i: src\/ChunkCreateSystem.cpp.i$/;"	t
+src/ChunkCreateSystem.o	build/Makefile	/^src\/ChunkCreateSystem.o: src\/ChunkCreateSystem.cpp.o$/;"	t
+src/ChunkCreateSystem.s	build/Makefile	/^src\/ChunkCreateSystem.s: src\/ChunkCreateSystem.cpp.s$/;"	t
+src/ChunkRenderSystem.cpp.i	build/Makefile	/^src\/ChunkRenderSystem.cpp.i:$/;"	t
+src/ChunkRenderSystem.cpp.o	build/Makefile	/^src\/ChunkRenderSystem.cpp.o:$/;"	t
+src/ChunkRenderSystem.cpp.s	build/Makefile	/^src\/ChunkRenderSystem.cpp.s:$/;"	t
+src/ChunkRenderSystem.i	build/Makefile	/^src\/ChunkRenderSystem.i: src\/ChunkRenderSystem.cpp.i$/;"	t
+src/ChunkRenderSystem.o	build/Makefile	/^src\/ChunkRenderSystem.o: src\/ChunkRenderSystem.cpp.o$/;"	t
+src/ChunkRenderSystem.s	build/Makefile	/^src\/ChunkRenderSystem.s: src\/ChunkRenderSystem.cpp.s$/;"	t
+src/Colors.cpp.i	build/Makefile	/^src\/Colors.cpp.i:$/;"	t
+src/Colors.cpp.o	build/Makefile	/^src\/Colors.cpp.o:$/;"	t
+src/Colors.cpp.s	build/Makefile	/^src\/Colors.cpp.s:$/;"	t
+src/Colors.i	build/Makefile	/^src\/Colors.i: src\/Colors.cpp.i$/;"	t
+src/Colors.o	build/Makefile	/^src\/Colors.o: src\/Colors.cpp.o$/;"	t
+src/Colors.s	build/Makefile	/^src\/Colors.s: src\/Colors.cpp.s$/;"	t
+src/Definitions.cpp.i	build/Makefile	/^src\/Definitions.cpp.i:$/;"	t
+src/Definitions.cpp.o	build/Makefile	/^src\/Definitions.cpp.o:$/;"	t
+src/Definitions.cpp.s	build/Makefile	/^src\/Definitions.cpp.s:$/;"	t
+src/Definitions.i	build/Makefile	/^src\/Definitions.i: src\/Definitions.cpp.i$/;"	t
+src/Definitions.o	build/Makefile	/^src\/Definitions.o: src\/Definitions.cpp.o$/;"	t
+src/Definitions.s	build/Makefile	/^src\/Definitions.s: src\/Definitions.cpp.s$/;"	t
+src/Event.cpp.i	build/Makefile	/^src\/Event.cpp.i:$/;"	t
+src/Event.cpp.o	build/Makefile	/^src\/Event.cpp.o:$/;"	t
+src/Event.cpp.s	build/Makefile	/^src\/Event.cpp.s:$/;"	t
+src/Event.i	build/Makefile	/^src\/Event.i: src\/Event.cpp.i$/;"	t
+src/Event.o	build/Makefile	/^src\/Event.o: src\/Event.cpp.o$/;"	t
+src/Event.s	build/Makefile	/^src\/Event.s: src\/Event.cpp.s$/;"	t
+src/EventDispatcher.cpp.i	build/Makefile	/^src\/EventDispatcher.cpp.i:$/;"	t
+src/EventDispatcher.cpp.o	build/Makefile	/^src\/EventDispatcher.cpp.o:$/;"	t
+src/EventDispatcher.cpp.s	build/Makefile	/^src\/EventDispatcher.cpp.s:$/;"	t
+src/EventDispatcher.i	build/Makefile	/^src\/EventDispatcher.i: src\/EventDispatcher.cpp.i$/;"	t
+src/EventDispatcher.o	build/Makefile	/^src\/EventDispatcher.o: src\/EventDispatcher.cpp.o$/;"	t
+src/EventDispatcher.s	build/Makefile	/^src\/EventDispatcher.s: src\/EventDispatcher.cpp.s$/;"	t
+src/Font.cpp.i	build/Makefile	/^src\/Font.cpp.i:$/;"	t
+src/Font.cpp.o	build/Makefile	/^src\/Font.cpp.o:$/;"	t
+src/Font.cpp.s	build/Makefile	/^src\/Font.cpp.s:$/;"	t
+src/Font.i	build/Makefile	/^src\/Font.i: src\/Font.cpp.i$/;"	t
+src/Font.o	build/Makefile	/^src\/Font.o: src\/Font.cpp.o$/;"	t
+src/Font.s	build/Makefile	/^src\/Font.s: src\/Font.cpp.s$/;"	t
+src/GBuffer.cpp.i	build/Makefile	/^src\/GBuffer.cpp.i:$/;"	t
+src/GBuffer.cpp.o	build/Makefile	/^src\/GBuffer.cpp.o:$/;"	t
+src/GBuffer.cpp.s	build/Makefile	/^src\/GBuffer.cpp.s:$/;"	t
+src/GBuffer.i	build/Makefile	/^src\/GBuffer.i: src\/GBuffer.cpp.i$/;"	t
+src/GBuffer.o	build/Makefile	/^src\/GBuffer.o: src\/GBuffer.cpp.o$/;"	t
+src/GBuffer.s	build/Makefile	/^src\/GBuffer.s: src\/GBuffer.cpp.s$/;"	t
+src/GUIRenderer.cpp.i	build/Makefile	/^src\/GUIRenderer.cpp.i:$/;"	t
+src/GUIRenderer.cpp.o	build/Makefile	/^src\/GUIRenderer.cpp.o:$/;"	t
+src/GUIRenderer.cpp.s	build/Makefile	/^src\/GUIRenderer.cpp.s:$/;"	t
+src/GUIRenderer.i	build/Makefile	/^src\/GUIRenderer.i: src\/GUIRenderer.cpp.i$/;"	t
+src/GUIRenderer.o	build/Makefile	/^src\/GUIRenderer.o: src\/GUIRenderer.cpp.o$/;"	t
+src/GUIRenderer.s	build/Makefile	/^src\/GUIRenderer.s: src\/GUIRenderer.cpp.s$/;"	t
+src/GUIShader.cpp.i	build/Makefile	/^src\/GUIShader.cpp.i:$/;"	t
+src/GUIShader.cpp.o	build/Makefile	/^src\/GUIShader.cpp.o:$/;"	t
+src/GUIShader.cpp.s	build/Makefile	/^src\/GUIShader.cpp.s:$/;"	t
+src/GUIShader.i	build/Makefile	/^src\/GUIShader.i: src\/GUIShader.cpp.i$/;"	t
+src/GUIShader.o	build/Makefile	/^src\/GUIShader.o: src\/GUIShader.cpp.o$/;"	t
+src/GUIShader.s	build/Makefile	/^src\/GUIShader.s: src\/GUIShader.cpp.s$/;"	t
+src/InputSystem.cpp.i	build/Makefile	/^src\/InputSystem.cpp.i:$/;"	t
+src/InputSystem.cpp.o	build/Makefile	/^src\/InputSystem.cpp.o:$/;"	t
+src/InputSystem.cpp.s	build/Makefile	/^src\/InputSystem.cpp.s:$/;"	t
+src/InputSystem.i	build/Makefile	/^src\/InputSystem.i: src\/InputSystem.cpp.i$/;"	t
+src/InputSystem.o	build/Makefile	/^src\/InputSystem.o: src\/InputSystem.cpp.o$/;"	t
+src/InputSystem.s	build/Makefile	/^src\/InputSystem.s: src\/InputSystem.cpp.s$/;"	t
+src/Light.cpp.i	build/Makefile	/^src\/Light.cpp.i:$/;"	t
+src/Light.cpp.o	build/Makefile	/^src\/Light.cpp.o:$/;"	t
+src/Light.cpp.s	build/Makefile	/^src\/Light.cpp.s:$/;"	t
+src/Light.i	build/Makefile	/^src\/Light.i: src\/Light.cpp.i$/;"	t
+src/Light.o	build/Makefile	/^src\/Light.o: src\/Light.cpp.o$/;"	t
+src/Light.s	build/Makefile	/^src\/Light.s: src\/Light.cpp.s$/;"	t
+src/LightingShader.cpp.i	build/Makefile	/^src\/LightingShader.cpp.i:$/;"	t
+src/LightingShader.cpp.o	build/Makefile	/^src\/LightingShader.cpp.o:$/;"	t
+src/LightingShader.cpp.s	build/Makefile	/^src\/LightingShader.cpp.s:$/;"	t
+src/LightingShader.i	build/Makefile	/^src\/LightingShader.i: src\/LightingShader.cpp.i$/;"	t
+src/LightingShader.o	build/Makefile	/^src\/LightingShader.o: src\/LightingShader.cpp.o$/;"	t
+src/LightingShader.s	build/Makefile	/^src\/LightingShader.s: src\/LightingShader.cpp.s$/;"	t
+src/Logger.cpp.i	build/Makefile	/^src\/Logger.cpp.i:$/;"	t
+src/Logger.cpp.o	build/Makefile	/^src\/Logger.cpp.o:$/;"	t
+src/Logger.cpp.s	build/Makefile	/^src\/Logger.cpp.s:$/;"	t
+src/Logger.i	build/Makefile	/^src\/Logger.i: src\/Logger.cpp.i$/;"	t
+src/Logger.o	build/Makefile	/^src\/Logger.o: src\/Logger.cpp.o$/;"	t
+src/Logger.s	build/Makefile	/^src\/Logger.s: src\/Logger.cpp.s$/;"	t
+src/MapGenerator.cpp.i	build/Makefile	/^src\/MapGenerator.cpp.i:$/;"	t
+src/MapGenerator.cpp.o	build/Makefile	/^src\/MapGenerator.cpp.o:$/;"	t
+src/MapGenerator.cpp.s	build/Makefile	/^src\/MapGenerator.cpp.s:$/;"	t
+src/MapGenerator.i	build/Makefile	/^src\/MapGenerator.i: src\/MapGenerator.cpp.i$/;"	t
+src/MapGenerator.o	build/Makefile	/^src\/MapGenerator.o: src\/MapGenerator.cpp.o$/;"	t
+src/MapGenerator.s	build/Makefile	/^src\/MapGenerator.s: src\/MapGenerator.cpp.s$/;"	t
+src/MasterRenderer.cpp.i	build/Makefile	/^src\/MasterRenderer.cpp.i:$/;"	t
+src/MasterRenderer.cpp.o	build/Makefile	/^src\/MasterRenderer.cpp.o:$/;"	t
+src/MasterRenderer.cpp.s	build/Makefile	/^src\/MasterRenderer.cpp.s:$/;"	t
+src/MasterRenderer.i	build/Makefile	/^src\/MasterRenderer.i: src\/MasterRenderer.cpp.i$/;"	t
+src/MasterRenderer.o	build/Makefile	/^src\/MasterRenderer.o: src\/MasterRenderer.cpp.o$/;"	t
+src/MasterRenderer.s	build/Makefile	/^src\/MasterRenderer.s: src\/MasterRenderer.cpp.s$/;"	t
+src/OreData.cpp.i	build/Makefile	/^src\/OreData.cpp.i:$/;"	t
+src/OreData.cpp.o	build/Makefile	/^src\/OreData.cpp.o:$/;"	t
+src/OreData.cpp.s	build/Makefile	/^src\/OreData.cpp.s:$/;"	t
+src/OreData.i	build/Makefile	/^src\/OreData.i: src\/OreData.cpp.i$/;"	t
+src/OreData.o	build/Makefile	/^src\/OreData.o: src\/OreData.cpp.o$/;"	t
+src/OreData.s	build/Makefile	/^src\/OreData.s: src\/OreData.cpp.s$/;"	t
+src/RenderQuad.cpp.i	build/Makefile	/^src\/RenderQuad.cpp.i:$/;"	t
+src/RenderQuad.cpp.o	build/Makefile	/^src\/RenderQuad.cpp.o:$/;"	t
+src/RenderQuad.cpp.s	build/Makefile	/^src\/RenderQuad.cpp.s:$/;"	t
+src/RenderQuad.i	build/Makefile	/^src\/RenderQuad.i: src\/RenderQuad.cpp.i$/;"	t
+src/RenderQuad.o	build/Makefile	/^src\/RenderQuad.o: src\/RenderQuad.cpp.o$/;"	t
+src/RenderQuad.s	build/Makefile	/^src\/RenderQuad.s: src\/RenderQuad.cpp.s$/;"	t
+src/Shader.cpp.i	build/Makefile	/^src\/Shader.cpp.i:$/;"	t
+src/Shader.cpp.o	build/Makefile	/^src\/Shader.cpp.o:$/;"	t
+src/Shader.cpp.s	build/Makefile	/^src\/Shader.cpp.s:$/;"	t
+src/Shader.i	build/Makefile	/^src\/Shader.i: src\/Shader.cpp.i$/;"	t
+src/Shader.o	build/Makefile	/^src\/Shader.o: src\/Shader.cpp.o$/;"	t
+src/Shader.s	build/Makefile	/^src\/Shader.s: src\/Shader.cpp.s$/;"	t
+src/Skybox.cpp.i	build/Makefile	/^src\/Skybox.cpp.i:$/;"	t
+src/Skybox.cpp.o	build/Makefile	/^src\/Skybox.cpp.o:$/;"	t
+src/Skybox.cpp.s	build/Makefile	/^src\/Skybox.cpp.s:$/;"	t
+src/Skybox.i	build/Makefile	/^src\/Skybox.i: src\/Skybox.cpp.i$/;"	t
+src/Skybox.o	build/Makefile	/^src\/Skybox.o: src\/Skybox.cpp.o$/;"	t
+src/Skybox.s	build/Makefile	/^src\/Skybox.s: src\/Skybox.cpp.s$/;"	t
+src/SkyboxShader.cpp.i	build/Makefile	/^src\/SkyboxShader.cpp.i:$/;"	t
+src/SkyboxShader.cpp.o	build/Makefile	/^src\/SkyboxShader.cpp.o:$/;"	t
+src/SkyboxShader.cpp.s	build/Makefile	/^src\/SkyboxShader.cpp.s:$/;"	t
+src/SkyboxShader.i	build/Makefile	/^src\/SkyboxShader.i: src\/SkyboxShader.cpp.i$/;"	t
+src/SkyboxShader.o	build/Makefile	/^src\/SkyboxShader.o: src\/SkyboxShader.cpp.o$/;"	t
+src/SkyboxShader.s	build/Makefile	/^src\/SkyboxShader.s: src\/SkyboxShader.cpp.s$/;"	t
+src/System.cpp.i	build/Makefile	/^src\/System.cpp.i:$/;"	t
+src/System.cpp.o	build/Makefile	/^src\/System.cpp.o:$/;"	t
+src/System.cpp.s	build/Makefile	/^src\/System.cpp.s:$/;"	t
+src/System.i	build/Makefile	/^src\/System.i: src\/System.cpp.i$/;"	t
+src/System.o	build/Makefile	/^src\/System.o: src\/System.cpp.o$/;"	t
+src/System.s	build/Makefile	/^src\/System.s: src\/System.cpp.s$/;"	t
+src/SystemManager.cpp.i	build/Makefile	/^src\/SystemManager.cpp.i:$/;"	t
+src/SystemManager.cpp.o	build/Makefile	/^src\/SystemManager.cpp.o:$/;"	t
+src/SystemManager.cpp.s	build/Makefile	/^src\/SystemManager.cpp.s:$/;"	t
+src/SystemManager.i	build/Makefile	/^src\/SystemManager.i: src\/SystemManager.cpp.i$/;"	t
+src/SystemManager.o	build/Makefile	/^src\/SystemManager.o: src\/SystemManager.cpp.o$/;"	t
+src/SystemManager.s	build/Makefile	/^src\/SystemManager.s: src\/SystemManager.cpp.s$/;"	t
+src/TextureAtlas.cpp.i	build/Makefile	/^src\/TextureAtlas.cpp.i:$/;"	t
+src/TextureAtlas.cpp.o	build/Makefile	/^src\/TextureAtlas.cpp.o:$/;"	t
+src/TextureAtlas.cpp.s	build/Makefile	/^src\/TextureAtlas.cpp.s:$/;"	t
+src/TextureAtlas.i	build/Makefile	/^src\/TextureAtlas.i: src\/TextureAtlas.cpp.i$/;"	t
+src/TextureAtlas.o	build/Makefile	/^src\/TextureAtlas.o: src\/TextureAtlas.cpp.o$/;"	t
+src/TextureAtlas.s	build/Makefile	/^src\/TextureAtlas.s: src\/TextureAtlas.cpp.s$/;"	t
+src/Vertex.cpp.i	build/Makefile	/^src\/Vertex.cpp.i:$/;"	t
+src/Vertex.cpp.o	build/Makefile	/^src\/Vertex.cpp.o:$/;"	t
+src/Vertex.cpp.s	build/Makefile	/^src\/Vertex.cpp.s:$/;"	t
+src/Vertex.i	build/Makefile	/^src\/Vertex.i: src\/Vertex.cpp.i$/;"	t
+src/Vertex.o	build/Makefile	/^src\/Vertex.o: src\/Vertex.cpp.o$/;"	t
+src/Vertex.s	build/Makefile	/^src\/Vertex.s: src\/Vertex.cpp.s$/;"	t
+src/Window.cpp.i	build/Makefile	/^src\/Window.cpp.i:$/;"	t
+src/Window.cpp.o	build/Makefile	/^src\/Window.cpp.o:$/;"	t
+src/Window.cpp.s	build/Makefile	/^src\/Window.cpp.s:$/;"	t
+src/Window.i	build/Makefile	/^src\/Window.i: src\/Window.cpp.i$/;"	t
+src/Window.o	build/Makefile	/^src\/Window.o: src\/Window.cpp.o$/;"	t
+src/Window.s	build/Makefile	/^src\/Window.s: src\/Window.cpp.s$/;"	t
+src/World.cpp.i	build/Makefile	/^src\/World.cpp.i:$/;"	t
+src/World.cpp.o	build/Makefile	/^src\/World.cpp.o:$/;"	t
+src/World.cpp.s	build/Makefile	/^src\/World.cpp.s:$/;"	t
+src/World.i	build/Makefile	/^src\/World.i: src\/World.cpp.i$/;"	t
+src/World.o	build/Makefile	/^src\/World.o: src\/World.cpp.o$/;"	t
+src/World.s	build/Makefile	/^src\/World.s: src\/World.cpp.s$/;"	t
+src/WorldGenerator.cpp.i	build/Makefile	/^src\/WorldGenerator.cpp.i:$/;"	t
+src/WorldGenerator.cpp.o	build/Makefile	/^src\/WorldGenerator.cpp.o:$/;"	t
+src/WorldGenerator.cpp.s	build/Makefile	/^src\/WorldGenerator.cpp.s:$/;"	t
+src/WorldGenerator.i	build/Makefile	/^src\/WorldGenerator.i: src\/WorldGenerator.cpp.i$/;"	t
+src/WorldGenerator.o	build/Makefile	/^src\/WorldGenerator.o: src\/WorldGenerator.cpp.o$/;"	t
+src/WorldGenerator.s	build/Makefile	/^src\/WorldGenerator.s: src\/WorldGenerator.cpp.s$/;"	t
+src/main.cpp.i	build/Makefile	/^src\/main.cpp.i:$/;"	t
+src/main.cpp.o	build/Makefile	/^src\/main.cpp.o:$/;"	t
+src/main.cpp.s	build/Makefile	/^src\/main.cpp.s:$/;"	t
+src/main.i	build/Makefile	/^src\/main.i: src\/main.cpp.i$/;"	t
+src/main.o	build/Makefile	/^src\/main.o: src\/main.cpp.o$/;"	t
+src/main.s	build/Makefile	/^src\/main.s: src\/main.cpp.s$/;"	t
+src/noiseutils.cpp.i	build/Makefile	/^src\/noiseutils.cpp.i:$/;"	t
+src/noiseutils.cpp.o	build/Makefile	/^src\/noiseutils.cpp.o:$/;"	t
+src/noiseutils.cpp.s	build/Makefile	/^src\/noiseutils.cpp.s:$/;"	t
+src/noiseutils.i	build/Makefile	/^src\/noiseutils.i: src\/noiseutils.cpp.i$/;"	t
+src/noiseutils.o	build/Makefile	/^src\/noiseutils.o: src\/noiseutils.cpp.o$/;"	t
+src/noiseutils.s	build/Makefile	/^src\/noiseutils.s: src\/noiseutils.cpp.s$/;"	t
+stop	src/Application.cpp	/^void Application::stop() {$/;"	f	class:Application	typeref:typename:void
+terrainSeed	include/MapGenerator.h	/^        float terrainSeed[Definitions::MAP_SEED_SIZE * Definitions::MAP_SEED_SIZE];$/;"	m	class:MapGenerator	typeref:typename:float[]
+terrainSelector	include/WorldGenerator.h	/^	Select terrainSelector;$/;"	m	class:WorldGenerator	typeref:typename:Select
+texCoords	include/Vertex.h	/^        glm::vec2 texCoords;$/;"	m	struct:Vertex	typeref:typename:glm::vec2
+text	include/Text.h	/^	std::string text;$/;"	m	struct:Text	typeref:typename:std::string
+texture	include/Font.h	/^    GLuint texture; \/\/ GL texture handle$/;"	m	struct:Character	typeref:typename:GLuint
+textureAtlas	include/SharedContext.h	/^    TextureAtlas textureAtlas;$/;"	m	struct:SharedContext	typeref:typename:TextureAtlas
+threadActiveOnSelf	include/Components/ChunkComponent.h	/^    std::atomic_bool threadActiveOnSelf;$/;"	m	struct:ChunkComponent	typeref:typename:std::atomic_bool
+tid_bot	include/BlockData.h	/^	int tid_up = 0, tid_px = 0, tid_nx = 0, tid_pz = 0, tid_nz = 0, tid_bot = 0;$/;"	m	struct:BlockData	typeref:typename:int
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 0$/;"	n	object:0
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 1$/;"	n	object:2
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 10$/;"	n	object:7
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 16$/;"	n	object:8
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 17$/;"	n	object:9
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 18$/;"	n	object:10
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 19$/;"	n	object:11
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 2$/;"	n	object:1
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 2$/;"	n	object:21
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 20$/;"	n	object:3
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 22$/;"	n	object:12
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 23$/;"	n	object:13
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 24$/;"	n	object:14
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 25$/;"	n	object:15
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 32    $/;"	n	object:16
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 33$/;"	n	object:17
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 34$/;"	n	object:18
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 35$/;"	n	object:19
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 36$/;"	n	object:20
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 5$/;"	n	object:4
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 6$/;"	n	object:5
+tid_bt	Resources/Misc/BlockData.json	/^    "tid_bt": 7$/;"	n	object:6
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 0,$/;"	n	object:0
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 1,$/;"	n	object:2
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 16,$/;"	n	object:8
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 17,$/;"	n	object:9
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 18,$/;"	n	object:10
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 19,$/;"	n	object:11
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 19,$/;"	n	object:3
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 2,$/;"	n	object:21
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 22,$/;"	n	object:12
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 23,$/;"	n	object:13
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 24,$/;"	n	object:14
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 25,$/;"	n	object:15
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 3,$/;"	n	object:1
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 32,$/;"	n	object:16
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 33,$/;"	n	object:17
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 34,$/;"	n	object:18
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 35,$/;"	n	object:19
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 36,$/;"	n	object:20
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 5,$/;"	n	object:4
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 6,$/;"	n	object:5
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 7,$/;"	n	object:6
+tid_nx	Resources/Misc/BlockData.json	/^    "tid_nx": 8,$/;"	n	object:7
+tid_nx	include/BlockData.h	/^	int tid_up = 0, tid_px = 0, tid_nx = 0, tid_pz = 0, tid_nz = 0, tid_bot = 0;$/;"	m	struct:BlockData	typeref:typename:int
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 0,$/;"	n	object:0
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 1,$/;"	n	object:2
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 16,$/;"	n	object:8
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 17,$/;"	n	object:9
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 18,$/;"	n	object:10
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 19,$/;"	n	object:11
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 19,$/;"	n	object:3
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 2,$/;"	n	object:21
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 22,$/;"	n	object:12
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 23,$/;"	n	object:13
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 24,$/;"	n	object:14
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 25,$/;"	n	object:15
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 3,$/;"	n	object:1
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 32,$/;"	n	object:16
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 33,$/;"	n	object:17
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 34,$/;"	n	object:18
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 35,$/;"	n	object:19
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 36,$/;"	n	object:20
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 5,$/;"	n	object:4
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 6,$/;"	n	object:5
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 7,$/;"	n	object:6
+tid_nz	Resources/Misc/BlockData.json	/^    "tid_nz": 8,$/;"	n	object:7
+tid_nz	include/BlockData.h	/^	int tid_up = 0, tid_px = 0, tid_nx = 0, tid_pz = 0, tid_nz = 0, tid_bot = 0;$/;"	m	struct:BlockData	typeref:typename:int
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 0,$/;"	n	object:0
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 1,$/;"	n	object:2
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 16,$/;"	n	object:8
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 17,$/;"	n	object:9
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 18,$/;"	n	object:10
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 19,$/;"	n	object:11
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 19,$/;"	n	object:3
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 2,$/;"	n	object:21
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 22,$/;"	n	object:12
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 23,$/;"	n	object:13
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 24,$/;"	n	object:14
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 25,$/;"	n	object:15
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 3,$/;"	n	object:1
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 32,$/;"	n	object:16
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 33,$/;"	n	object:17
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 34,$/;"	n	object:18
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 35,$/;"	n	object:19
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 36,$/;"	n	object:20
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 5,$/;"	n	object:4
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 6,$/;"	n	object:5
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 7,$/;"	n	object:6
+tid_px	Resources/Misc/BlockData.json	/^    "tid_px": 8,$/;"	n	object:7
+tid_px	include/BlockData.h	/^	int tid_up = 0, tid_px = 0, tid_nx = 0, tid_pz = 0, tid_nz = 0, tid_bot = 0;$/;"	m	struct:BlockData	typeref:typename:int
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 0,$/;"	n	object:0
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 1,$/;"	n	object:2
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 16,$/;"	n	object:8
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 17,$/;"	n	object:9
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 18,$/;"	n	object:10
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 19,$/;"	n	object:11
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 19,$/;"	n	object:3
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 2,$/;"	n	object:21
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 22,$/;"	n	object:12
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 23,$/;"	n	object:13
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 24,$/;"	n	object:14
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 25,$/;"	n	object:15
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 3,$/;"	n	object:1
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 32,$/;"	n	object:16
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 33,$/;"	n	object:17
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 34,$/;"	n	object:18
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 35,$/;"	n	object:19
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 36,$/;"	n	object:20
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 5,$/;"	n	object:4
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 6,$/;"	n	object:5
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 7,$/;"	n	object:6
+tid_pz	Resources/Misc/BlockData.json	/^    "tid_pz": 8,$/;"	n	object:7
+tid_pz	include/BlockData.h	/^	int tid_up = 0, tid_px = 0, tid_nx = 0, tid_pz = 0, tid_nz = 0, tid_bot = 0;$/;"	m	struct:BlockData	typeref:typename:int
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 0,$/;"	n	object:0
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 0,$/;"	n	object:1
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 1,$/;"	n	object:2
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 16,$/;"	n	object:8
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 17,$/;"	n	object:9
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 18,$/;"	n	object:10
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 19,$/;"	n	object:11
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 2,$/;"	n	object:21
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 20,$/;"	n	object:3
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 22,$/;"	n	object:12
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 23,$/;"	n	object:13
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 24,$/;"	n	object:14
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 25,$/;"	n	object:15
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 32,$/;"	n	object:16
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 33,$/;"	n	object:17
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 34,$/;"	n	object:18
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 35,$/;"	n	object:19
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 36,$/;"	n	object:20
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 5,$/;"	n	object:4
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 6,$/;"	n	object:5
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 7,$/;"	n	object:6
+tid_up	Resources/Misc/BlockData.json	/^    "tid_up": 9,$/;"	n	object:7
+tid_up	include/BlockData.h	/^	int tid_up = 0, tid_px = 0, tid_nx = 0, tid_pz = 0, tid_nz = 0, tid_bot = 0;$/;"	m	struct:BlockData	typeref:typename:int
+toggleFullscreen	src/Window.cpp	/^void Window::toggleFullscreen() {$/;"	f	class:Window	typeref:typename:void
+type	include/Block.h	/^    BlockType type;$/;"	m	struct:Block	typeref:typename:BlockType
+type	include/BlockData.h	/^	BlockType type;$/;"	m	struct:BlockData	typeref:typename:BlockType
+type	src/Event.cpp	/^EventType CursorEvent::type() {$/;"	f	class:CursorEvent	typeref:typename:EventType
+type	src/Event.cpp	/^EventType EnterChunkEvent::type() {$/;"	f	class:EnterChunkEvent	typeref:typename:EventType
+type	src/Event.cpp	/^EventType FramebufferSizeEvent::type() {$/;"	f	class:FramebufferSizeEvent	typeref:typename:EventType
+type	src/Event.cpp	/^EventType KeyEvent::type() {$/;"	f	class:KeyEvent	typeref:typename:EventType
+type	src/Event.cpp	/^EventType ScrollEvent::type() {$/;"	f	class:ScrollEvent	typeref:typename:EventType
+update	src/Camera.cpp	/^void Camera::update() {$/;"	f	class:Camera	typeref:typename:void
+update	src/Chunk.cpp	/^void Chunk::update() {$/;"	f	class:Chunk	typeref:typename:void
+update	src/ChunkCreateSystem.cpp	/^void ChunkCreateSystem::update(int dt) {$/;"	f	class:ChunkCreateSystem	typeref:typename:void
+update	src/ChunkRenderSystem.cpp	/^void ChunkRenderSystem::update(int dt) {$/;"	f	class:ChunkRenderSystem	typeref:typename:void
+update	src/SystemManager.cpp	/^void SystemManager::update(int dt) {$/;"	f	class:SystemManager	typeref:typename:void
+update	src/World.cpp	/^void World::update(int dt) {$/;"	f	class:World	typeref:typename:void
+updateBuffers	src/Chunk.cpp	/^void Chunk::updateBuffers() {$/;"	f	class:Chunk	typeref:typename:void
+updateChunkBlocks	src/ChunkCreateSystem.cpp	/^void ChunkCreateSystem::updateChunkBlocks(ChunkComponent& chunk) {$/;"	f	class:ChunkCreateSystem	typeref:typename:void
+updateChunkBuffers	src/ChunkCreateSystem.cpp	/^void ChunkCreateSystem::updateChunkBuffers(ChunkComponent& chunk, GeometryComponent& geometry) {$/;"	f	class:ChunkCreateSystem	typeref:typename:void
+updateChunkVertices	src/ChunkCreateSystem.cpp	/^void ChunkCreateSystem::updateChunkVertices(ChunkComponent& chunk, GeometryComponent& geometry) /;"	f	class:ChunkCreateSystem	typeref:typename:void
+updatePosition	src/Camera.cpp	/^void Camera::updatePosition(int dt) {$/;"	f	class:Camera	typeref:typename:void
+updateVertices	src/Chunk.cpp	/^void Chunk::updateVertices() {$/;"	f	class:Chunk	typeref:typename:void
+upload	src/Shader.cpp	/^void Shader::upload(GLint location, float value) const {$/;"	f	class:Shader	typeref:typename:void
+upload	src/Shader.cpp	/^void Shader::upload(GLint location, glm::mat4 value) const {$/;"	f	class:Shader	typeref:typename:void
+upload	src/Shader.cpp	/^void Shader::upload(GLint location, glm::vec3 value) const {$/;"	f	class:Shader	typeref:typename:void
+upload	src/Shader.cpp	/^void Shader::upload(GLint location, int value) const {$/;"	f	class:Shader	typeref:typename:void
+uploadModelMatrix	src/BlockShader.cpp	/^void BlockShader::uploadModelMatrix(glm::mat4 modelMatrix) const {$/;"	f	class:BlockShader	typeref:typename:void
+uploadProjectionMatrix	src/BlockShader.cpp	/^void BlockShader::uploadProjectionMatrix(glm::mat4 projectionMatrix) const {$/;"	f	class:BlockShader	typeref:typename:void
+uploadProjectionMatrix	src/SkyboxShader.cpp	/^void SkyboxShader::uploadProjectionMatrix(glm::mat4 projectionMatrix) {$/;"	f	class:SkyboxShader	typeref:typename:void
+uploadViewMatrix	src/BlockShader.cpp	/^void BlockShader::uploadViewMatrix(glm::mat4 viewMatrix) const {$/;"	f	class:BlockShader	typeref:typename:void
+uploadViewMatrix	src/SkyboxShader.cpp	/^void SkyboxShader::uploadViewMatrix(glm::mat4 viewMatrix) {$/;"	f	class:SkyboxShader	typeref:typename:void
+utils	include/noiseutils.h	/^  namespace utils$/;"	n	namespace:noise
+utils	src/noiseutils.cpp	/^  namespace utils$/;"	n	namespace:noise	file:
+vao	include/Components/GeometryComponent.h	/^    GLuint vao, vbo, ebo;$/;"	m	struct:GeometryComponent	typeref:typename:GLuint
+vaoMutex	include/Components/ChunkComponent.h	/^    std::mutex blockMutex, vaoMutex;$/;"	m	struct:ChunkComponent	typeref:typename:std::mutex
+vbo	include/Components/GeometryComponent.h	/^    GLuint vao, vbo, ebo;$/;"	m	struct:GeometryComponent	typeref:typename:GLuint
+vertices	include/Components/ChunkComponent.h	/^    std::vector<Vertex> vertices;$/;"	m	struct:ChunkComponent	typeref:typename:std::vector<Vertex>
+verticesOutdated	include/Components/ChunkComponent.h	/^    bool verticesOutdated   = false;$/;"	m	struct:ChunkComponent	typeref:typename:bool
+volatile	CMakeFiles/3.16.2/CompilerIdC/CMakeCCompilerId.c	/^# define volatile$/;"	d	file:
+volatile	build/CMakeFiles/3.16.5/CompilerIdC/CMakeCCompilerId.c	/^# define volatile$/;"	d	file:
+width	include/Event.h	/^    int width, height;$/;"	m	struct:FramebufferSizeEvent	typeref:typename:int
+width	include/GBuffer.h	/^        int width = Definitions::WINDOW_WIDTH, height = Definitions::WINDOW_HEIGHT;$/;"	m	class:GBuffer	typeref:typename:int
+x	include/Event.h	/^    double x, y;$/;"	m	struct:CursorEvent	typeref:typename:double
+y	include/Event.h	/^    double x, y;$/;"	m	struct:CursorEvent	typeref:typename:double
+~Application	src/Application.cpp	/^Application::~Application() {$/;"	f	class:Application
+~Font	src/Font.cpp	/^Font::~Font() {$/;"	f	class:Font
+~GradientColor	src/noiseutils.cpp	/^GradientColor::~GradientColor ()$/;"	f	class:GradientColor
+~Image	src/noiseutils.cpp	/^Image::~Image ()$/;"	f	class:Image
+~NoiseMap	src/noiseutils.cpp	/^NoiseMap::~NoiseMap ()$/;"	f	class:NoiseMap
+~RenderQuad	src/RenderQuad.cpp	/^RenderQuad::~RenderQuad() {$/;"	f	class:RenderQuad
+~Shader	src/Shader.cpp	/^Shader::~Shader() {$/;"	f	class:Shader
+~Skybox	src/Skybox.cpp	/^Skybox::~Skybox() {$/;"	f	class:Skybox
+~SystemManager	src/SystemManager.cpp	/^SystemManager::~SystemManager() {$/;"	f	class:SystemManager
+~TextureAtlas	src/TextureAtlas.cpp	/^TextureAtlas::~TextureAtlas() {$/;"	f	class:TextureAtlas
+~World	src/World.cpp	/^World::~World() {$/;"	f	class:World

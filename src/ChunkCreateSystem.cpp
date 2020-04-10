@@ -217,6 +217,10 @@ ChunkCreateSystem::ChunkCreateSystem(SystemManager* systemManager, SharedContext
     ADD_EVENT(ChunkCreateSystem::handleEnterChunk, ENTER_CHUNK_EVENT);
 }
 
+void ChunkCreateSystem::init() {
+
+}
+
 void ChunkCreateSystem::update(int dt) {
     auto view = m_registry->view<TransformationComponent, GeometryComponent, ChunkComponent>();
     for (auto entity : view ) {

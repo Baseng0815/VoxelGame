@@ -1,4 +1,4 @@
-#include "../include/Components.h"
+#include "../../include/Components/TransformationComponent.h"
 
 glm::mat4 TransformationComponent::getModelMatrix() const {
     glm::mat4 rotationMatrix =
