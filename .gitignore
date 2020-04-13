@@ -42,3 +42,7 @@ Debug/*
 CMakeFiles/*
 *.sln
 build/*
+
+# Visual Studio
+packages/*
+VoxelGame.vcxproj*
