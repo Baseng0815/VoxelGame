@@ -8,7 +8,11 @@
 
 using namespace std::placeholders;
 
-void Camera::update() {
+#ifdef _DEBUG
+    #include <iostream>
+#endif
+
+void Camera::updateVectors() {
     glm::vec3 front;
     front.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
     front.y = sin(glm::radians(m_pitch));
@@ -16,22 +20,40 @@ void Camera::update() {
     m_front = glm::normalize(front);
     m_right = glm::normalize(glm::cross(front, glm::vec3(0, 1, 0)));
     m_up = glm::normalize(glm::cross(m_right, front));
+    m_front_noY = glm::cross(m_right, glm::vec3(0, -1, 0));
 
+#ifdef _DEBUG
+    std::cout << "Facing [" << m_front.x << "," << m_front.y << "," << m_front.z <<
+             "] Position [" << m_position.x << "," << m_position.y << "," << m_position.z <<
+                "] Right [" << m_right.x << "," << m_right.y << "," << m_right.z << "]" << std::endl;
+#endif
+}
+
+void Camera::updateViewMatrix() {
     m_viewMatrix = glm::lookAt(m_position, m_position + m_front, m_up);
 
-    m_front_noY = glm::cross(m_right, glm::vec3(0, -1, 0));
+#ifdef _DEBUG
+    std::cout << "Facing [" << m_front.x << "," << m_front.y << "," << m_front.z <<
+             "] Position [" << m_position.x << "," << m_position.y << "," << m_position.z <<
+                "] Right [" << m_right.x << "," << m_right.y << "," << m_right.z << "]" << std::endl;
+#endif
 }
 
 void Camera::resize() {
+#ifdef _DEBUG
+    std::cout << "Resizing: m_fov:" << m_fov << ", m_width: " << m_width << ", m_height: " << m_height << std::endl;
+#endif
     m_projectionPerspective = glm::perspective(glm::radians(m_fov), m_width / (float)m_height, 0.1f, 100000.f);
     m_projectionOrtho = glm::ortho(0.0f, static_cast<GLfloat>(m_width),
             0.0f, static_cast<GLfloat>(m_height));
 }
 
 Camera::Camera(float fov)
-    : m_fov(fov) {
+    : m_fov(fov), m_velocity(0), m_position(0), m_up(0), m_right(0), m_front(0) {
     resize();
-    update();
+
+    updateVectors();
+    updateViewMatrix();
 }
 
 void Camera::handleKey(int key, int action) {
@@ -77,15 +99,21 @@ void Camera::handleKey(int key, int action) {
     }
 }
 
-void Camera::handleCursorPos(int dx, int dy) {
+void Camera::handleCursorPos(double dx, double dy) {
     dx *= MOUSE_SENSITIVITY;
     dy *= MOUSE_SENSITIVITY;
 
     m_yaw += dx;
     m_pitch -= dy;
 
-    if (m_pitch > 89) m_pitch = 89;
-    else if (m_pitch < -89) m_pitch = -89;
+#ifdef _DEBUG
+    std::cout << m_yaw << " " << m_pitch << std::endl;
+#endif
+
+    if (m_pitch > 90) m_pitch = 90;
+    else if (m_pitch < -90) m_pitch = -90;
+
+    updateVectors();
 }
 
 void Camera::handleScroll(double dy) {
@@ -100,14 +128,17 @@ void Camera::handleScroll(double dy) {
 void Camera::handleFramebufferSize(int width, int height) {
     m_width = width;
     m_height = height;
+
     resize();
 }
 
-void Camera::updatePosition(int dt) {
-    m_position += (m_velocity.x * m_right
+void Camera::update(int dt) {
+    m_position += (-m_velocity.x * m_right
         + m_velocity.y * glm::vec3(0, 1, 0)
         + m_velocity.z * m_front_noY)
         * (dt / 1000.f * Definitions::CAM_SPEED);
+
+    updateViewMatrix();
 }
 
 glm::mat4 Camera::getProjectionMatrix(ProjectionType type) const {

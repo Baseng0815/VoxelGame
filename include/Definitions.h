@@ -5,6 +5,8 @@
 
 #include <array>
 
+#define _DEBUG
+
 class Definitions {
 public:
     static std::array<BlockData, (int)BlockType::NUM_BLOCKS> BLOCK_DATA;

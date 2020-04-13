@@ -24,23 +24,26 @@ class Camera {
         // used for movement
         glm::vec3 m_front_noY;
 
+        // recalculate front, up and right vectors
+        void updateVectors();
 
-        // recalculate view matrix, front, up and right vectors
-        // return new front vector
-        void update();
+        // recalculate view matrix
+        void updateViewMatrix();
 
+        // recalculate projection matrices
         void resize();
 
     public:
         Camera(float fov);
 
         void handleKey(int key, int action);
-        void handleCursorPos(int dx, int dy);
+        void handleCursorPos(double dx, double dy);
         void handleScroll(double dy);
         void handleFramebufferSize(int width, int height);
 
         // dt in milliseconds
-        void updatePosition(int dt);
+        // updates position and then the view matrix
+        void update(int dt);
 
         glm::mat4 getProjectionMatrix(ProjectionType type) const;
         glm::mat4 getViewMatrix() const;

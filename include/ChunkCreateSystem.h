@@ -25,6 +25,7 @@ class ChunkCreateSystem : public System {
         std::atomic_int constructionCount;
         std::vector<glm::vec2> loadedChunks;
 
+        // TODO introduce enter chunk event and chunk generation
         void handleEnterChunk(Event*);
 
         void updateChunkBlocks(ChunkComponent& chunk);

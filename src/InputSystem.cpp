@@ -16,14 +16,21 @@ void InputSystem::handleMouseMoveEvent(Event* e) {
     m_context->camera.handleCursorPos(cursorEvent.dx, cursorEvent.dy);
 }
 
+void InputSystem::handleScrollEvent(Event* e) {
+    ScrollEvent scrollEvent = *e->get<ScrollEvent>();
+
+    m_context->camera.handleScroll(scrollEvent.dy);
+}
+
 InputSystem::InputSystem(SystemManager* systemManager, SharedContext* context)
     : System(systemManager, context) {}
 
 void InputSystem::init() {
     ADD_EVENT(InputSystem::handleKeyPressEvent, KEY_EVENT);
     ADD_EVENT(InputSystem::handleMouseMoveEvent, CURSOR_EVENT);
+    ADD_EVENT(InputSystem::handleScrollEvent, SCROLL_EVENT);
 }
 
 void InputSystem::update(int dt) {
-
+    m_context->camera.update(dt);
 }

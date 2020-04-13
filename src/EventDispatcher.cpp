@@ -1,9 +1,15 @@
 #include "../include/EventDispatcher.h"
 #include "../include/Application.h"
 
+#include "../include/Definitions.h"
+
+#ifdef _DEBUG
+    #include <iostream>
+#endif
+
 bool EventDispatcher::m_firstMouse = true;
-double EventDispatcher::m_prevX;
-double EventDispatcher::m_prevY;
+double EventDispatcher::m_prevX = 0;
+double EventDispatcher::m_prevY = 0;
 CallbackId EventDispatcher::m_cbCounter = 0;
 std::map<EventType, std::vector<std::pair<CallbackId, Callback>>> EventDispatcher::m_callbacks;
 

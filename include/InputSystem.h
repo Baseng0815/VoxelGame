@@ -10,6 +10,7 @@ class InputSystem : public System {
     private:
         void handleKeyPressEvent(Event* e);
         void handleMouseMoveEvent(Event* e);
+        void handleScrollEvent(Event* e);
 
     public:
         InputSystem(SystemManager* systemManager, SharedContext* context);

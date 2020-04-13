@@ -20,7 +20,6 @@ ChunkRenderSystem::ChunkRenderSystem(SystemManager* systemManager, SharedContext
 void ChunkRenderSystem::init() {
     ADD_EVENT(ChunkRenderSystem::handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT);
 
-
     m_blockShader.init();
     m_lightingShader.init();
 
@@ -30,7 +29,7 @@ void ChunkRenderSystem::init() {
     m_renderQuad.init();
 }
 
-void ChunkRenderSystem::update(int dt) {
+void ChunkRenderSystem::update(int) {
     // clear screen framebuffer
     glClearColor(0, 0, 0, 1); glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);

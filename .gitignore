@@ -40,6 +40,5 @@ Debug/*
 
 *.vim
 CMakeFiles/*
-CMakeLists.txt
 *.sln
 build/*
