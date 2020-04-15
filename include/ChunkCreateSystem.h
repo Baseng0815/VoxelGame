@@ -4,6 +4,8 @@
 #include "WorldGenerator.h"
 #include "TextureAtlas.h"
 
+#include <atomic>
+
 struct ChunkHashFunction {
     size_t operator()(const glm::vec2& v) const {
         return std::hash<int>()(v.x) ^ std::hash<int>()(v.y);

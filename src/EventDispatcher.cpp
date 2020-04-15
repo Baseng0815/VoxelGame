@@ -64,6 +64,10 @@ void EventDispatcher::framebufferSizeCallback(GLFWwindow* window, int width, int
 }
 
 void EventDispatcher::dispatch(Event *e) {
+#ifdef _DEBUG
+    if (e->type() == ENTER_CHUNK_EVENT)
+        std::cout << *e << std::endl;
+#endif
     auto cbIt = m_callbacks.find(e->type());
     if (cbIt == m_callbacks.end()) return;
 

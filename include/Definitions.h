@@ -7,6 +7,8 @@
 
 #define _DEBUG
 
+// TODO move static definitions (WINDOW_WIDTH etc.) away from runtime-loaded
+// information (BLOCK_DATA etc.) and clean up include hierarchy
 class Definitions {
 public:
     static std::array<BlockData, (int)BlockType::NUM_BLOCKS> BLOCK_DATA;

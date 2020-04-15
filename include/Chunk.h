@@ -12,6 +12,7 @@
 
 class WorldGenerator;
 
+// TODO remove and completely replace with ECS
 class Chunk {
 private:
     // 16*16*256 array of blocks

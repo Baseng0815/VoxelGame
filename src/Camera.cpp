@@ -8,10 +8,6 @@
 
 using namespace std::placeholders;
 
-#ifdef _DEBUG
-    #include <iostream>
-#endif
-
 void Camera::updateVectors() {
     glm::vec3 front;
     front.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
@@ -21,28 +17,13 @@ void Camera::updateVectors() {
     m_right = glm::normalize(glm::cross(front, glm::vec3(0, 1, 0)));
     m_up = glm::normalize(glm::cross(m_right, front));
     m_front_noY = glm::cross(m_right, glm::vec3(0, -1, 0));
-
-#ifdef _DEBUG
-    std::cout << "Facing [" << m_front.x << "," << m_front.y << "," << m_front.z <<
-             "] Position [" << m_position.x << "," << m_position.y << "," << m_position.z <<
-                "] Right [" << m_right.x << "," << m_right.y << "," << m_right.z << "]" << std::endl;
-#endif
 }
 
 void Camera::updateViewMatrix() {
     m_viewMatrix = glm::lookAt(m_position, m_position + m_front, m_up);
-
-#ifdef _DEBUG
-    std::cout << "Facing [" << m_front.x << "," << m_front.y << "," << m_front.z <<
-             "] Position [" << m_position.x << "," << m_position.y << "," << m_position.z <<
-                "] Right [" << m_right.x << "," << m_right.y << "," << m_right.z << "]" << std::endl;
-#endif
 }
 
 void Camera::resize() {
-#ifdef _DEBUG
-    std::cout << "Resizing: m_fov:" << m_fov << ", m_width: " << m_width << ", m_height: " << m_height << std::endl;
-#endif
     m_projectionPerspective = glm::perspective(glm::radians(m_fov), m_width / (float)m_height, 0.1f, 100000.f);
     m_projectionOrtho = glm::ortho(0.0f, static_cast<GLfloat>(m_width),
             0.0f, static_cast<GLfloat>(m_height));
@@ -106,10 +87,6 @@ void Camera::handleCursorPos(double dx, double dy) {
     m_yaw += dx;
     m_pitch -= dy;
 
-#ifdef _DEBUG
-    std::cout << m_yaw << " " << m_pitch << std::endl;
-#endif
-
     if (m_pitch > 90) m_pitch = 90;
     else if (m_pitch < -90) m_pitch = -90;
 
@@ -133,10 +110,27 @@ void Camera::handleFramebufferSize(int width, int height) {
 }
 
 void Camera::update(int dt) {
+    int prevChunkX = m_position.x / Definitions::CHUNK_SIZE;
+    int prevChunkZ = m_position.z / Definitions::CHUNK_SIZE;
+
     m_position += (-m_velocity.x * m_right
         + m_velocity.y * glm::vec3(0, 1, 0)
         + m_velocity.z * m_front_noY)
         * (dt / 1000.f * Definitions::CAM_SPEED);
+
+    int newChunkX = m_position.x / Definitions::CHUNK_SIZE;
+    int newChunkZ = m_position.z / Definitions::CHUNK_SIZE;
+
+
+    if (newChunkX != prevChunkX || newChunkZ != prevChunkZ) {
+        EnterChunkEvent e;
+        e.oldX = prevChunkX;
+        e.oldZ = prevChunkZ;
+        e.newX = newChunkX;
+        e.newZ = newChunkZ;
+
+        EventDispatcher::raiseEvent(&e);
+    }
 
     updateViewMatrix();
 }

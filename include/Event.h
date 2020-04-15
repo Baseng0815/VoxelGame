@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string.h>
 #include <functional>
 
 using namespace std::placeholders;
@@ -16,10 +17,14 @@ enum EventType {
 };
 
 struct Event {
-    virtual EventType type() = 0;
+    virtual EventType type() const = 0;
+    virtual std::string toString() const = 0;
+
 
     template<class T>
         T* get();
+
+    friend std::ostream& operator<<(std::ostream& ostream, const Event& event);
 };
 
 typedef std::function<void(Event *e)> Callback;
@@ -33,7 +38,8 @@ struct KeyEvent : public Event {
     int action;
     int mods;
 
-    EventType type() override final;
+    EventType type() const override final;
+    std::string toString() const override final;
     KeyEvent(Application* app = nullptr, int key = 0, int scancode = 0, int action = 0, int mods = 0);
 };
 
@@ -44,7 +50,8 @@ struct CursorEvent : public Event {
     double x, y;
     double dx, dy;
 
-    EventType type() override final;
+    EventType type() const override final;
+    std::string toString() const override final;
     CursorEvent(Application* app = nullptr, double x = 0, double y = 0, double dx = 0, double dy = 0);
 };
 
@@ -54,7 +61,8 @@ struct ScrollEvent : public Event {
     Application* app;
     double dx, dy;
 
-    EventType type() override final;
+    EventType type() const override final;
+    std::string toString() const override final;
     ScrollEvent(Application* app = nullptr, double dx = 0, double dy = 0);
 };
 
@@ -64,7 +72,8 @@ struct FramebufferSizeEvent : public Event {
     Application* app;
     int width, height;
 
-    EventType type() override final;
+    EventType type() const override final;
+    std::string toString() const override final;
     FramebufferSizeEvent(Application* app = nullptr, int width = 0, int height = 0);
 };
 
@@ -75,6 +84,7 @@ struct EnterChunkEvent : public Event {
     int oldX, oldZ;
     int newX, newZ;
 
-    EventType type() override final;
+    EventType type() const override final;
+    std::string toString() const override final;
     EnterChunkEvent(Application* app = nullptr, int oldX = 0, int oldY = 0, int newX = 0, int newY = 0);
 };
