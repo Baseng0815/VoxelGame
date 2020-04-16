@@ -4,6 +4,8 @@
 #include "WorldGenerator.h"
 #include "TextureAtlas.h"
 
+#include <entt/entity/fwd.hpp>
+#include <queue>
 #include <atomic>
 
 struct ChunkHashFunction {
@@ -25,9 +27,9 @@ class ChunkCreateSystem : public System {
         WorldGenerator m_generator;
 
         std::atomic_int constructionCount;
+        std::vector<entt::entity> m_destructionQueue;
         std::vector<glm::vec2> loadedChunks;
 
-        // TODO introduce enter chunk event and chunk generation
         void handleEnterChunk(Event*);
 
         void updateChunkBlocks(ChunkComponent& chunk);

@@ -1,5 +1,7 @@
 #include "../../include/Components/TransformationComponent.h"
 
+TransformationComponent::TransformationComponent(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale) : position(position), rotation(rotation), scale(scale) {}
+
 glm::mat4 TransformationComponent::getModelMatrix() const {
     glm::mat4 rotationMatrix =
         glm::rotate(rotation.z, glm::vec3(0, 0, 1)) *

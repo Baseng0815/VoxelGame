@@ -1,5 +1,8 @@
 #include "../../include/Components/ChunkComponent.h"
 
+ChunkComponent::ChunkComponent(int chunkX, int chunkZ) :
+    chunkX(chunkX), chunkZ(chunkZ) {}
+
 ChunkComponent::ChunkComponent(ChunkComponent&& other) {
     blocks = other.blocks;
 
@@ -22,4 +25,10 @@ ChunkComponent& ChunkComponent::operator=(const ChunkComponent& other) {
     indices = other.indices;
 
     return *this;
+}
+
+std::ostream& operator<<(std::ostream& stream, const ChunkComponent& chunk) {
+    stream << "buffersInitialized: " << chunk.buffersInitialized << " buffersOutdated: " << chunk.buffersOutdated << " verticesOutdated: " << chunk.verticesOutdated;
+    return stream;
+
 }

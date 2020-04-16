@@ -18,15 +18,21 @@ void ChunkCreateSystem::handleEnterChunk(Event* e) {
     entt::registry& registry = m_systemManager->getRegistry();
     auto view = registry.view<TransformationComponent, GeometryComponent, ChunkComponent>();
 
-    // delete old chunks which have come out of range
+    // remove old chunks from ECS system and queue chunk data deletion
     for (auto entity : view) {
-        TransformationComponent& transformation = view.get<TransformationComponent>(entity);
-        GeometryComponent& geometry             = view.get<GeometryComponent>(entity);
-        ChunkComponent& chunk                   = view.get<ChunkComponent>(entity);
+        auto& transformation = view.get<TransformationComponent>(entity);
+        auto& chunk          = view.get<ChunkComponent>(entity);
 
-        if (std::abs(event.newX - transformation.position.x) > Definitions::CHUNK_PRELOAD_SIZE ||
-            std::abs(event.newZ - transformation.position.z) > Definitions::CHUNK_PRELOAD_SIZE)
-                m_registry->destroy(entity);
+        if (std::abs(event.newX - chunk.chunkX) >
+                Definitions::CHUNK_PRELOAD_SIZE &&
+            std::abs(event.newZ - chunk.chunkZ) >
+                Definitions::CHUNK_PRELOAD_SIZE) {
+
+            if (!std::count(m_destructionQueue.begin(), m_destructionQueue.end(), entity)) {
+                m_destructionQueue.push_back(entity);
+            }
+
+        }
     }
 
     // create new chunks which have come into range
@@ -35,9 +41,13 @@ void ChunkCreateSystem::handleEnterChunk(Event* e) {
             glm::vec2 pos(x, z);
             if (!std::count(loadedChunks.begin(), loadedChunks.end(), pos)) {
                 auto entity = m_registry->create();
-                m_registry->assign<TransformationComponent>(entity);
+                m_registry->assign<TransformationComponent>(entity, glm::vec3(x * Definitions::CHUNK_SIZE * 1.2,
+                                   0, z * Definitions::CHUNK_SIZE * 1.2));
                 m_registry->assign<GeometryComponent>(entity);
-                m_registry->assign<ChunkComponent>(entity);
+                m_registry->assign<ChunkComponent>(entity, x, z);
+
+                auto& transform = m_registry->get<TransformationComponent>(entity);
+
                 loadedChunks.push_back(pos);
             }
         }
@@ -51,7 +61,7 @@ void ChunkCreateSystem::updateChunkBlocks(ChunkComponent& chunk) {
         for (int y = 0; y < Definitions::CHUNK_HEIGHT; y++) {
             chunk.blocks[x][y] = new Block[Definitions::CHUNK_SIZE];
             for (int z = 0; z < Definitions::CHUNK_SIZE; z++)
-                chunk.blocks[x][y][z] = Block(BlockType::BLOCK_AIR);
+                chunk.blocks[x][y][z] = Block(BlockType::BLOCK_STONE);
         }
     }
 }
@@ -69,7 +79,9 @@ void ChunkCreateSystem::updateChunkVertices(ChunkComponent& chunk, GeometryCompo
                 faceCountPerPass = 0;
                 bool draw = false;
 
+                std::unique_lock<std::mutex> blockLock(chunk.blockMutex);
                 BlockUVs blockUVs = (*m_context->textureAtlas.getBlockTextureCoordinates())[(int)chunk.blocks[x][y][z].type];
+                blockLock.unlock();
 
                 // negative X
                 if (x > 0) {
@@ -180,10 +192,10 @@ void ChunkCreateSystem::updateChunkVertices(ChunkComponent& chunk, GeometryCompo
             }
 
     geometry.drawCount = chunk.indices.size();
+
 }
 
 void ChunkCreateSystem::updateChunkBuffers(ChunkComponent& chunk, GeometryComponent& geometry) {
-    std::lock_guard<std::mutex> vaoLock(chunk.vaoMutex);
     if (!chunk.buffersInitialized) {
         glGenVertexArrays(1, &geometry.vao);
         glBindVertexArray(geometry.vao);
@@ -203,8 +215,8 @@ void ChunkCreateSystem::updateChunkBuffers(ChunkComponent& chunk, GeometryCompon
     glBindVertexArray(geometry.vao);
     glBindBuffer(GL_ARRAY_BUFFER, geometry.vbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry.ebo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(chunk.vertices[0]) * chunk.vertices.size(), chunk.vertices.data(), GL_DYNAMIC_DRAW);
 
+    glBufferData(GL_ARRAY_BUFFER, sizeof(chunk.vertices[0]) * chunk.vertices.size(), chunk.vertices.data(), GL_DYNAMIC_DRAW);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(chunk.indices[0]) * chunk.indices.size(), chunk.indices.data(), GL_DYNAMIC_DRAW);
 
     chunk.vertices.clear();
@@ -213,7 +225,7 @@ void ChunkCreateSystem::updateChunkBuffers(ChunkComponent& chunk, GeometryCompon
 
 
 ChunkCreateSystem::ChunkCreateSystem(SystemManager* systemManager, SharedContext* context, WorldType type)
-    : System(systemManager, context) {
+    : System(systemManager, context), constructionCount(0) {
     ADD_EVENT(ChunkCreateSystem::handleEnterChunk, ENTER_CHUNK_EVENT);
 }
 
@@ -222,12 +234,38 @@ void ChunkCreateSystem::init() {
 }
 
 void ChunkCreateSystem::update(int dt) {
+    // delete queued chunks if no thread is active on them
+    for (auto it = m_destructionQueue.begin(); it != m_destructionQueue.end();) {
+        auto& chunk = m_registry->get<ChunkComponent>(*it);
+
+        if (!chunk.threadActiveOnSelf) {
+            glm::vec2 pos(chunk.chunkX, chunk.chunkZ);
+
+            // cleanup memory
+            for (int x = 0; x < Definitions::CHUNK_SIZE; x++) {
+                for (int y = 0; y < Definitions::CHUNK_HEIGHT; y++) {
+                    delete[] chunk.blocks[x][y];
+                }
+                delete[] chunk.blocks[x];
+            }
+
+            delete[] chunk.blocks;
+
+            // remove from loaded chunks and registry
+            loadedChunks.erase(std::remove(loadedChunks.begin(), loadedChunks.end(), pos), loadedChunks.end());
+            m_registry->destroy(*it);
+            it = m_destructionQueue.erase(it);
+        } else {
+            it++;
+        }
+    }
+
     auto view = m_registry->view<TransformationComponent, GeometryComponent, ChunkComponent>();
     for (auto entity : view ) {
 
-        TransformationComponent& transformation = view.get<TransformationComponent>(entity);
-        GeometryComponent& geometry             = view.get<GeometryComponent>(entity);
-        ChunkComponent& chunk                   = view.get<ChunkComponent>(entity);
+        auto& transformation = view.get<TransformationComponent>(entity);
+        auto& geometry       = view.get<GeometryComponent>(entity);
+        auto& chunk          = view.get<ChunkComponent>(entity);
 
         if (constructionCount < 6) {
             // create blocks
@@ -236,8 +274,6 @@ void ChunkCreateSystem::update(int dt) {
                     constructionCount++;
                     chunk.threadActiveOnSelf = true;
                     chunk.futures.push_back(std::async(std::launch::async, [this, &chunk]() {
-                        //std::lock_guard<std::mutex> blockLock(chunk.blockMutex);
-
                         updateChunkBlocks(chunk);
 
                         constructionCount--;
@@ -250,14 +286,14 @@ void ChunkCreateSystem::update(int dt) {
                 if (!chunk.threadActiveOnSelf) {
                     constructionCount++;
                     chunk.threadActiveOnSelf = true;
-                    chunk.threadActiveOnSelf = false;
                     chunk.futures.push_back(std::async(std::launch::async, [this, &chunk, &geometry]() {
 
                         updateChunkVertices(chunk, geometry);
 
                         constructionCount--;
-                        chunk.verticesOutdated = false;
                         chunk.threadActiveOnSelf = false;
+                        chunk.verticesOutdated = false;
+                        chunk.buffersOutdated = true;
                     }));
                 }
             }

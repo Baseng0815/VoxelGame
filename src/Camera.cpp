@@ -15,12 +15,11 @@ void Camera::updateVectors() {
     front.z = sin(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
     m_front = glm::normalize(front);
     m_right = glm::normalize(glm::cross(front, glm::vec3(0, 1, 0)));
-    m_up = glm::normalize(glm::cross(m_right, front));
-    m_front_noY = glm::cross(m_right, glm::vec3(0, -1, 0));
+    m_front_noY = glm::cross(m_right, glm::vec3(0, 1, 0));
 }
 
 void Camera::updateViewMatrix() {
-    m_viewMatrix = glm::lookAt(m_position, m_position + m_front, m_up);
+    m_viewMatrix = glm::lookAt(m_position, m_position + m_front, glm::vec3(0, 1, 0));
 }
 
 void Camera::resize() {
@@ -30,7 +29,7 @@ void Camera::resize() {
 }
 
 Camera::Camera(float fov)
-    : m_fov(fov), m_velocity(0), m_position(0), m_up(0), m_right(0), m_front(0) {
+    : m_fov(fov), m_velocity(0), m_position(0, 260, 0), m_up(0), m_right(0), m_front(0) {
     resize();
 
     updateVectors();
@@ -87,8 +86,8 @@ void Camera::handleCursorPos(double dx, double dy) {
     m_yaw += dx;
     m_pitch -= dy;
 
-    if (m_pitch > 90) m_pitch = 90;
-    else if (m_pitch < -90) m_pitch = -90;
+    if (m_pitch > 89.99) m_pitch = 89.99;
+    else if (m_pitch < -89.99) m_pitch = -89.99;
 
     updateVectors();
 }
@@ -113,7 +112,7 @@ void Camera::update(int dt) {
     int prevChunkX = m_position.x / Definitions::CHUNK_SIZE;
     int prevChunkZ = m_position.z / Definitions::CHUNK_SIZE;
 
-    m_position += (-m_velocity.x * m_right
+    m_position += (m_velocity.x * m_right
         + m_velocity.y * glm::vec3(0, 1, 0)
         + m_velocity.z * m_front_noY)
         * (dt / 1000.f * Definitions::CAM_SPEED);

@@ -4,6 +4,8 @@
 #include "../include/ChunkRenderSystem.h"
 #include "../include/InputSystem.h"
 
+#include "../include//EventDispatcher.h"
+
 void SystemManager::init(SharedContext* context) {
     // create all systems
     m_systems.push_back(new ChunkCreateSystem(this, context, WorldType::WORLD_FLAT));
@@ -14,6 +16,11 @@ void SystemManager::init(SharedContext* context) {
     for (auto& system : m_systems) {
         system->init();
     }
+
+    // raise beginning events
+    EnterChunkEvent e;
+    e.newX = e.newZ = e.oldX = e.oldZ = 0;
+    EventDispatcher::raiseEvent(&e);
 }
 
 SystemManager::~SystemManager() {

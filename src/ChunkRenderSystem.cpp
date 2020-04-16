@@ -29,6 +29,8 @@ void ChunkRenderSystem::init() {
     m_renderQuad.init();
 }
 
+#include <iostream>
+
 void ChunkRenderSystem::update(int) {
     // clear screen framebuffer
     glClearColor(0, 0, 0, 1); glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -49,14 +51,13 @@ void ChunkRenderSystem::update(int) {
     auto view = registry.view<TransformationComponent, GeometryComponent, ChunkComponent>();
 
     for (auto entity : view) {
-        TransformationComponent& transformation = view.get<TransformationComponent>(entity);
-        GeometryComponent& geometry             = view.get<GeometryComponent>(entity);
-        ChunkComponent& chunk                   = view.get<ChunkComponent>(entity);
+        auto& transformation = view.get<TransformationComponent>(entity);
+        auto& geometry       = view.get<GeometryComponent>(entity);
+        auto& chunk          = view.get<ChunkComponent>(entity);
 
         if (chunk.buffersInitialized) {
-            std::lock_guard<std::mutex> vaoLock(chunk.vaoMutex);
             m_blockShader.uploadModelMatrix(transformation.getModelMatrix());
-                glBindVertexArray(geometry.vao);
+            glBindVertexArray(geometry.vao);
             glDrawElements(GL_TRIANGLES, geometry.drawCount, GL_UNSIGNED_INT, nullptr);
         }
     }
