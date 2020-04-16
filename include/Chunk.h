@@ -66,6 +66,7 @@ private:
 public:
     static void setBlockUVsArray(const BlockUVsArray* array);
     static void setWorldGenerator(const WorldGenerator* generator);
+    static bool positionInRange(glm::vec3 position);
 
     Chunk(glm::vec2 position = glm::vec2(0, 0));
     Chunk(const Chunk& other);
