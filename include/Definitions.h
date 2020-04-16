@@ -17,7 +17,7 @@ public:
     // initial size
     static constexpr int WINDOW_WIDTH = 800, WINDOW_HEIGHT = 600;
     // the number of chunks in px and pz direction that are active at once
-    static constexpr int CHUNK_PRELOAD_SIZE = 2;
+    static constexpr int CHUNK_PRELOAD_SIZE = 5;
 
     // how many chunks can be loaded simultaneously
     static constexpr int CHUNK_MAX_LOADING = 8;

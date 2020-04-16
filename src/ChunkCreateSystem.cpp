@@ -22,9 +22,10 @@ void ChunkCreateSystem::handleEnterChunk(Event* e) {
     for (auto entity : view) {
         auto& transformation = view.get<TransformationComponent>(entity);
         auto& chunk          = view.get<ChunkComponent>(entity);
+        std::cout << chunk.chunkX << " " << chunk.chunkZ << std::endl;
 
         if (std::abs(event.newX - chunk.chunkX) >
-                Definitions::CHUNK_PRELOAD_SIZE &&
+                Definitions::CHUNK_PRELOAD_SIZE ||
             std::abs(event.newZ - chunk.chunkZ) >
                 Definitions::CHUNK_PRELOAD_SIZE) {
 

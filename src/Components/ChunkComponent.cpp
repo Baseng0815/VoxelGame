@@ -12,6 +12,9 @@ ChunkComponent::ChunkComponent(ChunkComponent&& other) {
 
     vertices = other.vertices;
     indices = other.indices;
+
+    chunkX = other.chunkX;
+    chunkZ = other.chunkZ;
 }
 
 ChunkComponent& ChunkComponent::operator=(const ChunkComponent& other) {
@@ -23,6 +26,9 @@ ChunkComponent& ChunkComponent::operator=(const ChunkComponent& other) {
 
     vertices = other.vertices;
     indices = other.indices;
+
+    chunkX = other.chunkX;
+    chunkZ = other.chunkZ;
 
     return *this;
 }
