@@ -4,7 +4,7 @@
 
 class Event;
 class SystemManager;
-class SharedContext;
+struct SharedContext;
 
 class System {
     protected:
@@ -13,7 +13,7 @@ class System {
         entt::registry* m_registry;
 
     public:
-        System(SystemManager* systemManager, SharedContext* context);
+        System(SystemManager* systemManager, SharedContext* context);        
 
         virtual void init() = 0;
 

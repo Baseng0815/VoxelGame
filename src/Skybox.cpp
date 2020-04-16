@@ -3,7 +3,11 @@
 
 #include <string>
 #include <iostream>
+#if defined(WIN32)
+#include <SOIL.h>
+#else
 #include <SOIL/SOIL.h>
+#endif
 
 void Skybox::init() {
     // textures

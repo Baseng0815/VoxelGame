@@ -8,7 +8,12 @@
 #include <mutex>
 #include <future>
 #include <atomic>
+
+#if defined(WIN32)
+#include <thread>
+#else
 #include <threads.h>
+#endif
 
 class WorldGenerator;
 
@@ -61,6 +66,7 @@ private:
 public:
     static void setBlockUVsArray(const BlockUVsArray* array);
     static void setWorldGenerator(const WorldGenerator* generator);
+    static bool positionInRange(glm::vec3 position);
 
     Chunk(glm::vec2 position = glm::vec2(0, 0));
     Chunk(const Chunk& other);
