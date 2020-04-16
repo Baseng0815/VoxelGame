@@ -1,7 +1,11 @@
 #include "../include/TextureAtlas.h"
 
 #include <iostream>
+#if defined(WIN32)
+#include <SOIL.h>
+#else
 #include <SOIL/SOIL.h>
+#endif
 
 void TextureAtlas::init(const char *fileName, int tileSize) {
     glGenTextures(1, &m_texture);

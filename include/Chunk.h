@@ -8,7 +8,12 @@
 #include <mutex>
 #include <future>
 #include <atomic>
+
+#if defined(WIN32)
+#include <thread>
+#else
 #include <threads.h>
+#endif
 
 class WorldGenerator;
 

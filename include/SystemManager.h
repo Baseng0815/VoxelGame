@@ -5,7 +5,7 @@
 
 class System;
 class Event;
-class SharedContext;
+struct SharedContext;
 
 class SystemManager {
 private:
