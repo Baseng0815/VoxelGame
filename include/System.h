@@ -10,10 +10,9 @@ class System {
     protected:
         SystemManager* m_systemManager;
         SharedContext* m_context;
-        entt::registry* m_registry;
 
     public:
-        System(SystemManager* systemManager, SharedContext* context);        
+        System(SystemManager* systemManager, SharedContext* context);
 
         virtual void init() = 0;
 

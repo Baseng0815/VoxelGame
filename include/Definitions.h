@@ -20,7 +20,7 @@ public:
     static constexpr int CHUNK_PRELOAD_SIZE = 5;
 
     // how many chunks can be loaded simultaneously
-    static constexpr int CHUNK_MAX_LOADING = 8;
+    static constexpr int CHUNK_MAX_LOADING = 6;
 
     static constexpr int MAP_SEED_SIZE = 256;
 
@@ -31,7 +31,7 @@ public:
     static constexpr float MAX_FALL_SPEED = 55.f;
 
     // units per second
-    static constexpr float CAM_SPEED = 16.f;
+    static constexpr float CAM_SPEED = 90.f;
 
     static void loadData();
 };

@@ -3,10 +3,6 @@
 
 #include "../include/Definitions.h"
 
-#ifdef _DEBUG
-    #include <iostream>
-#endif
-
 bool EventDispatcher::m_firstMouse = true;
 double EventDispatcher::m_prevX = 0;
 double EventDispatcher::m_prevY = 0;
@@ -64,10 +60,6 @@ void EventDispatcher::framebufferSizeCallback(GLFWwindow* window, int width, int
 }
 
 void EventDispatcher::dispatch(Event *e) {
-#ifdef _DEBUG
-    if (e->type() == ENTER_CHUNK_EVENT)
-        std::cout << *e << std::endl;
-#endif
     auto cbIt = m_callbacks.find(e->type());
     if (cbIt == m_callbacks.end()) return;
 

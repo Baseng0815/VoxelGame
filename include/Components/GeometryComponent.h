@@ -7,4 +7,6 @@ struct GeometryComponent {
 
     //bool useElementDrawing;
     GLuint vao, vbo, ebo;
+
+    bool buffersInitialized = false;
 };

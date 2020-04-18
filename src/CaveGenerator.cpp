@@ -1,7 +1,7 @@
-#include "..\include\CaveGenerator.h"
-#include "..\include\WorldGenerator.h"
-#include  "..\include\Definitions.h"
-#include "..\include\Chunk.h"
+#include "../include/CaveGenerator.h"
+#include "../include/WorldGenerator.h"
+#include "../include/Definitions.h"
+#include "../include/Chunk.h"
 
 std::vector<glm::vec3> CaveGenerator::getGenerationPoints(glm::vec3 start) const {
 	std::vector<glm::vec3> points = std::vector<glm::vec3>();

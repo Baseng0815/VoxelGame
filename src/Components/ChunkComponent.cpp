@@ -3,29 +3,17 @@
 ChunkComponent::ChunkComponent(int chunkX, int chunkZ) :
     chunkX(chunkX), chunkZ(chunkZ) {}
 
-ChunkComponent::ChunkComponent(ChunkComponent&& other) {
-    blocks = other.blocks;
-
-    buffersInitialized = other.buffersInitialized;
-    verticesOutdated = other.verticesOutdated;
-    buffersOutdated = other.buffersOutdated;
-
-    vertices = other.vertices;
-    indices = other.indices;
-
-    chunkX = other.chunkX;
-    chunkZ = other.chunkZ;
-}
+ChunkComponent::ChunkComponent(const ChunkComponent& other) :
+    blocks(other.blocks), blockMutex(other.blockMutex), verticesOutdated((bool)other.verticesOutdated),
+    threadActiveOnSelf((bool)other.threadActiveOnSelf), chunkX(other.chunkX), chunkZ(other.chunkZ) {}
 
 ChunkComponent& ChunkComponent::operator=(const ChunkComponent& other) {
     blocks = other.blocks;
+    blockMutex = other.blockMutex;
 
-    buffersInitialized = other.buffersInitialized;
-    verticesOutdated = other.verticesOutdated;
-    buffersOutdated = other.buffersOutdated;
+    verticesOutdated    = (bool)other.verticesOutdated;
 
-    vertices = other.vertices;
-    indices = other.indices;
+    threadActiveOnSelf = (bool)other.threadActiveOnSelf;
 
     chunkX = other.chunkX;
     chunkZ = other.chunkZ;
@@ -34,7 +22,8 @@ ChunkComponent& ChunkComponent::operator=(const ChunkComponent& other) {
 }
 
 std::ostream& operator<<(std::ostream& stream, const ChunkComponent& chunk) {
-    stream << "buffersInitialized: " << chunk.buffersInitialized << " buffersOutdated: " << chunk.buffersOutdated << " verticesOutdated: " << chunk.verticesOutdated;
+    stream << "chunkX: " << chunk.chunkX << " chunkZ: " << chunk.chunkZ << " buffersInitialized: "
+           << chunk.verticesOutdated << " thread active: " << chunk.threadActiveOnSelf;
     return stream;
 
 }

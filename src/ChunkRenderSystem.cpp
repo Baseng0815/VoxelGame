@@ -31,7 +31,7 @@ void ChunkRenderSystem::init() {
 
 #include <iostream>
 
-void ChunkRenderSystem::update(int) {
+void ChunkRenderSystem::update(int dt) {
     // clear screen framebuffer
     glClearColor(0, 0, 0, 1); glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -47,20 +47,14 @@ void ChunkRenderSystem::update(int) {
     m_blockShader.uploadViewMatrix(m_context->camera.getViewMatrix());
     m_blockShader.uploadProjectionMatrix(m_context->camera.getProjectionMatrix(PROJECTION_PERSPECTIVE));
 
-    entt::registry& registry = m_systemManager->getRegistry();
-    auto view = registry.view<TransformationComponent, GeometryComponent, ChunkComponent>();
-
-    for (auto entity : view) {
-        auto& transformation = view.get<TransformationComponent>(entity);
-        auto& geometry       = view.get<GeometryComponent>(entity);
-        auto& chunk          = view.get<ChunkComponent>(entity);
-
-        if (chunk.buffersInitialized) {
+    m_systemManager->getRegistry().view<TransformationComponent, GeometryComponent, ChunkComponent>().each([this]
+        (auto& transformation, auto& geometry, auto& chunk) {
+        if (geometry.buffersInitialized) {
             m_blockShader.uploadModelMatrix(transformation.getModelMatrix());
             glBindVertexArray(geometry.vao);
             glDrawElements(GL_TRIANGLES, geometry.drawCount, GL_UNSIGNED_INT, nullptr);
         }
-    }
+    });
 
     // lighting pass
     glBindFramebuffer(GL_FRAMEBUFFER, 0);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <mutex>
 #include <entt/entt.hpp>
 
 class System;
@@ -11,6 +12,7 @@ class SystemManager {
 private:
     std::vector<System*> m_systems;
 
+    std::mutex m_registryMutex;
     entt::registry m_entityRegistry;
 
 public:
@@ -20,4 +22,5 @@ public:
     void update(int dt);
 
     entt::registry& getRegistry();
+    std::mutex& getRegistryMutex();
 };

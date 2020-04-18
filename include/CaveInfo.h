@@ -1,5 +1,7 @@
 #pragma once
-#include "pch.h"
+
+#include <vector>
+#include <glm/glm.hpp>
 
 struct CaveInfo {
 	std::vector<glm::vec3> curve;

@@ -36,3 +36,7 @@ void SystemManager::update(int dt) {
 entt::registry& SystemManager::getRegistry() {
     return m_entityRegistry;
 }
+
+std::mutex& SystemManager::getRegistryMutex() {
+    return m_registryMutex;
+}
