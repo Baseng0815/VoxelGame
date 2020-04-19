@@ -12,19 +12,21 @@ private:
 	std::vector<glm::vec3> generateCaveCurve(glm::vec3 start) const;
 	glm::vec3 getBezierPoint(float t, std::vector<glm::vec3> points) const;
 
-	WorldGenerator* worldGenerator;
+	std::vector<std::pair<glm::vec2, CaveInfo>> generationInfo;
+	void generateNewCave(const glm::vec2 position, Block*** blocks);
+	void continueGeneration(CaveInfo& info, const glm::vec2 position, Block*** blocks);
 
 public:			
-	float maxSegmentLength = 15;
-	float minSegmentLength = 5;
+	float maxSegmentLength = 50;
+	float minSegmentLength = 3;
 
 	int minCaveRadius = 2;
 	int maxCaveRadius = 5;
 	int minHeight = 0;
 	int maxHeight = 64;
 
-	int length;
+	int length = 5;
 
-	void generateCave(const glm::vec2 position, Block*** blocks) const;
+	void generate(const glm::vec2 position, Block*** blocks, int cavesCount);
 };
 

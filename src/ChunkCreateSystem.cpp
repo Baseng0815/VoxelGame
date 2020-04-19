@@ -12,6 +12,8 @@
 #include "../include/Components/GeometryComponent.h"
 #include "../include/Components/TransformationComponent.h"
 
+#include <entt/entity/registry.hpp>
+
 #include <functional>
 #include <thread>
 #include <chrono>
@@ -45,11 +47,12 @@ void ChunkCreateSystem::handleEnterChunk(Event* e) {
             glm::vec2 pos(x, z);
             if (std::count(loadedChunks.begin(), loadedChunks.end(), pos) == 0) {
                 auto& registry = m_systemManager->getRegistry();
-                auto entity = registry.create();
-                registry.emplace<TransformationComponent>(entity, glm::vec3(x * Definitions::CHUNK_SIZE,
+                auto entity = registry.create();                
+                registry.assign<TransformationComponent>(entity, glm::vec3(x * Definitions::CHUNK_SIZE,
                             0, z * Definitions::CHUNK_SIZE));
-                registry.emplace<GeometryComponent>(entity);
-                registry.emplace<ChunkComponent>(entity, x, z);
+                registry.assign<GeometryComponent>(entity);
+                registry.assign<ChunkComponent>(entity, x, z);
+                
 
                 loadedChunks.push_back(pos);
             }
@@ -64,9 +67,11 @@ void ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int c
         for (int y = 0; y < Definitions::CHUNK_HEIGHT; y++) {
             blocks[x][y] = new Block[Definitions::CHUNK_SIZE];
             for (int z = 0; z < Definitions::CHUNK_SIZE; z++)
-                blocks[x][y][z] = Block(BlockType::BLOCK_STONE);
+                blocks[x][y][z] = Block(BlockType::BLOCK_AIR);
         }
-    }
+    }    
+
+    m_generator.generateBlocks(glm::vec2(chunkX, chunkZ), blocks);
 
     std::scoped_lock<std::mutex> blockMapLock(m_blockMapMutex);
     m_finishedBlocks.insert(std::make_pair(entity, blocks));
@@ -241,7 +246,8 @@ ChunkCreateSystem::ChunkCreateSystem(SystemManager* systemManager, SharedContext
     }
 
 void ChunkCreateSystem::init() {
-
+    m_generator  = WorldGenerator();
+    m_generator.init(WorldType::WORLD_NORMAL);
 }
 
 void ChunkCreateSystem::update(int dt) {

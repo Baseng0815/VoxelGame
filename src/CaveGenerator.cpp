@@ -5,6 +5,7 @@
 
 std::vector<glm::vec3> CaveGenerator::getGenerationPoints(glm::vec3 start) const {
 	std::vector<glm::vec3> points = std::vector<glm::vec3>();
+
 	points.push_back(start);
 
 	glm::vec3 dir = glm::normalize(glm::vec3(
@@ -18,6 +19,7 @@ std::vector<glm::vec3> CaveGenerator::getGenerationPoints(glm::vec3 start) const
 		float segmentLength = (maxSegmentLength - minSegmentLength) * (float)rand() / RAND_MAX + minSegmentLength;
 
 		glm::vec3 newPoint = points[i - 1] + segmentLength * dir;
+		points.push_back(newPoint);
 
 		if (i != length - 1) {
 			// create next direction vector
@@ -27,6 +29,7 @@ std::vector<glm::vec3> CaveGenerator::getGenerationPoints(glm::vec3 start) const
 
 			dir = glm::normalize(glm::vec3(dir.x * dx, dir.y * dy, dir.z * dz));
 		}
+
 	}
 
 	return points;
@@ -37,9 +40,10 @@ std::vector<glm::vec3> CaveGenerator::generateCaveCurve(glm::vec3 start) const {
 
 	std::vector<glm::vec3> curve = std::vector<glm::vec3>();
 
-	float delta = (maxSegmentLength - minSegmentLength) / maxSegmentLength;
+	float delta = (float)rand() / RAND_MAX * (float)(maxSegmentLength - minSegmentLength) / maxSegmentLength;
+	//float delta = 0.01f;
 
-	for (int d = 0; d < 1; d += delta) {
+	for (float d = 0; d < 1; d += delta) {
 		glm::vec3 point = getBezierPoint(d, generationPoints);
 
 		curve.push_back(point);
@@ -65,7 +69,7 @@ glm::vec3 CaveGenerator::getBezierPoint(float t, std::vector<glm::vec3> points) 
 	return getBezierPoint(t, newPoints);
 }
 
-void CaveGenerator::generateCave(const glm::vec2 position, Block*** blocks) const {
+void CaveGenerator::generateNewCave(const glm::vec2 position, Block*** blocks) {
 	glm::vec3 start = glm::vec3(
 		rand() % 16,	// x
 		rand() % 64,	// y
@@ -81,16 +85,16 @@ void CaveGenerator::generateCave(const glm::vec2 position, Block*** blocks) cons
 		// point in chunk
 		if (pos.x < Definitions::CHUNK_SIZE && pos.x >= 0 && pos.z < Definitions::CHUNK_SIZE && pos.z >= 0) {
 			// fill sphere with air
-			radius = rand() / (maxCaveRadius - minCaveRadius) + minCaveRadius;
+			radius = (float)rand() / RAND_MAX * (maxCaveRadius - minCaveRadius) + minCaveRadius;
 			int radiusSquare = pow(radius, 2);
 			glm::vec3 delta = glm::vec3();
 
 			for (delta.x = -radius; delta.x <= radius; delta.x++) {
-				for (delta.z = -radius; delta.z <= radius; delta.z++) {					
+				for (delta.z = -radius; delta.z <= radius; delta.z++) {
 					// point in sphere
-					if (delta.length() < radiusSquare) {
+					if (pow(delta.x, 2) + pow(delta.z, 2) <= radiusSquare) {
 						// calc height
-						int height = (int)round(sqrt(radiusSquare - pow(delta.x, 2) - pow(delta.z, 2)));
+						int height = (int)sqrt(radiusSquare - pow(delta.x, 2) - pow(delta.z, 2));
 
 						for (delta.y = -height; delta.y <= height; delta.y++) {
 							glm::vec3 newPos = pos + delta;
@@ -106,11 +110,101 @@ void CaveGenerator::generateCave(const glm::vec2 position, Block*** blocks) cons
 			// create and store cave info
 			CaveInfo info = CaveInfo();
 			info.curve = curve;
+			info.startChunk = position;
 			info.lastRadius = radius;
-			info.position = i;
+			info.position = i - 1;
 
-			// break
-			break;
+			generationInfo.push_back(std::make_pair(position, info));
+
+			// continue till cave reaches this chunk
+			while (!(pos.x < Definitions::CHUNK_SIZE && pos.x >= 0 && pos.z < Definitions::CHUNK_SIZE && pos.z >= 0) && ++i < curveSize - 1) {
+				pos = curve[i];
+			}
 		}
 	}
+}
+
+void CaveGenerator::continueGeneration(CaveInfo& info, const glm::vec2 position, Block*** blocks) {
+	glm::vec3 offset = glm::vec3(
+		info.startChunk.x - position.x,
+		0,
+		info.startChunk.y - position.y
+	);
+
+	int curveSize = info.curve.size();
+	int radius = info.lastRadius;
+	for (int i = info.position; i < curveSize; i++) {
+		glm::vec3 pos = info.curve[i] + offset;
+
+		// point in chunk
+		if (pos.x < Definitions::CHUNK_SIZE && pos.x >= 0 && pos.z < Definitions::CHUNK_SIZE && pos.z >= 0) {
+			// fill sphere with air
+			radius = (float)rand() / RAND_MAX * (maxCaveRadius - minCaveRadius) + minCaveRadius;
+			int radiusSquare = pow(radius, 2);
+			glm::vec3 delta = glm::vec3();
+
+			for (delta.x = -radius; delta.x <= radius; delta.x++) {
+				for (delta.z = -radius; delta.z <= radius; delta.z++) {
+					// point in sphere
+					if (pow(delta.x, 2) + pow(delta.z, 2) <= radiusSquare) {
+						// calc height
+						int height = (int)sqrt(radiusSquare - pow(delta.x, 2) - pow(delta.z, 2));
+
+						for (delta.y = -height; delta.y <= height; delta.y++) {
+							glm::vec3 newPos = pos + delta;
+							if (Chunk::positionInRange(newPos)) {
+								blocks[(int)newPos.x][(int)newPos.y][(int)newPos.z] = Block(BlockType::BLOCK_AIR);
+							}
+						}
+					}
+				}
+			}
+		}
+		else {
+			// create and store cave info
+			CaveInfo newInfo = CaveInfo();
+			newInfo.curve = info.curve;
+			newInfo.startChunk = info.startChunk;
+			newInfo.lastRadius = radius;
+			newInfo.position = i - 1;
+
+			generationInfo.push_back(std::make_pair(position, newInfo));
+
+			// continue till cave reaches this chunk
+			while (!(pos.x < Definitions::CHUNK_SIZE && pos.x >= 0 && pos.z < Definitions::CHUNK_SIZE && pos.z >= 0) && ++i < curveSize - 1) {
+				pos = info.curve[i] + offset;
+			}
+		}
+	}
+}
+
+void CaveGenerator::generate(const glm::vec2 position, Block*** blocks, int cavesCount) {
+	// generate new caves
+	for (int i = 0; i < cavesCount; i++) {
+		generateNewCave(position, blocks);
+	}
+
+	// Does not work yet because chunk generation is async
+	// complete generation of cave begins	
+	//glm::vec2 right = glm::vec2(1, 0);
+	//glm::vec2 back = glm::vec2(0, -1);
+
+	//for (int i = 0; i < generationInfo.size(); i++) {
+	//	glm::vec2 chunkPos = generationInfo[i].first;
+
+	//	// right chunk
+	//	if (chunkPos == position + right
+	//		// back
+	//		|| chunkPos == position + back
+	//		// left
+	//		|| chunkPos == position - right
+	//		// front
+	//		|| chunkPos == position - back) {
+
+	//		auto pair = generationInfo.begin() + i;
+	//		continueGeneration((*pair).second, position, blocks);
+
+	//		generationInfo.emplace(pair);
+	//	}
+	//}
 }

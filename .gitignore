@@ -46,3 +46,4 @@ build/*
 # Visual Studio
 packages/*
 VoxelGame.vcxproj*
+Release/*

@@ -8,19 +8,30 @@ using namespace noise::utils;
 using namespace noise::model;
 using namespace noise::module;
 
-void WorldGenerator::init(WorldType worldType) {
+WorldGenerator::WorldGenerator(const WorldGenerator& generator) {
+	biomes = generator.biomes;
+
+	int seeds[] = { generator.perlinNoise.GetSeed(), generator.baseFlatTerrain.GetSeed() };
+	init(generator.m_type, seeds);
+}
+
+WorldGenerator& WorldGenerator::operator=(const WorldGenerator& generator) {
+	return WorldGenerator(generator);
+}
+
+void WorldGenerator::init(WorldType worldType, int* seeds) {
 	m_type = worldType;
 
 	if (m_type == WorldType::WORLD_NORMAL) {
-		perlinNoise.SetSeed(rand());
-		perlinNoise.SetFrequency(1.0f / 1024.0f);
+		perlinNoise.SetSeed(*seeds);
+		perlinNoise.SetFrequency(1.0f / 512.0f);
 		perlinNoise.SetPersistence(1.0f / 512.0f);
 
 		// init flat terrain generation
-		baseFlatTerrain.SetSeed(rand());
+		baseFlatTerrain.SetSeed((*seeds + 1));
 		baseFlatTerrain.SetPersistence(1.0f / 128.0f);
 		baseFlatTerrain.SetFrequency(0.125f);
-		baseFlatTerrain.SetOctaveCount(5);
+		baseFlatTerrain.SetOctaveCount(4);
 		baseFlatTerrain.SetNoiseQuality(noise::NoiseQuality::QUALITY_FAST);
 
 		flatTerrain.SetBias(-0.75f);
@@ -31,14 +42,16 @@ void WorldGenerator::init(WorldType worldType) {
 		terrainSelector.SetSourceModule(1, baseFlatTerrain);
 		terrainSelector.SetControlModule(perlinNoise);
 
-		caveSize = 5;
-		caveLenght = 256;
-		cavePerlin.SetSeed(rand());
-		cavePerlin.SetPersistence(0.25f);
+		m_caveGenerator = CaveGenerator();
 	}
 }
 
-void WorldGenerator::generateTerrain(glm::vec2 position, Block*** blocks) const {
+void WorldGenerator::init(WorldType worldType) {
+	int seeds[] = { rand(), rand() };
+	init(worldType, seeds);
+}
+
+void WorldGenerator::generateTerrain(glm::vec2 position, Block*** blocks) {
 	if (m_type == WorldType::WORLD_NORMAL) {
 		utils::NoiseMap heightMap;
 		utils::NoiseMapBuilderPlane planeBuilder = NoiseMapBuilderPlane();
@@ -68,7 +81,7 @@ void WorldGenerator::generateTerrain(glm::vec2 position, Block*** blocks) const 
 	}
 }
 
-void WorldGenerator::generateUnderground(glm::vec2 position, Block*** blocks) const {
+void WorldGenerator::generateUnderground(glm::vec2 position, Block*** blocks) {
 	if (m_type == WorldType::WORLD_FLAT)
 		return;
 
@@ -84,6 +97,9 @@ void WorldGenerator::generateUnderground(glm::vec2 position, Block*** blocks) co
 			generateOre(x, y, z, size, (BlockType)b, blocks);
 		}
 	}
+
+	// caves
+	m_caveGenerator.generate(position, blocks, 1);
 }
 
 void WorldGenerator::generateOre(int x, int y, int z, int size, BlockType block, Block*** blocks) const {
@@ -106,7 +122,7 @@ void WorldGenerator::generateOre(int x, int y, int z, int size, BlockType block,
 	}
 }
 
-void WorldGenerator::generateBlocks(glm::vec2 position, Block*** blocks) const {
+void WorldGenerator::generateBlocks(glm::vec2 position, Block*** blocks) {
 	generateTerrain(position, blocks);
 	generateUnderground(position, blocks);
 }

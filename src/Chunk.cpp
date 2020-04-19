@@ -25,7 +25,7 @@ void Chunk::createBlocks() {
 	}
 
 	// get blocks from terrain generation
-	m_worldGenerator->generateBlocks(m_position, m_blocks);
+	//m_worldGenerator->generateBlocks(m_position, m_blocks);
 
 	constructionCount--;
 }
