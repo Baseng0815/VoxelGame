@@ -14,6 +14,7 @@ using namespace noise::module;
 // Forward-Deklaration ist möglich, weil ein Zeiger immer 4 byte beansprucht und
 // der compiler die Klasse daher nicht kennen muss
 class Block;
+class ChunkComponent;
 
 enum class WorldType : char {
 	WORLD_FLAT,
@@ -22,10 +23,9 @@ enum class WorldType : char {
 
 class WorldGenerator {
 private:
-	WorldType m_type;
-	std::unordered_map<BiomeID, BiomeInfo> biomes;	
-	CaveGenerator m_caveGenerator;
-
+	WorldType m_type = WorldType::WORLD_FLAT;
+	std::unordered_map<BiomeID, BiomeInfo> biomes;
+	CaveGenerator m_caveGenerator;	
 
 	// terrain
 	Perlin perlinNoise;
@@ -44,8 +44,8 @@ public:
 
 	WorldGenerator& WorldGenerator::operator=(const WorldGenerator&);
 
-	void init(WorldType worldType);
+	void init(WorldType worldType);	
 
-	void generateBlocks(glm::vec2 position, Block*** blocks);
+	void generate(glm::vec2 position, Block*** blocks);	
 };
 

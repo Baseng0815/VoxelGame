@@ -16,7 +16,14 @@ WorldGenerator::WorldGenerator(const WorldGenerator& generator) {
 }
 
 WorldGenerator& WorldGenerator::operator=(const WorldGenerator& generator) {
-	return WorldGenerator(generator);
+	biomes = generator.biomes;
+
+	int seeds[] = { generator.perlinNoise.GetSeed(), generator.baseFlatTerrain.GetSeed() };
+	init(generator.m_type, seeds);
+
+	m_caveGenerator = generator.m_caveGenerator;
+
+	return *this;
 }
 
 void WorldGenerator::init(WorldType worldType, int* seeds) {
@@ -85,21 +92,21 @@ void WorldGenerator::generateUnderground(glm::vec2 position, Block*** blocks) {
 	if (m_type == WorldType::WORLD_FLAT)
 		return;
 
-	// generate ores
-	for (int b = 0; b < (int)BlockType::NUM_BLOCKS; b++) {
-		BlockData blockData = Definitions::BLOCK_DATA[b];
-		for (int i = 0; i < blockData.oreData.generationCounts; i++) {
-			int x = rand() % 16;
-			int y = rand() % (blockData.oreData.maxHeight - blockData.oreData.minHeight) + blockData.oreData.minHeight;
-			int z = rand() % 16;
+	//// generate ores
+	//for (int b = 0; b < (int)BlockType::NUM_BLOCKS; b++) {
+	//	BlockData blockData = Definitions::BLOCK_DATA[b];
+	//	for (int i = 0; i < blockData.oreData.generationCounts; i++) {
+	//		int x = rand() % 16;
+	//		int y = rand() % (blockData.oreData.maxHeight - blockData.oreData.minHeight) + blockData.oreData.minHeight;
+	//		int z = rand() % 16;
 
-			int size = blockData.oreData.size;
-			generateOre(x, y, z, size, (BlockType)b, blocks);
-		}
-	}
+	//		int size = blockData.oreData.size;
+	//		generateOre(x, y, z, size, (BlockType)b, blocks);
+	//	}
+	//}
 
 	// caves
-	m_caveGenerator.generate(position, blocks, 1);
+	m_caveGenerator.generate(position, blocks);
 }
 
 void WorldGenerator::generateOre(int x, int y, int z, int size, BlockType block, Block*** blocks) const {
@@ -122,7 +129,7 @@ void WorldGenerator::generateOre(int x, int y, int z, int size, BlockType block,
 	}
 }
 
-void WorldGenerator::generateBlocks(glm::vec2 position, Block*** blocks) {
-	generateTerrain(position, blocks);
+void WorldGenerator::generate(glm::vec2 position, Block*** blocks) {
+	//generateTerrain(position, blocks);
 	generateUnderground(position, blocks);
 }

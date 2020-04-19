@@ -1,32 +1,28 @@
 #pragma once
 #include <vector>
 #include <glm/glm.hpp>
-#include "CaveInfo.h"
 #include "Block.h"
+#include "noise/noise.h"
 
-class WorldGenerator;
+using namespace noise;
 
 class CaveGenerator {
 private:
-	std::vector<glm::vec3> getGenerationPoints(glm::vec3 start) const;
-	std::vector<glm::vec3> generateCaveCurve(glm::vec3 start) const;
-	glm::vec3 getBezierPoint(float t, std::vector<glm::vec3> points) const;
+	module::RidgedMulti caveNoise1;
+	module::RidgedMulti caveNoise2;
+	module::Multiply caveNoiseProd;	
 
-	std::vector<std::pair<glm::vec2, CaveInfo>> generationInfo;
-	void generateNewCave(const glm::vec2 position, Block*** blocks);
-	void continueGeneration(CaveInfo& info, const glm::vec2 position, Block*** blocks);
+	module::Turbulence caveTurb;
+	module::Turbulence turbY;
+	module::Turbulence turbZ;
 
-public:			
-	float maxSegmentLength = 50;
-	float minSegmentLength = 3;
+	float threshold = 0.5f;
 
-	int minCaveRadius = 2;
-	int maxCaveRadius = 5;
-	int minHeight = 0;
-	int maxHeight = 64;
+public:
+	CaveGenerator();
 
-	int length = 5;
+	CaveGenerator& CaveGenerator::operator=(const CaveGenerator&);
 
-	void generate(const glm::vec2 position, Block*** blocks, int cavesCount);
+	void generate(glm::vec2 position, Block*** blocks);	
 };
 
