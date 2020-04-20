@@ -72,10 +72,12 @@ void WorldGenerator::generateTerrain(glm::vec2 position, Block*** blocks) {
 
 		for (int cx = 0; cx < Definitions::CHUNK_SIZE; cx++)
 			for (int cz = 0; cz < Definitions::CHUNK_SIZE; cz++) {
-				int height = heightMap.GetValue(cx, cz) * (float)6 + 40;
+				int height = heightMap.GetValue(cx, cz) * (float)6 + 60;
 				for (int cy = 0; cy < height; cy++) {
 					Block block;
-					if (cy < height - 5)
+					if (cy < 2)
+						block = Block(BlockType::BLOCK_BRICKS);
+					else if (cy < height - 5)
 						block = Block(BlockType::BLOCK_STONE);
 					else if (cy < height - 1)
 						block = Block(BlockType::BLOCK_DIRT);
@@ -93,17 +95,17 @@ void WorldGenerator::generateUnderground(glm::vec2 position, Block*** blocks) {
 		return;
 
 	//// generate ores
-	//for (int b = 0; b < (int)BlockType::NUM_BLOCKS; b++) {
-	//	BlockData blockData = Definitions::BLOCK_DATA[b];
-	//	for (int i = 0; i < blockData.oreData.generationCounts; i++) {
-	//		int x = rand() % 16;
-	//		int y = rand() % (blockData.oreData.maxHeight - blockData.oreData.minHeight) + blockData.oreData.minHeight;
-	//		int z = rand() % 16;
+	for (int b = 0; b < (int)BlockType::NUM_BLOCKS; b++) {
+		BlockData blockData = Definitions::BLOCK_DATA[b];
+		for (int i = 0; i < blockData.oreData.generationCounts; i++) {
+			int x = rand() % 16;
+			int y = rand() % (blockData.oreData.maxHeight - blockData.oreData.minHeight) + blockData.oreData.minHeight;
+			int z = rand() % 16;
 
-	//		int size = blockData.oreData.size;
-	//		generateOre(x, y, z, size, (BlockType)b, blocks);
-	//	}
-	//}
+			int size = blockData.oreData.size;
+			generateOre(x, y, z, size, (BlockType)b, blocks);
+		}
+	}
 
 	// caves
 	m_caveGenerator.generate(position, blocks);
@@ -130,6 +132,6 @@ void WorldGenerator::generateOre(int x, int y, int z, int size, BlockType block,
 }
 
 void WorldGenerator::generate(glm::vec2 position, Block*** blocks) {
-	//generateTerrain(position, blocks);
+	generateTerrain(position, blocks);
 	generateUnderground(position, blocks);
 }

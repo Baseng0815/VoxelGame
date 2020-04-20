@@ -10,13 +10,17 @@ class CaveGenerator {
 private:
 	module::RidgedMulti caveNoise1;
 	module::RidgedMulti caveNoise2;
+	
 	module::Multiply caveNoiseProd;	
+	module::ScaleBias caveNoiseScale;
 
 	module::Turbulence caveTurb;
 	module::Turbulence turbY;
 	module::Turbulence turbZ;
 
-	float threshold = 0.5f;
+	module::ScaleBias caveNoise;
+
+	float threshold = 0.8f;
 
 public:
 	CaveGenerator();
