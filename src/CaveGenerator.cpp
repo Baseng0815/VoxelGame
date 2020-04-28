@@ -4,12 +4,12 @@
 #include <iostream>
 
 CaveGenerator::CaveGenerator() {
-	caveNoise1.SetFrequency(1.0f / 64);
+	caveNoise1.SetFrequency(1.0f / 32);
 	caveNoise1.SetOctaveCount(1);
 	caveNoise1.SetLacunarity(3.5f);
 	caveNoise1.SetSeed(rand());
 
-	caveNoise2.SetFrequency(1.0f / 64);
+	caveNoise2.SetFrequency(1.0f / 32);
 	caveNoise2.SetOctaveCount(1);
 	caveNoise2.SetLacunarity(3.5f);
 	caveNoise2.SetSeed(rand());
@@ -17,12 +17,21 @@ CaveGenerator::CaveGenerator() {
 	caveNoiseProd.SetSourceModule(0, caveNoise1);
 	caveNoiseProd.SetSourceModule(1, caveNoise2);
 
+	caveNoiseScale.SetSourceModule(0, caveNoiseProd);
+	caveNoiseScale.SetBias(-threshold);
+	caveNoiseScale.SetScale(1.3f);
+
 	caveTurb.SetFrequency(0.01f);
-	caveTurb.SetSourceModule(0, caveNoiseProd);
+	caveTurb.SetSourceModule(0, caveNoiseScale);
 	caveTurb.SetPower(50);
+
+	caveNoise.SetSourceModule(0, caveTurb);
+	caveNoise.SetScale(0.7f);
 }
 
 CaveGenerator& CaveGenerator::operator=(const CaveGenerator& generator) {
+	threshold = generator.threshold;
+
 	caveNoise1.SetFrequency(generator.caveNoise1.GetFrequency());
 	caveNoise1.SetOctaveCount(generator.caveNoise1.GetOctaveCount());
 	caveNoise1.SetLacunarity(generator.caveNoise1.GetLacunarity());
@@ -36,9 +45,16 @@ CaveGenerator& CaveGenerator::operator=(const CaveGenerator& generator) {
 	caveNoiseProd.SetSourceModule(0, caveNoise1);
 	caveNoiseProd.SetSourceModule(1, caveNoise2);
 
+	caveNoiseScale.SetSourceModule(0, caveNoiseProd);
+	caveNoiseScale.SetBias(generator.caveNoiseScale.GetBias());
+	caveNoiseScale.SetScale(generator.caveNoiseScale.GetScale());
+
 	caveTurb.SetFrequency(generator.caveTurb.GetFrequency());
-	caveTurb.SetSourceModule(0, caveNoiseProd);
+	caveTurb.SetSourceModule(0, caveNoiseScale);
 	caveTurb.SetPower(generator.caveTurb.GetPower());
+
+	caveNoise.SetSourceModule(0, caveTurb);
+	caveNoise.SetScale(generator.caveNoise.GetScale());
 
 	return *this;
 }
@@ -51,12 +67,18 @@ void CaveGenerator::generate(glm::vec2 position, Block*** blocks) {
 				int y = cy;
 				int z = cz + position.y * Definitions::CHUNK_SIZE;
 
-				float caveNoise = caveTurb.GetValue(x, y, z);
+				float caveNoise = this->caveNoise.GetValue(x, y, z);
 
 				//std::cout << caveNoise << std::endl;
 
+<<<<<<< HEAD
 				if (caveNoise > threshold) {
 					blocks[cx][cy][cz] = Block(BlockType::BLOCK_STONE);
+=======
+				if (caveNoise > 0) {
+					if (blocks[cx][cy][cz].type != BlockType::BLOCK_BRICKS)
+						blocks[cx][cy][cz] = Block::Block(BlockType::BLOCK_AIR);
+>>>>>>> d4216d217b391d8ad2473fccff3b04e577f36e41
 				}
 			}
 		}
