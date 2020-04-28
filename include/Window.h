@@ -21,8 +21,7 @@ private:
     std::queue<Event*> m_events;
 
 public:
-    // init GLFW
-    void init(Application* app);
+    Window(Application* app);
 
     void clear(glm::vec3 clearColor = Colors::Black);
     void display();

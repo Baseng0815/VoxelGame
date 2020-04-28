@@ -40,39 +40,39 @@ void Camera::handleKey(int key, int action) {
     switch (key) {
         case GLFW_KEY_W:
             if (action == GLFW_PRESS)
-                m_velocity.z = -1;
+                m_velocity.z += -1;
             else if (action == GLFW_RELEASE)
-                m_velocity.z = 0;
+                m_velocity.z -= -1;
             break;
         case GLFW_KEY_S:
             if (action == GLFW_PRESS)
-                m_velocity.z = 1;
+                m_velocity.z += 1;
             else if (action == GLFW_RELEASE)
-                m_velocity.z = 0;
+                m_velocity.z -= 1;
             break;
         case GLFW_KEY_A:
             if (action == GLFW_PRESS)
-                m_velocity.x = -1;
+                m_velocity.x += -1;
             else if (action == GLFW_RELEASE)
-                m_velocity.x = 0;
+                m_velocity.x -= -1;
             break;
         case GLFW_KEY_D:
             if (action == GLFW_PRESS)
-                m_velocity.x = 1;
+                m_velocity.x += 1;
             else if (action == GLFW_RELEASE)
-                m_velocity.x = 0;
+                m_velocity.x -= 1;
             break;
         case GLFW_KEY_LEFT_SHIFT:
             if (action == GLFW_PRESS)
-                m_velocity.y = -1;
+                m_velocity.y += -1;
             else if (action == GLFW_RELEASE)
-                m_velocity.y = 0;
+                m_velocity.y -= -1;
             break;
         case GLFW_KEY_SPACE:
             if (action == GLFW_PRESS)
-                m_velocity.y = 1;
+                m_velocity.y += 1;
             else if (action == GLFW_RELEASE)
-                m_velocity.y = 0;
+                m_velocity.y -= 1;
             break;
         default:
             break;

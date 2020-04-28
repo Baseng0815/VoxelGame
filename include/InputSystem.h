@@ -11,13 +11,11 @@ class InputSystem : public System {
         void handleKeyPressEvent(Event* e);
         void handleMouseMoveEvent(Event* e);
         void handleScrollEvent(Event* e);
+        void handleFramebufferSizeEvent(Event* e);
 
     public:
         InputSystem(SystemManager* systemManager, SharedContext* context);
 
-        void init() override;
         void update(int dt) override;
-
-        ~InputSystem() = default;
 
 };

@@ -16,7 +16,7 @@ private:
     entt::registry m_entityRegistry;
 
 public:
-    void init(SharedContext* context);
+    SystemManager(SharedContext* context);
     ~SystemManager();
 
     void update(int dt);

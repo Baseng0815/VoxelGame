@@ -10,7 +10,7 @@ class CaveGenerator {
 private:
 	module::RidgedMulti caveNoise1;
 	module::RidgedMulti caveNoise2;
-	module::Multiply caveNoiseProd;	
+	module::Multiply caveNoiseProd;
 
 	module::Turbulence caveTurb;
 	module::Turbulence turbY;
@@ -21,8 +21,8 @@ private:
 public:
 	CaveGenerator();
 
-	CaveGenerator& CaveGenerator::operator=(const CaveGenerator&);
+	CaveGenerator& operator=(const CaveGenerator&);
 
-	void generate(glm::vec2 position, Block*** blocks);	
+	void generate(glm::vec2 position, Block*** blocks);
 };
 

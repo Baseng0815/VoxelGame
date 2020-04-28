@@ -56,7 +56,7 @@ void CaveGenerator::generate(glm::vec2 position, Block*** blocks) {
 				//std::cout << caveNoise << std::endl;
 
 				if (caveNoise > threshold) {
-					blocks[cx][cy][cz] = Block::Block(BlockType::BLOCK_STONE);
+					blocks[cx][cy][cz] = Block(BlockType::BLOCK_STONE);
 				}
 			}
 		}

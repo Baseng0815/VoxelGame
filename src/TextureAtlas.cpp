@@ -7,7 +7,7 @@
 #include <SOIL/SOIL.h>
 #endif
 
-void TextureAtlas::init(const char *fileName, int tileSize) {
+TextureAtlas::TextureAtlas(const char *fileName, int tileSize) {
     glGenTextures(1, &m_texture);
 
     int channels = 0;

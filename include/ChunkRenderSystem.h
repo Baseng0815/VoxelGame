@@ -19,15 +19,10 @@ class ChunkRenderSystem : public System {
         GBuffer m_gBuffer;
         RenderQuad m_renderQuad;
 
-        TextureAtlas m_textureAtlas;
-
         void handleFramebufferSize(Event* e);
 
     public:
         ChunkRenderSystem(SystemManager* systemManager, SharedContext* context);
 
-        void init() override;
         void update(int dt) override;
-
-        ~ChunkRenderSystem();
 };

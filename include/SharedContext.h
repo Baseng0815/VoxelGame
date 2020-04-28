@@ -6,6 +6,7 @@ struct SharedContext {
     Camera camera;
     TextureAtlas textureAtlas;
 
+    // TODO introduce nice resource manager
     SharedContext()
-        : camera(90.f) {}
+        : camera(90.f), textureAtlas("Resources/Textures/textureAtlas0.png") {}
 };

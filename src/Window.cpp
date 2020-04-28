@@ -2,7 +2,7 @@
 #include "../include/Definitions.h"
 #include "../include/EventDispatcher.h"
 
-void Window::init(Application* app) {
+Window::Window(Application* app) {
     glfwInit();
 
     m_window = glfwCreateWindow(Definitions::WINDOW_WIDTH, Definitions::WINDOW_HEIGHT, "GLFW window", nullptr, nullptr);
@@ -15,7 +15,15 @@ void Window::init(Application* app) {
     glfwSetWindowUserPointer(m_window, app);
 
     glfwMakeContextCurrent(m_window);
-    glfwSwapInterval(1);
+    glfwSwapInterval(0);
+
+    // init glew and load function pointers
+    glewInit();
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+
+    // TODO refactor definition and config loading
+    Definitions::loadData();
 }
 
 void Window::clear(glm::vec3 clearColor) {

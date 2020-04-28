@@ -26,7 +26,7 @@ class TextureAtlas {
         BlockUVsArray m_blockUVsArray;
 
     public:
-        void init(const char* fileName, int tileSize = 16);
+        TextureAtlas(const char* fileName, int tileSize = 16);
         ~TextureAtlas();
 
         // list of texture coordinates for a block type

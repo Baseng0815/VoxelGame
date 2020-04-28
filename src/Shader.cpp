@@ -90,7 +90,7 @@ Shader::~Shader() {
     glDeleteProgram(m_program);
 }
 
-void Shader::init(std::string fileName, std::vector<std::string> attribs) {
+void Shader::init(std::string fileName, const std::vector<std::string>& attribs) {
     m_program = glCreateProgram();
     m_shaders[0] = createShader(loadShader(fileName + ".vert"), GL_VERTEX_SHADER);
     m_shaders[1] = createShader(loadShader(fileName + ".frag"), GL_FRAGMENT_SHADER);
@@ -98,8 +98,8 @@ void Shader::init(std::string fileName, std::vector<std::string> attribs) {
     for (unsigned int i = 0; i < NUM_SHADERS; i++)
         glAttachShader(m_program, m_shaders[i]);
 
-    for (int i = 0; i < attribs.size(); i++) 
-        glBindAttribLocation(m_program, i, attribs.at(i).c_str());
+    for (int i = 0; i < attribs.size(); i++)
+        glBindAttribLocation(m_program, i, attribs[i].c_str());
 
     glLinkProgram(m_program);
     checkShaderError(m_program, GL_LINK_STATUS, GL_TRUE, "Error: Program failed to link: ");

@@ -15,21 +15,12 @@ void ChunkRenderSystem::handleFramebufferSize(Event* e) {
 }
 
 ChunkRenderSystem::ChunkRenderSystem(SystemManager* systemManager, SharedContext* context)
-    : System(systemManager, context) {}
-
-void ChunkRenderSystem::init() {
+    : System(systemManager, context) {
     ADD_EVENT(ChunkRenderSystem::handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT);
-
-    m_blockShader.init();
-    m_lightingShader.init();
 
     m_light.color = glm::vec3(1, 1, 1);
     m_light.position = glm::vec3(10, 10, 10);
-    m_gBuffer.init();
-    m_renderQuad.init();
 }
-
-#include <iostream>
 
 void ChunkRenderSystem::update(int dt) {
     // clear screen framebuffer
@@ -67,7 +58,7 @@ void ChunkRenderSystem::update(int dt) {
 
     m_gBuffer.bindFramebuffer(true);
     glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-    glBlitFramebuffer(0, 0, m_gBuffer.width, m_gBuffer.height, 0, 0, m_gBuffer.width, m_gBuffer.height,
+    glBlitFramebuffer(0, 0, m_gBuffer.getWidth(), m_gBuffer.getHeight(), 0, 0, m_gBuffer.getWidth(), m_gBuffer.getHeight(),
             GL_DEPTH_BUFFER_BIT, GL_NEAREST);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
 

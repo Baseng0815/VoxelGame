@@ -10,12 +10,21 @@ class GBuffer {
         GLuint m_gPos, m_gNorm, m_gAlbedo;
         GLuint m_rboDepth;
 
+        void recreate();
+
+        int width = Definitions::WINDOW_WIDTH,
+            height = Definitions::WINDOW_HEIGHT;
+
+        void create();
+        void destroy();
+
     public:
-        int width = Definitions::WINDOW_WIDTH, height = Definitions::WINDOW_HEIGHT;
 
-        void init();
-        void cleanUp();
+        GBuffer();
+        ~GBuffer();
 
+        int getWidth() const;
+        int getHeight() const;
         void resize(int width, int height);
         void bindFramebuffer(bool readOnly = false);
         void bindTextures();

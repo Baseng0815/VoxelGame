@@ -9,7 +9,7 @@ class LightingShader : public Shader {
         GLint m_locationLightColor;
 
     public:
-        void init();
+        LightingShader();
 
         void setLight(Light light, int index);
 };
