@@ -98,7 +98,7 @@ void ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block*** blocks
                 }
                 else draw[2] = true;
                 // positive Y
-                if (y < Definitions::CHUNK_SIZE - 1) {
+                if (y < Definitions::CHUNK_HEIGHT - 1) {
                         if (blocks[x][y + 1][z].type == BlockType::BLOCK_AIR) draw[3] = true;
                 }
                 else draw[3] = true;
