@@ -32,6 +32,9 @@ public:
 
     // units per second
     static constexpr float CAM_SPEED = 90.f;
+    static constexpr float MOUSE_SENSITIVITY = 0.2f;
+    static constexpr float MOUSE_SCROLL = 2.0f;
+    static constexpr float MOVE_SPEED = 0.01f;
 
     static void loadData();
 };

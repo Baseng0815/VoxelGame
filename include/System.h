@@ -9,10 +9,9 @@ struct SharedContext;
 class System {
     protected:
         SystemManager* m_systemManager;
-        SharedContext* m_context;
 
     public:
-        System(SystemManager* systemManager, SharedContext* context);
+        System(SystemManager* systemManager);
 
         // dt in milliseconds
         virtual void update(int dt) = 0;

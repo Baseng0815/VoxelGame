@@ -8,7 +8,7 @@
 
 class Event;
 
-class ChunkRenderSystem : public System {
+class EntityRenderSystem : public System {
     private:
         // first render pass
         BlockShader m_blockShader;
@@ -22,7 +22,7 @@ class ChunkRenderSystem : public System {
         void handleFramebufferSize(Event* e);
 
     public:
-        ChunkRenderSystem(SystemManager* systemManager, SharedContext* context);
+        EntityRenderSystem(SystemManager* systemManager);
 
         void update(int dt) override;
 };

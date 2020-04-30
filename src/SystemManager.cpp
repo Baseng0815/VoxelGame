@@ -1,16 +1,16 @@
 #include "../include/SystemManager.h"
 
 #include "../include/ChunkCreateSystem.h"
-#include "../include/ChunkRenderSystem.h"
+#include "../include/EntityRenderSystem.h"
 #include "../include/InputSystem.h"
 
 #include "../include//EventDispatcher.h"
 
-SystemManager::SystemManager(SharedContext* context) {
+SystemManager::SystemManager() {
     // create all systems
-    m_systems.push_back(new ChunkCreateSystem(this, context, WorldType::WORLD_FLAT));
-    m_systems.push_back(new ChunkRenderSystem(this, context));
-    m_systems.push_back(new InputSystem(this, context));
+    m_systems.push_back(new ChunkCreateSystem(this, WorldType::WORLD_FLAT));
+    m_systems.push_back(new EntityRenderSystem(this));
+    m_systems.push_back(new InputSystem(this));
 
     // raise beginning events
     EnterChunkEvent e;

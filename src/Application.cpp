@@ -23,7 +23,7 @@ void Application::handleKeys(Event* event) {
 }
 
 Application::Application()
-    : m_window(this), m_systemManager(&m_context) {
+    : m_window(this), m_systemManager() {
     srand(time(NULL));
 
     EventDispatcher::attachToWindow(m_window);

@@ -1,14 +1,12 @@
 #pragma once
 
 #include "World.h"
+#include "Window.h"
 #include "SystemManager.h"
-#include "SharedContext.h"
 
 class Application {
 private:
     Window m_window;
-
-    SharedContext m_context;
     SystemManager m_systemManager;
 
     friend class EventDispatcher;

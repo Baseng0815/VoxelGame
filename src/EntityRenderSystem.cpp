@@ -1,4 +1,4 @@
-#include "../include/ChunkRenderSystem.h"
+#include "../include/EntityRenderSystem.h"
 
 #include "../include/SharedContext.h"
 #include "../include/SystemManager.h"
@@ -8,21 +8,21 @@
 #include "../include/Components/GeometryComponent.h"
 #include "../include/Components/TransformationComponent.h"
 
-void ChunkRenderSystem::handleFramebufferSize(Event* e) {
+void EntityRenderSystem::handleFramebufferSize(Event* e) {
     FramebufferSizeEvent fbsE = *e->get<FramebufferSizeEvent>();
     glViewport(0, 0, fbsE.width, fbsE.height);
     m_gBuffer.resize(fbsE.width, fbsE.height);
 }
 
-ChunkRenderSystem::ChunkRenderSystem(SystemManager* systemManager, SharedContext* context)
-    : System(systemManager, context) {
-    ADD_EVENT(ChunkRenderSystem::handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT);
+EntityRenderSystem::EntityRenderSystem(SystemManager* systemManager)
+    : System(systemManager) {
+    ADD_EVENT(EntityRenderSystem::handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT);
 
     m_light.color = glm::vec3(1, 1, 1);
     m_light.position = glm::vec3(10, 10, 10);
 }
 
-void ChunkRenderSystem::update(int dt) {
+void EntityRenderSystem::update(int dt) {
     // clear screen framebuffer
     glClearColor(0, 0, 0, 1); glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);

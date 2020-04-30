@@ -42,7 +42,7 @@ class ChunkCreateSystem : public System {
                 const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices);
 
     public:
-        ChunkCreateSystem(SystemManager* systemManager, SharedContext *context, WorldType worldType);
+        ChunkCreateSystem(SystemManager* systemManager);
 
         void update(int dt) override;
 };

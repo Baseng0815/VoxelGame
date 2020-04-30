@@ -222,8 +222,8 @@ void ChunkCreateSystem::updateChunkBuffers(GeometryComponent& geometry,
 }
 
 
-ChunkCreateSystem::ChunkCreateSystem(SystemManager* systemManager, SharedContext* context, WorldType type)
-    : System(systemManager, context), constructionCount(0) {
+ChunkCreateSystem::ChunkCreateSystem(SystemManager* systemManager)
+    : System(systemManager), constructionCount(0) {
     ADD_EVENT(handleEnterChunk, ENTER_CHUNK_EVENT);
 
     // TODO rewrite init to constructor
