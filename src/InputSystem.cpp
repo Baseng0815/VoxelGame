@@ -1,7 +1,7 @@
 #include "../include/InputSystem.h"
 
-#include "../include/Camera.h"
-#include "../include/SharedContext.h"
+#include "../include/Configuration.h"
+#include "../include/SystemManager.h"
 #include "../include/EventDispatcher.h"
 
 #include "../include/Components/CameraComponent.h"
@@ -16,7 +16,7 @@ void InputSystem::handleKeyPressEvent(Event* e) {
     KeyEvent keyEvent = *e->get<KeyEvent>();
 
     m_systemManager->getRegistry().view<CameraComponent, VelocityComponent>().each(
-        [=](auto& camera, auto& velocity) {
+        [&](auto& camera, auto& velocity) {
         switch (keyEvent.key) {
             case GLFW_KEY_W:
                 if (keyEvent.action == GLFW_PRESS)
@@ -66,9 +66,9 @@ void InputSystem::handleMouseMoveEvent(Event* e) {
     CursorEvent cursorEvent = *e->get<CursorEvent>();
 
     m_systemManager->getRegistry().view<CameraComponent, VelocityComponent>().each(
-        [=](auto& camera, auto& velocity) {
-        camera.yaw += cursorEvent.dx * Definitions::MOUSE_SENSITIVITY;
-        camera.pitch -= cursorEvent.dy * Definitions::MOUSE_SENSITIVITY;
+        [&](auto& camera, auto& velocity) {
+        camera.yaw += cursorEvent.dx * Configuration::getFloatValue("MOUSE_SENSITIVITY");
+        camera.pitch -= cursorEvent.dy * Configuration::getFloatValue("MOUSE_SENSITIVITY");
 
         if (camera.pitch > 89.99) camera.pitch = 89.99;
         else if (camera.pitch < -89.99) camera.pitch = -89.99;
@@ -82,9 +82,9 @@ void InputSystem::handleScrollEvent(Event* e) {
     ScrollEvent scrollEvent = *e->get<ScrollEvent>();
 
     m_systemManager->getRegistry().view<CameraComponent>().each(
-        [=](auto& camera) {
+        [&](auto& camera) {
 
-        camera.fov -= dy;
+        camera.fov -= scrollEvent.dy;
 
         if (camera.fov > 179) camera.fov = 179;
         else if (camera.fov < 1) camera.fov = 1;
@@ -97,7 +97,7 @@ void InputSystem::handleFramebufferSizeEvent(Event* e) {
     FramebufferSizeEvent sizeEvent = *e->get<FramebufferSizeEvent>();
 
     m_systemManager->getRegistry().view<CameraComponent>().each(
-        [=](auto& camera) {
+        [&](auto& camera) {
 
         camera.width = sizeEvent.width;
         camera.height = sizeEvent.height;
@@ -107,7 +107,7 @@ void InputSystem::handleFramebufferSizeEvent(Event* e) {
 
 void InputSystem::updateAbsoluteVelocity(CameraComponent& camera, VelocityComponent& velocity) {
     velocity.velocity = camera.relVelocity.x * camera.right
-        + camera.relVelocity.y * glm::vec3(0, 1, 0
+        + camera.relVelocity.y * glm::vec3(0, 1, 0)
         + camera.relVelocity.z * camera.front_noY;
 }
 
@@ -129,22 +129,14 @@ void InputSystem::updateProjectionMatrix(CameraComponent& camera) {
     camera.projectionMatrix = glm::perspective(glm::radians(camera.fov), camera.width / (float)camera.height, 0.1f, 10000.f);
 }
 
-InputSystem::InputSystem(SystemManager* systemManager)
-    : System(systemManager) {
-    ADD_EVENT(handleKeyPressEvent, KEY_EVENT);
-    ADD_EVENT(handleMouseMoveEvent, CURSOR_EVENT);
-    ADD_EVENT(handleScrollEvent, SCROLL_EVENT);
-    ADD_EVENT(handleFramebufferSizeEvent, FRAMEBUFFER_SIZE_EVENT);
-}
-
-void InputSystem::update(int dt) {
+void InputSystem::_update(int dt) {
     m_systemManager->getRegistry().view<CameraComponent, TransformationComponent>().each(
-        [=](auto& camera, auto& transformation) {
-        int prevChunkX = transformation.position.x / Definitions::CHUNK_SIZE;
-        int prevChunkZ = transformation.position.z / Definitions::CHUNK_SIZE;
+        [&](auto& camera, auto& transformation) {
+        int prevChunkX = transformation.position.x / Configuration::CHUNK_SIZE;
+        int prevChunkZ = transformation.position.z / Configuration::CHUNK_SIZE;
 
-        int newChunkX = transformation.position.x / Definitions::CHUNK_SIZE;
-        int newChunkZ = transformation.position.z / Definitions::CHUNK_SIZE;
+        int newChunkX = transformation.position.x / Configuration::CHUNK_SIZE;
+        int newChunkZ = transformation.position.z / Configuration::CHUNK_SIZE;
 
         if (newChunkX != prevChunkX || newChunkZ != prevChunkZ) {
             EnterChunkEvent e;
@@ -158,4 +150,12 @@ void InputSystem::update(int dt) {
 
         updateViewMatrix(camera, transformation);
     });
+}
+
+InputSystem::InputSystem(SystemManager* systemManager)
+    : System(systemManager, 0) {
+    ADD_EVENT(handleKeyPressEvent, KEY_EVENT);
+    ADD_EVENT(handleMouseMoveEvent, CURSOR_EVENT);
+    ADD_EVENT(handleScrollEvent, SCROLL_EVENT);
+    ADD_EVENT(handleFramebufferSizeEvent, FRAMEBUFFER_SIZE_EVENT);
 }

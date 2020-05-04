@@ -4,9 +4,8 @@
 
 class PositionMoveSystem : public System {
     private:
+        void _update(int dt) override;
 
     public:
-        PositionMoveSystem(SystemManager* systemManager, SharedContext* context);
-
-        void update(int dt) override;
+        PositionMoveSystem(SystemManager* systemManager);
 };

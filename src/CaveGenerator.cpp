@@ -1,5 +1,6 @@
 #include "../include/CaveGenerator.h"
-#include "../include/Definitions.h"
+
+#include "../include/Configuration.h"
 
 #include <iostream>
 
@@ -60,12 +61,12 @@ CaveGenerator& CaveGenerator::operator=(const CaveGenerator& generator) {
 }
 
 void CaveGenerator::generate(glm::vec2 position, Block*** blocks) {
-    for (int cx = 0; cx < Definitions::CHUNK_SIZE; cx++) {
-        for (int cy = 0; cy < Definitions::CHUNK_HEIGHT / 2; cy++) {
-            for (int cz = 0; cz < Definitions::CHUNK_SIZE; cz++) {
-                int x = cx + position.x * Definitions::CHUNK_SIZE;
+    for (int cx = 0; cx < Configuration::CHUNK_SIZE; cx++) {
+        for (int cy = 0; cy < Configuration::CHUNK_HEIGHT / 2; cy++) {
+            for (int cz = 0; cz < Configuration::CHUNK_SIZE; cz++) {
+                int x = cx + position.x * Configuration::CHUNK_SIZE;
                 int y = cy;
-                int z = cz + position.y * Definitions::CHUNK_SIZE;
+                int z = cz + position.y * Configuration::CHUNK_SIZE;
 
                 float caveNoise = this->caveNoise.GetValue(x, y, z);
 

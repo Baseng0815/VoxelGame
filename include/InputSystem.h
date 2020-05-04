@@ -21,9 +21,8 @@ class InputSystem : public System {
         void updateViewMatrix(CameraComponent& camera, TransformationComponent& transform);
         void updateProjectionMatrix(CameraComponent& camera);
 
+        void _update(int dt) override;
+
     public:
         InputSystem(SystemManager* systemManager);
-
-        void update(int dt) override;
-
 };

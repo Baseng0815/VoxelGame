@@ -9,9 +9,6 @@
 #include <memory>
 #include <iostream>
 
-#include "../Vertex.h"
-#include "../TextureAtlas.h"
-
 class Block;
 
 struct ChunkComponent {

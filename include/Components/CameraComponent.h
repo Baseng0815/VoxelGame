@@ -1,12 +1,13 @@
 #pragma once
 
 #include "../Window.h"
-#include "../Definitions.h"
+#include "../Configuration.h"
 
 struct CameraComponent {
     glm::mat4 projectionMatrix, viewMatrix;
     glm::vec3 front, front_noY, right;
-    int width = Definitions::WINDOW_WIDTH, height = Definitions::WINDOW_HEIGHT;
+    int width  = Configuration::getFloatValue("WINDOW_WIDTH");
+    int height = Configuration::getFloatValue("WINDOW_HEIGHT");
 
     glm::vec3 relVelocity;
 

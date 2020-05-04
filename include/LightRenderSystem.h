@@ -1,7 +1,10 @@
+#pragma once
+
 #include "System.h"
-#include "GBuffer"
+#include "GBuffer.h"
 #include "RenderQuad.h"
 
+/*
 #include "LightingShader.h"
 
 class Event;
@@ -21,3 +24,4 @@ class LightRenderSystem : public System {
 
         void update(int dt) override;
 };
+*/

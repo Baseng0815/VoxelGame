@@ -9,10 +9,14 @@ struct SharedContext;
 class System {
     protected:
         SystemManager* m_systemManager;
+        int m_currentTime = 0;
+        int m_updateDelay;
+
+        virtual void _update(int dt) = 0;
 
     public:
-        System(SystemManager* systemManager);
+        System(SystemManager* systemManager, int updateDelay);
 
         // dt in milliseconds
-        virtual void update(int dt) = 0;
+        void update(int dt);
 };

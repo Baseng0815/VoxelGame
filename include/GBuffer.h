@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 
-#include "Definitions.h"
+#include "Configuration.h"
 
 class GBuffer {
     private:
@@ -12,8 +12,8 @@ class GBuffer {
 
         void recreate();
 
-        int width = Definitions::WINDOW_WIDTH,
-            height = Definitions::WINDOW_HEIGHT;
+        int width = Configuration::getFloatValue("WINDOW_WIDTH"),
+            height = Configuration::getFloatValue("WINDOW_HEIGHT");
 
         void create();
         void destroy();

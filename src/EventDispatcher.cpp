@@ -1,8 +1,6 @@
 #include "../include/EventDispatcher.h"
 #include "../include/Application.h"
 
-#include "../include/Definitions.h"
-
 bool EventDispatcher::m_firstMouse = true;
 double EventDispatcher::m_prevX = 0;
 double EventDispatcher::m_prevY = 0;

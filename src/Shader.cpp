@@ -6,7 +6,7 @@
 
 // Private functions
 
-std::string Shader::loadShader(std::string fileName) {
+std::string Shader::loadShader(const std::string& fileName) {
     std::ifstream file;
     file.open((fileName).c_str());
 
@@ -45,7 +45,7 @@ void Shader::checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::s
     }
 }
 
-GLuint Shader::createShader(std::string text, GLenum type) {
+GLuint Shader::createShader(const std::string& text, GLenum type) {
     GLuint shader = glCreateShader(type);
 
     if (shader == 0)
@@ -64,23 +64,30 @@ GLuint Shader::createShader(std::string text, GLenum type) {
     return shader;
 }
 
-void Shader::upload(GLint location, glm::mat4 value) const {
-    glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(value));
-}
-
-void Shader::upload(GLint location, glm::vec3 value) const {
-    glUniform3f(location, value.x, value.y, value.z);
-}
-
-void Shader::upload(GLint location, float value) const {
-    glUniform1f(location, value);
-}
-
-void Shader::upload(GLint location, int value) const {
-    glUniform1i(location, value);
+GLint Shader::getLocation(const std::string& location) {
+    auto it = m_locations.find(location);
+    if (it == m_locations.end()) {
+        GLint locationId = glGetUniformLocation(m_program, location.c_str());
+        m_locations.insert(std::make_pair(location, locationId));
+        return locationId;
+    } else
+        return it->second;
 }
 
 // Public functions
+Shader::Shader(const std::string& path) {
+    m_program = glCreateProgram();
+    m_shaders[0] = createShader(loadShader(path + ".vert"), GL_VERTEX_SHADER);
+    m_shaders[1] = createShader(loadShader(path + ".frag"), GL_FRAGMENT_SHADER);
+
+    for (unsigned int i = 0; i < NUM_SHADERS; i++)
+        glAttachShader(m_program, m_shaders[i]);
+
+    glLinkProgram(m_program);
+    checkShaderError(m_program, GL_LINK_STATUS, GL_TRUE, "Error: Program failed to link: ");
+    glValidateProgram(m_program);
+    checkShaderError(m_program, GL_VALIDATE_STATUS, GL_TRUE, "Error: Program is invalid: ");
+}
 
 Shader::~Shader() {
     for (unsigned int i = 0; i < NUM_SHADERS; i++) {
@@ -90,25 +97,29 @@ Shader::~Shader() {
     glDeleteProgram(m_program);
 }
 
-void Shader::init(std::string fileName, const std::vector<std::string>& attribs) {
-    m_program = glCreateProgram();
-    m_shaders[0] = createShader(loadShader(fileName + ".vert"), GL_VERTEX_SHADER);
-    m_shaders[1] = createShader(loadShader(fileName + ".frag"), GL_FRAGMENT_SHADER);
-
-    for (unsigned int i = 0; i < NUM_SHADERS; i++)
-        glAttachShader(m_program, m_shaders[i]);
-
+void Shader::setAttributes(const std::vector<std::string>& attribs) {
+    bind();
     for (int i = 0; i < attribs.size(); i++)
         glBindAttribLocation(m_program, i, attribs[i].c_str());
 
-    glLinkProgram(m_program);
-    checkShaderError(m_program, GL_LINK_STATUS, GL_TRUE, "Error: Program failed to link: ");
-    glValidateProgram(m_program);
-    checkShaderError(m_program, GL_VALIDATE_STATUS, GL_TRUE, "Error: Program is invalid: ");
 }
-
 
 void Shader::bind() const {
     glUseProgram(m_program);
 }
 
+void Shader::upload(const std::string& location, glm::mat4 value) {
+    glUniformMatrix4fv(getLocation(location), 1, GL_FALSE, glm::value_ptr(value));
+}
+
+void Shader::upload(const std::string& location, glm::vec3 value) {
+    glUniform3f(getLocation(location), value.x, value.y, value.z);
+}
+
+void Shader::upload(const std::string& location, float value) {
+    glUniform1f(getLocation(location), value);
+}
+
+void Shader::upload(const std::string& location, int value) {
+    glUniform1i(getLocation(location), value);
+}

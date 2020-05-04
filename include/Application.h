@@ -1,6 +1,5 @@
 #pragma once
 
-#include "World.h"
 #include "Window.h"
 #include "SystemManager.h"
 

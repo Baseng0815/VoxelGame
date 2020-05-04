@@ -2,6 +2,7 @@
 
 #include "../include/Event.h"
 
+/*
 void LightRenderSystem::handleFramebufferSize(Event* e) {
     FramebufferSizeEvent fbsE = *e->get<FramebufferSizeEvent>();
     glViewport(0, 0, fbsE.width, fbsE.height);
@@ -17,3 +18,4 @@ LightRenderSystem::LightRenderSystem(SystemManager* systemManager)
 void LightRenderSystem::update(int dt) {
 
 }
+*/

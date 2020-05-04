@@ -1,4 +1,4 @@
 #include "../../include/Components/CameraComponent.h"
 
-CameraComponent(float fov)
-    : fov(fov) []
+CameraComponent::CameraComponent(float fov)
+    : fov(fov) {}

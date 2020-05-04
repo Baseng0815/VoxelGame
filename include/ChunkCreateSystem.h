@@ -2,7 +2,6 @@
 
 #include "System.h"
 #include "WorldGenerator.h"
-#include "TextureAtlas.h"
 
 #include <map>
 #include <mutex>
@@ -13,6 +12,7 @@
 class Event;
 class ChunkComponent;
 class GeometryComponent;
+class AtlasComponent;
 class Vertex;
 
 class ChunkCreateSystem : public System {
@@ -37,12 +37,13 @@ class ChunkCreateSystem : public System {
         void handleEnterChunk(Event*);
 
         void updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ);
-        void updateChunkVertices(entt::entity entity, Block*** blocks, std::mutex* blockMutex);
+        void updateChunkVertices(entt::entity entity, Block*** blocks,
+                const AtlasComponent& atlas, std::mutex* blockMutex);
         void updateChunkBuffers(GeometryComponent& geometryComponent,
                 const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices);
 
+        void _update(int dt) override;
+
     public:
         ChunkCreateSystem(SystemManager* systemManager);
-
-        void update(int dt) override;
 };

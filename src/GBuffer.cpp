@@ -1,5 +1,4 @@
 #include "../include/GBuffer.h"
-#include "../include/Definitions.h"
 
 void GBuffer::create() {
     glGenFramebuffers(1, &m_gBuffer);

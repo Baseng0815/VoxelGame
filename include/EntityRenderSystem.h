@@ -1,18 +1,25 @@
 #include "System.h"
 #include "GBuffer.h"
-#include "TextureAtlas.h"
 #include "RenderQuad.h"
 
-#include "BlockShader.h"
-#include "LightingShader.h"
+#include "Shader.h"
 
 class Event;
+
+struct Light {
+    glm::vec3 position;
+    glm::vec3 color;
+};
+
+class Shader;
+class Texture;
 
 class EntityRenderSystem : public System {
     private:
         // first render pass
-        BlockShader m_blockShader;
-        LightingShader m_lightingShader;
+        Shader* m_blockShader;
+        Shader* m_lightingShader;
+        Texture* m_atlas;
 
         // second render pass
         Light m_light;
@@ -21,8 +28,8 @@ class EntityRenderSystem : public System {
 
         void handleFramebufferSize(Event* e);
 
+        void _update(int dt) override;
+
     public:
         EntityRenderSystem(SystemManager* systemManager);
-
-        void update(int dt) override;
 };

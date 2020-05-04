@@ -1,12 +1,15 @@
 #include "../include/EntityRenderSystem.h"
 
-#include "../include/SharedContext.h"
 #include "../include/SystemManager.h"
 #include "../include/EventDispatcher.h"
+#include "../include/ResourceManager.h"
 
 #include "../include/Components/ChunkComponent.h"
 #include "../include/Components/GeometryComponent.h"
 #include "../include/Components/TransformationComponent.h"
+#include "../include/Components/CameraComponent.h"
+
+#include "../include/Texture.h"
 
 void EntityRenderSystem::handleFramebufferSize(Event* e) {
     FramebufferSizeEvent fbsE = *e->get<FramebufferSizeEvent>();
@@ -14,15 +17,7 @@ void EntityRenderSystem::handleFramebufferSize(Event* e) {
     m_gBuffer.resize(fbsE.width, fbsE.height);
 }
 
-EntityRenderSystem::EntityRenderSystem(SystemManager* systemManager)
-    : System(systemManager) {
-    ADD_EVENT(EntityRenderSystem::handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT);
-
-    m_light.color = glm::vec3(1, 1, 1);
-    m_light.position = glm::vec3(10, 10, 10);
-}
-
-void EntityRenderSystem::update(int dt) {
+void EntityRenderSystem::_update(int dt) {
     // clear screen framebuffer
     glClearColor(0, 0, 0, 1); glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -32,16 +27,19 @@ void EntityRenderSystem::update(int dt) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // geometry pass: scene's geometry and color data
-    m_blockShader.bind();
-    m_context->textureAtlas.bind();
+    m_blockShader->bind();
+    m_atlas->bindTexture(0);
 
-    m_blockShader.uploadViewMatrix(m_context->camera.getViewMatrix());
-    m_blockShader.uploadProjectionMatrix(m_context->camera.getProjectionMatrix(PROJECTION_PERSPECTIVE));
+    m_systemManager->getRegistry().view<CameraComponent>().each(
+        [=](auto& camera) {
+        m_blockShader->upload("viewMatrix", camera.viewMatrix);
+        m_blockShader->upload("projectionMatrix", camera.projectionMatrix);
+    });
 
-    m_systemManager->getRegistry().view<TransformationComponent, GeometryComponent, ChunkComponent>().each([this]
-        (auto& transformation, auto& geometry, auto& chunk) {
+    m_systemManager->getRegistry().view<TransformationComponent, GeometryComponent, ChunkComponent>().each(
+        [=](auto& transformation, auto& geometry, auto& chunk) {
         if (geometry.buffersInitialized) {
-            m_blockShader.uploadModelMatrix(transformation.getModelMatrix());
+            m_blockShader->upload("modelMatrix", transformation.getModelMatrix());
             glBindVertexArray(geometry.vao);
             glDrawElements(GL_TRIANGLES, geometry.drawCount, GL_UNSIGNED_INT, nullptr);
         }
@@ -50,10 +48,11 @@ void EntityRenderSystem::update(int dt) {
     // lighting pass
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    m_lightingShader.bind();
+    m_lightingShader->bind();
     m_gBuffer.bindTextures();
 
-    m_lightingShader.setLight(m_light, 0);
+    m_lightingShader->upload("light[0].position", m_light.position);
+    m_lightingShader->upload("light[0].color", m_light.color);
     m_renderQuad.render();
 
     m_gBuffer.bindFramebuffer(true);
@@ -64,10 +63,23 @@ void EntityRenderSystem::update(int dt) {
 
     // TODO add skybox
     /*
-    m_skyboxShader.bind();
-    m_skyboxShader.uploadViewMatrix(m_context->camera.getViewMatrix());
-    m_skyboxShader.uploadProjectionMatrix(m_context->camera.getProjectionMatrix(PROJECTION_PERSPECTIVE));
+    m_skyboxShader->bind();
+    m_skyboxShader->uploadViewMatrix(m_context->camera.getViewMatrix());
+    m_skyboxShader->uploadProjectionMatrix(m_context->camera.getProjectionMatrix(PROJECTION_PERSPECTIVE));
     m_skybox.render();
     */
     // GUI elements
+}
+
+EntityRenderSystem::EntityRenderSystem(SystemManager* systemManager)
+    : System(systemManager, 0) {
+    ADD_EVENT(EntityRenderSystem::handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT);
+
+    // TODO change naming scheme
+    m_blockShader = ResourceManager::getResource<Shader>("chunkShader");
+    m_lightingShader = ResourceManager::getResource<Shader>("lightingShader");
+    m_atlas = ResourceManager::getResource<Texture>("textureAtlas");
+
+    m_light.color = glm::vec3(1, 1, 1);
+    m_light.position = glm::vec3(10, 10, 10);
 }
