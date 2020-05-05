@@ -22,13 +22,18 @@ void InputSystem::handleScrollEvent(Event* e) {
     m_context->camera.handleScroll(scrollEvent.dy);
 }
 
-InputSystem::InputSystem(SystemManager* systemManager, SharedContext* context)
-    : System(systemManager, context) {}
+void InputSystem::handleFramebufferSizeEvent(Event* e) {
+    FramebufferSizeEvent sizeEvent = *e->get<FramebufferSizeEvent>();
 
-void InputSystem::init() {
-    ADD_EVENT(InputSystem::handleKeyPressEvent, KEY_EVENT);
-    ADD_EVENT(InputSystem::handleMouseMoveEvent, CURSOR_EVENT);
-    ADD_EVENT(InputSystem::handleScrollEvent, SCROLL_EVENT);
+    m_context->camera.handleFramebufferSize(sizeEvent.width, sizeEvent.height);
+}
+
+InputSystem::InputSystem(SystemManager* systemManager, SharedContext* sharedContext)
+    : System(systemManager, sharedContext) {
+    ADD_EVENT(handleKeyPressEvent, KEY_EVENT);
+    ADD_EVENT(handleMouseMoveEvent, CURSOR_EVENT);
+    ADD_EVENT(handleScrollEvent, SCROLL_EVENT);
+    ADD_EVENT(handleFramebufferSizeEvent, FRAMEBUFFER_SIZE_EVENT);
 }
 
 void InputSystem::update(int dt) {

@@ -10,7 +10,7 @@ class RenderQuad {
         GLuint m_vbo;
 
     public:
-        void init();
+        RenderQuad();
         ~RenderQuad();
 
         void render();

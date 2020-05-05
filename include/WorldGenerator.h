@@ -25,7 +25,7 @@ class WorldGenerator {
 private:
 	WorldType m_type = WorldType::WORLD_FLAT;
 	std::unordered_map<BiomeID, BiomeInfo> biomes;
-	CaveGenerator m_caveGenerator;	
+	CaveGenerator m_caveGenerator;
 
 	// terrain
 	Perlin perlinNoise;
@@ -42,10 +42,10 @@ public:
 	WorldGenerator() = default;
 	WorldGenerator(const WorldGenerator&);
 
-	WorldGenerator& WorldGenerator::operator=(const WorldGenerator&);
+	WorldGenerator& operator=(const WorldGenerator&);
 
-	void init(WorldType worldType);	
+	void init(WorldType worldType);
 
-	void generate(glm::vec2 position, Block*** blocks);	
+	void generate(glm::vec2 position, Block*** blocks);
 };
 

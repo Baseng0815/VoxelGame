@@ -22,25 +22,12 @@ void Application::handleKeys(Event* event) {
     }
 }
 
-Application::Application() {
-    m_window.init(this);
-    EventDispatcher::attachToWindow(m_window);
-
-    EventDispatcher::addCallback(std::bind(&Application::handleKeys, this, std::placeholders::_1), EventType::KEY_EVENT);
-
-    // init glew and load function pointers
-    glewInit();
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-
+Application::Application()
+    : m_window(this), m_systemManager(&m_context) {
     srand(time(NULL));
 
-    Definitions::loadData();
-
-    // init context data here
-    m_context.textureAtlas.init("Resources/Textures/textureAtlas0.png");
-
-    m_systemManager.init(&m_context);
+    EventDispatcher::attachToWindow(m_window);
+    EventDispatcher::addCallback(std::bind(&Application::handleKeys, this, std::placeholders::_1), EventType::KEY_EVENT);
 }
 
 Application::~Application() {

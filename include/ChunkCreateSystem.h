@@ -10,21 +10,10 @@
 #include <future>
 #include <entt/entt.hpp>
 
-struct ChunkHashFunction {
-    size_t operator()(const glm::vec2& v) const {
-        return std::hash<int>()(v.x) ^ std::hash<int>()(v.y);
-    }
-
-    bool operator()(const glm::vec2& l, const glm::vec2& r) const {
-        return l.x == r.x && l.y == r.y;
-    }
-};
-
 class Event;
 class ChunkComponent;
 class GeometryComponent;
 class Vertex;
-
 
 class ChunkCreateSystem : public System {
     private:
@@ -55,8 +44,5 @@ class ChunkCreateSystem : public System {
     public:
         ChunkCreateSystem(SystemManager* systemManager, SharedContext *context, WorldType worldType);
 
-        void init() override;
         void update(int dt) override;
-
-        ~ChunkCreateSystem();
 };

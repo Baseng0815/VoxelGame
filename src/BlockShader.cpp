@@ -1,6 +1,6 @@
 #include "../include/BlockShader.h"
 
-void BlockShader::init() {
+BlockShader::BlockShader() {
     std::vector<std::string> attribs = {
         "position",
         "normal",

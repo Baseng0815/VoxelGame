@@ -10,7 +10,7 @@ class BlockShader : public Shader {
 
     public:
         // load shader and get uniform locations
-        void init();
+        BlockShader();
 
         void uploadModelMatrix(glm::mat4 modelMatrix) const;
         void uploadProjectionMatrix(glm::mat4 projectionMatrix) const;

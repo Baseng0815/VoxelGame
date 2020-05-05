@@ -14,8 +14,6 @@ class System {
     public:
         System(SystemManager* systemManager, SharedContext* context);
 
-        virtual void init() = 0;
-
         // dt in milliseconds
         virtual void update(int dt) = 0;
 };

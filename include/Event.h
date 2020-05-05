@@ -27,7 +27,7 @@ struct Event {
     friend std::ostream& operator<<(std::ostream& ostream, const Event& event);
 };
 
-typedef std::function<void(Event *e)> Callback;
+typedef std::function<void(Event*)> Callback;
 
 struct KeyEvent : public Event {
     static constexpr EventType TYPE = KEY_EVENT;
