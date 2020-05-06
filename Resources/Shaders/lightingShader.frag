@@ -30,5 +30,5 @@ void main() {
             lighting += diffuse;
     }
 
-    out_Color = vec4(lighting, 1);
+    out_Color = vec4(normal, 1);
 }

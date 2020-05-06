@@ -19,7 +19,7 @@ private:
 
     module::ScaleBias caveNoise;
 
-    float threshold = 0.8f;
+    float threshold = 0.3f;
 
 public:
     CaveGenerator();

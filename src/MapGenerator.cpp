@@ -1,9 +1,7 @@
 #include "../include/MapGenerator.h"
-#include "../include/Chunk.h"
-#include "../include/Definitions.h"
 
 float MapGenerator::noise(int x, int y) {
-    int width = Definitions::MAP_SEED_SIZE;
+    int width = Configuration::MAP_SEED_SIZE;
 
     float noise = 0.0f;
     float scale = 1.0f;
@@ -32,7 +30,7 @@ float MapGenerator::noise(int x, int y) {
 }
 
 void MapGenerator::generateSeed() {
-    int width = Definitions::MAP_SEED_SIZE;
+    int width = Configuration::MAP_SEED_SIZE;
 
     for (int y = 0; y < width; y++)
         for (int x = 0; x < width; x++) {
@@ -43,10 +41,10 @@ void MapGenerator::generateSeed() {
 ChunkMapArray&& MapGenerator::generateChunkMap(int x, int y) {
     ChunkMapArray map;
 
-    for (int cx = 0; cx < Definitions::CHUNK_SIZE; cx++) {
-        for (int cz = 0; cz < Definitions::CHUNK_SIZE; cz++) {
+    for (int cx = 0; cx < Configuration::CHUNK_SIZE; cx++) {
+        for (int cz = 0; cz < Configuration::CHUNK_SIZE; cz++) {
 
-            float noise = this->noise(x * Definitions::CHUNK_SIZE + cx, y * Definitions::CHUNK_SIZE + cz);
+            float noise = this->noise(x * Configuration::CHUNK_SIZE + cx, y * Configuration::CHUNK_SIZE + cz);
             map[cx][cz] = noise * (maxTerrainHeight - minTerrainHeight) + minTerrainHeight;
         }
     }

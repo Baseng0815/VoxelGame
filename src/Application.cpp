@@ -1,5 +1,6 @@
 #include "../include/Application.h"
 #include "../include/EventDispatcher.h"
+#include "../include/ResourceManager.h"
 
 #include <iostream>
 
@@ -23,7 +24,7 @@ void Application::handleKeys(Event* event) {
 }
 
 Application::Application()
-    : m_window(this), m_systemManager(&m_context) {
+    : m_window(this), m_systemManager() {
     srand(time(NULL));
 
     EventDispatcher::attachToWindow(m_window);
@@ -31,6 +32,7 @@ Application::Application()
 }
 
 Application::~Application() {
+    ResourceManager::freeResources();
     m_window.close();
     glfwTerminate();
 }
