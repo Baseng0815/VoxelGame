@@ -6,7 +6,7 @@
 #include <map>
 #include <vector>
 
-#define ADD_EVENT(func, type) EventDispatcher::addCallback(std::bind(&func, this, _1), EventType::type);
+#define ADD_EVENT(func, type) EventDispatcher::addCallback([=](Event* e){this->func(e);}, type);
 
 class EventDispatcher {
 private:

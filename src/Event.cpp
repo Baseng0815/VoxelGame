@@ -1,39 +1,80 @@
 #include "../include/Event.h"
 
+#include <sstream>
+
 template<class T>
 T* Event::get() {
     return reinterpret_cast<T*>(this);
 }
 
-EventType KeyEvent::type() {
+std::ostream& operator<<(std::ostream& ostream, const Event& event) {
+    ostream << event.toString();
+    return ostream;
+}
+
+EventType KeyEvent::type() const {
 	return KeyEvent::TYPE;
 }
+
+std::string KeyEvent::toString() const {
+    std::stringstream ss;
+    ss << "key: " << key << " scancode: " << scancode << " action: " << action << " mods: " << mods;
+    return ss.str();
+}
+
 KeyEvent::KeyEvent(Application* app, int key, int scancode, int action, int mods)
 	: app(app), key(key), scancode(scancode), action(action), mods(mods) {}
 
-EventType CursorEvent::type() {
+EventType CursorEvent::type() const {
 	return CursorEvent::TYPE;
 }
+
+std::string CursorEvent::toString() const {
+    std::stringstream ss;
+    ss << "x: " << x << " y: " << y << " dx: " << dx << " dy: " << dy;
+    return ss.str();
+}
+
 CursorEvent::CursorEvent(Application* app, double x, double y, double dx, double dy)
 	: app(app), x(x), y(y), dx(dx), dy(dy) {}
 
-EventType ScrollEvent::type() {
+EventType ScrollEvent::type() const {
 	return ScrollEvent::TYPE;
 }
+
+std::string ScrollEvent::toString() const {
+    std::stringstream ss;
+    ss << "dx: " << dx << " dy: " << dy;
+    return ss.str();
+}
+
 ScrollEvent::ScrollEvent(Application* app, double dx, double dy)
 	: app(app), dx(dx), dy(dy) {}
 
-EventType FramebufferSizeEvent::type() {
+EventType FramebufferSizeEvent::type() const {
 	return FramebufferSizeEvent::TYPE;
 }
+
+std::string FramebufferSizeEvent::toString() const {
+    std::stringstream ss;
+    ss << "width: " << width << " height: " << height;
+    return ss.str();
+}
+
 FramebufferSizeEvent::FramebufferSizeEvent(Application* app, int width, int height)
 	: app(app), width(width), height(height) {}
 
-EventType EnterChunkEvent::type() {
+EventType EnterChunkEvent::type() const {
     return EnterChunkEvent::TYPE;
 }
 
-EnterChunkEvent::EnterChunkEvent(Application* app, int oldX, int oldY, int newX, int newY) : app(app), oldX(oldX), oldY(oldY), newX(newX), newY(newY) {}
+EnterChunkEvent::EnterChunkEvent(Application* app, int oldX, int oldZ, int newX, int newZ) : app(app), oldX(oldX), oldZ(oldZ), newX(newX), newZ(newZ) {}
+
+std::string EnterChunkEvent::toString() const {
+    std::stringstream ss;
+    ss << "oldX: " << oldX << " oldZ: " << oldZ << " newX: " << newX << " newZ: " << newZ;
+    return ss.str();
+}
 
 template KeyEvent* Event::get<KeyEvent>();
 template ScrollEvent* Event::get<ScrollEvent>();

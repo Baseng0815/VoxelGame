@@ -1,5 +1,8 @@
 #include "../include/Application.h"
 #include "../include/EventDispatcher.h"
+#include "../include/ResourceManager.h"
+
+#include <iostream>
 
 void Application::handleKeys(Event* event) {
     KeyEvent* kE = event->get<KeyEvent>();
@@ -20,26 +23,16 @@ void Application::handleKeys(Event* event) {
     }
 }
 
-Application::Application() {
-    m_window.init(this);
-    EventDispatcher::attachToWindow(m_window);
-
-    EventDispatcher::addCallback(std::bind(&Application::handleKeys, this, std::placeholders::_1), EventType::KEY_EVENT);
-
-    // init glew and load function pointers
-    glewInit();
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-
+Application::Application()
+    : m_window(this), m_systemManager() {
     srand(time(NULL));
 
-    Definitions::loadData();
-
-    m_masterRenderer.init();
-    m_scene.world.init(WorldType::WORLD_NORMAL);
+    EventDispatcher::attachToWindow(m_window);
+    EventDispatcher::addCallback(std::bind(&Application::handleKeys, this, std::placeholders::_1), EventType::KEY_EVENT);
 }
 
 Application::~Application() {
+    ResourceManager::freeResources();
     m_window.close();
     glfwTerminate();
 }
@@ -51,9 +44,7 @@ void Application::run() {
 
         // fps and render time
         if (m_time > 1000) {
-            m_fpsText.text = std::to_string(m_frameCounter / (float)m_time * 1000) + " fps";
-            m_renderTimeText.text = std::to_string(m_frameTime / m_frameCounter) + " mcrs render time";
-
+            std::cout << m_frameCounter / (float)m_time * 1000 << " fps" << std::endl;
             m_frameTime = 0;
             m_frameCounter = 0;
             m_time = 0;
@@ -65,19 +56,15 @@ void Application::run() {
         m_prevTime = currentTime;
         m_time += m_deltaTime;
 
-        // updating
-        m_scene.player.update(m_deltaTime);
-        m_scene.world.update(m_deltaTime);
-
-        // drawing
-        m_window.clear();
-
+        // updating and drawing
         auto startTime = std::chrono::high_resolution_clock::now();
-        m_masterRenderer.render(m_scene);
+
+        m_window.clear();
+        m_systemManager.update(m_deltaTime);
+        m_window.display();
+
         auto endTime = std::chrono::high_resolution_clock::now();
         m_frameTime += std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
-
-        m_window.display();
 
         m_frameCounter++;
     }

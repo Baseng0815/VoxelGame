@@ -1,4 +1,8 @@
 .vs/*
+build/*
+packages/*
+x64/*
+x86/*
 Debug/*
 x64/*
 out/*
@@ -36,5 +40,18 @@ out/*
 *.out
 *.app
 
+<<<<<<< HEAD
 #CMake
 #CMakeSettings.json
+=======
+*.vim
+CMakeFiles/*
+*.sln
+build/*
+
+# Visual Studio
+packages/*
+VoxelGame.vcxproj*
+Release/*
+out/*
+>>>>>>> ECS

@@ -1,11 +1,12 @@
 #include "../include/Window.h"
-#include "../include/Definitions.h"
+#include "../include/Configuration.h"
 #include "../include/EventDispatcher.h"
 
-void Window::init(Application* app) {
+Window::Window(Application* app) {
+    Configuration::loadConfiguration("Resources/");
     glfwInit();
 
-    m_window = glfwCreateWindow(Definitions::WINDOW_WIDTH, Definitions::WINDOW_HEIGHT, "GLFW window", nullptr, nullptr);
+    m_window = glfwCreateWindow(Configuration::getFloatValue("WINDOW_WIDTH"), Configuration::getFloatValue("WINDOW_HEIGHT"), "GLFW window", nullptr, nullptr);
     if (!m_window)
         throw std::runtime_error("Failed to create GLFW window.");
 
@@ -15,10 +16,15 @@ void Window::init(Application* app) {
     glfwSetWindowUserPointer(m_window, app);
 
     glfwMakeContextCurrent(m_window);
-    glfwSwapInterval(1);
+    glfwSwapInterval(0);
+
+    // init glew and load function pointers
+    glewInit();
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
 }
 
-void Window::clear(Color clearColor) {
+void Window::clear(glm::vec3 clearColor) {
     glClearColor(clearColor.r, clearColor.g, clearColor.b, 1);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 }
@@ -56,6 +62,12 @@ bool Window::getKey(int key) const {
 
 GLFWwindow* Window::getHandle() const {
     return m_window;
+}
+
+Event* Window::nextEvent() {
+    Event* e = m_events.front();
+    m_events.pop();
+    return e;
 }
 
 void Window::close() {

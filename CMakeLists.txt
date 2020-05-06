@@ -8,7 +8,8 @@ message("Using project source dir ${VoxelGame_SOURCE_DIR}")
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14 -pthread -ggdb")
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -lm -pthread -ggdb")
 
 find_package(glfw3 3.3 REQUIRED)
 if (GLFW_FOUND)
@@ -40,7 +41,7 @@ include_directories(/usr/include)
 # freetype
 include_directories(/usr/include/freetype2)
 
-file(GLOB SOURCES
+file(GLOB_RECURSE SOURCES
     include/*.h
     src/*.cpp)
 

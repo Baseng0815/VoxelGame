@@ -1,36 +1,39 @@
 #pragma once
 
+#include <map>
 #include <string>
 #include <vector>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
+#include "Resource.h"
+
 // a class used for all shader programs
-class Shader {
+class Shader : public Resource {
     protected:
         static const unsigned int NUM_SHADERS = 2;
 
-        GLuint m_program = 0;
-        GLuint m_shaders[NUM_SHADERS] = { 0 };
+        GLuint m_program;
+        GLuint m_shaders[NUM_SHADERS];
 
-        static std::string loadShader(std::string fileName);
+        static std::string loadShader(const std::string& fileName);
         static void checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::string errorMessage);
-        static GLuint createShader(std::string text, GLenum type);
+        static GLuint createShader(const std::string& text, GLenum type);
 
-        // uploads a value to the shader
-        void upload(GLint location, glm::mat4 value) const;
-        void upload(GLint location, glm::vec3 value) const;
-        void upload(GLint location, float value) const;
-        void upload(GLint location, int value) const;
+        std::map<std::string, GLint> m_locations;
 
-        // fragment and vertex shader need to have same file name
-        // extensions used are .vert for vertex and .frag for fragment shaders
-        // takes a description of attributes like color or normals
-        void init(std::string filename, std::vector<std::string> attribs);
+        GLint getLocation(const std::string& location);
 
     public:
+        Shader(const std::string& path);
         ~Shader();
 
+        void setAttributes(const std::vector<std::string>& attribs);
         void bind() const;
+
+        void upload(const std::string& location, glm::mat4 value);
+        void upload(const std::string& location, glm::vec3 value);
+        void upload(const std::string& location, float value);
+        void upload(const std::string& location, int value);
 };
 

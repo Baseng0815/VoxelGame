@@ -133,7 +133,7 @@
     "tid_nx": 32,
     "tid_pz": 32,
     "tid_nz": 32,
-    "tid_bt": 32    
+    "tid_bt": 32
   },
   "17": {
     "tid_up": 33,
