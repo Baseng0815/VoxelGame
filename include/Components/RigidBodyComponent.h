@@ -3,15 +3,15 @@
 
 struct RigidBodyComponent {
 	float mass = 0;
+
 	glm::vec3 centerOfMass = glm::vec3();
 	glm::vec3 velocity = glm::vec3();
+	glm::vec3 angularVelocity = glm::vec3();
 
 	Shape* shape = nullptr;
+	Shape* collision = nullptr;
 
-	inline RigidBodyComponent(Shape* shape, float density) {
-		this->shape = shape;
+	RigidBodyComponent(Shape*, float);
 
-		mass = shape->volume * density;
-		centerOfMass = shape->center;
-	}
+	bool checkCollision(const glm::mat4&, const RigidBodyComponent&, const glm::mat4&) const;
 };

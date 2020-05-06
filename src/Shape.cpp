@@ -11,7 +11,7 @@ void Shape::init() {
 	glm::vec3 centerSum = glm::vec3();
 
 	for (auto tri : triangles) {
-		//		1		 ->  ->   ->
+		//		1		->  ->    ->
 		//	V = -	* | (a x b) * c |
 		//		6
 		float v = 1 / (float)6 * abs(glm::dot((glm::cross(tri.p1, tri.p2 - tri.p1)), tri.p3 - tri.p1));
