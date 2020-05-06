@@ -4,6 +4,8 @@ packages/*
 x64/*
 x86/*
 Debug/*
+x64/*
+out/*
 
 # Prerequisites
 *.d
@@ -38,6 +40,10 @@ Debug/*
 *.out
 *.app
 
+<<<<<<< HEAD
+#CMake
+#CMakeSettings.json
+=======
 *.vim
 CMakeFiles/*
 *.sln
@@ -48,3 +54,4 @@ packages/*
 VoxelGame.vcxproj*
 Release/*
 out/*
+>>>>>>> ECS
