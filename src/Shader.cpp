@@ -69,6 +69,7 @@ GLint Shader::getLocation(const std::string& location) {
     if (it == m_locations.end()) {
         GLint locationId = glGetUniformLocation(m_program, location.c_str());
         m_locations.insert(std::make_pair(location, locationId));
+        std::cout << locationId << std::endl;
         return locationId;
     } else
         return it->second;
@@ -96,12 +97,14 @@ Shader::~Shader() {
     }
     glDeleteProgram(m_program);
 }
+#include <iostream>
 
 void Shader::setAttributes(const std::vector<std::string>& attribs) {
     bind();
-    for (int i = 0; i < attribs.size(); i++)
+    for (int i = 0; i < attribs.size(); i++) {
         glBindAttribLocation(m_program, i, attribs[i].c_str());
-
+        std::cout << i << " " << attribs[i] << std::endl;
+    }
 }
 
 void Shader::bind() const {

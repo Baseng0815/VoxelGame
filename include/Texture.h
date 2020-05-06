@@ -1,10 +1,8 @@
+#pragma once
+
 #include <GL/glew.h>
 
 #include "Resource.h"
-
-#include <experimental/string_view>
-
-using namespace std::experimental;
 
 class Texture : public Resource {
     private:
@@ -12,11 +10,12 @@ class Texture : public Resource {
         int m_width, m_height, m_channels;
 
     public:
-        Texture(string_view path);
+        Texture(const std::string& path);
         ~Texture();
 
-        void bindTexture(int textureUnit);
+        void bind(int textureUnit);
         int getWidth() const;
         int getHeight() const;
         int getTexture() const;
+        int getChannels() const;
 };

@@ -29,8 +29,8 @@ void ResourceManager::loadResources() {
     // lightingShader
     shader = getResource<Shader>("lightingShader");
     attribs = {
-            "position",
-            "uvCoords"
+        "position",
+        "uvCoords"
     };
     shader->setAttributes(attribs);
     shader->upload("gPosition", 0);

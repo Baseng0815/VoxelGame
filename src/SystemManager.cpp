@@ -3,11 +3,15 @@
 #include "../include/Texture.h"
 #include "../include/InputSystem.h"
 #include "../include/ResourceManager.h"
+#include "../include//EventDispatcher.h"
 #include "../include/ChunkCreateSystem.h"
 #include "../include/EntityRenderSystem.h"
+#include "../include/PositionMoveSystem.h"
 
-#include "../include//EventDispatcher.h"
 #include "../include/Components/AtlasComponent.h"
+#include "../include/Components/CameraComponent.h"
+#include "../include/Components/VelocityComponent.h"
+#include "../include/Components/TransformationComponent.h"
 
 SystemManager::SystemManager() {
     // TODO move resource loading to a better location
@@ -17,11 +21,17 @@ SystemManager::SystemManager() {
     m_systems.push_back(new ChunkCreateSystem(this));
     m_systems.push_back(new EntityRenderSystem(this));
     m_systems.push_back(new InputSystem(this));
+    m_systems.push_back(new PositionMoveSystem(this));
 
-    // create shared entities
+    // atlas
     auto entity = m_entityRegistry.create();
     Texture* atlasTexture = ResourceManager::getResource<Texture>("textureAtlas");
     m_entityRegistry.emplace<AtlasComponent>(entity, atlasTexture->getWidth(), atlasTexture->getHeight(), 16);
+    // camera
+    entity = m_entityRegistry.create();
+    m_entityRegistry.emplace<CameraComponent>(entity, 90.f);
+    m_entityRegistry.emplace<TransformationComponent>(entity);
+    m_entityRegistry.emplace<VelocityComponent>(entity);
 
     // raise beginning events
     EnterChunkEvent e;

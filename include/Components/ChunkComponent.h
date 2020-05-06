@@ -13,7 +13,7 @@ class Block;
 
 struct ChunkComponent {
     Block*** blocks = nullptr;
-    std::mutex *blockMutex = new std::mutex();
+    std::mutex *blockMutex;
 
     std::atomic_bool verticesOutdated   = false;
     std::atomic_bool threadActiveOnSelf = false;

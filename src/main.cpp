@@ -1,5 +1,6 @@
 #include "../include/Application.h"
 
+#undef WIN32
 #ifndef WIN32
 #include <mcheck.h>
 
@@ -11,10 +12,10 @@ int main(int argc, char **argv) {
     muntrace();
 }
 
-#else 
-int main(int argc, char** argv) {    
+#else
+int main(int argc, char** argv) {
     Application application;
 
-    application.run();    
+    application.run();
 }
 #endif

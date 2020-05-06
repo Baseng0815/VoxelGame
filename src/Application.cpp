@@ -1,5 +1,6 @@
 #include "../include/Application.h"
 #include "../include/EventDispatcher.h"
+#include "../include/ResourceManager.h"
 
 #include <iostream>
 
@@ -31,6 +32,7 @@ Application::Application()
 }
 
 Application::~Application() {
+    ResourceManager::freeResources();
     m_window.close();
     glfwTerminate();
 }

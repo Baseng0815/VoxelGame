@@ -1,6 +1,8 @@
 #include "../../include/Configuration.h"
 #include "../../include/Components/AtlasComponent.h"
 
+#include <iostream>
+
 AtlasComponent::AtlasComponent(int width, int height, int tileSize) {
     numCols = width / tileSize;
     numRows = height / tileSize;

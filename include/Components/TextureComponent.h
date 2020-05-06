@@ -1,7 +1,7 @@
 #include "../Texture.h"
 
 struct TextureComponent {
-    Texture texture;
+    Texture* texture;
 
-    TextureComponent(Texture texture);
+    TextureComponent(Texture* texture);
 };

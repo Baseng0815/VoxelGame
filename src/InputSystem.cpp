@@ -126,14 +126,17 @@ void InputSystem::updateViewMatrix(CameraComponent& camera, TransformationCompon
 }
 
 void InputSystem::updateProjectionMatrix(CameraComponent& camera) {
-    camera.projectionMatrix = glm::perspective(glm::radians(camera.fov), camera.width / (float)camera.height, 0.1f, 10000.f);
+    camera.projectionMatrix = glm::perspective(glm::radians(camera.fov), camera.width / (float)camera.height, 0.1f, 1000.f);
 }
 
 void InputSystem::_update(int dt) {
-    m_systemManager->getRegistry().view<CameraComponent, TransformationComponent>().each(
-        [&](auto& camera, auto& transformation) {
+    // TODO move velocity and movement into physics system
+    m_systemManager->getRegistry().view<CameraComponent, TransformationComponent, VelocityComponent>().each(
+        [&](auto& camera, auto& transformation, auto& velocity) {
         int prevChunkX = transformation.position.x / Configuration::CHUNK_SIZE;
         int prevChunkZ = transformation.position.z / Configuration::CHUNK_SIZE;
+
+        transformation.position += velocity.velocity * (float)dt * Configuration::getFloatValue("CAMERA_MOVE_SPEED");
 
         int newChunkX = transformation.position.x / Configuration::CHUNK_SIZE;
         int newChunkZ = transformation.position.z / Configuration::CHUNK_SIZE;

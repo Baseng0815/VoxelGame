@@ -8,11 +8,10 @@
 
 #include <iostream>
 
-Texture::Texture(string_view path) {
+Texture::Texture(const std::string& path) {
     glGenTextures(1, &m_texture);
 
-    int channels = 0;
-    unsigned char* data = SOIL_load_image(std::string(path).c_str(), &m_width, &m_height, &m_channels, SOIL_LOAD_RGBA);
+    unsigned char* data = SOIL_load_image(path.c_str(), &m_width, &m_height, &m_channels, SOIL_LOAD_RGBA);
     if (!data)
         std::cout << "Failed to load texture" << path << std::endl;
 
@@ -26,14 +25,13 @@ Texture::Texture(string_view path) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
     SOIL_free_image_data(data);
-
 }
 
 Texture::~Texture() {
     glDeleteTextures(1, &m_texture);
 }
 
-void Texture::bindTexture(int textureUnit) {
+void Texture::bind(int textureUnit) {
     glActiveTexture(textureUnit);
     glBindTexture(GL_TEXTURE_2D, m_texture);
 }
@@ -48,4 +46,8 @@ int Texture::getHeight() const {
 
 int Texture::getTexture() const {
     return m_texture;
+}
+
+int Texture::getChannels() const {
+    return m_channels;
 }
