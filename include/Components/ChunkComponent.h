@@ -9,14 +9,11 @@
 #include <memory>
 #include <iostream>
 
-#include "../Vertex.h"
-#include "../TextureAtlas.h"
-
 class Block;
 
 struct ChunkComponent {
     Block*** blocks = nullptr;
-    std::mutex *blockMutex = new std::mutex();
+    std::mutex *blockMutex;
 
     std::atomic_bool verticesOutdated   = false;
     std::atomic_bool threadActiveOnSelf = false;

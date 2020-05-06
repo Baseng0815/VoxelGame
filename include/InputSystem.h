@@ -3,6 +3,9 @@
 #include "System.h"
 
 class Camera;
+class CameraComponent;
+class TransformationComponent;
+class VelocityComponent;
 
 // handles player movement input
 // also updates the camera
@@ -13,9 +16,13 @@ class InputSystem : public System {
         void handleScrollEvent(Event* e);
         void handleFramebufferSizeEvent(Event* e);
 
+        void updateAbsoluteVelocity(CameraComponent& camera, VelocityComponent& velocity);
+        void updateVectors(CameraComponent& camera);
+        void updateViewMatrix(CameraComponent& camera, TransformationComponent& transform);
+        void updateProjectionMatrix(CameraComponent& camera);
+
+        void _update(int dt) override;
+
     public:
-        InputSystem(SystemManager* systemManager, SharedContext* context);
-
-        void update(int dt) override;
-
+        InputSystem(SystemManager* systemManager);
 };

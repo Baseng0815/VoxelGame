@@ -1,11 +1,12 @@
 #include "../include/Window.h"
-#include "../include/Definitions.h"
+#include "../include/Configuration.h"
 #include "../include/EventDispatcher.h"
 
 Window::Window(Application* app) {
+    Configuration::loadConfiguration("Resources/");
     glfwInit();
 
-    m_window = glfwCreateWindow(Definitions::WINDOW_WIDTH, Definitions::WINDOW_HEIGHT, "GLFW window", nullptr, nullptr);
+    m_window = glfwCreateWindow(Configuration::getFloatValue("WINDOW_WIDTH"), Configuration::getFloatValue("WINDOW_HEIGHT"), "GLFW window", nullptr, nullptr);
     if (!m_window)
         throw std::runtime_error("Failed to create GLFW window.");
 
@@ -21,9 +22,6 @@ Window::Window(Application* app) {
     glewInit();
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-
-    // TODO refactor definition and config loading
-    Definitions::loadData();
 }
 
 void Window::clear(glm::vec3 clearColor) {
