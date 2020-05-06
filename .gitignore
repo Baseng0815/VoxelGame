@@ -47,3 +47,4 @@ build/*
 packages/*
 VoxelGame.vcxproj*
 Release/*
+out/*

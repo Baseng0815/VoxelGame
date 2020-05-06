@@ -2,7 +2,7 @@
 
 #include "../include/ChunkCreateSystem.h"
 #include "../include/ChunkRenderSystem.h"
-#include "../include/CollisionSystem.h"
+#include "../include/PhysicSystem.h"
 #include "../include/InputSystem.h"
 
 #include "../include//EventDispatcher.h"
@@ -12,7 +12,7 @@ SystemManager::SystemManager(SharedContext* context) {
     m_systems.push_back(new ChunkCreateSystem(this, context, WorldType::WORLD_FLAT));
     m_systems.push_back(new ChunkRenderSystem(this, context));
     m_systems.push_back(new InputSystem(this, context));
-    m_systems.push_back(new CollisionSystem(this, context));
+    m_systems.push_back(new PhysicSystem(this, context));
 
     // raise beginning events
     EnterChunkEvent e;
