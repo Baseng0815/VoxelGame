@@ -1,6 +1,8 @@
 #pragma once
 #include "../../include/Shape.h"
 
+struct TransformationComponent;
+
 struct RigidBodyComponent {
 	float mass = 0;
 
@@ -9,9 +11,7 @@ struct RigidBodyComponent {
 	glm::vec3 velocity;
 
 	Shape* shape = nullptr;
-	Shape* collision = nullptr;
+	BoxCollision* collision = nullptr;
 
-	RigidBodyComponent(Shape*, float);
-
-	bool checkCollision(const glm::mat4&, const RigidBodyComponent&, const glm::mat4&) const;
+	RigidBodyComponent(Shape*, float, BoxCollision* collision = nullptr);	
 };

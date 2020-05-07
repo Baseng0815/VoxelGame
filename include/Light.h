@@ -6,5 +6,5 @@ struct Light {
     glm::vec3 dir;
     glm::vec3 color;
 
-    Light(glm::vec3 direction = glm::vec3(0.5f, 1, 0.5f), glm::vec3 color = glm::vec3(0.8f, 0.8f, 0.8f));
+    Light(glm::vec3 direction = glm::vec3(-0.25f, 1, -0.25f), glm::vec3 color = glm::vec3(0.2f, 0.2f, 0.2f));
 };

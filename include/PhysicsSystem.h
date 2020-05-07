@@ -9,12 +9,15 @@
 struct ChunkComponent;
 
 class PhysicsSystem : public System {
-    private:
-        void _update(int dt) override;
+private:
+	std::vector<entt::entity> movedObjects = std::vector<entt::entity>();
 
-    public:
-        PhysicsSystem(SystemManager* systemManager);
+	void _update(int dt) override;
 
-        ~PhysicsSystem();
+	void solveBlockCollisions();
+public:
+	PhysicsSystem(SystemManager* systemManager);
+
+	~PhysicsSystem();
 };
 

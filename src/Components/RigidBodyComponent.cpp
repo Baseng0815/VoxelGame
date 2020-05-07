@@ -1,11 +1,6 @@
 #include "../../include/Components/RigidBodyComponent.h"
+#include "../../include/Components/TransformationComponent.h"
 
-RigidBodyComponent::RigidBodyComponent(Shape* shape, float density) {
-	this->shape = shape;
-
-	mass = shape->volume * density;
-}
-
-bool RigidBodyComponent::checkCollision(const glm::mat4& transform, const RigidBodyComponent& other, const glm::mat4& otherTransform) const {
-	return false;
+RigidBodyComponent::RigidBodyComponent(Shape* shape, float density, BoxCollision* collision)
+	: shape(shape), mass(shape->volume* density), collision(collision) {
 }
