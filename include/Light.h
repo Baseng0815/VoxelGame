@@ -3,8 +3,8 @@
 #include <glm/glm.hpp>
 
 struct Light {
-    glm::vec3 position;
+    glm::vec3 dir;
     glm::vec3 color;
 
-    Light(glm::vec3 position = glm::vec3(0, 5, 0), glm::vec3 color = glm::vec3(1, 1, 1));
+    Light(glm::vec3 direction = glm::vec3(0.5f, 1, 0.5f), glm::vec3 color = glm::vec3(0.8f, 0.8f, 0.8f));
 };

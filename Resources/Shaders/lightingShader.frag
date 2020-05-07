@@ -8,7 +8,7 @@ uniform sampler2D gNormal;
 uniform sampler2D gAlbedo;
 
 struct Light {
-    vec3 position;
+    vec3 dir;
     vec3 color;
 };
 
@@ -24,10 +24,9 @@ void main() {
     // 0.1 ^= ambient component
     vec3 lighting = albedo * 0.1;
 
-    for (int i = 0; i < NR_LIGHTS; i++) {
-            vec3 lightDir = normalize(lights[i].position - fragPos);
-            vec3 diffuse = max(dot(normal, lightDir), 0) * albedo * lights[i].color;
-            lighting += diffuse;
+    for (int i = 0; i < NR_LIGHTS; i++) {            
+        vec3 diffuse = max(dot(normal, normalize(-lights[i].dir)), 0) * albedo * lights[i].color;
+        lighting += diffuse;
     }
 
     out_Color = vec4(lighting, 1);

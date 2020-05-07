@@ -68,7 +68,7 @@ void EntityRenderSystem::_update(int dt) {
     m_lightingShader->bind();
     m_gBuffer.bindTextures();
 
-    m_lightingShader->upload("lights[0].position", m_light.position);
+    m_lightingShader->upload("lights[0].dir", m_light.dir);
     m_lightingShader->upload("lights[0].color", m_light.color);
     m_renderQuad.render();
 
@@ -98,5 +98,5 @@ EntityRenderSystem::EntityRenderSystem(SystemManager* systemManager)
     m_atlas = ResourceManager::getResource<Texture>("textureAtlas");
 
     m_light.color = glm::vec3(1, 1, 1);
-    m_light.position = glm::vec3(10, 10, 10);
+    m_light.dir = glm::vec3(10, 10, 10);
 }
