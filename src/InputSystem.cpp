@@ -91,7 +91,7 @@ void InputSystem::handleScrollEvent(Event* e) {
 			if (camera.fov > 179) camera.fov = 179;
 			else if (camera.fov < 1) camera.fov = 1;
 
-			updateProjectionMatrix(camera);
+			camera.isValid = false;
 		});
 }
 
@@ -103,7 +103,8 @@ void InputSystem::handleFramebufferSizeEvent(Event* e) {
 
 			camera.width = sizeEvent.width;
 			camera.height = sizeEvent.height;
-			updateProjectionMatrix(camera);
+			
+			camera.isValid = false;
 		});
 }
 
@@ -122,42 +123,8 @@ void InputSystem::updateVectors(CameraComponent& camera) {
 	camera.front_noY = glm::cross(camera.right, glm::vec3(0, 1, 0));
 }
 
-void InputSystem::updateViewMatrix(CameraComponent& camera, TransformationComponent& transform) {
-	camera.viewMatrix = glm::lookAt(transform.position, transform.position + camera.front,
-		glm::vec3(0, 1, 0));
-}
-
-void InputSystem::updateProjectionMatrix(CameraComponent& camera) {
-	camera.projectionMatrix = glm::perspective(glm::radians(camera.fov), camera.width / (float)camera.height, 0.1f, 1000.f);
-}
-
-void InputSystem::_update(int dt) {
-	// TODO move velocity and movement into physics system
-	m_systemManager->getRegistry().view<CameraComponent, TransformationComponent, VelocityComponent>().each(
-		[&](auto& camera, auto& transformation, auto& velocity) {
-			int prevChunkX = transformation.position.x / Configuration::CHUNK_SIZE;
-			int prevChunkZ = transformation.position.z / Configuration::CHUNK_SIZE;
-
-			transformation.position += velocity.velocity * (float)dt * Configuration::getFloatValue("CAMERA_MOVE_SPEED");
-
-			std::cout << velocity.velocity.x << " " << velocity.velocity.y << " " << velocity.velocity.z << std::endl;
-			std::cout << "\t" << transformation.position.x << " " << transformation.position.y << " " << transformation.position.z << std::endl;
-
-			int newChunkX = transformation.position.x / Configuration::CHUNK_SIZE;
-			int newChunkZ = transformation.position.z / Configuration::CHUNK_SIZE;
-
-			if (newChunkX != prevChunkX || newChunkZ != prevChunkZ) {
-				EnterChunkEvent e;
-				e.oldX = prevChunkX;
-				e.oldZ = prevChunkZ;
-				e.newX = newChunkX;
-				e.newZ = newChunkZ;
-
-				EventDispatcher::raiseEvent(&e);
-			}
-
-			updateViewMatrix(camera, transformation);
-		});
+void InputSystem::_update(int dt) {	
+	
 }
 
 InputSystem::InputSystem(SystemManager* systemManager)

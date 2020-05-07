@@ -18,6 +18,16 @@ void EntityRenderSystem::handleFramebufferSize(Event* e) {
     m_gBuffer.resize(fbsE.width, fbsE.height);
 }
 
+
+void EntityRenderSystem::updateViewMatrix(CameraComponent& camera, TransformationComponent& transform) {
+    camera.viewMatrix = glm::lookAt(transform.position, transform.position + camera.front,
+        glm::vec3(0, 1, 0));
+}
+
+void EntityRenderSystem::updateProjectionMatrix(CameraComponent& camera) {
+    camera.projectionMatrix = glm::perspective(glm::radians(camera.fov), camera.width / (float)camera.height, 0.1f, 1000.f);
+}
+
 #include <iostream>
 
 void EntityRenderSystem::_update(int dt) {
@@ -32,8 +42,13 @@ void EntityRenderSystem::_update(int dt) {
     // geometry pass: scene's geometry and color data
     m_blockShader->bind();
 
-    m_systemManager->getRegistry().view<CameraComponent>().each(
-        [=](auto& camera) {
+    m_systemManager->getRegistry().view<CameraComponent, TransformationComponent>().each(
+        [=](auto& camera, auto& transformation) {
+        if (!camera.isValid) {
+            updateViewMatrix(camera, transformation);
+            updateProjectionMatrix(camera);
+        }
+
         m_blockShader->upload("viewMatrix", camera.viewMatrix);
         m_blockShader->upload("projectionMatrix", camera.projectionMatrix);
     });

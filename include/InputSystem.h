@@ -17,9 +17,7 @@ class InputSystem : public System {
         void handleFramebufferSizeEvent(Event* e);
 
         void updateAbsoluteVelocity(CameraComponent& camera, VelocityComponent& velocity);
-        void updateVectors(CameraComponent& camera);
-        void updateViewMatrix(CameraComponent& camera, TransformationComponent& transform);
-        void updateProjectionMatrix(CameraComponent& camera);
+        void updateVectors(CameraComponent& camera);        
 
         void _update(int dt) override;
 

@@ -14,6 +14,9 @@ struct Light {
 class Shader;
 class Texture;
 
+struct CameraComponent;
+struct TransformationComponent;
+
 class EntityRenderSystem : public System {
     private:
         // first render pass
@@ -29,6 +32,9 @@ class EntityRenderSystem : public System {
         void handleFramebufferSize(Event* e);
 
         void _update(int dt) override;
+
+        void updateViewMatrix(CameraComponent& camera, TransformationComponent& transform);
+        void updateProjectionMatrix(CameraComponent& camera);
 
     public:
         EntityRenderSystem(SystemManager* systemManager);
