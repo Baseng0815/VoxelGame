@@ -39,6 +39,9 @@ SystemManager::SystemManager() {
     EnterChunkEvent e;
     e.newX = e.newZ = e.oldX = e.oldZ = 0;
     EventDispatcher::raiseEvent(&e);
+
+    FramebufferSizeEvent event = FramebufferSizeEvent(nullptr, 800, 600);
+    EventDispatcher::raiseEvent(&event);
 }
 
 SystemManager::~SystemManager() {

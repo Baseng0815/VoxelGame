@@ -46,9 +46,10 @@ void ChunkCreateSystem::handleEnterChunk(Event* e) {
             glm::vec2 pos(x, z);
             if (std::count(loadedChunks.begin(), loadedChunks.end(), pos) == 0) {
                 auto& registry = m_systemManager->getRegistry();
-                auto entity = registry.create();
+                auto entity = registry.create();                                
+                
                 registry.emplace<TransformationComponent>(entity, glm::vec3(x * Configuration::CHUNK_SIZE,
-                            0, z * Configuration::CHUNK_SIZE));
+                            0, z * Configuration::CHUNK_SIZE));                
                 registry.emplace<GeometryComponent>(entity);
                 auto& chunk = registry.emplace<ChunkComponent>(entity, x, z);
                 chunk.blockMutex = new std::mutex();

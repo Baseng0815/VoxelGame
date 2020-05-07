@@ -2,6 +2,10 @@
 
 #include "Configuration.h"
 
+#ifdef WIN32
+#include <array>
+#endif
+
 typedef std::array<std::array<int, Configuration::CHUNK_SIZE>, Configuration::CHUNK_SIZE> ChunkMapArray;
 
 class MapGenerator {

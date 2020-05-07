@@ -5,6 +5,7 @@
 #include "../Configuration.h"
 
 #include <vector>
+#include <array>
 
 typedef std::array<glm::vec2, 4> FaceUVs;
 typedef std::array<FaceUVs, 6> BlockUVs;

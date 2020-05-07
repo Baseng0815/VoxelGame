@@ -1,5 +1,9 @@
 #include "../include/GBuffer.h"
 
+#ifdef WIN32
+#include <stdexcept>
+#endif
+
 void GBuffer::create() {
     glGenFramebuffers(1, &m_gBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, m_gBuffer);

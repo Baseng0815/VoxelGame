@@ -2,6 +2,10 @@
 #include "../include/Configuration.h"
 #include "../include/EventDispatcher.h"
 
+#ifdef WIN32
+#include <stdexcept>
+#endif
+
 Window::Window(Application* app) {
     Configuration::loadConfiguration("Resources/");
     glfwInit();

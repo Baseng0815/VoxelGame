@@ -1,6 +1,5 @@
 #include "../include/Application.h"
 
-#undef WIN32
 #ifndef WIN32
 #include <mcheck.h>
 

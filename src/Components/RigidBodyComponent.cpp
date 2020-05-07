@@ -7,5 +7,5 @@ RigidBodyComponent::RigidBodyComponent(Shape* shape, float density) {
 }
 
 bool RigidBodyComponent::checkCollision(const glm::mat4& transform, const RigidBodyComponent& other, const glm::mat4& otherTransform) const {
-	
+	return false;
 }

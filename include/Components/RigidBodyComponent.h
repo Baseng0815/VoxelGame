@@ -4,9 +4,9 @@
 struct RigidBodyComponent {
 	float mass = 0;
 
-	glm::vec3 centerOfMass = glm::vec3();
-	glm::vec3 velocity = glm::vec3();
-	glm::vec3 angularVelocity = glm::vec3();
+	glm::vec3 centerOfMass = glm::vec3();	
+
+	glm::vec3 velocity;
 
 	Shape* shape = nullptr;
 	Shape* collision = nullptr;

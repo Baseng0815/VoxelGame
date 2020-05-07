@@ -3,5 +3,5 @@
 #include <glm/glm.hpp>
 
 struct VelocityComponent {
-    glm::vec3 velocity;
+    glm::vec3 velocity = glm::vec3();
 };
