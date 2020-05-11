@@ -36,11 +36,7 @@ SystemManager::SystemManager() {
     m_entityRegistry.emplace<TransformationComponent>(entity, glm::vec3(0, 100, 0), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
     m_entityRegistry.emplace<VelocityComponent>(entity);
 
-    BoxCollision* cameraCollision = new BoxCollision();
-    cameraCollision->pos = glm::vec3(-0.125f, -0.75f, -0.125f);
-    cameraCollision->a = glm::vec3(0.25, 0, 0);
-    cameraCollision->b = glm::vec3(0, 1, 0);
-    cameraCollision->c = glm::vec3(0, 0, 0.25);
+    BoxCollision* cameraCollision = new BoxCollision(glm::vec3(-0.5f, -1.5f, -0.5f), 1, 2, 1);
 
     m_entityRegistry.emplace<RigidBodyComponent>(entity, new Shape(std::vector<Triangle>()), 0, cameraCollision);
 

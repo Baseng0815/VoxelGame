@@ -3,6 +3,7 @@
 #include <vector>
 #include <mutex>
 #include <entt/entt.hpp>
+#include <atomic>
 
 class System;
 class Event;
@@ -16,6 +17,8 @@ private:
     entt::registry m_entityRegistry;
 
 public:
+    std::atomic_bool physicsActive = false;
+
     SystemManager();
     ~SystemManager();
 

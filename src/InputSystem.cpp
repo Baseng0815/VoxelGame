@@ -58,9 +58,9 @@ void InputSystem::handleKeyPressEvent(Event* e) {
 				break;
 			default:
 				break;
-			}
+			}		
 
-			updateAbsoluteVelocity(camera, velocity);
+			m_systemManager->physicsActive = true;
 		});
 }
 
@@ -75,8 +75,7 @@ void InputSystem::handleMouseMoveEvent(Event* e) {
 			if (camera.pitch > 89.99) camera.pitch = 89.99;
 			else if (camera.pitch < -89.99) camera.pitch = -89.99;
 
-			updateVectors(camera);
-			updateAbsoluteVelocity(camera, velocity);
+			updateVectors(camera);			
 		});
 }
 
@@ -106,12 +105,6 @@ void InputSystem::handleFramebufferSizeEvent(Event* e) {
 			
 			camera.isValid = false;
 		});
-}
-
-void InputSystem::updateAbsoluteVelocity(CameraComponent& camera, VelocityComponent& velocity) {
-	velocity.velocity = camera.relVelocity.x * camera.right
-		+ camera.relVelocity.y * glm::vec3(0, 1, 0)
-		+ camera.relVelocity.z * camera.front_noY;
 }
 
 void InputSystem::updateVectors(CameraComponent& camera) {

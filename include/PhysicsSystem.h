@@ -6,7 +6,10 @@
 #include <future>
 #include <map>
 
+#include <glm/glm.hpp>
+
 struct ChunkComponent;
+struct BoxCollision;
 
 class PhysicsSystem : public System {
 private:
@@ -15,6 +18,9 @@ private:
 	void _update(int dt) override;
 
 	void solveBlockCollisions();
+
+	void checkAndHandleCollisions(const BoxCollision&, const BoxCollision&, 
+		glm::vec3&, glm::vec3&) const;
 public:
 	PhysicsSystem(SystemManager* systemManager);
 

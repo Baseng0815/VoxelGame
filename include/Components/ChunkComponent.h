@@ -17,6 +17,7 @@ struct ChunkComponent {
 
     std::atomic_bool verticesOutdated   = false;
     std::atomic_bool threadActiveOnSelf = false;
+    std::atomic_bool chunkBlocksCreated = false;
 
     int chunkX, chunkZ;
 

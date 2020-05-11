@@ -268,6 +268,7 @@ void ChunkCreateSystem::_update(int dt) {
         chunk.blocks = val;
         chunk.verticesOutdated = true;
         chunk.threadActiveOnSelf = false;
+        chunk.chunkBlocksCreated = true;
 
         constructionCount--;
     }

@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#include "../include/Vertex.h"
+#include <glm/glm.hpp>
 
 struct TransformationComponent;
 
@@ -20,13 +20,4 @@ public:
 	glm::vec3 center;
 
 	Shape(std::vector<Triangle>&);
-};
-
-struct BoxCollision {
-	glm::vec3 pos;
-	glm::vec3 a, b, c;
-
-	BoxCollision applyTransformation(const TransformationComponent&) const;
-
-	std::vector<glm::vec3> getAffectedBlocks() const;
 };

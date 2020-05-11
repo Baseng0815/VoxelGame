@@ -40,10 +40,8 @@ out/*
 *.out
 *.app
 
-<<<<<<< HEAD
 #CMake
 #CMakeSettings.json
-=======
 *.vim
 CMakeFiles/*
 *.sln
@@ -54,4 +52,5 @@ packages/*
 VoxelGame.vcxproj*
 Release/*
 out/*
->>>>>>> ECS
+
+updateSolution.ps1

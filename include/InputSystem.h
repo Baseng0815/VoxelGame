@@ -15,8 +15,7 @@ class InputSystem : public System {
         void handleMouseMoveEvent(Event* e);
         void handleScrollEvent(Event* e);
         void handleFramebufferSizeEvent(Event* e);
-
-        void updateAbsoluteVelocity(CameraComponent& camera, VelocityComponent& velocity);
+        
         void updateVectors(CameraComponent& camera);        
 
         void _update(int dt) override;
