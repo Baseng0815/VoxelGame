@@ -128,44 +128,25 @@ void PhysicsSystem::solveBlockCollisions() {
 
 		std::vector<glm::vec3> affectedBlocks = collision.getAffectedBlocks(transformation.position);
 		glm::vec3 moveOutVec = glm::vec3();
+		bool hasCollision = false;
 
 		for (auto it = affectedBlocks.begin(); it != affectedBlocks.end(); it++) {
 			glm::vec3 blockPos = (*it);
-			int chunkX = blockPos.x / Configuration::CHUNK_SIZE;
-			int chunkZ = blockPos.z / Configuration::CHUNK_SIZE;
 
 			// check block has collision
-			bool hasCollision = false;
-			for (auto c : chunksView) {
-				ChunkComponent& chunk = chunksView.get(c);
+			int y = (int)blockPos.y % Configuration::CHUNK_HEIGHT;
 
-				if (chunk.chunkX == chunkX && chunk.chunkZ == chunkZ) {
-					int y = (int)blockPos.y % Configuration::CHUNK_HEIGHT;
-
-					if (y <= 1 || y > Configuration::CHUNK_HEIGHT)
-						hasCollision = false;
-					else {
-						int x = (int)blockPos.x % Configuration::CHUNK_SIZE;
-						int z = (int)blockPos.z % Configuration::CHUNK_SIZE;
-
-						if (x < 0)
-							x = Configuration::CHUNK_SIZE + x;
-
-						if (z < 0)
-							z = Configuration::CHUNK_SIZE + z;
-
-						std::unique_lock<std::mutex> blockLock(*(chunk.blockMutex));
-
-						hasCollision = (chunk.blocks[x][y][z].type != BlockType::BLOCK_AIR);
-
-						blockLock.unlock();
-					}
-				}
+			if (y <= 1 || y > Configuration::CHUNK_HEIGHT)
+				hasCollision = false;
+			else {
+				hasCollision = ChunkComponent::getBlock(&registry, (int)blockPos.x, (int)blockPos.y, (int)blockPos.z).type != BlockType::BLOCK_AIR;
 			}
 
 			// break collision detection
 			if (!hasCollision)
 				continue;
+			
+			std::cout << "\t" << blockPos.x << " " << blockPos.y << " " << blockPos.z << std::endl;
 
 			// get block collision
 			BoxCollision blockCollision = BoxCollision(glm::vec3(), 1, 1, 1);
@@ -174,6 +155,7 @@ void PhysicsSystem::solveBlockCollisions() {
 			checkAndHandleCollisions(collision, blockCollision, transformation.position, blockPos);
 		}
 	}
+
 
 	movedObjects.clear();
 }
@@ -187,8 +169,7 @@ void PhysicsSystem::checkAndHandleCollisions(const BoxCollision& collisionA, con
 
 	if (collisionDetected) {
 
-		glm::vec3 mtv = intersection.getMinimumTranslationVector();
-		std::cout << mtv.x << " " << mtv.y << " " << mtv.z << std::endl;
+		glm::vec3 mtv = intersection.getMinimumTranslationVector();		
 
 		if (collisionA.dynamic && collisionB.dynamic) {
 			posA += 0.55f * mtv;
@@ -199,7 +180,7 @@ void PhysicsSystem::checkAndHandleCollisions(const BoxCollision& collisionA, con
 		}
 		else if (collisionB.dynamic) {
 			posB += 1.1f * -mtv;
-		}		
+		}
 	}
 }
 

@@ -239,6 +239,8 @@ void ChunkCreateSystem::_update(int dt) {
         if (!chunk.threadActiveOnSelf && chunk.blocks) {
             glm::vec2 pos(chunk.chunkX, chunk.chunkZ);
 
+            ChunkComponent::removeChunk(*it);
+
             // cleanup memory
             for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
                 for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
@@ -302,6 +304,8 @@ void ChunkCreateSystem::_update(int dt) {
                     chunk.threadActiveOnSelf = true;
                     m_futures.push_back(std::async(std::launch::async, [=]() {
                                 updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ);
+
+                                ChunkComponent::addChunk(entity, chunk.chunkX, chunk.chunkZ);
                                 }));
                 }
                 // update vertices

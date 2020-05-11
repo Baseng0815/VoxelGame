@@ -5,9 +5,9 @@ BoxCollision::BoxCollision(glm::vec3 pos, float width, float height, float lengt
 std::vector<glm::vec3> BoxCollision::getAffectedBlocks(glm::vec3 position = glm::vec3()) const {
 	std::vector<glm::vec3> positions = std::vector<glm::vec3>();
 
-	for (int x = 0; x < width; x++)
-		for (int y = 0; y < height; y++)
-			for (int z = 0; z < length; z++) {
+	for (int x = 0; x <= width; x++)
+		for (int y = 0; y <= height; y++)
+			for (int z = 0; z <= length; z++) {
 				positions.push_back(glm::floor(relativePos + position + glm::vec3(x, y, z)));
 			}
 

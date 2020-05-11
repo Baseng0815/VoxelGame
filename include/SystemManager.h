@@ -14,7 +14,7 @@ private:
     std::vector<System*> m_systems;
 
     std::mutex m_registryMutex;
-    entt::registry m_entityRegistry;
+    entt::registry m_entityRegistry;    
 
 public:
     std::atomic_bool physicsActive = false;
