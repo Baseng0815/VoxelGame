@@ -10,7 +10,7 @@ class Application;
 
 enum EventType {
     // basic events
-    KEY_EVENT, CURSOR_EVENT, SCROLL_EVENT, FRAMEBUFFER_SIZE_EVENT,
+    KEY_EVENT, CURSOR_EVENT, SCROLL_EVENT, FRAMEBUFFER_SIZE_EVENT, MOUSE_BUTTON_EVENT,
 
     // advanced events
     ENTER_CHUNK_EVENT
@@ -87,4 +87,17 @@ struct EnterChunkEvent : public Event {
     EventType type() const override final;
     std::string toString() const override final;
     EnterChunkEvent(Application* app = nullptr, int oldX = 0, int oldY = 0, int newX = 0, int newY = 0);
+};
+
+struct MouseButtonEvent : public Event {
+    static constexpr EventType TYPE = MOUSE_BUTTON_EVENT;
+
+    Application* app;
+    int button;
+    int action;
+    int mods;
+
+    EventType type() const override final;
+    std::string toString() const override final;
+    MouseButtonEvent(Application* app = nullptr, int button = 0, int action = 0, int mods = 0);
 };

@@ -76,8 +76,22 @@ std::string EnterChunkEvent::toString() const {
     return ss.str();
 }
 
+EventType MouseButtonEvent::type() const {
+    return MouseButtonEvent::TYPE;
+}
+
+std::string MouseButtonEvent::toString() const {
+    std::stringstream ss;
+    ss << "button: " << button << " action: " << action << " mods: " << mods;
+    return ss.str();
+}
+
+MouseButtonEvent::MouseButtonEvent(Application* app, int button, int action, int mods)
+    : app(app), button(button), action(action), mods(mods) {}
+
 template KeyEvent* Event::get<KeyEvent>();
 template ScrollEvent* Event::get<ScrollEvent>();
 template CursorEvent* Event::get<CursorEvent>();
 template FramebufferSizeEvent* Event::get<FramebufferSizeEvent>();
 template EnterChunkEvent* Event::get<EnterChunkEvent>();
+template MouseButtonEvent* Event::get<MouseButtonEvent>();
