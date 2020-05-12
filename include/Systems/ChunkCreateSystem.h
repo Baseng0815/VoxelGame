@@ -1,7 +1,7 @@
 #pragma once
 
 #include "System.h"
-#include "WorldGenerator.h"
+#include "../../include/WorldGenerator.h"
 
 #include <map>
 #include <mutex>

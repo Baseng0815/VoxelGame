@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../Window.h"
-#include "../Configuration.h"
+#include "../../include/Rendering/Window.h"
+#include "../../include/Configuration.h"
 
 struct CameraComponent {
     glm::mat4 projectionMatrix, viewMatrix;

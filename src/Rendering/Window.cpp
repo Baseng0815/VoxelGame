@@ -1,6 +1,6 @@
-#include "../include/Window.h"
-#include "../include/Configuration.h"
-#include "../include/EventDispatcher.h"
+#include "../../include/Rendering/Window.h"
+#include "../../include/Configuration.h"
+#include "../../include/EventDispatcher.h"
 
 #ifdef WIN32
 #include <stdexcept>

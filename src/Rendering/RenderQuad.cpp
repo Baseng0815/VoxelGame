@@ -1,6 +1,6 @@
-#include "../include/RenderQuad.h"
+#include "../../include/Rendering/RenderQuad.h"
 
-#include "../include/Utility.h"
+#include "../../include/Utility.h"
 
 RenderQuad::RenderQuad() {
     float quadVertices[] = {

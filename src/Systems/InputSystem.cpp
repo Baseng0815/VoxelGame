@@ -1,15 +1,15 @@
-#include "../include/InputSystem.h"
+#include "../../include/Systems/InputSystem.h"
 
-#include "../include/Configuration.h"
-#include "../include/SystemManager.h"
-#include "../include/EventDispatcher.h"
-#include "../include/Collision.h"
-#include "../include/Block.h"
+#include "../../include/Configuration.h"
+#include "../../include/Systems/SystemManager.h"
+#include "../../include/EventDispatcher.h"
+#include "../../include/Collision.h"
+#include "../../include/Block.h"
 
-#include "../include/Components/CameraComponent.h"
-#include "../include/Components/TransformationComponent.h"
-#include "../include/Components/VelocityComponent.h"
-#include "../include/Components/ChunkComponent.h"
+#include "../../include/Components/CameraComponent.h"
+#include "../../include/Components/TransformationComponent.h"
+#include "../../include/Components/VelocityComponent.h"
+#include "../../include/Components/ChunkComponent.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/transform.hpp>

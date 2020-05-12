@@ -1,5 +1,5 @@
-#include "../include/Skybox.h"
-#include "../include/Utility.h"
+#include "../../include/Rendering/Skybox.h"
+#include "../../include/Utility.h"
 
 #include <string>
 #include <iostream>

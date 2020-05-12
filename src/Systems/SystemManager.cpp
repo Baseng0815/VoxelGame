@@ -1,20 +1,19 @@
-#include "../include/SystemManager.h"
+#include "../../include/Systems/SystemManager.h"
 
-#include "../include/Texture.h"
-#include "../include/ResourceManager.h"
-#include "../include//EventDispatcher.h"
+#include "../../include/Rendering/Texture.h"
+#include "../../include/ResourceManager.h"
+#include "../../include/EventDispatcher.h"
 
-#include "../include/InputSystem.h"
-#include "../include/PhysicsSystem.h"
-#include "../include/ChunkCreateSystem.h"
-#include "../include/ChunkCreateSystem.h"
-#include "../include/EntityRenderSystem.h"
+#include "../../include/Systems/InputSystem.h"
+#include "../../include/Systems/PhysicsSystem.h"
+#include "../../include/Systems/ChunkCreateSystem.h"
+#include "../../include/Systems/EntityRenderSystem.h"
 
-#include "../include/Components/AtlasComponent.h"
-#include "../include/Components/CameraComponent.h"
-#include "../include/Components/RigidBodyComponent.h"
-#include "../include/Components/VelocityComponent.h"
-#include "../include/Components/TransformationComponent.h"
+#include "../../include/Components/AtlasComponent.h"
+#include "../../include/Components/CameraComponent.h"
+#include "../../include/Components/RigidBodyComponent.h"
+#include "../../include/Components/VelocityComponent.h"
+#include "../../include/Components/TransformationComponent.h"
 
 SystemManager::SystemManager() {
     // TODO move resource loading to a better location

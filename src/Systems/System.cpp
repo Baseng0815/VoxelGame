@@ -1,5 +1,5 @@
-#include "../include/System.h"
-#include "../include/SystemManager.h"
+#include "../../include/Systems/System.h"
+#include "../../include/Systems/SystemManager.h"
 
 System::System(SystemManager* systemManager, int updateDelay)
     : m_systemManager(systemManager), m_updateDelay(updateDelay) {}

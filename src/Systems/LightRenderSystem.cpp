@@ -1,6 +1,6 @@
-#include "../include/LightRenderSystem.h"
+#include "../../include/Systems/LightRenderSystem.h"
 
-#include "../include/Event.h"
+#include "../../include/Event.h"
 
 /*
 void LightRenderSystem::handleFramebufferSize(Event* e) {

@@ -1,17 +1,17 @@
-#include "../include/PhysicsSystem.h"
-#include "../include/SystemManager.h"
+#include "../../include/Systems/PhysicsSystem.h"
+#include "../../include/Systems/SystemManager.h"
 
-#include "../include/Components/CameraComponent.h"
-#include "../include/Components/ChunkComponent.h"
-#include "../include/Components/RigidBodyComponent.h"
-#include "../include/Components/TransformationComponent.h"
-#include "../include/Components/VelocityComponent.h"
+#include "../../include/Components/CameraComponent.h"
+#include "../../include/Components/ChunkComponent.h"
+#include "../../include/Components/RigidBodyComponent.h"
+#include "../../include/Components/TransformationComponent.h"
+#include "../../include/Components/VelocityComponent.h"
 
-#include "../include/Block.h"
-#include "../include/Configuration.h"
-#include "../include/Collision.h"
-#include "../include/Event.h"
-#include "../include/EventDispatcher.h"
+#include "../../include/Block.h"
+#include "../../include/Configuration.h"
+#include "../../include/Collision.h"
+#include "../../include/Event.h"
+#include "../../include/EventDispatcher.h"
 
 #include <glm/glm.hpp>
 

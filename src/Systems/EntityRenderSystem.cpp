@@ -1,16 +1,16 @@
-#include "../include/EntityRenderSystem.h"
+#include "../../include/Systems/EntityRenderSystem.h"
 
-#include "../include/SystemManager.h"
-#include "../include/EventDispatcher.h"
-#include "../include/ResourceManager.h"
+#include "../../include/Systems/SystemManager.h"
+#include "../../include/EventDispatcher.h"
+#include "../../include/ResourceManager.h"
 
-#include "../include/Components/ChunkComponent.h"
-#include "../include/Components/CameraComponent.h"
-#include "../include/Components/TextureComponent.h"
-#include "../include/Components/GeometryComponent.h"
-#include "../include/Components/TransformationComponent.h"
+#include "../../include/Components/ChunkComponent.h"
+#include "../../include/Components/CameraComponent.h"
+#include "../../include/Components/TextureComponent.h"
+#include "../../include/Components/GeometryComponent.h"
+#include "../../include/Components/TransformationComponent.h"
 
-#include "../include/Texture.h"
+#include "../../include/Rendering/Texture.h"
 
 void EntityRenderSystem::handleFramebufferSize(Event* e) {
     FramebufferSizeEvent fbsE = *e->get<FramebufferSizeEvent>();

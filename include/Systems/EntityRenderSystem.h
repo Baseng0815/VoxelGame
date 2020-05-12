@@ -1,8 +1,8 @@
-#include "System.h"
-#include "GBuffer.h"
-#include "RenderQuad.h"
+#include "../../include/Systems/System.h"
+#include "../../include/Rendering/GBuffer.h"
+#include "../../include/Rendering/RenderQuad.h"
 
-#include "Shader.h"
+#include "../../include/Rendering/Shader.h"
 
 class Event;
 

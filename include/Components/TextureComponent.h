@@ -1,4 +1,4 @@
-#include "../Texture.h"
+#include "../../include/Rendering/Texture.h"
 
 struct TextureComponent {
     Texture* texture;

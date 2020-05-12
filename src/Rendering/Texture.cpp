@@ -1,4 +1,4 @@
-#include "../include/Texture.h"
+#include "../../include/Rendering/Texture.h"
 
 #if defined(WIN32)
 #include <SOIL.h>
