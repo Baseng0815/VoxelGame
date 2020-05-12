@@ -86,8 +86,11 @@ void InputSystem::handleMouseButtonEvent(Event* e) {
 							block = ChunkComponent::getBlock(m_systemManager->getRegistry(), (int)(*it).x, (int)(*it).y, (int)(*it).z).type;							
 						} while (block == BlockType::BLOCK_AIR && ++it != blocks.end());
 
-						if (it != blocks.end())
+						if (it != blocks.end()) {
+							std::cout << "\tx: " << (int)(*it).x << " y: " << (int)(*it).y << " z: " << (int)(*it).z << " type: " << Block(block).toString() << std::endl;
+
 							ChunkComponent::setBlock(m_systemManager->getRegistry(), (int)(*it).x, (int)(*it).y, (int)(*it).z, Block());
+						}
 					}
 				}
 				break;

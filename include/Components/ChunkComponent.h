@@ -40,6 +40,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& stream, const ChunkComponent& chunk);
 
+    static void getChunkCoords(int x, int y, int z, int& chunkX, int& chunkZ, int& cx, int& cy, int& cz);
     static entt::entity getChunk(int chunkX, int chunkZ);
     static Block getBlock(entt::registry& registry, int x, int y, int z);
     static void setBlock(entt::registry& registry, int x, int y, int z, Block block);

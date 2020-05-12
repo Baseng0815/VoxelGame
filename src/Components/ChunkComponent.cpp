@@ -4,8 +4,8 @@
 #include "../../include/Event.h"
 #include "../../include/EventDispatcher.h"
 
-std::unordered_map<glm::vec2, entt::entity, HashFunction> ChunkComponent::chunksLookup 
-	= std::unordered_map<glm::vec2, entt::entity, HashFunction>();
+std::unordered_map<glm::vec2, entt::entity, HashFunction> ChunkComponent::chunksLookup
+= std::unordered_map<glm::vec2, entt::entity, HashFunction>();
 
 ChunkComponent::ChunkComponent(int chunkX, int chunkZ) :
 	chunkX(chunkX), chunkZ(chunkZ) {
@@ -37,6 +37,26 @@ std::ostream& operator<<(std::ostream& stream, const ChunkComponent& chunk) {
 
 }
 
+void ChunkComponent::getChunkCoords(int x, int y, int z, int& chunkX, int& chunkZ, int& cx, int& cy, int& cz) {
+	chunkX = x / Configuration::CHUNK_SIZE;
+	chunkZ = z / Configuration::CHUNK_SIZE;
+
+	cx = x % Configuration::CHUNK_SIZE;
+	if (cx < 0)
+		cx = Configuration::CHUNK_SIZE - abs(cx);
+
+	cy = y;
+	cz = z % Configuration::CHUNK_SIZE;
+	if (cz < 0)
+		cz = Configuration::CHUNK_SIZE - abs(cz);
+
+	if (x < 0 && cx != 0)
+		chunkX -= 1;
+
+	if (z < 0 && cz != 0)
+		chunkZ -= 1;
+}
+
 entt::entity ChunkComponent::getChunk(int chunkX, int chunkZ) {
 	glm::vec2 key = glm::vec2(chunkX, chunkZ);
 
@@ -44,22 +64,9 @@ entt::entity ChunkComponent::getChunk(int chunkX, int chunkZ) {
 }
 
 Block ChunkComponent::getBlock(entt::registry& registry, int x, int y, int z) {
-	int chunkX = x / Configuration::CHUNK_SIZE;
-	int chunkZ = z / Configuration::CHUNK_SIZE;
-	if (x < 0)
-		chunkX -= 1;
-
-	if (z < 0)
-		chunkZ -= 1;
-
-	int cx = x % Configuration::CHUNK_SIZE;	
-	if (cx < 0)
-		cx = Configuration::CHUNK_SIZE - abs(cx);
-
-	int cy = y;
-	int cz = z % Configuration::CHUNK_SIZE;
-	if (cz < 0)
-		cz = Configuration::CHUNK_SIZE - abs(cz);
+	int chunkX, chunkZ;
+	int cx, cy, cz;
+	getChunkCoords(x, y, z, chunkX, chunkZ, cx, cy, cz);
 
 	auto entity = getChunk(chunkX, chunkZ);
 	ChunkComponent& chunk = registry.get<ChunkComponent>(entity);
@@ -72,22 +79,9 @@ Block ChunkComponent::getBlock(entt::registry& registry, int x, int y, int z) {
 }
 
 void ChunkComponent::setBlock(entt::registry& registry, int x, int y, int z, Block block) {
-	int chunkX = x / Configuration::CHUNK_SIZE;
-	int chunkZ = z / Configuration::CHUNK_SIZE;
-	if (x < 0)
-		chunkX -= 1;
-
-	if (z < 0)
-		chunkZ -= 1;
-
-	int cx = x % Configuration::CHUNK_SIZE;
-	if (cx < 0)
-		cx = Configuration::CHUNK_SIZE - abs(cx);
-
-	int cy = y;
-	int cz = z % Configuration::CHUNK_SIZE;
-	if (cz < 0)
-		cz = Configuration::CHUNK_SIZE - abs(cz);
+	int chunkX, chunkZ;
+	int cx, cy, cz;
+	getChunkCoords(x, y, z, chunkX, chunkZ, cx, cy, cz);
 
 	auto entity = getChunk(chunkX, chunkZ);
 	ChunkComponent& chunk = registry.get<ChunkComponent>(entity);

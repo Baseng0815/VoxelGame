@@ -64,13 +64,8 @@ void ChunkCreateSystem::handleEnterChunk(Event* e) {
 void ChunkCreateSystem::handleBlockChanged(Event* e) {
 	BlockChangedEvent blockChangedEvent = *e->get<BlockChangedEvent>();
 
-	int chunkX = blockChangedEvent.blockX / Configuration::CHUNK_SIZE;
-	int chunkZ = blockChangedEvent.blockZ / Configuration::CHUNK_SIZE;
-	if (blockChangedEvent.blockX < 0)
-		chunkX -= 1;
-
-	if (blockChangedEvent.blockZ < 0)
-		chunkZ -= 1;
+	int chunkX, chunkZ, cx, cy, cz;
+	ChunkComponent::getChunkCoords(blockChangedEvent.blockX, blockChangedEvent.blockY, blockChangedEvent.blockZ, chunkX, chunkZ, cx, cy, cz);
 
 	auto chunkEntity = ChunkComponent::getChunk(chunkX, chunkZ);
 	m_outdatedChunks.push_back(chunkEntity);
