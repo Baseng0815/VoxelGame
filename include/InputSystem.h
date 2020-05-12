@@ -12,6 +12,7 @@ class VelocityComponent;
 class InputSystem : public System {
     private:
         void handleKeyPressEvent(Event* e);
+        void handleMouseButtonEvent(Event* e);
         void handleMouseMoveEvent(Event* e);
         void handleScrollEvent(Event* e);
         void handleFramebufferSizeEvent(Event* e);

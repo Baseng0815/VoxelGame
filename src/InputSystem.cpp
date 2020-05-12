@@ -3,10 +3,13 @@
 #include "../include/Configuration.h"
 #include "../include/SystemManager.h"
 #include "../include/EventDispatcher.h"
+#include "../include/Collision.h"
+#include "../include/Block.h"
 
 #include "../include/Components/CameraComponent.h"
 #include "../include/Components/TransformationComponent.h"
 #include "../include/Components/VelocityComponent.h"
+#include "../include/Components/ChunkComponent.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/transform.hpp>
@@ -18,8 +21,8 @@ void InputSystem::handleKeyPressEvent(Event* e) {
 	KeyEvent keyEvent = *e->get<KeyEvent>();
 
 	m_systemManager->getRegistry().view<CameraComponent, VelocityComponent>().each(
-		[&](auto& camera, auto& velocity) {			
-		switch (keyEvent.key) {
+		[&](auto& camera, auto& velocity) {
+			switch (keyEvent.key) {
 			case GLFW_KEY_W:
 				if (keyEvent.action == GLFW_PRESS)
 					camera.relVelocity.z += -1;
@@ -58,9 +61,39 @@ void InputSystem::handleKeyPressEvent(Event* e) {
 				break;
 			default:
 				break;
-			}		
+			}
 
 			m_systemManager->physicsActive = true;
+		});
+}
+
+void InputSystem::handleMouseButtonEvent(Event* e) {
+	MouseButtonEvent mouseButtonEvent = *e->get<MouseButtonEvent>();
+
+	m_systemManager->getRegistry().view<CameraComponent, TransformationComponent>().each(
+		[&](CameraComponent& camera, TransformationComponent& transformation) {
+			switch (mouseButtonEvent.button) {
+			case GLFW_MOUSE_BUTTON_LEFT:
+				if (mouseButtonEvent.action == GLFW_PRESS) {
+					Ray cameraRay = Ray(transformation.position, normalize(camera.front));
+
+					std::vector<glm::vec3> blocks = cameraRay.getAffectedBlocks(5);
+					auto it = blocks.begin();
+
+					if (it != blocks.end()) {
+						BlockType block = BlockType::BLOCK_AIR;
+						do {
+							block = ChunkComponent::getBlock(m_systemManager->getRegistry(), (int)(*it).x, (int)(*it).y, (int)(*it).z).type;							
+						} while (block == BlockType::BLOCK_AIR && ++it != blocks.end());
+
+						if (it != blocks.end())
+							ChunkComponent::setBlock(m_systemManager->getRegistry(), (int)(*it).x, (int)(*it).y, (int)(*it).z, Block());
+					}
+				}
+				break;
+			default:
+				break;
+			}
 		});
 }
 
@@ -75,7 +108,7 @@ void InputSystem::handleMouseMoveEvent(Event* e) {
 			if (camera.pitch > 89.99) camera.pitch = 89.99;
 			else if (camera.pitch < -89.99) camera.pitch = -89.99;
 
-			updateVectors(camera);			
+			updateVectors(camera);
 		});
 }
 
@@ -102,7 +135,7 @@ void InputSystem::handleFramebufferSizeEvent(Event* e) {
 
 			camera.width = sizeEvent.width;
 			camera.height = sizeEvent.height;
-			
+
 			camera.isValid = false;
 		});
 }
@@ -116,8 +149,8 @@ void InputSystem::updateVectors(CameraComponent& camera) {
 	camera.front_noY = glm::cross(camera.right, glm::vec3(0, 1, 0));
 }
 
-void InputSystem::_update(int dt) {	
-	
+void InputSystem::_update(int dt) {
+
 }
 
 InputSystem::InputSystem(SystemManager* systemManager)
@@ -125,5 +158,6 @@ InputSystem::InputSystem(SystemManager* systemManager)
 	ADD_EVENT(handleKeyPressEvent, KEY_EVENT);
 	ADD_EVENT(handleMouseMoveEvent, CURSOR_EVENT);
 	ADD_EVENT(handleScrollEvent, SCROLL_EVENT);
-	ADD_EVENT(handleFramebufferSizeEvent, FRAMEBUFFER_SIZE_EVENT);	
+	ADD_EVENT(handleFramebufferSizeEvent, FRAMEBUFFER_SIZE_EVENT);
+	ADD_EVENT(handleMouseButtonEvent, MOUSE_BUTTON_EVENT);
 }

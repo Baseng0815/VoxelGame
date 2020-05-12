@@ -50,48 +50,60 @@ void BoxCollision::getMinMax(const glm::vec3 position, glm::vec3* min, glm::vec3
 	}
 }
 
-#pragma region IntersectionInfo
+Ray::Ray(glm::vec3 start, glm::vec3 dir) : start(start), direction(glm::normalize(dir)) {}
 
-IntersectionInfo::IntersectionInfo(const BoxCollision* colA, const BoxCollision* colB, const glm::vec3 posA, const glm::vec3 posB)
-	: collisionA(colA), collisionB(colB), positionA(posA), positionB(posB) { 
-	collisionA->getMinMax(posA, &aMin, &aMax);	
-	collisionB->getMinMax(posB, &bMin, &bMax);
+std::vector<glm::vec3> Ray::getAffectedBlocks(float length) const {
+	std::vector<glm::vec3> blocks = std::vector<glm::vec3>();	
+	glm::vec3 lastPos = glm::vec3(FLT_MAX, FLT_MAX, FLT_MAX);
 
-	intersects =
-		aMin.x <= bMax.x && aMax.x >= bMin.x &&
+	int count = ceil(length);
+	for (int i = 0; i < count; i++) {
+		glm::vec3 pos = round(start + (float)i * direction);
+
+		if (pos != lastPos) {
+			blocks.push_back(pos);
+			lastPos = pos;
+		}
+	}
+
+	return blocks;
+}
+
+#pragma region Collision
+
+bool Collision::intersects(const BoxCollision* colA, const glm::vec3 posA,
+	const BoxCollision* colB, const glm::vec3 posB) {
+	glm::vec3 aMin, bMin, aMax, bMax;
+
+	colA->getMinMax(posA, &aMin, &aMax);
+	colB->getMinMax(posB, &bMin, &bMax);
+
+	return aMin.x <= bMax.x && aMax.x >= bMin.x &&
 		aMin.y <= bMax.y && aMax.y >= bMin.y &&
 		aMin.z <= bMax.z && aMax.z >= bMin.z;
 }
 
-glm::vec3 IntersectionInfo::getMinimumTranslationVector() const {
-	glm::vec3 possibleVectors[6];
+std::vector<glm::vec3> Collision::getTranslationVectors(const BoxCollision* colA, const glm::vec3 posA,
+	const BoxCollision* colB, const glm::vec3 posB) {
+	std::vector<glm::vec3> translationVectors = std::vector<glm::vec3>();
+	glm::vec3 aMin, bMin, aMax, bMax;
 
-	// positive x
-	possibleVectors[0] = glm::vec3(bMax.x - aMin.x, 0, 0);
-	// negative x
-	possibleVectors[1] = glm::vec3(bMin.x - aMax.x, 0, 0);
-	// positive y
-	possibleVectors[2] = glm::vec3(0, bMax.y - aMin.y, 0);
-	// negative y
-	possibleVectors[3] = glm::vec3(0, bMin.y - aMax.y, 0);
-	// positive z
-	possibleVectors[4] = glm::vec3(0, 0, bMax.z - aMin.z);
-	// negative z
-	possibleVectors[5] = glm::vec3(0, 0, bMin.z - aMax.z);
+	colA->getMinMax(posA, &aMin, &aMax);
+	colB->getMinMax(posB, &bMin, &bMax);
 
-	glm::vec3 mtv = glm::vec3();
-	float minLength = FLT_MAX;
+	// x
+	translationVectors.push_back(glm::vec3(bMax.x - aMin.x, 0, 0));
+	translationVectors.push_back(glm::vec3(bMin.x - aMax.x, 0, 0));
 
-	for (int i = 0; i < 6; i++) {
-		float length = glm::length(possibleVectors[i]);
+	// y
+	translationVectors.push_back(glm::vec3(0, bMax.y - aMin.y, 0));
+	translationVectors.push_back(glm::vec3(0, bMin.y - aMax.y, 0));
 
-		if (length < minLength && length != 0) {
-			minLength = length;
-			mtv = possibleVectors[i];
-		}
-	}
+	// z
+	translationVectors.push_back(glm::vec3(0, 0, bMax.z - aMin.z));
+	translationVectors.push_back(glm::vec3(0, 0, bMin.z - aMax.z));
 
-	return mtv;
+	return translationVectors;
 }
 
 #pragma endregion

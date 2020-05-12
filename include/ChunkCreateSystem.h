@@ -24,6 +24,7 @@ class ChunkCreateSystem : public System {
 
         std::mutex m_blockMapMutex, m_geometryMapMutex;
 
+        std::vector<entt::entity> m_outdatedChunks;
         std::map<entt::entity, Block***> m_finishedBlocks;
         std::map<entt::entity, GeometryData> m_finishedGeometries;
         std::vector<std::future<void>> m_futures;
@@ -35,6 +36,7 @@ class ChunkCreateSystem : public System {
         std::vector<glm::vec2> loadedChunks;
 
         void handleEnterChunk(Event*);
+        void handleBlockChanged(Event*);
 
         void updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ);
         void updateChunkVertices(entt::entity entity, Block*** blocks,

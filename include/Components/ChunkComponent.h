@@ -41,7 +41,9 @@ public:
     friend std::ostream& operator<<(std::ostream& stream, const ChunkComponent& chunk);
 
     static entt::entity getChunk(int chunkX, int chunkZ);
-    static Block getBlock(entt::registry* registry, int x, int y, int z);
+    static Block getBlock(entt::registry& registry, int x, int y, int z);
+    static void setBlock(entt::registry& registry, int x, int y, int z, Block block);
+
     static void addChunk(entt::entity entity, int chunkX, int chunkZ);
     static void removeChunk(entt::entity entity);
 };

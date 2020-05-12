@@ -1,4 +1,5 @@
 #include "../include/Event.h"
+#include "../include/Block.h"
 
 #include <sstream>
 
@@ -24,6 +25,19 @@ std::string KeyEvent::toString() const {
 
 KeyEvent::KeyEvent(Application* app, int key, int scancode, int action, int mods)
 	: app(app), key(key), scancode(scancode), action(action), mods(mods) {}
+
+EventType MouseButtonEvent::type() const {
+    return MouseButtonEvent::TYPE;
+}
+
+std::string MouseButtonEvent::toString() const {
+    std::stringstream ss;
+    ss << "button: " << button << " action: " << action << " mods: " << mods;
+    return ss.str();
+}
+
+MouseButtonEvent::MouseButtonEvent(Application* app, int button, int action, int mods)
+    : app(app), button(button), action(action), mods(mods) {}
 
 EventType CursorEvent::type() const {
 	return CursorEvent::TYPE;
@@ -76,8 +90,23 @@ std::string EnterChunkEvent::toString() const {
     return ss.str();
 }
 
+
+EventType BlockChangedEvent::type() const {
+    return BlockChangedEvent::TYPE;
+}
+
+BlockChangedEvent::BlockChangedEvent(Application* app, int blockX, int blockY, int blockZ) : app(app), blockX(blockX), blockY(blockY), blockZ(blockZ) {}
+
+std::string BlockChangedEvent::toString() const {
+    std::stringstream ss;
+    ss << "x: " << blockX << " y: " << blockY << " z: " << blockZ;
+    return ss.str();
+}
+
 template KeyEvent* Event::get<KeyEvent>();
+template MouseButtonEvent* Event::get<MouseButtonEvent>();
 template ScrollEvent* Event::get<ScrollEvent>();
 template CursorEvent* Event::get<CursorEvent>();
 template FramebufferSizeEvent* Event::get<FramebufferSizeEvent>();
 template EnterChunkEvent* Event::get<EnterChunkEvent>();
+template BlockChangedEvent* Event::get<BlockChangedEvent>();

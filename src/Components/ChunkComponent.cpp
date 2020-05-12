@@ -1,6 +1,8 @@
 #include "../../include/Components/ChunkComponent.h"
 #include "../../include/Configuration.h"
 #include "../../include/Block.h"
+#include "../../include/Event.h"
+#include "../../include/EventDispatcher.h"
 
 std::unordered_map<glm::vec2, entt::entity, HashFunction> ChunkComponent::chunksLookup 
 	= std::unordered_map<glm::vec2, entt::entity, HashFunction>();
@@ -41,7 +43,7 @@ entt::entity ChunkComponent::getChunk(int chunkX, int chunkZ) {
 	return chunksLookup[key];
 }
 
-Block ChunkComponent::getBlock(entt::registry* registry, int x, int y, int z) {
+Block ChunkComponent::getBlock(entt::registry& registry, int x, int y, int z) {
 	int chunkX = x / Configuration::CHUNK_SIZE;
 	int chunkZ = z / Configuration::CHUNK_SIZE;
 	if (x < 0)
@@ -49,10 +51,6 @@ Block ChunkComponent::getBlock(entt::registry* registry, int x, int y, int z) {
 
 	if (z < 0)
 		chunkZ -= 1;
-
-	auto entity = getChunk(chunkX, chunkZ);
-
-	ChunkComponent& chunk = registry->get<ChunkComponent>(entity);
 
 	int cx = x % Configuration::CHUNK_SIZE;	
 	if (cx < 0)
@@ -63,11 +61,47 @@ Block ChunkComponent::getBlock(entt::registry* registry, int x, int y, int z) {
 	if (cz < 0)
 		cz = Configuration::CHUNK_SIZE - abs(cz);
 
+	auto entity = getChunk(chunkX, chunkZ);
+	ChunkComponent& chunk = registry.get<ChunkComponent>(entity);
+
 	std::unique_lock blockLock(*chunk.blockMutex);
 	Block block = chunk.blocks[cx][cy][cz];
 	blockLock.unlock();
 
 	return block;
+}
+
+void ChunkComponent::setBlock(entt::registry& registry, int x, int y, int z, Block block) {
+	int chunkX = x / Configuration::CHUNK_SIZE;
+	int chunkZ = z / Configuration::CHUNK_SIZE;
+	if (x < 0)
+		chunkX -= 1;
+
+	if (z < 0)
+		chunkZ -= 1;
+
+	int cx = x % Configuration::CHUNK_SIZE;
+	if (cx < 0)
+		cx = Configuration::CHUNK_SIZE - abs(cx);
+
+	int cy = y;
+	int cz = z % Configuration::CHUNK_SIZE;
+	if (cz < 0)
+		cz = Configuration::CHUNK_SIZE - abs(cz);
+
+	auto entity = getChunk(chunkX, chunkZ);
+	ChunkComponent& chunk = registry.get<ChunkComponent>(entity);
+
+	std::unique_lock blockLock(*chunk.blockMutex);
+	chunk.blocks[cx][cy][cz] = block;
+	blockLock.unlock();
+
+	BlockChangedEvent blockChangedEvent;
+	blockChangedEvent.blockX = x;
+	blockChangedEvent.blockY = y;
+	blockChangedEvent.blockZ = z;
+
+	EventDispatcher::raiseEvent(&blockChangedEvent);
 }
 
 void ChunkComponent::addChunk(entt::entity entity, int chunkX, int chunkZ) {
@@ -85,3 +119,4 @@ void ChunkComponent::removeChunk(entt::entity entity) {
 		chunksLookup.erase(it);
 	}
 }
+

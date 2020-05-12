@@ -116,11 +116,9 @@ void PhysicsSystem::_update(int dt) {
 
 void PhysicsSystem::solveBlockCollisions() {
 	auto& registry = m_systemManager->getRegistry();
-	auto chunksView = m_systemManager->getRegistry().view<ChunkComponent>();
+	auto chunksView = m_systemManager->getRegistry().view<ChunkComponent>();	
 
-	auto moveableView = registry.view<TransformationComponent, RigidBodyComponent>();
-
-	for (auto entity : moveableView) {
+	for (auto entity : movedObjects) {
 		TransformationComponent& transformation = registry.get<TransformationComponent>(entity);
 		RigidBodyComponent& rigidBody = registry.get<RigidBodyComponent>(entity);
 
@@ -139,37 +137,39 @@ void PhysicsSystem::solveBlockCollisions() {
 			if (y <= 1 || y > Configuration::CHUNK_HEIGHT)
 				hasCollision = false;
 			else {
-				hasCollision = ChunkComponent::getBlock(&registry, (int)blockPos.x, (int)blockPos.y, (int)blockPos.z).type != BlockType::BLOCK_AIR;
+				hasCollision = ChunkComponent::getBlock(registry, (int)blockPos.x, (int)blockPos.y, (int)blockPos.z).type != BlockType::BLOCK_AIR;
 			}
 
 			// break collision detection
 			if (!hasCollision)
-				continue;
-			
-			std::cout << "\t" << blockPos.x << " " << blockPos.y << " " << blockPos.z << std::endl;
+				continue;					
 
 			// get block collision
-			BoxCollision blockCollision = BoxCollision(glm::vec3(), 1, 1, 1);
+			BoxCollision blockCollision = BoxCollision(glm::vec3(-0.5f, -0.5f, -0.5f), 1, 1, 1);
 			blockCollision.dynamic = false;
 
 			checkAndHandleCollisions(collision, blockCollision, transformation.position, blockPos);
 		}
 	}
 
-
 	movedObjects.clear();
 }
 
 void PhysicsSystem::checkAndHandleCollisions(const BoxCollision& collisionA, const BoxCollision& collisionB,
-	glm::vec3& posA, glm::vec3& posB) const {
+	glm::vec3& posA, glm::vec3& posB) const {	
+	
+	if (Collision::intersects(&collisionA, posA, &collisionB, posB)) {
+		std::vector<glm::vec3> translationVectors = Collision::getTranslationVectors(&collisionA, posA, &collisionB, posB);
 
-	IntersectionInfo intersection = IntersectionInfo(&collisionA, &collisionB, posA, posB);
+		glm::vec3 mtv = glm::vec3();
+		float minLenght = FLT_MAX;
 
-	bool collisionDetected = intersection.intersects;
-
-	if (collisionDetected) {
-
-		glm::vec3 mtv = intersection.getMinimumTranslationVector();		
+		for (int i = 0; i < 6; i++) {
+			if (glm::length(translationVectors[i]) < minLenght) 				{
+				minLenght = glm::length(translationVectors[i]);
+				mtv = translationVectors[i];
+			}
+		}
 
 		if (collisionA.dynamic && collisionB.dynamic) {
 			posA += 0.55f * mtv;

@@ -14,12 +14,20 @@ void EventDispatcher::attachToWindow(const Window& window) {
     glfwSetCursorPosCallback(hwnd, EventDispatcher::cursorPosCallback);
     glfwSetScrollCallback(hwnd, EventDispatcher::scrollCallback);
     glfwSetFramebufferSizeCallback(hwnd, EventDispatcher::framebufferSizeCallback);
+    glfwSetMouseButtonCallback(hwnd, EventDispatcher::mouseButtonCallback);
 }
 
 void EventDispatcher::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     Application* application = (Application*)glfwGetWindowUserPointer(window);
 
     KeyEvent e(application, key, scancode, action, mods);
+    dispatch(&e);
+}
+
+void EventDispatcher::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+    Application* application = (Application*)glfwGetWindowUserPointer(window);
+
+    MouseButtonEvent e(application, button, action, mods);
     dispatch(&e);
 }
 

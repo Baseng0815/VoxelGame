@@ -10,10 +10,10 @@ class Application;
 
 enum EventType {
     // basic events
-    KEY_EVENT, CURSOR_EVENT, SCROLL_EVENT, FRAMEBUFFER_SIZE_EVENT,
+    KEY_EVENT, MOUSE_BUTTON_EVENT, CURSOR_EVENT, SCROLL_EVENT, FRAMEBUFFER_SIZE_EVENT,
 
     // advanced events
-    ENTER_CHUNK_EVENT
+    ENTER_CHUNK_EVENT, BLOCK_CHANGED_EVENT
 };
 
 struct Event {
@@ -41,6 +41,19 @@ struct KeyEvent : public Event {
     EventType type() const override final;
     std::string toString() const override final;
     KeyEvent(Application* app = nullptr, int key = 0, int scancode = 0, int action = 0, int mods = 0);
+};
+
+struct MouseButtonEvent : public Event {
+    static constexpr EventType TYPE = MOUSE_BUTTON_EVENT;
+
+    Application* app;
+    int button;
+    int action;
+    int mods;
+    
+    EventType type() const override final;
+    std::string toString() const override final;
+    MouseButtonEvent(Application* app = nullptr, int button = 0, int action = 0, int mods = 0);
 };
 
 struct CursorEvent : public Event {
@@ -87,4 +100,17 @@ struct EnterChunkEvent : public Event {
     EventType type() const override final;
     std::string toString() const override final;
     EnterChunkEvent(Application* app = nullptr, int oldX = 0, int oldY = 0, int newX = 0, int newY = 0);
+};
+
+struct Block;
+
+struct BlockChangedEvent : public Event {
+    static constexpr EventType TYPE = BLOCK_CHANGED_EVENT;
+    
+    Application* app;
+    int blockX, blockY, blockZ;    
+
+    EventType type() const override final;
+    std::string toString() const override final;
+    BlockChangedEvent(Application* app = nullptr, int blockX = 0, int blockY = 0, int blockZ = 0);
 };

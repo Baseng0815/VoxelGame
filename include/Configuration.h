@@ -12,7 +12,7 @@ typedef std::map<BiomeID, BiomeInfo> BiomeInfoMap;
 class Configuration {
     private:
         static std::map<std::string, float> floatValues;
-        static std::map<std::string, std::string> stringValues;
+        static std::map<std::string, std::string> stringValues;        
 
         static BlockDataMap blockDataMap;
         static BiomeInfoMap biomeInfoMap;
