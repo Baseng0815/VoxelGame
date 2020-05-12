@@ -1,5 +1,6 @@
 #pragma once
 
+#include "GUI.h"
 #include "Window.h"
 #include "SystemManager.h"
 
@@ -7,6 +8,7 @@ class Application {
 private:
     Window m_window;
     SystemManager m_systemManager;
+    GUI m_gui;
 
     friend class EventDispatcher;
 

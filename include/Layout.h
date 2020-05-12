@@ -3,6 +3,8 @@
 #include "Widget.h"
 #include <vector>
 
+#include "RenderQuad.h"
+
 class GUI;
 class Widget;
 
@@ -17,11 +19,12 @@ class Layout : public Widget {
 
         virtual void arrangeWidgets();
 
+        void _draw(Shader& shader) const override;
+
     public:
         Layout(std::string id, GUI* gui, Layout* parent = nullptr);
 
-        void draw() const override;
-        void resize(const Rectangle& parent) override;
+        void resize() override;
 
         // create new widget
         template<class T>

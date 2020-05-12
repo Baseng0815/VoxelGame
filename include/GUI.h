@@ -3,6 +3,7 @@
 #include "Layout.h"
 
 class Event;
+class Shader;
 
 class GUI {
     private:
@@ -13,9 +14,13 @@ class GUI {
         void handleCursorMove(Event* e);
         void handleButtonPress(Event* e);
 
+        Shader* m_guiShader;
+
     public:
         GUI();
         ~GUI();
+
+        void draw();
 
         // register gui widget
         // should not be called manually

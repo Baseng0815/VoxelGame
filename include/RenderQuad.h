@@ -3,15 +3,20 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-// used by the master renderer to render the final texture onto
+#include "Rectangle.h"
+
+// used for rendering 2d textures directly on-screen
+// TODO add shape system and incorporate it into resource manager
 class RenderQuad {
     private:
         GLuint m_vao;
         GLuint m_vbo;
 
     public:
-        RenderQuad();
+        // area in 0,0-1,1 screen range
+        RenderQuad(const Rectangle& area = Rectangle());
         ~RenderQuad();
 
-        void render();
+        void render() const;
+        void resize(const Rectangle& area);
 };

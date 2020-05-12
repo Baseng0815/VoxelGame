@@ -56,11 +56,16 @@ void Application::run() {
         m_prevTime = currentTime;
         m_time += m_deltaTime;
 
-        // updating and drawing
         auto startTime = std::chrono::high_resolution_clock::now();
 
         m_window.clear();
+
+        // updating and drawing entities
         m_systemManager.update(m_deltaTime);
+
+        // drawing GUI
+        m_gui.draw();
+
         m_window.display();
 
         auto endTime = std::chrono::high_resolution_clock::now();

@@ -12,5 +12,6 @@ uniform float blendFactor = 0;
 
 void main() {
     vec4 textured = texture(texture0, pass_texCoords);
-    out_Color = mix(color, texture, blendFactor);
+    //out_Color = mix(color, texture, blendFactor);
+    out_Color = vec4(color, 1);
 }

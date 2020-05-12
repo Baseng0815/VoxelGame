@@ -36,6 +36,12 @@ void ResourceManager::loadResources() {
     shader->upload("gPosition", 0);
     shader->upload("gNormal", 1);
     shader->upload("gAlbedo", 2);
+    // guiShader
+    shader = getResource<Shader>("guiShader");
+    attribs = {
+        "vertex"
+    };
+    shader->setAttributes(attribs);
 }
 
 void ResourceManager::freeResources() {

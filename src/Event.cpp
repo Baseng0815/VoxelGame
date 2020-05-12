@@ -89,6 +89,7 @@ std::string MouseButtonEvent::toString() const {
 MouseButtonEvent::MouseButtonEvent(Application* app, int button, int action, int mods)
     : app(app), button(button), action(action), mods(mods) {}
 
+// predefine templates here
 template KeyEvent* Event::get<KeyEvent>();
 template ScrollEvent* Event::get<ScrollEvent>();
 template CursorEvent* Event::get<CursorEvent>();

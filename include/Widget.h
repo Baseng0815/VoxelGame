@@ -1,19 +1,13 @@
 #pragma once
 
 #include "UiProperties.h"
+#include "RenderQuad.h"
 
 #include <map>
 #include <string>
 
-struct Rectangle {
-    glm::vec2 position;
-    glm::vec2 size;
-
-    Rectangle(int x = 0, int y = 0, int width = 0, int height = 0);
-    Rectangle(glm::vec2 position, glm::vec2 size);
-};
-
 class Layout;
+class Shader;
 
 class Widget {
     protected:
@@ -31,12 +25,15 @@ class Widget {
         void onPress();
         void onRelease();
 
+        RenderQuad m_renderQuad;
+        virtual void _draw(Shader& shader) const;
+
     public:
         Widget(const std::string& id, Layout* parent);
         virtual ~Widget() = default;
 
-        virtual void draw() const = 0;
-        virtual void resize(const Rectangle& parent);
+        void draw(Shader& shader) const;
+        virtual void resize();
 
         UiProperties& getProperties();
 
