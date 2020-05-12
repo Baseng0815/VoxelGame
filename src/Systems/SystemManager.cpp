@@ -14,6 +14,7 @@
 #include "../../include/Components/RigidBodyComponent.h"
 #include "../../include/Components/VelocityComponent.h"
 #include "../../include/Components/TransformationComponent.h"
+#include "../../include/Components/WorldComponent.h"
 
 SystemManager::SystemManager() {
     // TODO move resource loading to a better location
@@ -22,11 +23,15 @@ SystemManager::SystemManager() {
     // create all systems
     m_systems.push_back(new ChunkCreateSystem(this));
     m_systems.push_back(new EntityRenderSystem(this));
-    m_systems.push_back(new InputSystem(this));
     m_systems.push_back(new PhysicsSystem(this));
+    m_systems.push_back(new InputSystem(this));
+
+    // world
+    auto entity = m_entityRegistry.create();    
+    m_entityRegistry.emplace<WorldComponent>(entity);
 
     // atlas
-    auto entity = m_entityRegistry.create();
+    entity = m_entityRegistry.create();
     Texture* atlasTexture = ResourceManager::getResource<Texture>("textureAtlas");
     m_entityRegistry.emplace<AtlasComponent>(entity, atlasTexture->getWidth(), atlasTexture->getHeight(), 16);
     // camera

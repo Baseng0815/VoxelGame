@@ -3,6 +3,8 @@
 #include <string.h>
 #include <functional>
 
+#include <glm/glm.hpp>
+
 using namespace std::placeholders;
 
 typedef unsigned int CallbackId;
@@ -108,9 +110,9 @@ struct BlockChangedEvent : public Event {
     static constexpr EventType TYPE = BLOCK_CHANGED_EVENT;
     
     Application* app;
-    int blockX, blockY, blockZ;    
+    glm::ivec3 position;
 
     EventType type() const override final;
     std::string toString() const override final;
-    BlockChangedEvent(Application* app = nullptr, int blockX = 0, int blockY = 0, int blockZ = 0);
+    BlockChangedEvent(Application* app = nullptr, glm::ivec3 position = glm::ivec3());
 };

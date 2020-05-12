@@ -1,19 +1,20 @@
-#include "../include/ChunkCreateSystem.h"
+#include "../../include/Systems/ChunkCreateSystem.h"
 
-#include "../include/Block.h"
-#include "../include/Vertex.h"
-#include "../include/SystemManager.h"
+#include "../../include/Block.h"
+#include "../../include/Rendering/Vertex.h"
+#include "../../include/Systems/SystemManager.h"
 
-#include "../include/Utility.h"
-#include "../include/Configuration.h"
-#include "../include/ResourceManager.h"
-#include "../include/EventDispatcher.h"
+#include "../../include/Utility.h"
+#include "../../include/Configuration.h"
+#include "../../include/ResourceManager.h"
+#include "../../include/EventDispatcher.h"
 
-#include "../include/Components/ChunkComponent.h"
-#include "../include/Components/AtlasComponent.h"
-#include "../include/Components/TextureComponent.h"
-#include "../include/Components/GeometryComponent.h"
-#include "../include/Components/TransformationComponent.h"
+#include "../../include/Components/ChunkComponent.h"
+#include "../../include/Components/AtlasComponent.h"
+#include "../../include/Components/TextureComponent.h"
+#include "../../include/Components/GeometryComponent.h"
+#include "../../include/Components/TransformationComponent.h"
+#include "../../include/Components/WorldComponent.h"
 
 #include <mutex>
 
@@ -64,10 +65,20 @@ void ChunkCreateSystem::handleEnterChunk(Event* e) {
 void ChunkCreateSystem::handleBlockChanged(Event* e) {
 	BlockChangedEvent blockChangedEvent = *e->get<BlockChangedEvent>();
 
-	int chunkX, chunkZ, cx, cy, cz;
-	ChunkComponent::getChunkCoords(blockChangedEvent.blockX, blockChangedEvent.blockY, blockChangedEvent.blockZ, chunkX, chunkZ, cx, cy, cz);
+	auto worldView = m_systemManager->getRegistry().view<WorldComponent>();
+	WorldComponent& world = worldView.get<WorldComponent>(worldView.front());
+	for (auto worldEntity : worldView) {
+		auto& worldComponent = worldView.get<WorldComponent>(worldEntity);
+		if (worldComponent.worldId == 0)
+			world = worldComponent;
+	}
 
-	auto chunkEntity = ChunkComponent::getChunk(chunkX, chunkZ);
+
+	glm::ivec3 localPos;
+	glm::ivec2 chunkPos;
+	WorldComponent::getChunkCoords(blockChangedEvent.position, chunkPos, localPos);
+
+	auto chunkEntity = world.getChunk(chunkPos);
 	m_outdatedChunks.push_back(chunkEntity);
 }
 
@@ -240,6 +251,10 @@ void ChunkCreateSystem::updateChunkBuffers(GeometryComponent& geometry,
 #include <iostream>
 
 void ChunkCreateSystem::_update(int dt) {
+	auto worldView = m_systemManager->getRegistry().view<WorldComponent>();	
+
+	WorldComponent& world = worldView.get(worldView.front());
+
 	// delete queued chunks if no thread is active on them
 	auto it = m_destructionQueue.begin();
 	while (it != m_destructionQueue.end()) {
@@ -249,7 +264,7 @@ void ChunkCreateSystem::_update(int dt) {
 		if (!chunk.threadActiveOnSelf && chunk.blocks) {
 			glm::vec2 pos(chunk.chunkX, chunk.chunkZ);
 
-			ChunkComponent::removeChunk(*it);
+			world.removeChunk(*it);
 
 			// cleanup memory
 			for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
@@ -292,7 +307,7 @@ void ChunkCreateSystem::_update(int dt) {
 		auto& chunk = m_systemManager->getRegistry().get<ChunkComponent>(e);
 
 		chunk.verticesOutdated = true;
-		chunk.threadActiveOnSelf = false;		
+		chunk.threadActiveOnSelf = false;
 	}
 	m_outdatedChunks.clear();
 
@@ -321,10 +336,10 @@ void ChunkCreateSystem::_update(int dt) {
 				if (chunk.blocks == nullptr) {
 					constructionCount++;
 					chunk.threadActiveOnSelf = true;
+					world.addChunk(entity, glm::ivec2(chunk.chunkX, chunk.chunkZ));
+
 					m_futures.push_back(std::async(std::launch::async, [=]() {
 						updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ);
-
-						ChunkComponent::addChunk(entity, chunk.chunkX, chunk.chunkZ);
 						}));
 				}
 				// update vertices

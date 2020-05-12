@@ -6,6 +6,7 @@
 #include "../../include/Components/RigidBodyComponent.h"
 #include "../../include/Components/TransformationComponent.h"
 #include "../../include/Components/VelocityComponent.h"
+#include "../../include/Components/WorldComponent.h"
 
 #include "../../include/Block.h"
 #include "../../include/Configuration.h"
@@ -33,6 +34,10 @@ void PhysicsSystem::_update(int dt) {
 
 	auto& registry = m_systemManager->getRegistry();
 
+	auto worldView = registry.view<WorldComponent>();
+
+	WorldComponent& world = worldView.get(worldView.front());
+
 	// update velocities
 	{
 		auto view = registry.view<TransformationComponent, RigidBodyComponent, VelocityComponent>();
@@ -50,14 +55,36 @@ void PhysicsSystem::_update(int dt) {
 			// dv = dt * a = dt * F/m
 			// dt in milliseconds
 
-			glm::vec3 dv = (float)dtSec * gravitationAcceleration;
+			bool isCamera = registry.has<CameraComponent>(entity);
 
-			if (velocity.velocity.y < -Configuration::getFloatValue("MAX_FALL_SPEED")) {
-				dv.y = 0;
-				velocity.velocity.y = -Configuration::getFloatValue("MAX_FALL_SPEED");
+			if (isCamera) {
+				CameraComponent& camera = registry.get<CameraComponent>(entity);
+
+				/*if (world.getBlock(registry, glm::ivec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).type == BlockType::BLOCK_AIR) {
+					glm::vec3 dv = (float)dtSec * gravitationAcceleration;
+
+					camera.relVelocity += dv;
+				}
+				else camera.relVelocity.y = 0;
+
+				
+
+				if (camera.relVelocity.y < -Configuration::getFloatValue("MAX_FALL_SPEED")) {					
+					camera.relVelocity.y = -Configuration::getFloatValue("MAX_FALL_SPEED");
+				}
+
+				std::cout << "\tx: " << camera.relVelocity.x << " y: " << camera.relVelocity.y << " z: " << camera.relVelocity.z << std::endl;*/
 			}
+			else {
+				glm::vec3 dv = (float)dtSec * gravitationAcceleration;
 
-			velocity.velocity += dv;
+				if (velocity.velocity.y < -Configuration::getFloatValue("MAX_FALL_SPEED")) {
+					dv.y = 0;
+					velocity.velocity.y = -Configuration::getFloatValue("MAX_FALL_SPEED");
+				}
+
+				velocity.velocity += dv;
+			}
 		}
 	}
 
@@ -81,7 +108,7 @@ void PhysicsSystem::_update(int dt) {
 					+ camera.relVelocity.y * glm::vec3(0, 1, 0)
 					+ camera.relVelocity.z * camera.front_noY;
 
-				transformation.position += velocity.velocity * (float)dtSec * Configuration::getFloatValue("CAMERA_MOVE_SPEED");
+				transformation.position += (velocity.velocity) * (float)dtSec * Configuration::getFloatValue("CAMERA_MOVE_SPEED");
 
 				int newChunkX = transformation.position.x / Configuration::CHUNK_SIZE;
 				int newChunkZ = transformation.position.z / Configuration::CHUNK_SIZE;
@@ -116,7 +143,15 @@ void PhysicsSystem::_update(int dt) {
 
 void PhysicsSystem::solveBlockCollisions() {
 	auto& registry = m_systemManager->getRegistry();
-	auto chunksView = m_systemManager->getRegistry().view<ChunkComponent>();	
+	auto chunksView = m_systemManager->getRegistry().view<ChunkComponent>();
+	auto worldView = m_systemManager->getRegistry().view<WorldComponent>();
+
+	WorldComponent& world = worldView.get<WorldComponent>(worldView.front());
+	for (auto worldEntity : worldView) {
+		auto& worldComponent = worldView.get<WorldComponent>(worldEntity);
+		if (worldComponent.worldId == 0)
+			world = worldComponent;
+	}
 
 	for (auto entity : movedObjects) {
 		TransformationComponent& transformation = registry.get<TransformationComponent>(entity);
@@ -137,12 +172,12 @@ void PhysicsSystem::solveBlockCollisions() {
 			if (y <= 1 || y > Configuration::CHUNK_HEIGHT)
 				hasCollision = false;
 			else {
-				hasCollision = ChunkComponent::getBlock(registry, (int)blockPos.x, (int)blockPos.y, (int)blockPos.z).type != BlockType::BLOCK_AIR;
+				hasCollision = world.getBlock(registry, blockPos).type != BlockType::BLOCK_AIR;
 			}
 
 			// break collision detection
 			if (!hasCollision)
-				continue;					
+				continue;
 
 			// get block collision
 			BoxCollision blockCollision = BoxCollision(glm::vec3(-0.5f, -0.5f, -0.5f), 1, 1, 1);
@@ -156,8 +191,8 @@ void PhysicsSystem::solveBlockCollisions() {
 }
 
 void PhysicsSystem::checkAndHandleCollisions(const BoxCollision& collisionA, const BoxCollision& collisionB,
-	glm::vec3& posA, glm::vec3& posB) const {	
-	
+	glm::vec3& posA, glm::vec3& posB) const {
+
 	if (Collision::intersects(&collisionA, posA, &collisionB, posB)) {
 		std::vector<glm::vec3> translationVectors = Collision::getTranslationVectors(&collisionA, posA, &collisionB, posB);
 
@@ -165,7 +200,7 @@ void PhysicsSystem::checkAndHandleCollisions(const BoxCollision& collisionA, con
 		float minLenght = FLT_MAX;
 
 		for (int i = 0; i < 6; i++) {
-			if (glm::length(translationVectors[i]) < minLenght) 				{
+			if (glm::length(translationVectors[i]) < minLenght) {
 				minLenght = glm::length(translationVectors[i]);
 				mtv = translationVectors[i];
 			}

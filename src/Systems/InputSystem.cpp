@@ -10,6 +10,7 @@
 #include "../../include/Components/TransformationComponent.h"
 #include "../../include/Components/VelocityComponent.h"
 #include "../../include/Components/ChunkComponent.h"
+#include "../../include/Components/WorldComponent.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/transform.hpp>
@@ -75,23 +76,28 @@ void InputSystem::handleMouseButtonEvent(Event* e) {
 			switch (mouseButtonEvent.button) {
 			case GLFW_MOUSE_BUTTON_LEFT:
 				if (mouseButtonEvent.action == GLFW_PRESS) {
-					Ray cameraRay = Ray(transformation.position, normalize(camera.front));
+					m_systemManager->getRegistry().view<WorldComponent>().each(
+						[&](WorldComponent& world) {
+							Ray cameraRay = Ray(transformation.position, normalize(camera.front));
 
-					std::vector<glm::vec3> blocks = cameraRay.getAffectedBlocks(5);
-					auto it = blocks.begin();
+							std::vector<glm::ivec3> blocks = cameraRay.getAffectedBlocks(5);
+							auto it = blocks.begin();
 
-					if (it != blocks.end()) {
-						BlockType block = BlockType::BLOCK_AIR;
-						do {
-							block = ChunkComponent::getBlock(m_systemManager->getRegistry(), (int)(*it).x, (int)(*it).y, (int)(*it).z).type;							
-						} while (block == BlockType::BLOCK_AIR && ++it != blocks.end());
+							if (it != blocks.end()) {
+								BlockType block = BlockType::BLOCK_AIR;
+								glm::ivec3 blockPos;
 
-						if (it != blocks.end()) {
-							std::cout << "\tx: " << (int)(*it).x << " y: " << (int)(*it).y << " z: " << (int)(*it).z << " type: " << Block(block).toString() << std::endl;
+								do {									
+									block = world.getBlock(m_systemManager->getRegistry(), *it).type;
+								} while (block == BlockType::BLOCK_AIR && ++it != blocks.end());
 
-							ChunkComponent::setBlock(m_systemManager->getRegistry(), (int)(*it).x, (int)(*it).y, (int)(*it).z, Block());
-						}
-					}
+								if (it != blocks.end()) {
+									std::cout << "\tx: " << (int)(*it).x << " y: " << (int)(*it).y << " z: " << (int)(*it).z << " type: " << Block(block).toString() << std::endl;
+
+									world.setBlock(m_systemManager->getRegistry(), *it, Block());
+								}
+							}
+						});
 				}
 				break;
 			default:

@@ -1,6 +1,8 @@
 #include "../include/Event.h"
 #include "../include/Block.h"
 
+#include <glm/glm.hpp>
+
 #include <sstream>
 
 template<class T>
@@ -95,11 +97,11 @@ EventType BlockChangedEvent::type() const {
     return BlockChangedEvent::TYPE;
 }
 
-BlockChangedEvent::BlockChangedEvent(Application* app, int blockX, int blockY, int blockZ) : app(app), blockX(blockX), blockY(blockY), blockZ(blockZ) {}
+BlockChangedEvent::BlockChangedEvent(Application* app, glm::ivec3 position) : app(app), position(position) {}
 
 std::string BlockChangedEvent::toString() const {
     std::stringstream ss;
-    ss << "x: " << blockX << " y: " << blockY << " z: " << blockZ;
+    ss << "x: " << position.x << " y: " << position.y << " z: " << position.z;
     return ss.str();
 }
 
