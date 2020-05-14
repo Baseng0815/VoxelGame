@@ -30,5 +30,7 @@ public:
     static CallbackId addCallback(Callback callback, EventType callbackType);
     static void removeCallback(CallbackId callbackId);
 
+    // sets mouse state to firstMouse so the first input event is ignored
+    static void resetMouseState();
     static void raiseEvent(Event* e);
 };

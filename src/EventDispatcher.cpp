@@ -91,6 +91,10 @@ void EventDispatcher::removeCallback(CallbackId callbackId) {
                 it->second.erase(jt);
 }
 
+void EventDispatcher::resetMouseState() {
+    m_firstMouse = true;
+}
+
 void EventDispatcher::raiseEvent(Event* e) {
     dispatch(e);
 }

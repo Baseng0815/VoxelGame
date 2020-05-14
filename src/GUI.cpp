@@ -23,23 +23,6 @@ GUI::GUI() {
     UiProperties* properties = rootLayout->getProperties();
     properties->backgroundColor = glm::vec4(0, 0, 0, 0);
 
-    Layout* l1 = rootLayout->addWidget<Layout>("l1");
-    properties = l1->getProperties();
-    properties->position.y = 0.66;
-    properties->size.y = 0.34;
-    properties->backgroundColor = glm::vec4(0, 0, 0, 0.8);
-
-    Layout* l2 = rootLayout->addWidget<Layout>("l2");
-    properties = l2->getProperties();
-    properties->position.y = 0.33;
-    properties->size.y = 0.33;
-    properties->backgroundColor = glm::vec4(1, 0, 0, 0.8);
-
-    Layout* l3 = rootLayout->addWidget<Layout>("l3");
-    properties = l3->getProperties();
-    properties->size.y = 0.34;
-    properties->backgroundColor = glm::vec4(1, 1, 0, 0.8);
-
     rootLayout->resize();
 
     ADD_EVENT(handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT);

@@ -27,6 +27,8 @@ public:
     void display();
 
     void toggleFullscreen();
+    void enableCursor();
+    void disableCursor();
 
     // return true if the key is pressed
     bool getKey(int key) const;

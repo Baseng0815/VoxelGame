@@ -1,15 +1,16 @@
 #include "../include/Window.h"
 #include "../include/Configuration.h"
 #include "../include/EventDispatcher.h"
+#include "../include/Application.h"
 
 // TODO prevent camera from receiving events when ALT is pressed
 void Window::handleKeyPress(Event* e) {
     KeyEvent keyEvent = *e->get<KeyEvent>();
     if (keyEvent.key == GLFW_KEY_LEFT_ALT) {
         if (keyEvent.action == GLFW_PRESS) {
-            glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            enableCursor();
         } else if (keyEvent.action == GLFW_RELEASE) {
-            glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+            disableCursor();
         }
     }
 }
@@ -69,6 +70,15 @@ void Window::toggleFullscreen() {
 
         m_isFullscreen = true;
     }
+}
+
+void Window::enableCursor() {
+    glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}
+
+void Window::disableCursor() {
+    glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 }
 
 bool Window::getKey(int key) const {

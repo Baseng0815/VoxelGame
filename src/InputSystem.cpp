@@ -15,8 +15,17 @@
 void InputSystem::handleKeyPressEvent(Event* e) {
     KeyEvent keyEvent = *e->get<KeyEvent>();
 
+
     m_systemManager->getRegistry().view<CameraComponent, VelocityComponent>().each(
         [&](auto& camera, auto& velocity) {
+        // disable/enable camera event reception
+        if (keyEvent.key == GLFW_KEY_LEFT_ALT) {
+            if (keyEvent.action == GLFW_PRESS)
+                camera.inputEnabled = false;
+            else if (keyEvent.action == GLFW_RELEASE)
+                camera.inputEnabled = true;
+        }
+        // camera movement
         switch (keyEvent.key) {
             case GLFW_KEY_W:
                 if (keyEvent.action == GLFW_PRESS)
@@ -67,14 +76,16 @@ void InputSystem::handleMouseMoveEvent(Event* e) {
 
     m_systemManager->getRegistry().view<CameraComponent, VelocityComponent>().each(
         [&](auto& camera, auto& velocity) {
-        camera.yaw += cursorEvent.dx * Configuration::getFloatValue("MOUSE_SENSITIVITY");
-        camera.pitch -= cursorEvent.dy * Configuration::getFloatValue("MOUSE_SENSITIVITY");
+        if (camera.inputEnabled) {
+            camera.yaw += cursorEvent.dx * Configuration::getFloatValue("MOUSE_SENSITIVITY");
+            camera.pitch -= cursorEvent.dy * Configuration::getFloatValue("MOUSE_SENSITIVITY");
 
-        if (camera.pitch > 89.99) camera.pitch = 89.99;
-        else if (camera.pitch < -89.99) camera.pitch = -89.99;
+            if (camera.pitch > 89.99) camera.pitch = 89.99;
+            else if (camera.pitch < -89.99) camera.pitch = -89.99;
 
-        updateVectors(camera);
-        updateAbsoluteVelocity(camera, velocity);
+            updateVectors(camera);
+            updateAbsoluteVelocity(camera, velocity);
+        }
     });
 }
 
@@ -83,13 +94,14 @@ void InputSystem::handleScrollEvent(Event* e) {
 
     m_systemManager->getRegistry().view<CameraComponent>().each(
         [&](auto& camera) {
+        if (camera.inputEnabled) {
+            camera.fov -= scrollEvent.dy;
 
-        camera.fov -= scrollEvent.dy;
+            if (camera.fov > 179) camera.fov = 179;
+            else if (camera.fov < 1) camera.fov = 1;
 
-        if (camera.fov > 179) camera.fov = 179;
-        else if (camera.fov < 1) camera.fov = 1;
-
-        updateProjectionMatrix(camera);
+            updateProjectionMatrix(camera);
+        }
     });
 }
 

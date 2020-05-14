@@ -12,6 +12,7 @@ struct CameraComponent {
     glm::vec3 relVelocity;
 
     float yaw = 0, pitch = 0, fov;
+    bool inputEnabled = true;
 
     CameraComponent(float fov);
 };
