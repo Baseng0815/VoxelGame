@@ -3,6 +3,8 @@
 #include "../include/GUI.h"
 #include "../include/Shader.h"
 
+#include <algorithm>
+
 void Layout::arrangeWidgets() {
     // default layout does nothing special
 }
@@ -17,14 +19,26 @@ Layout::Layout(std::string id, GUI* gui, Layout* parent)
     m_gui->registerWidget(this);
 }
 
+#include <iostream>
+
 void Layout::resize() {
     if (isRootLayout()) {
         m_properties.position = glm::vec2(0, 0);
         m_properties.size = glm::vec2(1, 1);
     } else {
-        auto& propertiesParent = m_parent->getProperties();
-        m_area.position = propertiesParent.position + m_properties.position * propertiesParent.size;
-        m_area.size = m_properties.size * propertiesParent.size;
+        // clamp position and cut off if widget overlaps into others
+        m_properties.position.x = std::clamp(m_properties.position.x, 0.f, 1.f);
+        m_properties.position.x = std::clamp(m_properties.position.x, 0.f, 1.f);
+
+        m_properties.size.x = std::min(m_properties.size.x, 1 - m_properties.position.x);
+        m_properties.size.y = std::min(m_properties.size.y, 1 - m_properties.position.y);
+
+        // transform into global space and apply to area
+        UiProperties* propertiesParent = m_parent->getProperties();
+        m_area.position = propertiesParent->position + m_properties.position * propertiesParent->size;
+        m_area.size = m_properties.size * propertiesParent->size;
+
+        // transform into global space
         m_renderQuad.resize(m_area);
     }
 

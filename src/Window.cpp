@@ -2,6 +2,18 @@
 #include "../include/Configuration.h"
 #include "../include/EventDispatcher.h"
 
+// TODO prevent camera from receiving events when ALT is pressed
+void Window::handleKeyPress(Event* e) {
+    KeyEvent keyEvent = *e->get<KeyEvent>();
+    if (keyEvent.key == GLFW_KEY_LEFT_ALT) {
+        if (keyEvent.action == GLFW_PRESS) {
+            glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        } else if (keyEvent.action == GLFW_RELEASE) {
+            glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        }
+    }
+}
+
 Window::Window(Application* app) {
     Configuration::loadConfiguration("Resources/");
     glfwInit();
@@ -22,6 +34,9 @@ Window::Window(Application* app) {
     glewInit();
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    ADD_EVENT(handleKeyPress, KEY_EVENT);
 }
 
 void Window::clear(glm::vec3 clearColor) {
@@ -62,12 +77,6 @@ bool Window::getKey(int key) const {
 
 GLFWwindow* Window::getHandle() const {
     return m_window;
-}
-
-Event* Window::nextEvent() {
-    Event* e = m_events.front();
-    m_events.pop();
-    return e;
 }
 
 void Window::close() {

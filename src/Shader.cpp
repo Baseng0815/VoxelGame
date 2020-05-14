@@ -4,6 +4,8 @@
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "../include/Configuration.h"
+
 // Private functions
 
 std::string Shader::loadShader(const std::string& fileName) {
@@ -75,10 +77,10 @@ GLint Shader::getLocation(const std::string& location) {
 }
 
 // Public functions
-Shader::Shader(const std::string& path) {
+Shader::Shader(const std::string& file) {
     m_program = glCreateProgram();
-    m_shaders[0] = createShader(loadShader(path + ".vert"), GL_VERTEX_SHADER);
-    m_shaders[1] = createShader(loadShader(path + ".frag"), GL_FRAGMENT_SHADER);
+    m_shaders[0] = createShader(loadShader(Configuration::getStringValue("ResourceBasePath") + file + ".vert"), GL_VERTEX_SHADER);
+    m_shaders[1] = createShader(loadShader(Configuration::getStringValue("ResourceBasePath") + file + ".frag"), GL_FRAGMENT_SHADER);
 
     for (unsigned int i = 0; i < NUM_SHADERS; i++)
         glAttachShader(m_program, m_shaders[i]);
@@ -114,6 +116,10 @@ void Shader::upload(const std::string& location, glm::mat4 value) {
 
 void Shader::upload(const std::string& location, glm::vec3 value) {
     glUniform3f(getLocation(location), value.x, value.y, value.z);
+}
+
+void Shader::upload(const std::string& location, glm::vec4 value) {
+    glUniform4f(getLocation(location), value.x, value.y, value.z, value.w);
 }
 
 void Shader::upload(const std::string& location, float value) {

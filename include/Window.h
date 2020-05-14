@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Colors.h"
 #include <queue>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 class Application;
 class Event;
@@ -18,12 +18,12 @@ private:
     int m_prevX, m_prevY;
     bool m_isFullscreen = false;
 
-    std::queue<Event*> m_events;
+    void handleKeyPress(Event* e);
 
 public:
     Window(Application* app);
 
-    void clear(glm::vec3 clearColor = Colors::Black);
+    void clear(glm::vec3 clearColor = glm::vec3(0, 0, 0));
     void display();
 
     void toggleFullscreen();

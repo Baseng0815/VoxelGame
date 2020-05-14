@@ -4,13 +4,16 @@
 #include <freetype2/ft2build.h>
 #include <freetype2/freetype/freetype.h>
 
-void Font::init(const char *file) {
+#include "../include/Configuration.h"
+#include "../include/ResourceManager.h"
+
+Font::Font(const std::string& file) {
     FT_Library ft;
     if (FT_Init_FreeType(&ft))
         std::cout << "Error while initializing freetype library." << std::endl;
 
     FT_Face face;
-    if (FT_New_Face(ft, file, 0, &face))
+    if (FT_New_Face(ft, (Configuration::getStringValue("ResourceBasePath") + file).c_str(), 0, &face))
         std::cout << "Failed to load font file " << file << std::endl;
 
     FT_Set_Pixel_Sizes(face, 0, 48);

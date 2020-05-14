@@ -9,13 +9,13 @@ std::map<std::string, Resource*> ResourceManager::resources;
 void ResourceManager::loadResources() {
     // textures
     // TODO use Configuration::ResourceBasePath
-    resources.insert(std::make_pair("textureAtlas", new Texture("Resources/Textures/textureAtlas0.png")));
+    resources.insert(std::make_pair("textureAtlas", new Texture("Textures/textureAtlas0.png")));
 
     // shaders
-    resources.insert(std::make_pair("chunkShader", new Shader("Resources/Shaders/chunkShader")));
-    resources.insert(std::make_pair("guiShader", new Shader("Resources/Shaders/guiShader")));
-    resources.insert(std::make_pair("skyboxShader", new Shader("Resources/Shaders/skyboxShader")));
-    resources.insert(std::make_pair("lightingShader", new Shader("Resources/Shaders/lightingShader")));
+    resources.insert(std::make_pair("chunkShader", new Shader("Shaders/chunkShader")));
+    resources.insert(std::make_pair("guiShader", new Shader("Shaders/guiShader")));
+    resources.insert(std::make_pair("skyboxShader", new Shader("Shaders/skyboxShader")));
+    resources.insert(std::make_pair("lightingShader", new Shader("Shaders/lightingShader")));
 
     std::vector<std::string> attribs = {
         "position",

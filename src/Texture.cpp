@@ -8,12 +8,14 @@
 
 #include <iostream>
 
-Texture::Texture(const std::string& path) {
+#include "../include/Configuration.h"
+
+Texture::Texture(const std::string& file) {
     glGenTextures(1, &m_texture);
 
-    unsigned char* data = SOIL_load_image(path.c_str(), &m_width, &m_height, &m_channels, SOIL_LOAD_RGBA);
+    unsigned char* data = SOIL_load_image((Configuration::getStringValue("ResourceBasePath") + file).c_str(), &m_width, &m_height, &m_channels, SOIL_LOAD_RGBA);
     if (!data)
-        std::cout << "Failed to load texture" << path << std::endl;
+        std::cout << "Failed to load texture" << file << std::endl;
 
     glBindTexture(GL_TEXTURE_2D, m_texture);
 

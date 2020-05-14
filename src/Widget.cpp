@@ -3,6 +3,8 @@
 #include "../include/Shader.h"
 #include "../include/Layout.h"
 
+#include <algorithm>
+
 void Widget::_draw(Shader& shader) const {
     // default widget does nothing special
 }
@@ -22,14 +24,23 @@ void Widget::draw(Shader& shader) const {
 }
 
 void Widget::resize() {
-    auto& propertiesParent = m_parent->getProperties();
-    m_area.position = propertiesParent.position + m_properties.position * propertiesParent.size;
-    m_area.size = m_properties.size * propertiesParent.size;
-    m_renderQuad = RenderQuad(m_area);
+    // clamp position and cut off if widget overlaps into others
+    m_properties.position.x = std::clamp(m_properties.position.x, 0.f, 1.f);
+    m_properties.position.x = std::clamp(m_properties.position.x, 0.f, 1.f);
+
+    m_properties.size.x = std::min(m_properties.size.x, 1 - m_properties.position.x);
+    m_properties.size.y = std::min(m_properties.size.y, 1 - m_properties.position.y);
+
+    // transform into global space and apply to area
+    UiProperties* propertiesParent = m_parent->getProperties();
+    m_area.position = propertiesParent->position + m_properties.position * propertiesParent->size;
+    m_area.size = m_properties.size * propertiesParent->size;
+
+    m_renderQuad.resize(m_area);
 }
 
-UiProperties& Widget::getProperties() {
-    return m_properties;
+UiProperties* Widget::getProperties() {
+    return &m_properties;
 }
 
 const std::string& Widget::getId() const {

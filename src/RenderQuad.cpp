@@ -4,10 +4,10 @@
 
 RenderQuad::RenderQuad(const Rectangle& area) {
     // TODO maybe optimize out into function
-    float x1 = area.position.x * 2 - 1;
-    float x2 = x1 + area.size.x * 2;
-    float y1 = area.position.y * 2 - 1;
-    float y2 = y1 + area.size.y * 2;
+    /*float*/ x1 = area.position.x * 2 - 1;
+    /*float*/ x2 = x1 + area.size.x * 2;
+    /*float*/ y1 = area.position.y * 2 - 1;
+    /*float*/ y2 = y1 + area.size.y * 2;
 
     float quadVertices[] = {
         // positions	    // texture Coords
@@ -37,10 +37,10 @@ void RenderQuad::render() const {
 }
 
 void RenderQuad::resize(const Rectangle& area) {
-    float x1 = area.position.x * 2 - 1;
-    float x2 = x1 + area.size.x * 2;
-    float y1 = area.position.y * 2 - 1;
-    float y2 = y1 + area.size.y * 2;
+    /*float*/ x1 = area.position.x * 2 - 1;
+    /*float*/ x2 = x1 + area.size.x * 2;
+    /*float*/ y1 = area.position.y * 2 - 1;
+    /*float*/ y2 = y1 + area.size.y * 2;
 
     float quadVertices[] = {
         // positions	    // texture Coords

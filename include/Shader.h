@@ -25,7 +25,7 @@ class Shader : public Resource {
         GLint getLocation(const std::string& location);
 
     public:
-        Shader(const std::string& path);
+        Shader(const std::string& file);
         ~Shader();
 
         void setAttributes(const std::vector<std::string>& attribs);
@@ -33,6 +33,7 @@ class Shader : public Resource {
 
         void upload(const std::string& location, glm::mat4 value);
         void upload(const std::string& location, glm::vec3 value);
+        void upload(const std::string& location, glm::vec4 value);
         void upload(const std::string& location, float value);
         void upload(const std::string& location, int value);
 };

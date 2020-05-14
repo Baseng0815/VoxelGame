@@ -13,6 +13,7 @@ class GUI {
         void handleFramebufferSize(Event* event);
         void handleCursorMove(Event* e);
         void handleButtonPress(Event* e);
+        void handleKeyPress(Event* e);
 
         Shader* m_guiShader;
 

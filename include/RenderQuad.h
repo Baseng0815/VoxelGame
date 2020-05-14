@@ -12,6 +12,8 @@ class RenderQuad {
         GLuint m_vao;
         GLuint m_vbo;
 
+        float x1, y1, x2, y2;
+
     public:
         // area in 0,0-1,1 screen range
         RenderQuad(const Rectangle& area = Rectangle());

@@ -10,7 +10,7 @@ class Texture : public Resource {
         int m_width, m_height, m_channels;
 
     public:
-        Texture(const std::string& path);
+        Texture(const std::string& file);
         ~Texture();
 
         void bind(int textureUnit);

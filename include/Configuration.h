@@ -25,7 +25,7 @@ class Configuration {
         static constexpr int MAP_SEED_SIZE=256;
 
         // path contains settings.json, blockData.json and biomeInfo.json
-        static void loadConfiguration(const std::string& baseResourcePath);
+        static void loadConfiguration(const std::string& resourceBasePath);
 
         static float getFloatValue(const std::string& location);
         static const std::string& getStringValue(const std::string& location);

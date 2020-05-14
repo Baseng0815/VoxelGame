@@ -35,7 +35,7 @@ class Widget {
         void draw(Shader& shader) const;
         virtual void resize();
 
-        UiProperties& getProperties();
+        UiProperties* getProperties();
 
         const std::string& getId() const;
         Layout *getParent() const;
