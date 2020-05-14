@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OreData.h"
+#include "WorldGeneration/OreData.h"
 
 // map names to IDs and vice versa
 enum class BlockType : char {

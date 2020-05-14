@@ -15,6 +15,7 @@ struct CameraComponent {
     float yaw = 0, pitch = 0, fov;
 
     bool isValid = false;
+    bool isFalling = false;
 
     unsigned int worldId = 0;
 

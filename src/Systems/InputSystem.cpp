@@ -56,9 +56,12 @@ void InputSystem::handleKeyPressEvent(Event* e) {
 				break;
 			case GLFW_KEY_SPACE:
 				if (keyEvent.action == GLFW_PRESS)
-					camera.relVelocity.y += 1;
+					camera.relVelocity.y += 5;
 				else if (keyEvent.action == GLFW_RELEASE)
-					camera.relVelocity.y -= 1;
+					if (!camera.isFalling)
+						camera.relVelocity.y -= 5;
+					else
+						camera.relVelocity.y = 0;
 				break;
 			default:
 				break;

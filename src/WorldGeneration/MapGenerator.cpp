@@ -1,4 +1,4 @@
-#include "../include/MapGenerator.h"
+#include "../../include/WorldGeneration/MapGenerator.h"
 
 float MapGenerator::noise(int x, int y) {
     int width = Configuration::MAP_SEED_SIZE;

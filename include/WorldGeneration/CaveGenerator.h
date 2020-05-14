@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
 #include <glm/glm.hpp>
-#include "Block.h"
 #include "noise/noise.h"
 
 using namespace noise;
+struct Block;
 
 class CaveGenerator {
 private:

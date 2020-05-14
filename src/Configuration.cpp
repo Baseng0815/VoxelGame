@@ -7,7 +7,6 @@
 std::map<std::string, float> Configuration::floatValues;
 std::map<std::string, std::string> Configuration::stringValues;
 BlockDataMap Configuration::blockDataMap;
-BiomeInfoMap Configuration::biomeInfoMap;
 
 using json = nlohmann::json;
 
@@ -45,16 +44,7 @@ void Configuration::loadConfiguration(const std::string& baseResourcePath) {
         std::cout << "Failed to open BiomeInfo.json" << std::endl;
 
     file >> root;
-    file.close();
-
-    for (auto it = root.begin(); it != root.end(); it++) {
-        BiomeInfo biomeInfo;
-        biomeInfo.baseHeight = (*it)["baseHeight"].get<int>();
-        biomeInfo.heightAmplitude = (*it)["heightAmplitude"].get<int>();
-        biomeInfo.id = (BiomeID)std::stoi(it.key());
-
-        biomeInfoMap[(BiomeID)std::stoi(it.key())] = biomeInfo;
-    }
+    file.close();    
 
     // load other configuration data
     file.open(baseResourcePath + "/Misc/Settings.json");
@@ -86,6 +76,3 @@ const BlockData& Configuration::getBlockData(BlockType block) {
     return blockDataMap[block];
 }
 
-const BiomeInfo& Configuration::getBiomeInfo(BiomeID biome) {
-    return biomeInfoMap[biome];
-}

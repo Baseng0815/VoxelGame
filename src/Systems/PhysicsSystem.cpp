@@ -45,7 +45,6 @@ void PhysicsSystem::_update(int dt) {
 		glm::vec3 gravitationAcceleration = glm::vec3(0, -Configuration::getFloatValue("G_CONSTANT"), 0);
 
 		for (auto entity : view) {
-
 			RigidBodyComponent& rigidBody = view.get<RigidBodyComponent>(entity);
 			TransformationComponent& transformation = view.get<TransformationComponent>(entity);
 			VelocityComponent& velocity = view.get<VelocityComponent>(entity);
@@ -60,20 +59,26 @@ void PhysicsSystem::_update(int dt) {
 			if (isCamera) {
 				CameraComponent& camera = registry.get<CameraComponent>(entity);
 
-				/*if (world.getBlock(registry, glm::ivec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).type == BlockType::BLOCK_AIR) {
+				if (camera.isFalling) {
 					glm::vec3 dv = (float)dtSec * gravitationAcceleration;
 
 					camera.relVelocity += dv;
+
+					camera.isFalling = world.getBlock(registry, glm::ivec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).type == BlockType::BLOCK_AIR;
+					if (!camera.isFalling) {
+						camera.relVelocity.y = 0;
+					}
+
+					if (camera.relVelocity.y < -Configuration::getFloatValue("MAX_FALL_SPEED")) {
+						camera.relVelocity.y = -Configuration::getFloatValue("MAX_FALL_SPEED");
+					}
 				}
-				else camera.relVelocity.y = 0;
-
-				
-
-				if (camera.relVelocity.y < -Configuration::getFloatValue("MAX_FALL_SPEED")) {					
-					camera.relVelocity.y = -Configuration::getFloatValue("MAX_FALL_SPEED");
+				else {
+					camera.isFalling = world.getBlock(registry, glm::ivec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).type == BlockType::BLOCK_AIR;
+					if (camera.relVelocity.y < 0)
+						camera.relVelocity.y = 0;
 				}
-
-				std::cout << "\tx: " << camera.relVelocity.x << " y: " << camera.relVelocity.y << " z: " << camera.relVelocity.z << std::endl;*/
+			
 			}
 			else {
 				glm::vec3 dv = (float)dtSec * gravitationAcceleration;

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "BlockData.h"
-#include "BiomeInfo.h"
 #include "CaveGenerator.h"
+#include "TerrainGenerator.h"
 
 #include <glm/glm.hpp>
 #include <unordered_map>
 #include <noise/noise.h>
+#include "../Block.h"
 
 using namespace noise;
 using namespace noise::module;
@@ -16,6 +16,11 @@ using namespace noise::module;
 class Block;
 class ChunkComponent;
 
+enum BiomeID : char { 
+	BIOME_FLAT, 
+	NUM_BIOMES 
+};
+
 enum class WorldType : char {
 	WORLD_FLAT,
 	WORLD_NORMAL
@@ -23,20 +28,12 @@ enum class WorldType : char {
 
 class WorldGenerator {
 private:
-	WorldType m_type = WorldType::WORLD_FLAT;
-	std::unordered_map<BiomeID, BiomeInfo> biomes;
+	WorldType m_type = WorldType::WORLD_FLAT;	
 	CaveGenerator m_caveGenerator;
-
-	// terrain
-	Perlin perlinNoise;
-	Select terrainSelector;
-	Billow baseFlatTerrain;
-	ScaleBias flatTerrain;
-
-	void generateTerrain(glm::vec2 position, Block*** blocks);
+	std::unordered_map<BiomeID, TerrainGenerator> m_terrainGenerators;
+		
 	void generateUnderground(glm::vec2 position, Block*** blocks);
-	void generateOre(int x, int y, int z, int size, BlockType block, Block*** blocks) const;
-	void init(WorldType worldType, int* seeds);
+	void generateOre(int x, int y, int z, int size, BlockType block, Block*** blocks) const;	
 
 public:
 	WorldGenerator() = default;
