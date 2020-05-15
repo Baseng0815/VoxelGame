@@ -2,15 +2,15 @@
 #define WIN32
 
 #ifndef WIN32
-//#include <mcheck.h>
+#include <mcheck.h>
 
-// int main(int argc, char **argv) {
-//     mtrace();
-//     Application application;
+int main(int argc, char **argv) {
+    mtrace();
+    Application application;
 
-//     application.run();
-//     muntrace();
-// }
+    application.run();
+    muntrace();
+}
 
 #else
 int main(int argc, char** argv) {

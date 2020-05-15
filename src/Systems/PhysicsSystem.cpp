@@ -59,7 +59,10 @@ void PhysicsSystem::_update(int dt) {
 			if (isCamera) {
 				CameraComponent& camera = registry.get<CameraComponent>(entity);
 
-				if (camera.isFalling) {
+				if (camera.isFlying) {
+
+				}				
+				else if (camera.isFalling) {
 					glm::vec3 dv = (float)dtSec * gravitationAcceleration;
 
 					camera.relVelocity += dv;
@@ -79,6 +82,8 @@ void PhysicsSystem::_update(int dt) {
 						camera.relVelocity.y = 0;
 				}
 			
+				std::cout << "x: " << camera.relVelocity.x << " y: " << camera.relVelocity.y << " z: " << camera.relVelocity.z << " is flying: " << camera.isFlying << std::endl;
+
 			}
 			else {
 				glm::vec3 dv = (float)dtSec * gravitationAcceleration;

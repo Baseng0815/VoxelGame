@@ -1,7 +1,6 @@
 // in der .cpp kann man einbinden, was man will, da entsteht kein Problem
 #include "../../include/WorldGeneration/WorldGenerator.h"
 #include "../../include/WorldGeneration/noiseutils.h"
-#include "../../include/WorldGeneration/FlatTerrainGenerator.h"
 #include "../../include/Block.h"
 #include "../../include/BlockData.h"
 #include "../../include/Configuration.h"
@@ -10,8 +9,8 @@ using namespace noise::utils;
 using namespace noise::model;
 using namespace noise::module;
 
-WorldGenerator::WorldGenerator(const WorldGenerator& generator) {
-
+WorldGenerator::WorldGenerator(WorldType worldType) {
+	m_type = worldType;	
 }
 
 WorldGenerator& WorldGenerator::operator=(const WorldGenerator& generator) {
@@ -19,17 +18,6 @@ WorldGenerator& WorldGenerator::operator=(const WorldGenerator& generator) {
 
 	return *this;
 }
-
-void WorldGenerator::init(WorldType worldType) {
-	m_type = worldType;
-
-	if (m_type == WorldType::WORLD_NORMAL) {
-		m_terrainGenerators.insert(std::make_pair(BIOME_FLAT, FlatTerrainGenerator()));
-		m_caveGenerator = CaveGenerator();
-	}
-}
-
-
 
 #include <iostream>
 
@@ -74,9 +62,8 @@ void WorldGenerator::generateOre(int x, int y, int z, int size, BlockType block,
 	}
 }
 
-void WorldGenerator::generate(glm::vec2 position, Block*** blocks) {
-	BiomeID id = BiomeID::BIOME_FLAT;
-	m_terrainGenerators[id].generateTerrain(position, blocks);
-
-	generateUnderground(position, blocks);
+void WorldGenerator::generate(glm::vec2 position, BiomeID** biomes, Block*** blocks) {
+	m_biomeGenerator.generateBiomes(position, biomes);
+	m_terrainGenerator.generate(position, biomes, blocks);
+	m_caveGenerator.generate(position, blocks);
 }

@@ -22,14 +22,19 @@ class ChunkCreateSystem : public System {
             std::vector<unsigned int> indices;
         };
 
+        struct GenerationData {
+            Block*** blocks;
+            BiomeID** biomes;
+        };
+
         std::mutex m_blockMapMutex, m_geometryMapMutex;
 
         std::vector<entt::entity> m_outdatedChunks;
-        std::map<entt::entity, Block***> m_finishedBlocks;
+        std::map<entt::entity, GenerationData> m_finishedBlocks;
         std::map<entt::entity, GeometryData> m_finishedGeometries;
         std::vector<std::future<void>> m_futures;
 
-        WorldGenerator m_generator;
+        WorldGenerator m_generator = WorldGenerator(WorldType::WORLD_NORMAL);
 
         std::atomic_int constructionCount;
         std::vector<entt::entity> m_destructionQueue;

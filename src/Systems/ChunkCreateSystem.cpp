@@ -91,10 +91,18 @@ void ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int c
 		}
 	}
 
-	m_generator.generate(glm::vec2(chunkX, chunkZ), blocks);
+	BiomeID** biomes = new BiomeID * [Configuration::CHUNK_SIZE];
+	for (int z = 0; z < Configuration::CHUNK_SIZE; z++)
+		biomes[z] = new BiomeID[Configuration::CHUNK_SIZE];
+
+	m_generator.generate(glm::vec2(chunkX, chunkZ), biomes, blocks);
+
+	GenerationData data = GenerationData();
+	data.blocks = blocks;
+	data.biomes = biomes;
 
 	std::scoped_lock<std::mutex> blockMapLock(m_blockMapMutex);
-	m_finishedBlocks.insert(std::make_pair(entity, blocks));
+	m_finishedBlocks.insert(std::make_pair(entity, data));
 }
 
 void ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block*** blocks, const AtlasComponent& atlas, std::mutex* blockMutex) {
@@ -292,7 +300,8 @@ void ChunkCreateSystem::_update(int dt) {
 	for (auto const& [key, val] : m_finishedBlocks) {
 		auto& chunk = m_systemManager->getRegistry().get<ChunkComponent>(key);
 
-		chunk.blocks = val;
+		chunk.blocks = val.blocks;
+		chunk.biomes = val.biomes;
 		chunk.verticesOutdated = true;
 		chunk.threadActiveOnSelf = false;
 		chunk.chunkBlocksCreated = true;
@@ -359,8 +368,5 @@ void ChunkCreateSystem::_update(int dt) {
 ChunkCreateSystem::ChunkCreateSystem(SystemManager* systemManager)
 	: System(systemManager, 50), constructionCount(0) {
 	ADD_EVENT(handleEnterChunk, ENTER_CHUNK_EVENT);
-	ADD_EVENT(handleBlockChanged, BLOCK_CHANGED_EVENT);
-
-	// TODO rewrite init to constructor
-	m_generator.init(WorldType::WORLD_NORMAL);
+	ADD_EVENT(handleBlockChanged, BLOCK_CHANGED_EVENT);	
 }

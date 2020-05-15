@@ -16,6 +16,7 @@ struct CameraComponent {
 
     bool isValid = false;
     bool isFalling = false;
+    bool isFlying = false;
 
     unsigned int worldId = 0;
 

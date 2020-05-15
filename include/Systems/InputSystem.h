@@ -21,6 +21,8 @@ class InputSystem : public System {
 
         void _update(int dt) override;
 
+        int lastSpacePress = INT_MAX;
+
     public:
         InputSystem(SystemManager* systemManager);
 };

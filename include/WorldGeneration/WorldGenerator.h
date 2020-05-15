@@ -2,6 +2,7 @@
 
 #include "CaveGenerator.h"
 #include "TerrainGenerator.h"
+#include "BiomeGenerator.h"
 
 #include <glm/glm.hpp>
 #include <unordered_map>
@@ -16,11 +17,6 @@ using namespace noise::module;
 class Block;
 class ChunkComponent;
 
-enum BiomeID : char { 
-	BIOME_FLAT, 
-	NUM_BIOMES 
-};
-
 enum class WorldType : char {
 	WORLD_FLAT,
 	WORLD_NORMAL
@@ -29,20 +25,22 @@ enum class WorldType : char {
 class WorldGenerator {
 private:
 	WorldType m_type = WorldType::WORLD_FLAT;	
+
+	BiomeGenerator m_biomeGenerator;
 	CaveGenerator m_caveGenerator;
-	std::unordered_map<BiomeID, TerrainGenerator> m_terrainGenerators;
+	TerrainGenerator m_terrainGenerator;
 		
 	void generateUnderground(glm::vec2 position, Block*** blocks);
 	void generateOre(int x, int y, int z, int size, BlockType block, Block*** blocks) const;	
 
 public:
-	WorldGenerator() = default;
+	WorldGenerator(WorldType type);
 	WorldGenerator(const WorldGenerator&);
 
 	WorldGenerator& operator=(const WorldGenerator&);
 
 	void init(WorldType worldType);
 
-	void generate(glm::vec2 position, Block*** blocks);
+	void generate(glm::vec2 position, BiomeID** biomes, Block*** blocks);
 };
 

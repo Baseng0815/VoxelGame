@@ -12,10 +12,12 @@
 #include <iostream>
 
 struct Block;
+enum BiomeID : char;
 
 struct ChunkComponent {
 public:
     Block*** blocks = nullptr;
+    BiomeID** biomes = nullptr;
     std::mutex *blockMutex;
 
     std::atomic_bool verticesOutdated   = false;

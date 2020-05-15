@@ -55,10 +55,21 @@ void InputSystem::handleKeyPressEvent(Event* e) {
 					camera.relVelocity.y -= -1;
 				break;
 			case GLFW_KEY_SPACE:
-				if (keyEvent.action == GLFW_PRESS)
+				if (keyEvent.action == GLFW_PRESS) {
+					int currTime = glfwGetTime();
+					int dt = currTime - lastSpacePress;
+					if (dt >= 0 && dt < 1) {
+						camera.isFlying = !camera.isFlying;
+						camera.relVelocity.y = 0;
+					}
+
+					lastSpacePress = currTime;
 					camera.relVelocity.y += 5;
+
+					std::cout << "\t" << camera.isFlying << std::endl;
+				}
 				else if (keyEvent.action == GLFW_RELEASE)
-					if (!camera.isFalling)
+					if (!camera.isFalling || camera.isFlying)
 						camera.relVelocity.y -= 5;
 					else
 						camera.relVelocity.y = 0;
@@ -90,7 +101,7 @@ void InputSystem::handleMouseButtonEvent(Event* e) {
 								BlockType block = BlockType::BLOCK_AIR;
 								glm::ivec3 blockPos;
 
-								do {									
+								do {
 									block = world.getBlock(m_systemManager->getRegistry(), *it).type;
 								} while (block == BlockType::BLOCK_AIR && ++it != blocks.end());
 

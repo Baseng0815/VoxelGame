@@ -1,6 +1,7 @@
 #include "../../include/Components/ChunkComponent.h"
 #include "../../include/Configuration.h"
 #include "../../include/Block.h"
+#include "../../include/WorldGeneration/WorldGenerator.h"
 #include "../../include/Event.h"
 #include "../../include/EventDispatcher.h"
 
@@ -11,17 +12,20 @@ ChunkComponent::ChunkComponent(int chunkX, int chunkZ) :
 }
 
 ChunkComponent::ChunkComponent(const ChunkComponent& other) :
-	blocks(other.blocks), blockMutex(other.blockMutex), verticesOutdated((bool)other.verticesOutdated),
+	blocks(other.blocks), biomes(other.biomes), blockMutex(other.blockMutex), verticesOutdated((bool)other.verticesOutdated),
 	threadActiveOnSelf((bool)other.threadActiveOnSelf), chunkX(other.chunkX), chunkZ(other.chunkZ) {
 }
 
 ChunkComponent& ChunkComponent::operator=(const ChunkComponent& other) {
 	blocks = other.blocks;
 	blockMutex = other.blockMutex;
+	biomes = other.biomes;
 
 	verticesOutdated = (bool)other.verticesOutdated;
 
 	threadActiveOnSelf = (bool)other.threadActiveOnSelf;
+
+	chunkBlocksCreated = (bool)other.chunkBlocksCreated;
 
 	chunkX = other.chunkX;
 	chunkZ = other.chunkZ;

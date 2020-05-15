@@ -1,24 +1,28 @@
 #include "../../include/WorldGeneration/TerrainGenerator.h"
+#include "../../include/WorldGeneration/WorldGenerator.h"
+#include "../../include/WorldGeneration/FlatTerrain.h"
+
 #include "../../include/Configuration.h"
 #include "../../include/Block.h"
 
-void TerrainGenerator::_init() {
-    
-}
-
-void TerrainGenerator::generateTerrain(glm::vec2 chunk, Block*** blocks) {
-    for(int x = 0; x < Configuration::CHUNK_SIZE; x++)
-        for(int z = 0; z < Configuration::CHUNK_SIZE; z++) {
-            blocks[x][0][z] = Block(BlockType::BLOCK_BRICKS);
-
-            for(int y = 1; y < 4; y++){
-                blocks[x][y][z] = Block(BlockType::BLOCK_DIRT);
-            }
-
-            blocks[x][4][z] = Block(BlockType::BLOCK_GRASS);
-    }
-}
-
 TerrainGenerator::TerrainGenerator() {
-    _init();
+	Terrain* terrain = new Terrain(0, 0);
+	FlatTerrain* flat = new FlatTerrain();
+
+	m_biomes.push_back({ BiomeID::BIOME_FLAT, terrain });
+	m_biomes.push_back({ BiomeID::BIOME_FLAT_TERRAIN, flat });
+}
+
+TerrainGenerator::~TerrainGenerator() {
+	for (auto biome : m_biomes)
+		delete biome.generator;
+}
+
+void TerrainGenerator::generate(glm::vec2 position, BiomeID** biomes, Block*** blocks) {
+	for(int cx = 0; cx < Configuration::CHUNK_SIZE; cx++)
+		for (int cz = 0; cz < Configuration::CHUNK_SIZE; cz++) {
+			BiomeID biome = biomes[cx][cz];	
+
+			m_biomes[(int)biome].generator->getBlocks(position, cx, cz, blocks);
+		}
 }
