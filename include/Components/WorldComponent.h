@@ -18,7 +18,7 @@ private:
 public:
 	WorldComponent() = default;
 
-	unsigned int worldId = 0;
+	unsigned int worldID = 0;
 
 	static void getChunkCoords(glm::ivec3 position, glm::ivec2& chunk, glm::ivec3& chunkPosition);
 	entt::entity getChunk(glm::ivec2 chunk) const;

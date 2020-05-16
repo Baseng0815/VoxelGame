@@ -69,7 +69,7 @@ void ChunkCreateSystem::handleBlockChanged(Event* e) {
 	WorldComponent& world = worldView.get<WorldComponent>(worldView.front());
 	for (auto worldEntity : worldView) {
 		auto& worldComponent = worldView.get<WorldComponent>(worldEntity);
-		if (worldComponent.worldId == 0)
+		if (worldComponent.worldID == 0)
 			world = worldComponent;
 	}
 

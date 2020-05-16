@@ -53,7 +53,7 @@ void BoxCollision::getMinMax(const glm::vec3 position, glm::vec3* min, glm::vec3
 Ray::Ray(glm::vec3 start, glm::vec3 dir) : start(start), direction(glm::normalize(dir)) {}
 
 std::vector<glm::ivec3> Ray::getAffectedBlocks(float length) const {
-	std::vector<glm::ivec3> blocks = std::vector<glm::ivec3>();	
+	std::vector<glm::ivec3> blocks = std::vector<glm::ivec3>();
 	glm::ivec3 lastPos = glm::ivec3(INT32_MAX, INT32_MAX, INT32_MAX);
 
 	int count = ceil(length);
@@ -67,6 +67,63 @@ std::vector<glm::ivec3> Ray::getAffectedBlocks(float length) const {
 	}
 
 	return blocks;
+}
+
+glm::ivec3 Ray::getIntersectionFace(glm::ivec3 block) const {
+	float fractions[] = {
+		// x
+		(block.x + 1 - start.x) / direction.x,
+		(block.x - start.x) / direction.x,
+
+		// y
+		(block.y + 1 - start.y) / direction.y,
+		(block.y - start.y) / direction.y,
+
+		// z
+		(block.z + 1 - start.z) / direction.z,
+		(block.z - start.z) / direction.z
+	};
+
+	float minFrac = FLT_MAX;
+	for (auto p : fractions) {
+		if (p < minFrac) {
+			glm::vec3 point = start + p * direction;
+
+			glm::vec3 pb = abs((glm::vec3)block - point);
+
+			// check if intersection point is on block face
+			bool onFace =
+				pb.x >= 0 && pb.x <= 1 &&
+				pb.y >= 0 && pb.y <= 1 &&
+				pb.z >= 0 && pb.z <= 1;
+
+			if (onFace) {
+				minFrac = p;
+			}
+		}
+	}
+
+	glm::vec3 intersectionPoint = start + minFrac * direction;
+
+	// left
+	if (intersectionPoint.x == block.x)
+		return glm::vec3(-1, 0, 0);
+	// right
+	else if (intersectionPoint.x == block.x + 1)
+		return glm::vec3(1, 0, 0);
+	// down
+	else if (intersectionPoint.y == block.y)
+		return glm::vec3(0, -1, 0);
+	// up
+	else if (intersectionPoint.y == block.y + 1)
+		return glm::vec3(0, 1, 0);
+	// front
+	else if (intersectionPoint.z == block.z)
+		return glm::vec3(0, 0, -1);
+	// back
+	else if (intersectionPoint.z == block.z + 1)
+		return glm::vec3(0, 0, 1);
+
 }
 
 #pragma region Collision

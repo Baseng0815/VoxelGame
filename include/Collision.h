@@ -23,6 +23,7 @@ struct Ray {
 	Ray(glm::vec3 start, glm::vec3 dir);
 
 	std::vector<glm::ivec3> getAffectedBlocks(float length) const;
+	glm::ivec3 getIntersectionFace(glm::ivec3 block) const;
 };
 
 typedef std::pair<glm::vec3, glm::vec3> Line;

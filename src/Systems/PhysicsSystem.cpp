@@ -82,7 +82,7 @@ void PhysicsSystem::_update(int dt) {
 						camera.relVelocity.y = 0;
 				}
 			
-				std::cout << "x: " << camera.relVelocity.x << " y: " << camera.relVelocity.y << " z: " << camera.relVelocity.z << " is flying: " << camera.isFlying << std::endl;
+				//std::cout << "x: " << camera.relVelocity.x << " y: " << camera.relVelocity.y << " z: " << camera.relVelocity.z << " is flying: " << camera.isFlying << std::endl;
 
 			}
 			else {
@@ -159,7 +159,7 @@ void PhysicsSystem::solveBlockCollisions() {
 	WorldComponent& world = worldView.get<WorldComponent>(worldView.front());
 	for (auto worldEntity : worldView) {
 		auto& worldComponent = worldView.get<WorldComponent>(worldEntity);
-		if (worldComponent.worldId == 0)
+		if (worldComponent.worldID == 0)
 			world = worldComponent;
 	}
 

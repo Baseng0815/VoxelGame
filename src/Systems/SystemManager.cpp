@@ -77,3 +77,17 @@ entt::registry& SystemManager::getRegistry() {
 std::mutex& SystemManager::getRegistryMutex() {
     return m_registryMutex;
 }
+
+WorldComponent& SystemManager::getWorld(int worldID) {  
+    auto worldView = m_entityRegistry.view<WorldComponent>();        
+    auto it = worldView.begin();
+    WorldComponent& worldComponent = worldView.get<WorldComponent>(*it++);
+
+    while (worldComponent.worldID != worldID && it++ != worldView.end());
+
+    return worldComponent;
+}
+
+WorldComponent& SystemManager::getCurrentWorld() {
+    return getWorld(currentWorld);
+}

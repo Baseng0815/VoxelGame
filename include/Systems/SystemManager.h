@@ -8,6 +8,7 @@
 class System;
 class Event;
 struct SharedContext;
+struct WorldComponent;
 
 class SystemManager {
 private:
@@ -18,6 +19,7 @@ private:
 
 public:
     std::atomic_bool physicsActive = false;
+    std::atomic_int currentWorld = 0;
 
     SystemManager();
     ~SystemManager();
@@ -26,4 +28,7 @@ public:
 
     entt::registry& getRegistry();
     std::mutex& getRegistryMutex();
+
+    WorldComponent& getWorld(int worldID);
+    WorldComponent& getCurrentWorld();
 };

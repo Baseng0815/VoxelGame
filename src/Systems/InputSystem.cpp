@@ -65,8 +65,6 @@ void InputSystem::handleKeyPressEvent(Event* e) {
 
 					lastSpacePress = currTime;
 					camera.relVelocity.y += 5;
-
-					std::cout << "\t" << camera.isFlying << std::endl;
 				}
 				else if (keyEvent.action == GLFW_RELEASE)
 					if (!camera.isFalling || camera.isFlying)
@@ -87,31 +85,24 @@ void InputSystem::handleMouseButtonEvent(Event* e) {
 
 	m_systemManager->getRegistry().view<CameraComponent, TransformationComponent>().each(
 		[&](CameraComponent& camera, TransformationComponent& transformation) {
+			WorldComponent& world = m_systemManager->getCurrentWorld();
+
 			switch (mouseButtonEvent.button) {
 			case GLFW_MOUSE_BUTTON_LEFT:
 				if (mouseButtonEvent.action == GLFW_PRESS) {
-					m_systemManager->getRegistry().view<WorldComponent>().each(
-						[&](WorldComponent& world) {
-							Ray cameraRay = Ray(transformation.position, normalize(camera.front));
+					// if block selected
+					if (selectedBlock.valid) {
+						world.setBlock(m_systemManager->getRegistry(), selectedBlock.block, BlockType::BLOCK_AIR);
+					}
+				}
+				break;
 
-							std::vector<glm::ivec3> blocks = cameraRay.getAffectedBlocks(5);
-							auto it = blocks.begin();
-
-							if (it != blocks.end()) {
-								BlockType block = BlockType::BLOCK_AIR;
-								glm::ivec3 blockPos;
-
-								do {
-									block = world.getBlock(m_systemManager->getRegistry(), *it).type;
-								} while (block == BlockType::BLOCK_AIR && ++it != blocks.end());
-
-								if (it != blocks.end()) {
-									std::cout << "\tx: " << (int)(*it).x << " y: " << (int)(*it).y << " z: " << (int)(*it).z << " type: " << Block(block).toString() << std::endl;
-
-									world.setBlock(m_systemManager->getRegistry(), *it, Block());
-								}
-							}
-						});
+			case GLFW_MOUSE_BUTTON_RIGHT:
+				if (mouseButtonEvent.action == GLFW_PRESS) {
+					if (selectedBlock.valid) {
+						glm::ivec3 pos = selectedBlock.block + selectedBlock.face;
+						world.setBlock(m_systemManager->getRegistry(), pos, Block(BlockType::BLOCK_SAND));
+					}
 				}
 				break;
 			default:
@@ -123,8 +114,8 @@ void InputSystem::handleMouseButtonEvent(Event* e) {
 void InputSystem::handleMouseMoveEvent(Event* e) {
 	CursorEvent cursorEvent = *e->get<CursorEvent>();
 
-	m_systemManager->getRegistry().view<CameraComponent, VelocityComponent>().each(
-		[&](auto& camera, auto& velocity) {
+	m_systemManager->getRegistry().view<CameraComponent, VelocityComponent, TransformationComponent>().each(
+		[&](auto& camera, auto& velocity, auto& transformation) {
 			camera.yaw += cursorEvent.dx * Configuration::getFloatValue("MOUSE_SENSITIVITY");
 			camera.pitch -= cursorEvent.dy * Configuration::getFloatValue("MOUSE_SENSITIVITY");
 
@@ -132,6 +123,7 @@ void InputSystem::handleMouseMoveEvent(Event* e) {
 			else if (camera.pitch < -89.99) camera.pitch = -89.99;
 
 			updateVectors(camera);
+			updateSelectedBlock(camera, transformation);
 		});
 }
 
@@ -170,6 +162,27 @@ void InputSystem::updateVectors(CameraComponent& camera) {
 	camera.front = glm::normalize(camera.front);
 	camera.right = glm::normalize(glm::cross(camera.front, glm::vec3(0, 1, 0)));
 	camera.front_noY = glm::cross(camera.right, glm::vec3(0, 1, 0));
+}
+
+void InputSystem::updateSelectedBlock(CameraComponent& camera, TransformationComponent& transformation) {
+	WorldComponent& world = m_systemManager->getCurrentWorld();
+	Ray r = Ray(transformation.position, camera.front);
+
+	std::vector<glm::ivec3> blocks = r.getAffectedBlocks(5);
+	glm::ivec3 block;
+
+	auto it = blocks.begin();
+	do {
+		block = *(it++);
+	} while (it != blocks.end() && world.getBlock(m_systemManager->getRegistry(), block).type == BlockType::BLOCK_AIR);
+
+	if (world.getBlock(m_systemManager->getRegistry(), block).type != BlockType::BLOCK_AIR) {
+		glm::ivec3 intersectionFace = r.getIntersectionFace(block);
+		selectedBlock = { block, intersectionFace, true };
+	}
+	else {
+		selectedBlock = { glm::ivec3(), glm::ivec3(), false };
+	}
 }
 
 void InputSystem::_update(int dt) {
