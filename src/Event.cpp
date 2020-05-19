@@ -1,8 +1,6 @@
 #include "../include/Event.h"
 #include "../include/Block.h"
 
-#include <glm/glm.hpp>
-
 #include <sstream>
 
 template<class T>
@@ -105,6 +103,20 @@ std::string BlockChangedEvent::toString() const {
     return ss.str();
 }
 
+//EntityMovedEvent::EntityMovedEvent(Application* app, entt::entity entity, glm::vec3 oldPos, glm::vec3 newPos)
+//    : app(app), entity(entity), oldPos(oldPos), newPos(newPos) { }
+//
+//std::string EntityMovedEvent::toString() const {
+//    std::stringstream ss;
+//    ss << "x: " << oldPos.x << " y: " << oldPos.y << " z: " << oldPos.z << " -> ";
+//    ss << "x: " << newPos.x << " y: " << newPos.y << " z: " << newPos.z;
+//    return ss.str();
+//}
+//
+//EventType EntityMovedEvent::type() const {
+//    return EntityMovedEvent::TYPE;
+//}
+
 template KeyEvent* Event::get<KeyEvent>();
 template MouseButtonEvent* Event::get<MouseButtonEvent>();
 template ScrollEvent* Event::get<ScrollEvent>();
@@ -112,3 +124,4 @@ template CursorEvent* Event::get<CursorEvent>();
 template FramebufferSizeEvent* Event::get<FramebufferSizeEvent>();
 template EnterChunkEvent* Event::get<EnterChunkEvent>();
 template BlockChangedEvent* Event::get<BlockChangedEvent>();
+//template EntityMovedEvent* Event::get<EntityMovedEvent>();

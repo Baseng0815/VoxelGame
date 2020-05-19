@@ -1,13 +1,14 @@
 #include "../../include/WorldGeneration/TerrainGenerator.h"
 #include "../../include/WorldGeneration/WorldGenerator.h"
-#include "../../include/WorldGeneration/FlatTerrain.h"
+#include "../../include/WorldGeneration/TerrainFlat.h"
+#include "../../include/WorldGeneration/TerrainDesert.h"
 
 #include "../../include/Configuration.h"
 #include "../../include/Block.h"
 
 TerrainGenerator::TerrainGenerator() {
 	Terrain* terrain = new Terrain(0, 0);
-	FlatTerrain* flat = new FlatTerrain();
+	TerrainFlat* flat = new TerrainFlat();
 
 	m_biomes.push_back({ BiomeID::BIOME_FLAT, terrain });
 	m_biomes.push_back({ BiomeID::BIOME_FLAT_TERRAIN, flat });

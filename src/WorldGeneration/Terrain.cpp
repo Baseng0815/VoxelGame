@@ -1,5 +1,5 @@
 #include "../../include/WorldGeneration/Terrain.h"
-#include "../../include/WorldGeneration/FlatTerrain.h"
+#include "../../include/WorldGeneration/TerrainFlat.h"
 #include "../../include/Block.h"
 
 Terrain::Terrain(int minHeight, int maxHeight)

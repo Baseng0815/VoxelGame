@@ -53,4 +53,6 @@ VoxelGame.vcxproj*
 Release/*
 out/*
 
+.vscode/*
+vc140.pdb
 updateSolution.ps1

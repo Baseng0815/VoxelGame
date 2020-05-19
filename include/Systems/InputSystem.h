@@ -19,8 +19,8 @@ class InputSystem : public System {
         void handleMouseButtonEvent(Event* e);
         void handleMouseMoveEvent(Event* e);
         void handleScrollEvent(Event* e);
-        void handleFramebufferSizeEvent(Event* e);
-        
+        void handleFramebufferSizeEvent(Event* e);               
+
         void updateVectors(CameraComponent& camera);   
         void updateSelectedBlock(CameraComponent& camera, TransformationComponent& transformation);
 

@@ -5,15 +5,13 @@
 using namespace noise;
 using namespace noise::module;
 
-class FlatTerrain : public Terrain {
-private:
-	Perlin perlinNoise;
-	Select terrainSelector;
+class TerrainFlat : public Terrain {
+private:	
 	Billow baseFlatTerrain;
 	ScaleBias flatTerrain;	
 
 public:
-	FlatTerrain();	
+	TerrainFlat();	
 
 	void getBlocks(glm::vec2 chunk, int cx, int cz, Block*** blocks) override;
 };

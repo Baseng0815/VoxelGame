@@ -4,6 +4,7 @@
 #include <functional>
 
 #include <glm/glm.hpp>
+#include <entt/entt.hpp>
 
 using namespace std::placeholders;
 
@@ -15,7 +16,7 @@ enum EventType {
     KEY_EVENT, MOUSE_BUTTON_EVENT, CURSOR_EVENT, SCROLL_EVENT, FRAMEBUFFER_SIZE_EVENT,
 
     // advanced events
-    ENTER_CHUNK_EVENT, BLOCK_CHANGED_EVENT
+    ENTER_CHUNK_EVENT, BLOCK_CHANGED_EVENT, //ENTITY_MOVED_EVENT
 };
 
 struct Event {
@@ -116,3 +117,15 @@ struct BlockChangedEvent : public Event {
     std::string toString() const override final;
     BlockChangedEvent(Application* app = nullptr, glm::ivec3 position = glm::ivec3());
 };
+
+//struct EntityMovedEvent : public Event {
+//    static constexpr EventType TYPE = ENTITY_MOVED_EVENT;
+//
+//    Application* app;
+//    entt::entity entity;
+//    glm::vec3 newPos, oldPos;
+//
+//    EventType type() const override final;
+//    std::string toString() const override final;
+//    EntityMovedEvent(Application* app = nullptr, entt::entity entity = entt::entity(), glm::vec3 oldPos = glm::vec3(), glm::vec3 newPos = glm::vec3());
+//};

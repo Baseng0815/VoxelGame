@@ -1,12 +1,8 @@
-#include "../../include/WorldGeneration/FlatTerrain.h"
+#include "../../include/WorldGeneration/TerrainFlat.h"
 #include "../../include/Configuration.h"
 #include "../../include/Block.h"
 
-FlatTerrain::FlatTerrain() : Terrain(55, 65) {
-	//perlinNoise.SetSeed(*seeds);
-	perlinNoise.SetFrequency(1.0f / 512.0f);
-	perlinNoise.SetPersistence(1.0f / 512.0f);
-
+TerrainFlat::TerrainFlat() : Terrain(55, 65) {	
 	// init flat terrain generation
 	//baseFlatTerrain.SetSeed((*seeds + 1));
 	baseFlatTerrain.SetPersistence(1.0f / 128.0f);
@@ -16,18 +12,14 @@ FlatTerrain::FlatTerrain() : Terrain(55, 65) {
 
 	flatTerrain.SetBias(-0.75f);
 	flatTerrain.SetScale(0.5f);
-	flatTerrain.SetSourceModule(0, baseFlatTerrain);
-
-	terrainSelector.SetSourceModule(0, flatTerrain);
-	terrainSelector.SetSourceModule(1, baseFlatTerrain);
-	terrainSelector.SetControlModule(perlinNoise);
+	flatTerrain.SetSourceModule(0, baseFlatTerrain);	
 }
 
-void FlatTerrain::getBlocks(glm::vec2 chunk, int cx, int cz, Block*** blocks) {
+void TerrainFlat::getBlocks(glm::vec2 chunk, int cx, int cz, Block*** blocks) {
 	float x = chunk.x + (float)cx / Configuration::CHUNK_SIZE;
 	float z = chunk.y + (float)cz / Configuration::CHUNK_SIZE;
 
-	int height = minHeight + (maxHeight - minHeight) * terrainSelector.GetValue(x, 0, z);
+	int height = minHeight + (maxHeight - minHeight) * flatTerrain.GetValue(x, 0, z);
 	for (int cy = 0; cy < height; cy++) {
 		Block block;
 		if (cy < 2)

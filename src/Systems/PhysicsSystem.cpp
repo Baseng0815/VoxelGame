@@ -107,6 +107,8 @@ void PhysicsSystem::_update(int dt) {
 			VelocityComponent& velocity = view.get<VelocityComponent>(entity);
 
 			bool isCamera = registry.has<CameraComponent>(entity);
+			//glm::vec3 oldPos = transformation.position;		
+			//glm::vec3 newPos = oldPos;
 
 			if (isCamera) {
 				CameraComponent& camera = registry.get<CameraComponent>(entity);
@@ -135,6 +137,7 @@ void PhysicsSystem::_update(int dt) {
 
 				if (length(velocity.velocity) != 0) {
 					movedObjects.push_back(entity);
+					//newPos = transformation.position;
 				}
 			}
 			else {
@@ -142,9 +145,18 @@ void PhysicsSystem::_update(int dt) {
 
 				if (length(velocity.velocity) != 0) {
 					movedObjects.push_back(entity);
+					//newPos = transformation.position;
 				}
 			}
 
+			//if (newPos != oldPos) {				
+			//	EntityMovedEvent e;
+			//	e.entity = entity;
+			//	e.oldPos = oldPos;
+			//	e.newPos = newPos;
+
+			//	EventDispatcher::raiseEvent(&e);
+			//}
 		}
 	}
 

@@ -21,8 +21,8 @@
 void InputSystem::handleKeyPressEvent(Event* e) {
 	KeyEvent keyEvent = *e->get<KeyEvent>();
 
-	m_systemManager->getRegistry().view<CameraComponent, VelocityComponent>().each(
-		[&](auto& camera, auto& velocity) {
+	m_systemManager->getRegistry().view<CameraComponent, VelocityComponent, TransformationComponent>().each(
+		[&](auto& camera, auto& velocity, auto& transformation) {
 			switch (keyEvent.key) {
 			case GLFW_KEY_W:
 				if (keyEvent.action == GLFW_PRESS)
@@ -76,6 +76,7 @@ void InputSystem::handleKeyPressEvent(Event* e) {
 				break;
 			}
 
+			updateSelectedBlock(camera, transformation);
 			m_systemManager->physicsActive = true;
 		});
 }
@@ -101,7 +102,7 @@ void InputSystem::handleMouseButtonEvent(Event* e) {
 				if (mouseButtonEvent.action == GLFW_PRESS) {
 					if (selectedBlock.valid) {
 						glm::ivec3 pos = selectedBlock.block + selectedBlock.face;
-						world.setBlock(m_systemManager->getRegistry(), pos, Block(BlockType::BLOCK_SAND));
+						world.setBlock(m_systemManager->getRegistry(), pos, Block(BlockType::BLOCK_BOOLSHELF));
 					}
 				}
 				break;
@@ -166,17 +167,26 @@ void InputSystem::updateVectors(CameraComponent& camera) {
 
 void InputSystem::updateSelectedBlock(CameraComponent& camera, TransformationComponent& transformation) {
 	WorldComponent& world = m_systemManager->getCurrentWorld();
-	Ray r = Ray(transformation.position, camera.front);
+	glm::vec3 pos = transformation.position;
+	Ray r = Ray(pos, camera.front);
 
 	std::vector<glm::ivec3> blocks = r.getAffectedBlocks(5);
 	glm::ivec3 block;
 
-	auto it = blocks.begin();
-	do {
-		block = *(it++);
-	} while (it != blocks.end() && world.getBlock(m_systemManager->getRegistry(), block).type == BlockType::BLOCK_AIR);
+	float minLength = FLT_MAX;
+	for (auto b : blocks) {
+		if (world.getBlock(m_systemManager->getRegistry(), b).type != BlockType::BLOCK_AIR) {
+			glm::vec3 diff = pos - (glm::vec3)b;
+			float length = glm::length(diff);
+			
+			if (length < minLength) {
+				block = b;
+				minLength = length;
+			}
+		}
+	}
 
-	if (world.getBlock(m_systemManager->getRegistry(), block).type != BlockType::BLOCK_AIR) {
+	if (minLength != FLT_MAX) {
 		glm::ivec3 intersectionFace = r.getIntersectionFace(block);
 		selectedBlock = { block, intersectionFace, true };
 	}
@@ -195,5 +205,5 @@ InputSystem::InputSystem(SystemManager* systemManager)
 	ADD_EVENT(handleMouseMoveEvent, CURSOR_EVENT);
 	ADD_EVENT(handleScrollEvent, SCROLL_EVENT);
 	ADD_EVENT(handleFramebufferSizeEvent, FRAMEBUFFER_SIZE_EVENT);
-	ADD_EVENT(handleMouseButtonEvent, MOUSE_BUTTON_EVENT);
+	ADD_EVENT(handleMouseButtonEvent, MOUSE_BUTTON_EVENT);	
 }
