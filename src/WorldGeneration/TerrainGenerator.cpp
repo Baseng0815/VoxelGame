@@ -6,12 +6,10 @@
 #include "../../include/Configuration.h"
 #include "../../include/Block.h"
 
-TerrainGenerator::TerrainGenerator() {
-	Terrain* terrain = new Terrain(0, 0);
-	TerrainFlat* flat = new TerrainFlat();
-
-	m_biomes.push_back({ BiomeID::BIOME_FLAT, terrain });
-	m_biomes.push_back({ BiomeID::BIOME_FLAT_TERRAIN, flat });
+TerrainGenerator::TerrainGenerator() {	
+	m_biomes.push_back({ BiomeID::BIOME_FLAT, new Terrain(0, 0) });
+	m_biomes.push_back({ BiomeID::BIOME_FLAT_TERRAIN, new TerrainFlat() });
+	m_biomes.push_back({ BiomeID::BIOME_DESERT, new TerrainDesert() });
 }
 
 TerrainGenerator::~TerrainGenerator() {
