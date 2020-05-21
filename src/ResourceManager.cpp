@@ -1,10 +1,14 @@
 #include "../include/ResourceManager.h"
 #include <utility>
 
+#include "../include/Font.h"
 #include "../include/Shader.h"
 #include "../include/Texture.h"
 
 std::map<std::string, Resource*> ResourceManager::resources;
+
+// TODO remove
+#include <iostream>
 
 void ResourceManager::loadResources() {
     // textures
@@ -42,6 +46,9 @@ void ResourceManager::loadResources() {
         "vertex"
     };
     shader->setAttributes(attribs);
+
+    // fonts
+    resources.insert(std::make_pair("fontKoruri", new Font("Fonts/Koruri-Regular.ttf")));
 }
 
 void ResourceManager::freeResources() {
@@ -63,3 +70,4 @@ T* ResourceManager::getResource(const std::string& id) {
 
 template Texture* ResourceManager::getResource<Texture>(const std::string&);
 template Shader* ResourceManager::getResource<Shader>(const std::string&);
+template Font* ResourceManager::getResource<Font>(const std::string&);

@@ -20,7 +20,7 @@ Font::Font(const std::string& file) {
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     // load ASCII character set
-    for (unsigned char c = 0; c < 128; c++) {
+    for (char c = 32; c < 127; c++) {
         if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
                 std::cout << "Failed to load glyph " << c << std::endl;
                 continue;
@@ -28,6 +28,7 @@ Font::Font(const std::string& file) {
 
         GLuint texture;
         glGenTextures(1, &texture);
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
 
@@ -43,6 +44,10 @@ Font::Font(const std::string& file) {
         };
         m_characters.insert(std::make_pair(c, character));
     }
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+    FT_Done_Face(face);
+    FT_Done_FreeType(ft);
 }
 
 Font::~Font() {

@@ -1,10 +1,19 @@
 #include "../include/GUI.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "../include/Shader.h"
+#include "../include/Configuration.h"
 #include "../include/EventDispatcher.h"
 #include "../include/ResourceManager.h"
+#include "../include/Components/CameraComponent.h"
+
+#include "../include/Text.h"
 
 void GUI::handleFramebufferSize(Event* event) {
+    FramebufferSizeEvent e = *event->get<FramebufferSizeEvent>();
+
+    m_widgets["root_layout"]->resize(Rectangle(0, 0, e.width, e.height));
 }
 
 void GUI::handleCursorMove(Event* e) {
@@ -20,8 +29,16 @@ GUI::GUI() {
     m_guiShader = ResourceManager::getResource<Shader>("guiShader");
 
     Layout* rootLayout = new Layout("root_layout", this);
-    UiProperties* properties = rootLayout->getProperties();
-    properties->backgroundColor = glm::vec4(0, 0, 0, 0);
+
+    /*
+    Text* text = rootLayout->addWidget<Text>("text_1");
+    text->getProperties().constraints.x = PixelConstraint(0);
+    text->getProperties().constraints.y = PixelConstraint(0);
+    text->getProperties().constraints.width = MatchConstraint();
+    text->getProperties().constraints.height = MatchConstraint();
+    text->setFont(ResourceManager::getResource<Font>("fontKoruri"));
+    text->setString("Hallo Welt");
+    */
 
     rootLayout->resize();
 
@@ -36,10 +53,11 @@ GUI::~GUI() {
         delete widget.second;
 }
 
-void GUI::draw() {
+void GUI::draw(const CameraComponent& camera) {
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
     m_guiShader->bind();
+    m_guiShader->upload("projectionMatrix", camera.orthoProjection);
 
     // a layout is responsible to draw its children
     m_widgets["root_layout"]->draw(*m_guiShader);

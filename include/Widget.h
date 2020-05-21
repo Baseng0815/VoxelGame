@@ -11,8 +11,8 @@ class Shader;
 
 class Widget {
     protected:
-        // m_area is in global space (0|0-1|1)
-        Rectangle m_area;
+        // m_area is in screen space
+        mutable Rectangle m_area;
         Layout* m_parent;
 
         UiProperties m_properties;
@@ -25,7 +25,7 @@ class Widget {
         void onPress();
         void onRelease();
 
-        RenderQuad m_renderQuad;
+        RenderQuad m_renderQuadBackground;
         virtual void _draw(Shader& shader) const;
 
     public:
@@ -33,9 +33,13 @@ class Widget {
         virtual ~Widget() = default;
 
         void draw(Shader& shader) const;
-        virtual void resize();
+        // parent argument only relevant to root layout
+        virtual void resize(Rectangle parent = Rectangle());
 
-        UiProperties* getProperties();
+        UiProperties& getProperties();
+
+        glm::vec2 getPosition() const;
+        glm::vec2 getSize() const;
 
         const std::string& getId() const;
         Layout *getParent() const;

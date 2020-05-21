@@ -34,11 +34,6 @@ SystemManager::SystemManager() {
     m_entityRegistry.emplace<CameraComponent>(entity, 90.f);
     m_entityRegistry.emplace<TransformationComponent>(entity);
     m_entityRegistry.emplace<VelocityComponent>(entity);
-
-    // raise beginning events
-    EnterChunkEvent e;
-    e.newX = e.newZ = e.oldX = e.oldZ = 0;
-    EventDispatcher::raiseEvent(&e);
 }
 
 SystemManager::~SystemManager() {

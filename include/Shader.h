@@ -37,4 +37,3 @@ class Shader : public Resource {
         void upload(const std::string& location, float value);
         void upload(const std::string& location, int value);
 };
-

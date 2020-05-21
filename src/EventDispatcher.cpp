@@ -7,9 +7,6 @@ double EventDispatcher::m_prevY = 0;
 CallbackId EventDispatcher::m_cbCounter = 0;
 std::map<EventType, std::vector<std::pair<CallbackId, Callback>>> EventDispatcher::m_callbacks;
 
-// TODO remove
-#include <iostream>
-
 void EventDispatcher::attachToWindow(const Window& window) {
     GLFWwindow* hwnd = window.getHandle();
 

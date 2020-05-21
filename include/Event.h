@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string.h>
+#include <iostream>
 #include <functional>
 
 using namespace std::placeholders;
@@ -70,11 +71,11 @@ struct FramebufferSizeEvent : public Event {
     static constexpr EventType TYPE = FRAMEBUFFER_SIZE_EVENT;
 
     Application* app;
-    int width, height;
+    float width, height;
 
     EventType type() const override final;
     std::string toString() const override final;
-    FramebufferSizeEvent(Application* app = nullptr, int width = 0, int height = 0);
+    FramebufferSizeEvent(Application* app = nullptr, float width = 0, float height = 0);
 };
 
 struct EnterChunkEvent : public Event {

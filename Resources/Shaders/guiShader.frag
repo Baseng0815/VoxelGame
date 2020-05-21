@@ -8,11 +8,9 @@ uniform sampler2D texture0;
 uniform vec4 color;
 
 // 0 ^= full color
-uniform float blendFactor = 0;
+uniform float textureVisibility;
 
 void main() {
-    vec4 textured = texture(texture0, pass_texCoords);
-    // TODO add blending with texture
-    //out_Color = mix(color, texture, blendFactor);
-    out_Color = color;
+    vec4 textured = vec4(1, 1, 1, texture(texture0, pass_texCoords).r);
+    out_Color = textureVisibility * textured + (1 - textureVisibility) * color;
 }

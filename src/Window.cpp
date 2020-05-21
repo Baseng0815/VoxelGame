@@ -15,11 +15,11 @@ void Window::handleKeyPress(Event* e) {
     }
 }
 
-Window::Window(Application* app) {
+Window::Window(Application* app, int width, int height) {
     Configuration::loadConfiguration("Resources/");
     glfwInit();
 
-    m_window = glfwCreateWindow(Configuration::getFloatValue("WINDOW_WIDTH"), Configuration::getFloatValue("WINDOW_HEIGHT"), "GLFW window", nullptr, nullptr);
+    m_window = glfwCreateWindow(width, height, "GLFW window", nullptr, nullptr);
     if (!m_window)
         throw std::runtime_error("Failed to create GLFW window.");
 

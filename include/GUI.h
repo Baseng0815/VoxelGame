@@ -4,6 +4,7 @@
 
 class Event;
 class Shader;
+class CameraComponent;
 
 class GUI {
     private:
@@ -21,7 +22,7 @@ class GUI {
         GUI();
         ~GUI();
 
-        void draw();
+        void draw(const CameraComponent& camera);
 
         // register gui widget
         // should not be called manually

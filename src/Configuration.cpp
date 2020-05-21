@@ -4,6 +4,8 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 
+#include "../include/Event.h"
+
 std::map<std::string, float> Configuration::floatValues;
 std::map<std::string, std::string> Configuration::stringValues;
 BlockDataMap Configuration::blockDataMap;

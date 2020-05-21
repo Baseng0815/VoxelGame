@@ -6,6 +6,7 @@
 #include "RenderQuad.h"
 
 class GUI;
+class Text;
 class Widget;
 
 typedef std::vector<Widget*>::iterator WidgetIt;
@@ -24,7 +25,7 @@ class Layout : public Widget {
     public:
         Layout(std::string id, GUI* gui, Layout* parent = nullptr);
 
-        void resize() override;
+        void resize(Rectangle parent = Rectangle()) override;
 
         // create new widget
         template<class T>

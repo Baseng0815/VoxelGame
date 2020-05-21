@@ -10,15 +10,17 @@
 class RenderQuad {
     private:
         GLuint m_vao;
+        GLuint m_ebo;
         GLuint m_vbo;
 
-        float x1, y1, x2, y2;
+        bool m_firstBuffer = true;
 
     public:
-        // area in 0,0-1,1 screen range
-        RenderQuad(const Rectangle& area = Rectangle());
+        // area in screen space
+        RenderQuad();
+        RenderQuad(const Rectangle& area, bool flipY = false);
         ~RenderQuad();
 
         void render() const;
-        void resize(const Rectangle& area);
+        void resize(const Rectangle& area, bool flipY = false) const;
 };

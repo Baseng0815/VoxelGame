@@ -61,7 +61,7 @@ std::string FramebufferSizeEvent::toString() const {
     return ss.str();
 }
 
-FramebufferSizeEvent::FramebufferSizeEvent(Application* app, int width, int height)
+FramebufferSizeEvent::FramebufferSizeEvent(Application* app, float width, float height)
 	: app(app), width(width), height(height) {}
 
 EventType EnterChunkEvent::type() const {

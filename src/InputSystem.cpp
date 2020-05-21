@@ -15,7 +15,6 @@
 void InputSystem::handleKeyPressEvent(Event* e) {
     KeyEvent keyEvent = *e->get<KeyEvent>();
 
-
     m_systemManager->getRegistry().view<CameraComponent, VelocityComponent>().each(
         [&](auto& camera, auto& velocity) {
         // disable/enable camera event reception
@@ -138,7 +137,8 @@ void InputSystem::updateViewMatrix(CameraComponent& camera, TransformationCompon
 }
 
 void InputSystem::updateProjectionMatrix(CameraComponent& camera) {
-    camera.projectionMatrix = glm::perspective(glm::radians(camera.fov), camera.width / (float)camera.height, 0.1f, 1000.f);
+    camera.perspectiveProjection = glm::perspective(glm::radians(camera.fov), camera.width / (float)camera.height, 0.1f, 1000.f);
+    camera.orthoProjection = glm::ortho(0.f, camera.width, 0.f, camera.height);
 }
 
 void InputSystem::_update(int dt) {

@@ -15,32 +15,29 @@ Widget::Widget(const std::string& id, Layout* parent)
 void Widget::draw(Shader& shader) const {
     // draw background
     shader.upload("color", m_properties.backgroundColor);
-    shader.upload("blendFactor", 0);
-    m_renderQuad.render();
+    shader.upload("textureVisibility", 0.f);
+    m_renderQuadBackground.render();
 
     // draw custom
-    shader.upload("blendFactor", 1);
+    shader.upload("textureVisibility", 1.f);
     _draw(shader);
 }
 
-void Widget::resize() {
-    // clamp position and cut off if widget overlaps into others
-    m_properties.position.x = std::clamp(m_properties.position.x, 0.f, 1.f);
-    m_properties.position.x = std::clamp(m_properties.position.x, 0.f, 1.f);
-
-    m_properties.size.x = std::min(m_properties.size.x, 1 - m_properties.position.x);
-    m_properties.size.y = std::min(m_properties.size.y, 1 - m_properties.position.y);
-
-    // transform into global space and apply to area
-    UiProperties* propertiesParent = m_parent->getProperties();
-    m_area.position = propertiesParent->position + m_properties.position * propertiesParent->size;
-    m_area.size = m_properties.size * propertiesParent->size;
-
-    m_renderQuad.resize(m_area);
+void Widget::resize(Rectangle parent) {
+    m_area = m_properties.constraints.getRect(m_parent->getArea());
+    m_renderQuadBackground.resize(m_area);
 }
 
-UiProperties* Widget::getProperties() {
-    return &m_properties;
+UiProperties& Widget::getProperties() {
+    return m_properties;
+}
+
+glm::vec2 Widget::getPosition() const {
+    return m_area.position;
+}
+
+glm::vec2 Widget::getSize() const {
+    return m_area.size;
 }
 
 const std::string& Widget::getId() const {

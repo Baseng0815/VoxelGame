@@ -16,6 +16,7 @@ void EntityRenderSystem::handleFramebufferSize(Event* e) {
     FramebufferSizeEvent fbsE = *e->get<FramebufferSizeEvent>();
     glViewport(0, 0, fbsE.width, fbsE.height);
     m_gBuffer.resize(fbsE.width, fbsE.height);
+    m_renderQuad.resize(Rectangle(0, 0, fbsE.width, fbsE.height));
 }
 
 #include <iostream>
@@ -35,7 +36,7 @@ void EntityRenderSystem::_update(int dt) {
     m_systemManager->getRegistry().view<CameraComponent>().each(
         [=](auto& camera) {
         m_blockShader->upload("viewMatrix", camera.viewMatrix);
-        m_blockShader->upload("projectionMatrix", camera.projectionMatrix);
+        m_blockShader->upload("projectionMatrix", camera.perspectiveProjection);
     });
 
     m_systemManager->getRegistry().view<TransformationComponent, GeometryComponent, TextureComponent>().each(
@@ -51,10 +52,16 @@ void EntityRenderSystem::_update(int dt) {
     // lighting pass
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     m_lightingShader->bind();
-    m_gBuffer.bindTextures();
+
+    m_systemManager->getRegistry().view<CameraComponent>().each(
+        [=](auto& camera) {
+        m_lightingShader->upload("projectionMatrix", camera.orthoProjection);
+    });
 
     m_lightingShader->upload("lights[0].position", m_light.position);
     m_lightingShader->upload("lights[0].color", m_light.color);
+
+    m_gBuffer.bindTextures();
     m_renderQuad.render();
 
     m_gBuffer.bindFramebuffer(true);
@@ -62,6 +69,9 @@ void EntityRenderSystem::_update(int dt) {
     glBlitFramebuffer(0, 0, m_gBuffer.getWidth(), m_gBuffer.getHeight(), 0, 0, m_gBuffer.getWidth(), m_gBuffer.getHeight(),
             GL_DEPTH_BUFFER_BIT, GL_NEAREST);
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     // TODO add skybox
     /*
@@ -74,7 +84,7 @@ void EntityRenderSystem::_update(int dt) {
 }
 
 EntityRenderSystem::EntityRenderSystem(SystemManager* systemManager)
-    : System(systemManager, 0) {
+    : System(systemManager, 0), m_renderQuad(Rectangle(0, 0, Configuration::INITIAL_WINDOW_WIDTH, Configuration::INITIAL_WINDOW_HEIGHT)) {
     ADD_EVENT(EntityRenderSystem::handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT);
 
     // TODO change naming scheme
