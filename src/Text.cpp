@@ -6,7 +6,7 @@
 
 #include <iostream>
 
-void Text::updateRenderQuads() {
+void Text::updateTextRenderQuads() {
     float scale = 0.8f;
     float x = m_area.position.x;
 
@@ -50,7 +50,7 @@ void Text::_draw(Shader& shader) const {
 Text::Text(const std::string& id, Layout* parent)
     : Widget(id, parent) {}
 
-void Text::resize(Rectangle parent) {
+void Text::updateArea(Rectangle parent) {
     m_area = m_properties.constraints.getRect(m_parent->getArea());
 
     if (m_properties.constraints.width.getType() == CONSTRAINT_MATCH)
@@ -58,8 +58,12 @@ void Text::resize(Rectangle parent) {
     if (m_properties.constraints.height.getType() == CONSTRAINT_MATCH)
         m_area.size.y = m_textHeight;
 
+}
+
+void Text::updateScreenElements() {
     m_renderQuadBackground.resize(m_area);
-    updateRenderQuads();
+    updateTextRenderQuads();
+
 }
 
 const std::string& Text::getString() const {
@@ -68,7 +72,6 @@ const std::string& Text::getString() const {
 
 void Text::setString(const std::string& string) {
     m_string = string;
-    updateRenderQuads();
 }
 
 const Font* Text::getFont() const {

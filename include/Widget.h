@@ -33,13 +33,20 @@ class Widget {
         virtual ~Widget() = default;
 
         void draw(Shader& shader) const;
+
+        // updates the area which the widget occupies
         // parent argument only relevant to root layout
-        virtual void resize(Rectangle parent = Rectangle());
+        virtual void updateArea(Rectangle parent = Rectangle());
+
+        // updates on-screen elements based on the area, like
+        // the background color quad
+        virtual void updateScreenElements();
 
         UiProperties& getProperties();
 
         glm::vec2 getPosition() const;
         glm::vec2 getSize() const;
+        void setPosition(glm::vec2 position);
 
         const std::string& getId() const;
         Layout *getParent() const;

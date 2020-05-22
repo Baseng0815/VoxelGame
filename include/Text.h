@@ -19,13 +19,14 @@ class Text : public Widget {
 
         const Font* m_font = nullptr;
 
-        void updateRenderQuads();
+        void updateTextRenderQuads();
         void _draw(Shader& shader) const override;
 
     public:
         Text(const std::string& id, Layout* parent);
 
-        virtual void resize(Rectangle parent = Rectangle()) override;
+        virtual void updateArea(Rectangle parent = Rectangle()) override;
+        virtual void updateScreenElements() override;
 
         const std::string& getString() const;
         void setString(const std::string& str);

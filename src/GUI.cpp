@@ -13,7 +13,8 @@
 void GUI::handleFramebufferSize(Event* event) {
     FramebufferSizeEvent e = *event->get<FramebufferSizeEvent>();
 
-    m_widgets["root_layout"]->resize(Rectangle(0, 0, e.width, e.height));
+    m_widgets["root_layout"]->updateArea(Rectangle(0, 0, e.width, e.height));
+    m_widgets["root_layout"]->updateScreenElements();
 }
 
 void GUI::handleCursorMove(Event* e) {
@@ -29,18 +30,25 @@ GUI::GUI() {
     m_guiShader = ResourceManager::getResource<Shader>("guiShader");
 
     Layout* rootLayout = new Layout("root_layout", this);
+    rootLayout->setStackMode(STACK_VERTICAL);
 
-    /*
     Text* text = rootLayout->addWidget<Text>("text_1");
+    text->getProperties().constraints.y = RelativeConstraint(0.95);
+    text->getProperties().constraints.width = MatchConstraint();
+    text->getProperties().constraints.height = MatchConstraint();
+    text->setFont(ResourceManager::getResource<Font>("fontKoruri"));
+    text->setString("!1Hallo Welt 1!");
+
+    text = rootLayout->addWidget<Text>("text_2");
     text->getProperties().constraints.x = PixelConstraint(0);
     text->getProperties().constraints.y = PixelConstraint(0);
     text->getProperties().constraints.width = MatchConstraint();
     text->getProperties().constraints.height = MatchConstraint();
     text->setFont(ResourceManager::getResource<Font>("fontKoruri"));
-    text->setString("Hallo Welt");
-    */
+    text->setString("!2Hallo Welt 2!");
 
-    rootLayout->resize();
+    rootLayout->updateArea();
+    rootLayout->updateScreenElements();
 
     ADD_EVENT(handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT);
     ADD_EVENT(handleCursorMove, CURSOR_EVENT);

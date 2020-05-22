@@ -11,12 +11,18 @@ class Widget;
 
 typedef std::vector<Widget*>::iterator WidgetIt;
 
+enum StackMode {
+    STACK_NONE, STACK_VERTICAL, STACK_HORIZONTAL
+};
+
 class Layout : public Widget {
     protected:
         std::vector<Widget*> m_widgets;
 
         // used for registering widgets
         GUI* m_gui;
+        bool m_invertStack = false;
+        StackMode m_stackMode = STACK_NONE;
 
         virtual void arrangeWidgets();
 
@@ -25,7 +31,9 @@ class Layout : public Widget {
     public:
         Layout(std::string id, GUI* gui, Layout* parent = nullptr);
 
-        void resize(Rectangle parent = Rectangle()) override;
+        void setStackMode(StackMode stackMode, bool invertStack = false);
+        void updateArea(Rectangle parent = Rectangle()) override;
+        void updateScreenElements() override;
 
         // create new widget
         template<class T>

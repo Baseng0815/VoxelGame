@@ -23,8 +23,11 @@ void Widget::draw(Shader& shader) const {
     _draw(shader);
 }
 
-void Widget::resize(Rectangle parent) {
+void Widget::updateArea(Rectangle parent) {
     m_area = m_properties.constraints.getRect(m_parent->getArea());
+}
+
+void Widget::updateScreenElements() {
     m_renderQuadBackground.resize(m_area);
 }
 
@@ -38,6 +41,10 @@ glm::vec2 Widget::getPosition() const {
 
 glm::vec2 Widget::getSize() const {
     return m_area.size;
+}
+
+void Widget::setPosition(glm::vec2 position) {
+    m_area.position = position;
 }
 
 const std::string& Widget::getId() const {
