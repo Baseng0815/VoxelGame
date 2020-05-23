@@ -6,9 +6,11 @@
 class BiomeGenerator {
 private:
 	noise::module::Perlin perlin;
+	noise::module::Turbulence biomeTurb;
 
 public:
 	BiomeGenerator();
 
-	void generateBiomes(glm::vec2 chunkPos, BiomeID** biomeMap);
+	bool generateBiomes(glm::vec2 chunkPos, BiomeID** biomeMap);
+	const noise::module::Module& getBiomeNoise() const;
 };

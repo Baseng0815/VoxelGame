@@ -63,7 +63,7 @@ void WorldGenerator::generateOre(int x, int y, int z, int size, BlockType block,
 }
 
 void WorldGenerator::generate(glm::vec2 position, BiomeID** biomes, Block*** blocks) {
-	m_biomeGenerator.generateBiomes(position, biomes);
-	m_terrainGenerator.generate(position, biomes, blocks);
+	bool needsInterpolation = m_biomeGenerator.generateBiomes(position, biomes);
+	m_terrainGenerator.generate(position, biomes, blocks, needsInterpolation);
 	m_caveGenerator.generate(position, blocks);
 }

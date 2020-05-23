@@ -15,11 +15,14 @@ TerrainFlat::TerrainFlat() : Terrain(55, 65) {
 	flatTerrain.SetSourceModule(0, baseFlatTerrain);	
 }
 
-void TerrainFlat::getBlocks(glm::vec2 chunk, int cx, int cz, Block*** blocks) {
+void TerrainFlat::getBlocks(glm::vec2 chunk, int cx, int cz, Block*** blocks, int terrainHeight) {
 	float x = chunk.x + (float)cx / Configuration::CHUNK_SIZE;
 	float z = chunk.y + (float)cz / Configuration::CHUNK_SIZE;
 
-	int height = minHeight + (maxHeight - minHeight) * flatTerrain.GetValue(x, 0, z);
+	int height = terrainHeight;
+	if (height == -1)
+		height = minHeight + (maxHeight - minHeight) * flatTerrain.GetValue(x, 0, z);
+
 	for (int cy = 0; cy < height; cy++) {
 		Block block;
 		if (cy < 2)
@@ -34,4 +37,11 @@ void TerrainFlat::getBlocks(glm::vec2 chunk, int cx, int cz, Block*** blocks) {
 		blocks[cx][cy][cz] = block;
 	}
 
+}
+
+int TerrainFlat::getHeight(glm::vec2 chunk, int cx, int cz) const {
+	float x = chunk.x + (float)cx / Configuration::CHUNK_SIZE;
+	float z = chunk.y + (float)cz / Configuration::CHUNK_SIZE;
+
+	return minHeight + (maxHeight - minHeight) * flatTerrain.GetValue(x, 0, z);
 }

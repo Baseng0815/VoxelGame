@@ -13,11 +13,14 @@ TerrainDesert::TerrainDesert() : Terrain(55, 60) {
 	terrainDesert.SetSourceModule(0, baseTerrainDesert);
 }
 
-void TerrainDesert::getBlocks(glm::vec2 chunk, int cx, int cz, Block*** blocks) {
+void TerrainDesert::getBlocks(glm::vec2 chunk, int cx, int cz, Block*** blocks, int terrainHeight) {
 	float x = chunk.x + (float)cx / Configuration::CHUNK_SIZE;
 	float z = chunk.y + (float)cz / Configuration::CHUNK_SIZE;
 
-	int height = minHeight + (maxHeight - minHeight) * terrainDesert.GetValue(x, 0, z);
+	int height = terrainHeight;
+	if(height == -1)
+		height = minHeight + (maxHeight - minHeight) * terrainDesert.GetValue(x, 0, z);
+
 	for (int cy = 0; cy < height; cy++) {
 		Block block;
 		if (cy < 2)
@@ -30,4 +33,11 @@ void TerrainDesert::getBlocks(glm::vec2 chunk, int cx, int cz, Block*** blocks) 
 		blocks[cx][cy][cz] = block;
 	}
 
+}
+
+int TerrainDesert::getHeight(glm::vec2 chunk, int cx, int cz) const {
+	float x = chunk.x + (float)cx / Configuration::CHUNK_SIZE;
+	float z = chunk.y + (float)cz / Configuration::CHUNK_SIZE;
+
+	return minHeight + (maxHeight - minHeight) * terrainDesert.GetValue(x, 0, z);
 }

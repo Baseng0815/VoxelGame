@@ -13,5 +13,5 @@ public:
 	TerrainGenerator();	
 	~TerrainGenerator();
 
-	void generate(glm::vec2 chunkPosition, BiomeID** biomes, Block*** blocks);				
+	void generate(glm::vec2 chunkPosition, BiomeID** biomes, Block*** blocks, bool needsInterpolation = false);				
 };
