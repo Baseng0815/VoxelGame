@@ -102,7 +102,7 @@ void InputSystem::handleMouseButtonEvent(Event* e) {
 				if (mouseButtonEvent.action == GLFW_PRESS) {
 					if (selectedBlock.valid) {
 						glm::ivec3 pos = selectedBlock.block + selectedBlock.face;
-						world.setBlock(m_systemManager->getRegistry(), pos, Block(BlockType::BLOCK_BOOLSHELF));
+						world.setBlock(m_systemManager->getRegistry(), pos, Block(BlockType::BLOCK_WOOD));
 					}
 				}
 				break;

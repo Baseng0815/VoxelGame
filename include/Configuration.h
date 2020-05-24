@@ -31,3 +31,6 @@ class Configuration {
 
         static const BlockData& getBlockData(BlockType block);        
 };
+
+#define CHUNK_SIZE Configuration::CHUNK_SIZE
+#define CHUNK_HEIGHT Configuration::CHUNK_HEIGHT

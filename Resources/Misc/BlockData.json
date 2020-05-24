@@ -24,12 +24,12 @@
     "tid_bt": 1
   },
   "3": {
-    "tid_up": 20,
-    "tid_px": 19,
-    "tid_nx": 19,
-    "tid_pz": 19,
-    "tid_nz": 19,
-    "tid_bt": 20
+    "tid_up": 21,
+    "tid_px": 20,
+    "tid_nx": 20,
+    "tid_pz": 20,
+    "tid_nz": 20,
+    "tid_bt": 21
   },
   "4": {
     "tid_up": 5,
@@ -174,5 +174,13 @@
     "tid_pz": 2,
     "tid_nz": 2,
     "tid_bt": 2
+  },
+  "22" : {
+    "tid_up": 53,
+    "tid_px": 53,
+    "tid_nx": 53,
+    "tid_pz": 53,
+    "tid_nz": 53,
+    "tid_bt": 53
   }
 }

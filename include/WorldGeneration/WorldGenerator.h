@@ -29,9 +29,8 @@ private:
 	BiomeGenerator m_biomeGenerator;
 	CaveGenerator m_caveGenerator;
 	TerrainGenerator m_terrainGenerator;
-		
-	void generateUnderground(glm::vec2 position, Block*** blocks);
-	void generateOre(int x, int y, int z, int size, BlockType block, Block*** blocks) const;	
+			
+	void generateOres(BiomeID** biomes, Block*** blocks) const;	
 
 public:
 	WorldGenerator(WorldType type);

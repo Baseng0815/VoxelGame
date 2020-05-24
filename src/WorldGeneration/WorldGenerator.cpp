@@ -4,6 +4,7 @@
 #include "../../include/Block.h"
 #include "../../include/BlockData.h"
 #include "../../include/Configuration.h"
+#include "../../include/Utility.h"
 
 using namespace noise::utils;
 using namespace noise::model;
@@ -19,51 +20,50 @@ WorldGenerator& WorldGenerator::operator=(const WorldGenerator& generator) {
 	return *this;
 }
 
-#include <iostream>
+void WorldGenerator::generateOres(BiomeID** biomes, Block*** blocks) const {
+	for (BlockType block = BlockType::BLOCK_ORE_GOLD; block <= BlockType::BLOCK_ORE_COAL; ) {
+		BlockData blockData = Configuration::getBlockData(block);
 
-void WorldGenerator::generateUnderground(glm::vec2 position, Block*** blocks) {
-	if (m_type == WorldType::WORLD_FLAT)
-		return;
-
-	//// generate ores
-	for (int b = 0; b < (int)BlockType::NUM_BLOCKS; b++) {
-		BlockData blockData = Configuration::getBlockData((BlockType)b);
-		for (int i = 0; i < blockData.oreData.generationCounts; i++) {
-			int x = rand() % 16;
+		for (int c = 0; c < blockData.oreData.generationCounts; c++) {
+			int x = rand() % CHUNK_SIZE;
 			int y = rand() % (blockData.oreData.maxHeight - blockData.oreData.minHeight) + blockData.oreData.minHeight;
-			int z = rand() % 16;
+			int z = rand() % CHUNK_SIZE;	
+			glm::ivec3 orePos = glm::ivec3(x, y, z);
 
-			int size = blockData.oreData.size;
-			generateOre(x, y, z, size, (BlockType)b, blocks);
-		}
-	}
+			double a = pow(3 * blockData.oreData.size / (16 * PI), 1 / 3.0);
 
-	// caves
-	m_caveGenerator.generate(position, blocks);
-}
+			//		x^2		y^2		z^2
+			// 1 = ----- + ----- + -----
+			//		a^2		a^2		4a^2
 
-void WorldGenerator::generateOre(int x, int y, int z, int size, BlockType block, Block*** blocks) const {
-	for (int i = 0; i < size; i += 4) {
-		float x1 = x + i;
-		float z1 = z + i;
+			for(int x1 = -a; x1 <= a; x1++)
+				for (int z1 = -2 * a; z1 <= 2 * a; z1++) {
+					double fSquared = pow(a, 2) - pow(x1, 2) - (pow(z1, 2) / pow(a, 2));
 
-		for (int k = 0; k < 2; k++)
-			for (int j = 0; j < 2; j++)
-				if (i + k + j < size) {
-					int x2 = x1 + k;
-					int y2 = y + j;
-					int z2 = z1;
+					if (fSquared >= 0) {
+						double ymin = -pow(fSquared, 0.5);
+						double ymax = -ymin;
 
-					if (x2 >= 0 && x2 < 16 && y2 >= 0 && y2 < 256 && z2 >= 0 && z2 < 16) {
-						if (blocks[x2][y2][z2].type == BlockType::BLOCK_STONE)
-							blocks[x2][y2][z2] = Block(block);
+						for (int y1 = ymin; y1 <= ymax; y1++) {
+							glm::ivec3 pos = orePos + glm::ivec3(x1, y1, z1);							
+
+							if (blocks[pos.x][pos.y][pos.z].type == BlockType::BLOCK_STONE) {
+								blocks[pos.x][pos.y][pos.z] = Block(block);
+							}
+						}
 					}
 				}
+		}
+		
+		block = (BlockType)((int)block + 1);
 	}
 }
 
 void WorldGenerator::generate(glm::vec2 position, BiomeID** biomes, Block*** blocks) {
 	bool needsInterpolation = m_biomeGenerator.generateBiomes(position, biomes);
 	m_terrainGenerator.generate(position, biomes, blocks, needsInterpolation);
+
+	//generateOres(biomes, blocks);
+
 	m_caveGenerator.generate(position, blocks);
 }

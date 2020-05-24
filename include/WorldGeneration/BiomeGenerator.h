@@ -5,8 +5,7 @@
 
 class BiomeGenerator {
 private:
-	noise::module::Perlin perlin;
-	noise::module::Turbulence biomeTurb;
+	noise::module::Perlin perlin; 	
 
 public:
 	BiomeGenerator();
