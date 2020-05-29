@@ -19,7 +19,7 @@ class ChunkCreateSystem : public System {
     private:
         struct GeometryData {
             std::vector<Vertex> vertices;
-            std::vector<unsigned int> indices;
+            std::vector<unsigned int> indices;            
         };
 
         struct GenerationData {

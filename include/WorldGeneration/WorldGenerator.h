@@ -12,7 +12,7 @@
 using namespace noise;
 using namespace noise::module;
 
-// Forward-Deklaration ist möglich, weil ein Zeiger immer 4 byte beansprucht und
+// Forward-Deklaration ist mï¿½glich, weil ein Zeiger immer 4 byte beansprucht und
 // der compiler die Klasse daher nicht kennen muss
 class Block;
 class ChunkComponent;

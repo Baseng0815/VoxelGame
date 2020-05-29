@@ -2,19 +2,41 @@
 #include "../../include/WorldGeneration/WorldGenerator.h"
 #include "../../include/WorldGeneration/TerrainFlat.h"
 #include "../../include/WorldGeneration/TerrainDesert.h"
+#include "../../include/WorldGeneration/TerrainOcean.h"
 
 #include "../../include/Configuration.h"
 #include "../../include/Block.h"
 
 TerrainGenerator::TerrainGenerator() {
-	m_biomes.push_back({ BiomeID::BIOME_FLAT, new Terrain(0, 0) });
-	m_biomes.push_back({ BiomeID::BIOME_FLAT_TERRAIN, new TerrainFlat() });
-	m_biomes.push_back({ BiomeID::BIOME_DESERT, new TerrainDesert() });
+	m_terrains.push_back({ BiomeID::BIOME_FLAT, new Terrain(0, 0) });
+	m_terrains.push_back({ BiomeID::BIOME_FLAT_TERRAIN, new TerrainFlat() });
+	m_terrains.push_back({ BiomeID::BIOME_DESERT, new TerrainDesert() });
+	m_terrains.push_back({ BiomeID::BIOME_OCEAN, new TerrainOcean() });
+	
 }
 
 TerrainGenerator::~TerrainGenerator() {
-	for (auto biome : m_biomes)
+	for (auto biome : m_terrains)
 		delete biome.generator;
+}
+
+Biome TerrainGenerator::getTerrain(BiomeID id) const {
+	bool found = false;
+
+	auto it = m_terrains.begin();
+	do {
+		if ((*it).id == id) {
+			found = true;
+		}
+		else it++;
+	} while (!found && it != m_terrains.end());
+
+	if (it != m_terrains.end()) {
+		Biome biome = *it;
+		return biome;
+	}
+
+	return m_terrains[0];
 }
 
 void TerrainGenerator::generate(glm::vec2 position, BiomeID** biomes, Block*** blocks, bool needsInterpolation) {
@@ -23,7 +45,7 @@ void TerrainGenerator::generate(glm::vec2 position, BiomeID** biomes, Block*** b
 			for (int cz = 0; cz < CHUNK_SIZE; cz++) {
 				BiomeID biome = biomes[cx][cz];
 
-				m_biomes[(int)biome].generator->getBlocks(position, cx, cz, blocks);
+				getTerrain(biome).generator->getBlocks(position, cx, cz, blocks);
 
 		}
 	else {
@@ -32,15 +54,15 @@ void TerrainGenerator::generate(glm::vec2 position, BiomeID** biomes, Block*** b
 		for(int i = 0; i < CHUNK_SIZE; i++)
 			heightMap[i] = new int[CHUNK_SIZE];
 
-		heightMap[0][0] = m_biomes[biomes[0][0]].generator->getHeight(position, 0, 0);
+		heightMap[0][0] = getTerrain(biomes[0][0]).generator->getHeight(position, 0, 0);
 
-		heightMap[0][CHUNK_SIZE - 1] = m_biomes[biomes[0][CHUNK_SIZE - 1]]
+		heightMap[0][CHUNK_SIZE - 1] = getTerrain(biomes[0][CHUNK_SIZE - 1])
 			.generator->getHeight(position, 0, CHUNK_SIZE - 1);
 
-		heightMap[CHUNK_SIZE - 1][0] = m_biomes[biomes[CHUNK_SIZE - 1][0]]
+		heightMap[CHUNK_SIZE - 1][0] = getTerrain(biomes[CHUNK_SIZE - 1][0])
 			.generator->getHeight(position, CHUNK_SIZE - 1, 0);
 
-		heightMap[CHUNK_SIZE - 1][CHUNK_SIZE - 1] = m_biomes[biomes[CHUNK_SIZE - 1][CHUNK_SIZE - 1]]
+		heightMap[CHUNK_SIZE - 1][CHUNK_SIZE - 1] = getTerrain(biomes[CHUNK_SIZE - 1][CHUNK_SIZE - 1])
 			.generator->getHeight(position, CHUNK_SIZE - 1, CHUNK_SIZE - 1);
 
 		// interpolate chunk height
@@ -63,7 +85,7 @@ void TerrainGenerator::generate(glm::vec2 position, BiomeID** biomes, Block*** b
 			for(int cz = 0; cz < CHUNK_SIZE; cz++){
 				BiomeID biome = biomes[cx][cz];
 
-				m_biomes[(int)biome].generator->getBlocks(position, cx, cz, blocks, heightMap[cx][cz]);
+				getTerrain(biome).generator->getBlocks(position, cx, cz, blocks, heightMap[cx][cz]);
 			}
 	}		
 }

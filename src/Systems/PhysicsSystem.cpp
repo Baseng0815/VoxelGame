@@ -67,7 +67,7 @@ void PhysicsSystem::_update(int dt) {
 
 					camera.relVelocity += dv;
 
-					camera.isFalling = world.getBlock(registry, glm::ivec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).type == BlockType::BLOCK_AIR;
+					camera.isFalling = !world.getBlock(registry, glm::ivec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).isSolid();
 					if (!camera.isFalling) {
 						camera.relVelocity.y = 0;
 					}
@@ -77,7 +77,7 @@ void PhysicsSystem::_update(int dt) {
 					}
 				}
 				else {
-					camera.isFalling = world.getBlock(registry, glm::ivec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).type == BlockType::BLOCK_AIR;
+					camera.isFalling = !world.getBlock(registry, glm::ivec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).isSolid();
 					if (camera.relVelocity.y < 0)
 						camera.relVelocity.y = 0;
 				}
@@ -194,7 +194,7 @@ void PhysicsSystem::solveBlockCollisions() {
 			if (y <= 1 || y > Configuration::CHUNK_HEIGHT)
 				hasCollision = false;
 			else {
-				hasCollision = world.getBlock(registry, blockPos).type != BlockType::BLOCK_AIR;
+				hasCollision = world.getBlock(registry, blockPos).isSolid();
 			}
 
 			// break collision detection

@@ -2,20 +2,14 @@
 #include "../../include/Configuration.h"
 #include "../../include/Block.h"
 
-TerrainDesert::TerrainDesert() : Terrain(55, 60) {
-	baseTerrainDesert.SetPersistence(1.0f / 128.0f);
-	baseTerrainDesert.SetFrequency(0.25f);
-	baseTerrainDesert.SetOctaveCount(4);
-	baseTerrainDesert.SetNoiseQuality(noise::NoiseQuality::QUALITY_FAST);
-
-	terrainDesert.SetBias(-0.75f);
-	terrainDesert.SetScale(0.5f);
-	terrainDesert.SetSourceModule(0, baseTerrainDesert);
+TerrainDesert::TerrainDesert() : Terrain(70, 80) {	
+	terrainDesert.SetSourceModule(0, baseTerrain);
+	terrainDesert.SetScale(1);
 }
 
 void TerrainDesert::getBlocks(glm::vec2 chunk, int cx, int cz, Block*** blocks, int terrainHeight) {
-	float x = chunk.x + (float)cx / Configuration::CHUNK_SIZE;
-	float z = chunk.y + (float)cz / Configuration::CHUNK_SIZE;
+	float x = chunk.x + (float)cx / CHUNK_SIZE;
+	float z = chunk.y + (float)cz / CHUNK_SIZE;
 
 	int height = terrainHeight;
 	if(height == -1)
@@ -36,8 +30,8 @@ void TerrainDesert::getBlocks(glm::vec2 chunk, int cx, int cz, Block*** blocks, 
 }
 
 int TerrainDesert::getHeight(glm::vec2 chunk, int cx, int cz) const {
-	float x = chunk.x + (float)cx / Configuration::CHUNK_SIZE;
-	float z = chunk.y + (float)cz / Configuration::CHUNK_SIZE;
+	float x = chunk.x + (float)cx / CHUNK_SIZE;
+	float z = chunk.y + (float)cz / CHUNK_SIZE;
 
 	return minHeight + (maxHeight - minHeight) * terrainDesert.GetValue(x, 0, z);
 }

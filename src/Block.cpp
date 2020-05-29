@@ -32,3 +32,7 @@ Block::Block(BlockType type)
 std::string Block::toString() const {
 	return blockNames.at(type);
 }
+
+bool Block::isSolid() {
+	return !(type == BlockType::BLOCK_AIR || type == BlockType::BLOCK_WATER);
+}

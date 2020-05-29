@@ -1,11 +1,14 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <noise/noise.h>
 
 struct Block;
 
 class Terrain {
 protected:
-	int minHeight, maxHeight;	
+	int minHeight, maxHeight;
+	noise::module::Perlin basePerlin;
+	noise::module::ScaleBias baseTerrain;
 
 public:		
 	Terrain(int minHeight, int maxHeight);

@@ -65,5 +65,5 @@ void WorldGenerator::generate(glm::vec2 position, BiomeID** biomes, Block*** blo
 
 	//generateOres(biomes, blocks);
 
-	m_caveGenerator.generate(position, blocks);
+	//m_caveGenerator.generate(position, blocks);
 }

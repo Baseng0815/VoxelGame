@@ -182,5 +182,13 @@
     "tid_pz": 53,
     "tid_nz": 53,
     "tid_bt": 53
+  },
+  "23" : {
+    "tid_up": 222,
+    "tid_px": 222,
+    "tid_nx": 222,
+    "tid_pz": 222,
+    "tid_nz": 222,
+    "tid_bt": 222
   }
 }

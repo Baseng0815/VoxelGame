@@ -9,8 +9,7 @@ using namespace noise::module;
 struct Block;
 
 class TerrainDesert : public Terrain {
-private:
-    Billow baseTerrainDesert;
+private:    
     ScaleBias terrainDesert;
     
 public:

@@ -2,15 +2,16 @@
 #include "Terrain.h"
 #include <noise/noise.h>
 
-using namespace noise;
 using namespace noise::module;
 
-class TerrainFlat : public Terrain {
-private:		
-	ScaleBias flatTerrain;	
+class TerrainOcean : public Terrain {
+private:
+	RidgedMulti oceanMoutainsInverted;
+	ScaleBias oceanMoutains;
+	Multiply oceanTerrain;
 
 public:
-	TerrainFlat();	
+	TerrainOcean();
 
 	void getBlocks(glm::vec2 chunk, int cx, int cz, Block*** blocks, int terrainHeight = -1) override;
 	int getHeight(glm::vec2 chunk, int cx, int cz) const override;

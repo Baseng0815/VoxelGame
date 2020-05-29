@@ -25,7 +25,7 @@ Window::Window(Application* app) {
     // init glew and load function pointers
     glewInit();
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+    glEnable(GL_CULL_FACE);    
 }
 
 void Window::clear(glm::vec3 clearColor) {

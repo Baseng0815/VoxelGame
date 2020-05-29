@@ -88,6 +88,12 @@ void ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int c
 		blocks[x] = new Block * [Configuration::CHUNK_HEIGHT];
 		for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
 			blocks[x][y] = new Block[Configuration::CHUNK_SIZE];
+
+			if (y < 63) {
+				for (int z = 0; z < CHUNK_SIZE; z++) {
+					blocks[x][y][z] = Block(BlockType::BLOCK_WATER);
+				}
+			}
 		}
 	}
 
@@ -114,39 +120,48 @@ void ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block*** blocks
 		for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++)
 			for (int z = 0; z < Configuration::CHUNK_SIZE; z++) {
 				bool draw[6] = { false };
+				
 				std::unique_lock<std::mutex> blockLock(*blockMutex);
 				if (blocks[x][y][z].type == BlockType::BLOCK_AIR) continue;
 
-				// negative X
-				if (x > 0) {
-					if (blocks[x - 1][y][z].type == BlockType::BLOCK_AIR) draw[0] = true;
+				if (blocks[x][y][z].type == BlockType::BLOCK_WATER) {
+					if (y < CHUNK_HEIGHT - 1 && blocks[x][y + 1][z].type == BlockType::BLOCK_AIR) {
+						draw[3] = true;						
+					}
 				}
-				else draw[0] = true;
-				// positive X
-				if (x < Configuration::CHUNK_SIZE - 1) {
-					if (blocks[x + 1][y][z].type == BlockType::BLOCK_AIR) draw[1] = true;
+				else {
+
+					// negative X
+					if (x > 0) {
+						if (blocks[x - 1][y][z].type == BlockType::BLOCK_AIR) draw[0] = true;
+					}
+					else draw[0] = true;
+					// positive X
+					if (x < Configuration::CHUNK_SIZE - 1) {
+						if (blocks[x + 1][y][z].type == BlockType::BLOCK_AIR) draw[1] = true;
+					}
+					else draw[1] = true;
+					// negative Y
+					if (y > 0) {
+						if (blocks[x][y - 1][z].type == BlockType::BLOCK_AIR) draw[2] = true;
+					}
+					else draw[2] = true;
+					// positive Y
+					if (y < Configuration::CHUNK_HEIGHT - 1) {
+						if (blocks[x][y + 1][z].type == BlockType::BLOCK_AIR || blocks[x][y + 1][z].type == BlockType::BLOCK_WATER) draw[3] = true;
+					}
+					else draw[3] = true;
+					// negative Z
+					if (z > 0) {
+						if (blocks[x][y][z - 1].type == BlockType::BLOCK_AIR) draw[4] = true;
+					}
+					else draw[4] = true;
+					// positive Z
+					if (z < Configuration::CHUNK_SIZE - 1) {
+						if (blocks[x][y][z + 1].type == BlockType::BLOCK_AIR) draw[5] = true;
+					}
+					else draw[5] = true;
 				}
-				else draw[1] = true;
-				// negative Y
-				if (y > 0) {
-					if (blocks[x][y - 1][z].type == BlockType::BLOCK_AIR) draw[2] = true;
-				}
-				else draw[2] = true;
-				// positive Y
-				if (y < Configuration::CHUNK_HEIGHT - 1) {
-					if (blocks[x][y + 1][z].type == BlockType::BLOCK_AIR) draw[3] = true;
-				}
-				else draw[3] = true;
-				// negative Z
-				if (z > 0) {
-					if (blocks[x][y][z - 1].type == BlockType::BLOCK_AIR) draw[4] = true;
-				}
-				else draw[4] = true;
-				// positive Z
-				if (z < Configuration::CHUNK_SIZE - 1) {
-					if (blocks[x][y][z + 1].type == BlockType::BLOCK_AIR) draw[5] = true;
-				}
-				else draw[5] = true;
 				blockLock.unlock();
 
 
@@ -154,6 +169,7 @@ void ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block*** blocks
 				const BlockUVs& blockUVs = atlas.blockUVsArray[(int)blocks[x][y][z].type];
 
 				int faceCountPerPass = 0;
+
 
 				if (draw[0]) {
 					geometryData.vertices.push_back(Vertex(glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][0]));
@@ -259,7 +275,7 @@ void ChunkCreateSystem::updateChunkBuffers(GeometryComponent& geometry,
 #include <iostream>
 
 void ChunkCreateSystem::_update(int dt) {
-	auto worldView = m_systemManager->getRegistry().view<WorldComponent>();	
+	auto worldView = m_systemManager->getRegistry().view<WorldComponent>();
 
 	WorldComponent& world = worldView.get(worldView.front());
 
@@ -368,5 +384,5 @@ void ChunkCreateSystem::_update(int dt) {
 ChunkCreateSystem::ChunkCreateSystem(SystemManager* systemManager)
 	: System(systemManager, 50), constructionCount(0) {
 	ADD_EVENT(handleEnterChunk, ENTER_CHUNK_EVENT);
-	ADD_EVENT(handleBlockChanged, BLOCK_CHANGED_EVENT);	
+	ADD_EVENT(handleBlockChanged, BLOCK_CHANGED_EVENT);
 }

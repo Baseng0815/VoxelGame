@@ -7,7 +7,9 @@ struct Block;
 
 class TerrainGenerator {
 private:
-	std::vector<Biome> m_biomes;
+	std::vector<Biome> m_terrains;
+
+	Biome getTerrain(BiomeID id) const;
 public:		
 
 	TerrainGenerator();	

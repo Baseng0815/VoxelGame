@@ -2,17 +2,10 @@
 #include "../../include/Configuration.h"
 #include "../../include/Block.h"
 
-TerrainFlat::TerrainFlat() : Terrain(55, 65) {	
-	// init flat terrain generation
-	//baseFlatTerrain.SetSeed((*seeds + 1));
-	baseFlatTerrain.SetPersistence(1.0f / 128.0f);
-	baseFlatTerrain.SetFrequency(0.25f);
-	baseFlatTerrain.SetOctaveCount(4);
-	baseFlatTerrain.SetNoiseQuality(noise::NoiseQuality::QUALITY_FAST);
-
-	flatTerrain.SetBias(-0.75f);
-	flatTerrain.SetScale(0.5f);
-	flatTerrain.SetSourceModule(0, baseFlatTerrain);	
+TerrainFlat::TerrainFlat() : Terrain(65, 80) {			
+	
+	flatTerrain.SetSourceModule(0, baseTerrain);	
+	flatTerrain.SetScale(1);
 }
 
 void TerrainFlat::getBlocks(glm::vec2 chunk, int cx, int cz, Block*** blocks, int terrainHeight) {
@@ -21,7 +14,7 @@ void TerrainFlat::getBlocks(glm::vec2 chunk, int cx, int cz, Block*** blocks, in
 
 	int height = terrainHeight;
 	if (height == -1)
-		height = minHeight + (maxHeight - minHeight) * flatTerrain.GetValue(x, 0, z);
+		height = minHeight + ((maxHeight - minHeight) * (float)flatTerrain.GetValue(x, 0, z));
 
 	for (int cy = 0; cy < height; cy++) {
 		Block block;

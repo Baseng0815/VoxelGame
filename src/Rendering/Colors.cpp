@@ -1,4 +1,4 @@
-#include "../include/Colors.h"
+#include "../../include/Rendering/Colors.h"
 
 const glm::vec3 Colors::Red = glm::vec3(1, 0, 0);
 const glm::vec3 Colors::Green = glm::vec3(0, 1, 0);
