@@ -54,7 +54,7 @@ CaveGenerator& CaveGenerator::operator=(const CaveGenerator& generator) {
 	return *this;
 }
 
-void CaveGenerator::generate(glm::vec2 position, Block*** blocks) {
+void CaveGenerator::generate(glm::ivec2 position, Block*** blocks) {
 	for (int cx = 0; cx < CHUNK_SIZE; cx++) {
 		for (int cy = 0; cy < CHUNK_HEIGHT / 2; cy++) {
 			for (int cz = 0; cz < CHUNK_SIZE; cz++) {

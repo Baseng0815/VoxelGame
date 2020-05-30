@@ -10,8 +10,35 @@ using namespace noise::utils;
 using namespace noise::model;
 using namespace noise::module;
 
+void outputData(const Module& module, const char* outputName, int size) {
+	utils::NoiseMap heightMap;
+	utils::NoiseMapBuilderPlane heightMapBuilder;
+
+	heightMapBuilder.SetSourceModule(module);
+	heightMapBuilder.SetDestNoiseMap(heightMap);
+	heightMapBuilder.SetDestSize(size, size);
+	heightMapBuilder.SetBounds(0.0, size, 0.0, size);
+	heightMapBuilder.Build();
+
+	utils::RendererImage renderer;
+	utils::Image image;
+	renderer.SetSourceNoiseMap(heightMap);
+	renderer.SetDestImage(image);
+	renderer.Render();
+
+	utils::WriterBMP writer;
+	writer.SetSourceImage(image);
+	writer.SetDestFilename(outputName);
+	writer.WriteDestFile();
+}
+
 WorldGenerator::WorldGenerator(WorldType worldType) {
 	m_type = worldType;	
+	m_terrainGradient.SetSourceModule(0, m_terrainGenerator);
+	m_terrainGradient.SetStepSize(20);
+
+	outputData(m_terrainGenerator, "terrain.bmp", 512);
+	outputData(m_terrainGradient, "gradient.bmp", 512);
 }
 
 WorldGenerator& WorldGenerator::operator=(const WorldGenerator& generator) {
@@ -59,9 +86,20 @@ void WorldGenerator::generateOres(BiomeID** biomes, Block*** blocks) const {
 	}
 }
 
-void WorldGenerator::generate(glm::vec2 position, BiomeID** biomes, Block*** blocks) {
-	bool needsInterpolation = m_biomeGenerator.generateBiomes(position, biomes);
-	m_terrainGenerator.generate(position, biomes, blocks, needsInterpolation);
+
+void WorldGenerator::generate(glm::ivec2 position, BiomeID** biomes, Block*** blocks) {
+	for(int cx = 0; cx < CHUNK_SIZE; cx++)
+		for(int cz = 0; cz < CHUNK_SIZE; cz++) {
+			float x = position.x * CHUNK_SIZE + cx;
+			float z = position.y * CHUNK_SIZE + cz;
+
+			Biome biome = m_terrainGenerator.getBiome(x, z);
+			biomes[cx][cz] = biome.id;
+
+			int height = m_terrainGenerator.GetValue(x, 0, z);
+			
+			biome.generator->getBlocks(cx, cz, blocks, height);
+		}
 
 	//generateOres(biomes, blocks);
 

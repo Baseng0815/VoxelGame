@@ -1,13 +1,14 @@
 #pragma once
 
 #include "CaveGenerator.h"
-#include "TerrainGenerator.h"
+#include "TerrainModule.h"
 #include "BiomeGenerator.h"
 
 #include <glm/glm.hpp>
 #include <unordered_map>
 #include <noise/noise.h>
 #include "../Block.h"
+#include "Gradient.h"
 
 using namespace noise;
 using namespace noise::module;
@@ -26,9 +27,10 @@ class WorldGenerator {
 private:
 	WorldType m_type = WorldType::WORLD_FLAT;	
 
-	BiomeGenerator m_biomeGenerator;
+	//BiomeGenerator m_biomeGenerator;
 	CaveGenerator m_caveGenerator;
-	TerrainGenerator m_terrainGenerator;
+	TerrainModule m_terrainGenerator;
+	Gradient m_terrainGradient;
 			
 	void generateOres(BiomeID** biomes, Block*** blocks) const;	
 
@@ -40,6 +42,6 @@ public:
 
 	void init(WorldType worldType);
 
-	void generate(glm::vec2 position, BiomeID** biomes, Block*** blocks);
+	void generate(glm::ivec2 position, BiomeID** biomes, Block*** blocks);
 };
 

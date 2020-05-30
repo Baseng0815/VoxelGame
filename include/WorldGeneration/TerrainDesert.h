@@ -15,6 +15,6 @@ private:
 public:
     TerrainDesert();
 
-    void getBlocks(glm::vec2 chunk, int cx, int cz, Block*** blocks, int terrainHeight = -1) override;
-    int getHeight(glm::vec2 chunk, int cx, int cz) const override;
+    void getBlocks(int cx, int cz, Block*** blocks, int terrainHeight) override;
+    int getHeight(glm::ivec2 chunk, int cx, int cz) const override;
 };

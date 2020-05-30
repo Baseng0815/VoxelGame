@@ -1,42 +1,47 @@
 #include "../../include/WorldGeneration/BiomeGenerator.h"
 #include "../../include/Configuration.h"
+#include "../../include/WorldGeneration/Biome.h"
 
 BiomeGenerator::BiomeGenerator() {
-	perlin.SetFrequency(1 / 400.0f);
-	perlin.SetNoiseQuality(noise::NoiseQuality::QUALITY_FAST);
-	perlin.SetOctaveCount(3);
-	perlin.SetPersistence(0.25f);
+	perlin.SetFrequency(0.001);
+	perlin.SetOctaveCount(5);
+	perlin.SetPersistence(0.25);
+
+	land.SetFrequency(0.0025);
+	land.SetOctaveCount(5);
+	land.SetPersistence(0.2);
+	land.SetLacunarity(2.1);
+
+	desert.SetConstValue((int)BiomeID::BIOME_DESERT);
+	flat.SetConstValue((int)BiomeID::BIOME_FLAT_TERRAIN);
+
+	desertSelect.SetSourceModule(0, desert);
+	desertSelect.SetSourceModule(1, flat);
+	desertSelect.SetSourceModule(2, land);
+	desertSelect.SetBounds(-1, 0);
+
+	ocean.SetConstValue((int)BiomeID::BIOME_OCEAN);
+	beach.SetConstValue((int)BiomeID::BIOME_BEACH);
+
+	oceanSelect.SetSourceModule(0, beach);
+	oceanSelect.SetSourceModule(1, ocean);
+	oceanSelect.SetSourceModule(2, perlin);
+	oceanSelect.SetBounds(0.1, 1);
+
+
+	biomeSelector.SetSourceModule(0, oceanSelect);
+	biomeSelector.SetSourceModule(1, desertSelect);
+	biomeSelector.SetSourceModule(2, perlin);
+
+	biomeSelector.SetBounds(-1, 0);	
 }
 
 
-bool BiomeGenerator::generateBiomes(glm::vec2 chunk, BiomeID** biomeMap) {	
-	bool needsTerrainInterpolation = false;
+void BiomeGenerator::generateBiomes(glm::ivec2 chunk, BiomeID** biomeMap) const {
 	for (int cx = 0; cx < CHUNK_SIZE; cx++)
 		for (int cz = 0; cz < CHUNK_SIZE; cz++) {
-			double value = perlin.GetValue(chunk.x * CHUNK_SIZE + cx, chunk.y * CHUNK_SIZE + cz, 0);
-			if (value > 0.4f) {
-				biomeMap[cx][cz] = BiomeID::BIOME_OCEAN;
+			BiomeID biome = (BiomeID)biomeSelector.GetValue(chunk.x * CHUNK_SIZE + cx, 0, chunk.y * CHUNK_SIZE + cz);
 
-				if (!needsTerrainInterpolation && biomeMap[0][0] != BiomeID::BIOME_OCEAN)
-					needsTerrainInterpolation = true;
-			}			
-			else if (value > 0.1f) {
-				biomeMap[cx][cz] = BiomeID::BIOME_FLAT_TERRAIN;
-
-				if (!needsTerrainInterpolation && biomeMap[0][0] != BiomeID::BIOME_FLAT_TERRAIN)
-					needsTerrainInterpolation = true;
-			}		
-			else {
-				biomeMap[cx][cz] = BiomeID::BIOME_DESERT;
-
-				if (!needsTerrainInterpolation && biomeMap[0][0] != BiomeID::BIOME_DESERT)
-					needsTerrainInterpolation = true;
-			}
+			biomeMap[cx][cz] = biome;
 		}
-
-	return needsTerrainInterpolation;
-}
-
-const noise::module::Module& BiomeGenerator::getBiomeNoise() const {
-	return perlin;
 }

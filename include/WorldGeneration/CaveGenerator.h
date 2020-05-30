@@ -23,6 +23,6 @@ public:
 
     CaveGenerator& operator=(const CaveGenerator&);
 
-    void generate(glm::vec2 position, Block*** blocks);
+    void generate(glm::ivec2 position, Block*** blocks);
 };
 

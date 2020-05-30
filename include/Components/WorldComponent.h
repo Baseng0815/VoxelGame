@@ -1,15 +1,11 @@
 #include <glm/glm.hpp>
 #include <unordered_map>
 #include <entt/entt.hpp>
+#include "../Utility.h"
 
 struct Block;
 
-class HashFunction {
-public:
-	inline long operator()(const glm::ivec2& vec) const {
-		return std::hash<float>()(vec.x) ^ (std::hash<float>()(vec.y) << 1);
-	}
-};
+
 
 class WorldComponent {
 private:
@@ -22,6 +18,7 @@ public:
 
 	static void getChunkCoords(glm::ivec3 position, glm::ivec2& chunk, glm::ivec3& chunkPosition);
 	entt::entity getChunk(glm::ivec2 chunk) const;
+	
 	Block getBlock(entt::registry& registry, glm::ivec3 position) const;
 	void setBlock(entt::registry& registry, glm::ivec3 position, Block block);
 

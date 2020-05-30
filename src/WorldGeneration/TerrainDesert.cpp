@@ -7,19 +7,12 @@ TerrainDesert::TerrainDesert() : Terrain(70, 80) {
 	terrainDesert.SetScale(1);
 }
 
-void TerrainDesert::getBlocks(glm::vec2 chunk, int cx, int cz, Block*** blocks, int terrainHeight) {
-	float x = chunk.x + (float)cx / CHUNK_SIZE;
-	float z = chunk.y + (float)cz / CHUNK_SIZE;
-
-	int height = terrainHeight;
-	if(height == -1)
-		height = minHeight + (maxHeight - minHeight) * terrainDesert.GetValue(x, 0, z);
-
-	for (int cy = 0; cy < height; cy++) {
+void TerrainDesert::getBlocks(int cx, int cz, Block*** blocks, int terrainHeight) {
+	for (int cy = 0; cy < terrainHeight; cy++) {
 		Block block;
 		if (cy < 2)
 			block = Block(BlockType::BLOCK_BRICKS);
-		else if (cy < height - 5)
+		else if (cy < terrainHeight - 5)
 			block = Block(BlockType::BLOCK_STONE);
 		else
 			block = Block(BlockType::BLOCK_SAND);		
@@ -29,7 +22,7 @@ void TerrainDesert::getBlocks(glm::vec2 chunk, int cx, int cz, Block*** blocks, 
 
 }
 
-int TerrainDesert::getHeight(glm::vec2 chunk, int cx, int cz) const {
+int TerrainDesert::getHeight(glm::ivec2 chunk, int cx, int cz) const {
 	float x = chunk.x + (float)cx / CHUNK_SIZE;
 	float z = chunk.y + (float)cz / CHUNK_SIZE;
 
