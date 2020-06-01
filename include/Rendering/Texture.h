@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 
-#include "../../include/Resource.h"
+#include "../Resource.h"
 
 class Texture : public Resource {
     private:

@@ -1,14 +1,14 @@
-#include "../include/GUI.h"
+#include "../../include/Gui/GUI.h"
+#include "../../include/Gui/Text.h"
+
+#include "../../include/Rendering/Shader.h"
+
+#include "../../include/Configuration.h"
+#include "../../include/EventDispatcher.h"
+#include "../../include/ResourceManager.h"
+#include "../../include/Components/CameraComponent.h"
 
 #include <glm/gtc/matrix_transform.hpp>
-
-#include "../include/Shader.h"
-#include "../include/Configuration.h"
-#include "../include/EventDispatcher.h"
-#include "../include/ResourceManager.h"
-#include "../include/Components/CameraComponent.h"
-
-#include "../include/Text.h"
 
 void GUI::handleFramebufferSize(Event* event) {
     FramebufferSizeEvent e = *event->get<FramebufferSizeEvent>();
@@ -65,22 +65,6 @@ GUI::GUI() {
     t->getProperties().constraints.x = CenterConstraint();
     t->setFont(ResourceManager::getResource<Font>("fontKoruri"));
     t->setString("Camera position and direction");
-
-
-    /*
-    Text* text = rootLayout->addWidget<Text>("text_1");
-    text->getProperties().constraints.y = RelativeConstraint(0.5);
-    text->getProperties().constraints.width = MatchConstraint();
-    text->getProperties().constraints.height = MatchConstraint();
-    text->setFont(ResourceManager::getResource<Font>("fontKoruri"));
-    text->setString("!1Hallo Welt 1!");
-
-    text = rootLayout->addWidget<Text>("text_2");
-    text->getProperties().constraints.width = MatchConstraint();
-    text->getProperties().constraints.height = MatchConstraint();
-    text->setFont(ResourceManager::getResource<Font>("fontKoruri"));
-    text->setString("!2Hallo Welt 2!");
-    */
 
     rootLayout->updateArea(Rectangle(0, 0,
                 Configuration::INITIAL_WINDOW_WIDTH, Configuration::INITIAL_WINDOW_HEIGHT));

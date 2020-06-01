@@ -1,15 +1,11 @@
-#include "../include/Layout.h"
+#include "../../include/Gui/Text.h"
+#include "../../include/Gui/GUI.h"
+#include "../../include/Gui/Layout.h"
 
-#include "../include/GUI.h"
-#include "../include/Shader.h"
-#include "../include/Configuration.h"
-
-#include "../include/Text.h"
+#include "../../include/Rendering/Shader.h"
+#include "../../include/Configuration.h"
 
 #include <algorithm>
-
-// TODO remove
-#include <iostream>
 
 void Layout::arrangeWidgets() {
     // set position of widgets based on stack mode and widget dimensions

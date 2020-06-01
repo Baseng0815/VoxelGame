@@ -8,7 +8,7 @@
 
 #include <iostream>
 
-#include "../include/Configuration.h"
+#include "../../include/Configuration.h"
 
 Texture::Texture(const std::string& file) {
     glGenTextures(1, &m_texture);

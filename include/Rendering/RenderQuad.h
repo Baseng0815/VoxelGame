@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "Rectangle.h"
+#include "../Gui/Rectangle.h"
 
 // used for rendering 2d textures directly on-screen
 // TODO add shape system and incorporate it into resource manager

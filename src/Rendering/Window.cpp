@@ -5,10 +5,6 @@
 #ifdef WIN32
 #include <stdexcept>
 #endif
-#include "../include/Window.h"
-#include "../include/Configuration.h"
-#include "../include/EventDispatcher.h"
-#include "../include/Application.h"
 
 // TODO prevent camera from receiving events when ALT is pressed
 void Window::handleKeyPress(Event* e) {
@@ -20,6 +16,11 @@ void Window::handleKeyPress(Event* e) {
             disableCursor();
         }
     }
+}
+
+void Window::handleFramebufferSize(Event* e) {
+    FramebufferSizeEvent event = *e->get<FramebufferSizeEvent>();
+    glViewport(0, 0, event.width, event.height);
 }
 
 Window::Window(Application* app, int width, int height) {
@@ -45,6 +46,7 @@ Window::Window(Application* app, int width, int height) {
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     ADD_EVENT(handleKeyPress, KEY_EVENT);
+    ADD_EVENT(handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT);
 }
 
 void Window::clear(glm::vec3 clearColor) {

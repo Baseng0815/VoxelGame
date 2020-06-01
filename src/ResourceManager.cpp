@@ -1,9 +1,9 @@
 #include "../include/ResourceManager.h"
 #include <utility>
 
-#include "../include/Font.h"
-#include "../include/Shader.h"
-#include "../include/Texture.h"
+#include "../include/Rendering/Font.h"
+#include "../include/Rendering/Shader.h"
+#include "../include/Rendering/Texture.h"
 
 std::map<std::string, Resource*> ResourceManager::resources;
 

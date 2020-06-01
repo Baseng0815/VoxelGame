@@ -14,22 +14,9 @@
 
 void EntityRenderSystem::handleFramebufferSize(Event* e) {
     FramebufferSizeEvent fbsE = *e->get<FramebufferSizeEvent>();
-    glViewport(0, 0, fbsE.width, fbsE.height);
     m_gBuffer.resize(fbsE.width, fbsE.height);
     m_renderQuad.resize(Rectangle(0, 0, fbsE.width, fbsE.height));
 }
-
-
-void EntityRenderSystem::updateViewMatrix(CameraComponent& camera, TransformationComponent& transform) {
-    camera.viewMatrix = glm::lookAt(transform.position, transform.position + camera.front,
-        glm::vec3(0, 1, 0));
-}
-
-void EntityRenderSystem::updateProjectionMatrix(CameraComponent& camera) {
-    camera.projectionMatrix = glm::perspective(glm::radians(camera.fov), camera.width / (float)camera.height, 0.1f, 1000.f);
-}
-
-#include <iostream>
 
 void EntityRenderSystem::_update(int dt) {
     // clear screen framebuffer
@@ -45,11 +32,6 @@ void EntityRenderSystem::_update(int dt) {
 
     m_systemManager->getRegistry().view<CameraComponent, TransformationComponent>().each(
         [=](auto& camera, auto& transformation) {
-        if (!camera.isValid) {
-            updateViewMatrix(camera, transformation);
-            updateProjectionMatrix(camera);
-        }
-
         m_blockShader->upload("viewMatrix", camera.viewMatrix);
         m_blockShader->upload("projectionMatrix", camera.perspectiveProjection);
     });

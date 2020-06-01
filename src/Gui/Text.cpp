@@ -1,10 +1,8 @@
-#include "../include/Text.h"
+#include "../../include/Gui/Text.h"
+#include "../../include/Gui/Layout.h"
 
-#include "../include/Font.h"
-#include "../include/Layout.h"
-#include "../include/Shader.h"
-
-#include <iostream>
+#include "../../include/Rendering/Font.h"
+#include "../../include/Rendering/Shader.h"
 
 void Text::updateTextRenderQuads() {
     float x = m_finalArea.position.x;

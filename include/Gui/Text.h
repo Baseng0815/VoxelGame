@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Widget.h"
-#include "RenderQuad.h"
+#include "../Rendering/RenderQuad.h"
 
 #include <vector>
 

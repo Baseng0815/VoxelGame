@@ -65,13 +65,6 @@ void EventDispatcher::framebufferSizeCallback(GLFWwindow* window, int width, int
     dispatch(&e);
 }
 
-void EventDispatcher::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
-    Application* application = (Application*)glfwGetWindowUserPointer(window);
-
-    MouseButtonEvent e(application, button, action, mods);
-    dispatch(&e);
-}
-
 void EventDispatcher::dispatch(Event *e) {
     auto cbIt = m_callbacks.find(e->type());
     if (cbIt == m_callbacks.end()) return;

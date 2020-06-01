@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-#include "Resource.h"
+#include "../Resource.h"
 
 struct Character {
     GLuint texture; // GL texture handle

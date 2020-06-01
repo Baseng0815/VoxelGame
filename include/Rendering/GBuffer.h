@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 
-#include "../../include/Configuration.h"
+#include "../Configuration.h"
 
 class GBuffer {
     private:

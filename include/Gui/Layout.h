@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Widget.h"
 #include <vector>
 
-#include "RenderQuad.h"
+#include "Widget.h"
+#include "../Rendering/RenderQuad.h"
 
 class GUI;
 class Text;

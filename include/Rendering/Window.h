@@ -19,6 +19,7 @@ private:
     bool m_isFullscreen = false;
 
     void handleKeyPress(Event* e);
+    void handleFramebufferSize(Event* e);
 
 public:
     Window(Application* app, int width, int height);

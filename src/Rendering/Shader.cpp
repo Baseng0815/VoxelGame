@@ -4,7 +4,7 @@
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "../include/Configuration.h"
+#include "../../include/Configuration.h"
 
 // Private functions
 

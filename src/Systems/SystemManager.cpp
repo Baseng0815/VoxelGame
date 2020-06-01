@@ -27,7 +27,7 @@ SystemManager::SystemManager() {
     m_systems.push_back(new InputSystem(this));
 
     // world
-    auto entity = m_entityRegistry.create();    
+    auto entity = m_entityRegistry.create();
     m_entityRegistry.emplace<WorldComponent>(entity);
 
     // atlas

@@ -1,11 +1,8 @@
 #pragma once
 
-#include "../include/Rendering/Window.h"
-#include "../include/Systems/SystemManager.h"
-
-#include "GUI.h"
-#include "Window.h"
-#include "SystemManager.h"
+#include "Gui/GUI.h"
+#include "Rendering/Window.h"
+#include "Systems/SystemManager.h"
 
 class Application {
 private:

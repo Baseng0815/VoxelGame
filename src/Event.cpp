@@ -103,32 +103,20 @@ std::string BlockChangedEvent::toString() const {
     return ss.str();
 }
 
-//EntityMovedEvent::EntityMovedEvent(Application* app, entt::entity entity, glm::vec3 oldPos, glm::vec3 newPos)
-//    : app(app), entity(entity), oldPos(oldPos), newPos(newPos) { }
-//
-//std::string EntityMovedEvent::toString() const {
-//    std::stringstream ss;
-//    ss << "x: " << oldPos.x << " y: " << oldPos.y << " z: " << oldPos.z << " -> ";
-//    ss << "x: " << newPos.x << " y: " << newPos.y << " z: " << newPos.z;
-//    return ss.str();
-//}
-//
-//EventType EntityMovedEvent::type() const {
-//    return EntityMovedEvent::TYPE;
-//}
+EntityMovedEvent::EntityMovedEvent(Application* app, entt::entity entity, glm::vec3 oldPos, glm::vec3 newPos)
+    : app(app), entity(entity), oldPos(oldPos), newPos(newPos) { }
 
-EventType MouseButtonEvent::type() const {
-    return MouseButtonEvent::TYPE;
-}
-
-std::string MouseButtonEvent::toString() const {
+std::string EntityMovedEvent::toString() const {
     std::stringstream ss;
-    ss << "button: " << button << " action: " << action << " mods: " << mods;
+    ss << "x: " << oldPos.x << " y: " << oldPos.y << " z: " << oldPos.z << " -> ";
+    ss << "x: " << newPos.x << " y: " << newPos.y << " z: " << newPos.z;
     return ss.str();
 }
 
-MouseButtonEvent::MouseButtonEvent(Application* app, int button, int action, int mods)
-    : app(app), button(button), action(action), mods(mods) {}
+EventType EntityMovedEvent::type() const {
+    return EntityMovedEvent::TYPE;
+}
+
 
 // predefine templates here
 template KeyEvent* Event::get<KeyEvent>();
@@ -139,4 +127,3 @@ template FramebufferSizeEvent* Event::get<FramebufferSizeEvent>();
 template EnterChunkEvent* Event::get<EnterChunkEvent>();
 template BlockChangedEvent* Event::get<BlockChangedEvent>();
 template EntityMovedEvent* Event::get<EntityMovedEvent>();
-template MouseButtonEvent* Event::get<MouseButtonEvent>();

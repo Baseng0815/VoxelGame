@@ -33,9 +33,6 @@ class EntityRenderSystem : public System {
 
         void _update(int dt) override;
 
-        void updateViewMatrix(CameraComponent& camera, TransformationComponent& transform);
-        void updateProjectionMatrix(CameraComponent& camera);
-
     public:
         EntityRenderSystem(SystemManager* systemManager);
 };

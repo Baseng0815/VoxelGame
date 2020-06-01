@@ -1,11 +1,10 @@
-#include "../include/Font.h"
-
 #include <iostream>
 #include <freetype2/ft2build.h>
 #include <freetype2/freetype/freetype.h>
 
-#include "../include/Configuration.h"
-#include "../include/ResourceManager.h"
+#include "../../include/Rendering/Font.h"
+#include "../../include/Configuration.h"
+#include "../../include/ResourceManager.h"
 
 Font::Font(const std::string& file) {
     FT_Library ft;

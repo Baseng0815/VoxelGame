@@ -9,15 +9,17 @@
 
 using namespace std::placeholders;
 
-typedef unsigned int CallbackId;
 class Application;
+struct Block;
+
+typedef unsigned int CallbackId;
 
 enum EventType {
     // basic events
     KEY_EVENT, MOUSE_BUTTON_EVENT, CURSOR_EVENT, SCROLL_EVENT, FRAMEBUFFER_SIZE_EVENT,
 
     // advanced events
-    ENTER_CHUNK_EVENT, BLOCK_CHANGED_EVENT, //ENTITY_MOVED_EVENT
+    ENTER_CHUNK_EVENT, BLOCK_CHANGED_EVENT, ENTITY_MOVED_EVENT
 };
 
 struct Event {
@@ -106,7 +108,6 @@ struct EnterChunkEvent : public Event {
     EnterChunkEvent(Application* app = nullptr, int oldX = 0, int oldY = 0, int newX = 0, int newY = 0);
 };
 
-struct Block;
 
 struct BlockChangedEvent : public Event {
     static constexpr EventType TYPE = BLOCK_CHANGED_EVENT;
@@ -119,26 +120,14 @@ struct BlockChangedEvent : public Event {
     BlockChangedEvent(Application* app = nullptr, glm::ivec3 position = glm::ivec3());
 };
 
-//struct EntityMovedEvent : public Event {
-//    static constexpr EventType TYPE = ENTITY_MOVED_EVENT;
-//
-//    Application* app;
-//    entt::entity entity;
-//    glm::vec3 newPos, oldPos;
-//
-//    EventType type() const override final;
-//    std::string toString() const override final;
-//    EntityMovedEvent(Application* app = nullptr, entt::entity entity = entt::entity(), glm::vec3 oldPos = glm::vec3(), glm::vec3 newPos = glm::vec3());
-//};
-struct MouseButtonEvent : public Event {
-    static constexpr EventType TYPE = MOUSE_BUTTON_EVENT;
+struct EntityMovedEvent : public Event {
+    static constexpr EventType TYPE = ENTITY_MOVED_EVENT;
 
     Application* app;
-    int button;
-    int action;
-    int mods;
+    entt::entity entity;
+    glm::vec3 newPos, oldPos;
 
     EventType type() const override final;
     std::string toString() const override final;
-    MouseButtonEvent(Application* app = nullptr, int button = 0, int action = 0, int mods = 0);
+    EntityMovedEvent(Application* app = nullptr, entt::entity entity = entt::entity(), glm::vec3 oldPos = glm::vec3(), glm::vec3 newPos = glm::vec3());
 };

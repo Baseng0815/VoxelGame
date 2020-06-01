@@ -1,7 +1,7 @@
 #pragma once
 
 #include "UiProperties.h"
-#include "RenderQuad.h"
+#include "../Rendering/RenderQuad.h"
 
 #include <map>
 #include <string>

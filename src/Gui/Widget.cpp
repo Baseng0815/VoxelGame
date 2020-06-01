@@ -1,7 +1,7 @@
-#include "../include/Widget.h"
+#include "../../include/Gui/Widget.h"
+#include "../../include/Gui/Layout.h"
 
-#include "../include/Shader.h"
-#include "../include/Layout.h"
+#include "../../include/Rendering/Shader.h"
 
 #include <algorithm>
 

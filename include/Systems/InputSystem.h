@@ -8,6 +8,7 @@ class CameraComponent;
 class TransformationComponent;
 class VelocityComponent;
 
+struct Event;
 
 // handles player movement input
 // also updates the camera
@@ -19,10 +20,13 @@ class InputSystem : public System {
         void handleMouseButtonEvent(Event* e);
         void handleMouseMoveEvent(Event* e);
         void handleScrollEvent(Event* e);
-        void handleFramebufferSizeEvent(Event* e);               
+        void handleFramebufferSizeEvent(Event* e);
 
-        void updateVectors(CameraComponent& camera);   
         void updateSelectedBlock(CameraComponent& camera, TransformationComponent& transformation);
+
+        void updateVectors(CameraComponent& camera);
+        void updateViewMatrix(CameraComponent& camera, TransformationComponent& transform);
+        void updateProjectionMatrix(CameraComponent& camera);
 
         void _update(int dt) override;
 
