@@ -1,5 +1,5 @@
 #pragma once
-#include "Terrain.h"
+#include "../Block.h"
 
 enum BiomeID : char {
 	BIOME_FLAT,
@@ -12,6 +12,10 @@ enum BiomeID : char {
 };
 
 struct Biome {
-	BiomeID id;
-	Terrain* generator;	
+	BiomeID id;	
+	BlockType surfaceBlocks;
+	BlockType subsurfaceBlocks;
+
+	int surfaceHeight;
+	int subsorfaceHeight;	
 };

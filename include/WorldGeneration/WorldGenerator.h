@@ -1,14 +1,12 @@
 #pragma once
-
 #include "CaveGenerator.h"
-#include "TerrainModule.h"
-#include "BiomeGenerator.h"
+#include "TerrainHeightGenerator.h"
+#include "TerrainGenerator.h"
 
 #include <glm/glm.hpp>
 #include <unordered_map>
 #include <noise/noise.h>
 #include "../Block.h"
-#include "Gradient.h"
 
 using namespace noise;
 using namespace noise::module;
@@ -29,8 +27,8 @@ private:
 
 	//BiomeGenerator m_biomeGenerator;
 	CaveGenerator m_caveGenerator;
-	TerrainModule m_terrainGenerator;
-	Gradient m_terrainGradient;
+	TerrainHeightGenerator m_heightGenerator;
+	TerrainGenerator m_terrainGenerator;
 			
 	void generateOres(BiomeID** biomes, Block*** blocks) const;	
 

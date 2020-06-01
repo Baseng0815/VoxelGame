@@ -1,6 +1,7 @@
 // in der .cpp kann man einbinden, was man will, da entsteht kein Problem
 #include "../../include/WorldGeneration/WorldGenerator.h"
 #include "../../include/WorldGeneration/noiseutils.h"
+#include "../../include/WorldGeneration/Biome.h"
 #include "../../include/Block.h"
 #include "../../include/BlockData.h"
 #include "../../include/Configuration.h"
@@ -8,37 +9,9 @@
 
 using namespace noise::utils;
 using namespace noise::model;
-using namespace noise::module;
-
-void outputData(const Module& module, const char* outputName, int size) {
-	utils::NoiseMap heightMap;
-	utils::NoiseMapBuilderPlane heightMapBuilder;
-
-	heightMapBuilder.SetSourceModule(module);
-	heightMapBuilder.SetDestNoiseMap(heightMap);
-	heightMapBuilder.SetDestSize(size, size);
-	heightMapBuilder.SetBounds(0.0, size, 0.0, size);
-	heightMapBuilder.Build();
-
-	utils::RendererImage renderer;
-	utils::Image image;
-	renderer.SetSourceNoiseMap(heightMap);
-	renderer.SetDestImage(image);
-	renderer.Render();
-
-	utils::WriterBMP writer;
-	writer.SetSourceImage(image);
-	writer.SetDestFilename(outputName);
-	writer.WriteDestFile();
-}
 
 WorldGenerator::WorldGenerator(WorldType worldType) {
 	m_type = worldType;	
-	m_terrainGradient.SetSourceModule(0, m_terrainGenerator);
-	m_terrainGradient.SetStepSize(20);
-
-	outputData(m_terrainGenerator, "terrain.bmp", 512);
-	outputData(m_terrainGradient, "gradient.bmp", 512);
 }
 
 WorldGenerator& WorldGenerator::operator=(const WorldGenerator& generator) {
@@ -88,19 +61,11 @@ void WorldGenerator::generateOres(BiomeID** biomes, Block*** blocks) const {
 
 
 void WorldGenerator::generate(glm::ivec2 position, BiomeID** biomes, Block*** blocks) {
-	for(int cx = 0; cx < CHUNK_SIZE; cx++)
-		for(int cz = 0; cz < CHUNK_SIZE; cz++) {
-			float x = position.x * CHUNK_SIZE + cx;
-			float z = position.y * CHUNK_SIZE + cz;
+	int** heightMap = new int*[CHUNK_SIZE];
+	for(int i = 0; i < CHUNK_SIZE; i++) heightMap[i] = new int[CHUNK_SIZE];
 
-			Biome biome = m_terrainGenerator.getBiome(x, z);
-			biomes[cx][cz] = biome.id;
-
-			int height = m_terrainGenerator.GetValue(x, 0, z);
-			
-			biome.generator->getBlocks(cx, cz, blocks, height);
-		}
-
+	m_heightGenerator.generateChunkHeight(position, heightMap, biomes);
+	m_terrainGenerator.createBlocks(blocks, heightMap, biomes);
 	//generateOres(biomes, blocks);
 
 	//m_caveGenerator.generate(position, blocks);
