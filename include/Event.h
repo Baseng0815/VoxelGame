@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string.h>
+#include <iostream>
 #include <functional>
 
 #include <glm/glm.hpp>
@@ -53,7 +54,7 @@ struct MouseButtonEvent : public Event {
     int button;
     int action;
     int mods;
-    
+
     EventType type() const override final;
     std::string toString() const override final;
     MouseButtonEvent(Application* app = nullptr, int button = 0, int action = 0, int mods = 0);
@@ -86,11 +87,11 @@ struct FramebufferSizeEvent : public Event {
     static constexpr EventType TYPE = FRAMEBUFFER_SIZE_EVENT;
 
     Application* app;
-    int width, height;
+    float width, height;
 
     EventType type() const override final;
     std::string toString() const override final;
-    FramebufferSizeEvent(Application* app = nullptr, int width = 0, int height = 0);
+    FramebufferSizeEvent(Application* app = nullptr, float width = 0, float height = 0);
 };
 
 struct EnterChunkEvent : public Event {
@@ -109,7 +110,7 @@ struct Block;
 
 struct BlockChangedEvent : public Event {
     static constexpr EventType TYPE = BLOCK_CHANGED_EVENT;
-    
+
     Application* app;
     glm::ivec3 position;
 
@@ -129,3 +130,15 @@ struct BlockChangedEvent : public Event {
 //    std::string toString() const override final;
 //    EntityMovedEvent(Application* app = nullptr, entt::entity entity = entt::entity(), glm::vec3 oldPos = glm::vec3(), glm::vec3 newPos = glm::vec3());
 //};
+struct MouseButtonEvent : public Event {
+    static constexpr EventType TYPE = MOUSE_BUTTON_EVENT;
+
+    Application* app;
+    int button;
+    int action;
+    int mods;
+
+    EventType type() const override final;
+    std::string toString() const override final;
+    MouseButtonEvent(Application* app = nullptr, int button = 0, int action = 0, int mods = 0);
+};

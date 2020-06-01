@@ -4,7 +4,7 @@
 
 #include "../../include/Rendering/Shader.h"
 
-class Event;
+struct Event;
 
 struct Light {
     glm::vec3 dir;

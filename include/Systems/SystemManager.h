@@ -6,7 +6,7 @@
 #include <atomic>
 
 class System;
-class Event;
+struct Event;
 struct SharedContext;
 struct WorldComponent;
 

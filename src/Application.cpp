@@ -1,6 +1,10 @@
 #include "../include/Application.h"
+
+#include "../include/Configuration.h"
 #include "../include/EventDispatcher.h"
 #include "../include/ResourceManager.h"
+
+#include "../include/Components/CameraComponent.h"
 
 #include <iostream>
 
@@ -24,11 +28,17 @@ void Application::handleKeys(Event* event) {
 }
 
 Application::Application()
-    : m_window(this), m_systemManager() {
+    : m_window(this, Configuration::INITIAL_WINDOW_WIDTH, Configuration::INITIAL_WINDOW_HEIGHT),
+    m_systemManager() {
     srand(time(NULL));
 
     EventDispatcher::attachToWindow(m_window);
-    EventDispatcher::addCallback(std::bind(&Application::handleKeys, this, std::placeholders::_1), EventType::KEY_EVENT);
+    ADD_EVENT(handleKeys, KEY_EVENT);
+
+    // raise beginning events
+    EnterChunkEvent e;
+    e.newX = e.newZ = e.oldX = e.oldZ = 0;
+    EventDispatcher::raiseEvent(&e);
 }
 
 Application::~Application() {
@@ -56,11 +66,19 @@ void Application::run() {
         m_prevTime = currentTime;
         m_time += m_deltaTime;
 
-        // updating and drawing
         auto startTime = std::chrono::high_resolution_clock::now();
 
         m_window.clear();
+
+        // updating and drawing entities
         m_systemManager.update(m_deltaTime);
+
+        // drawing GUI
+        m_systemManager.getRegistry().view<CameraComponent>().each(
+            [=](const auto& camera) {
+            m_gui.draw(camera);
+        });
+
         m_window.display();
 
         auto endTime = std::chrono::high_resolution_clock::now();

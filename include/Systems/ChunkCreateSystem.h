@@ -9,7 +9,7 @@
 #include <future>
 #include <entt/entt.hpp>
 
-class Event;
+struct Event;
 class ChunkComponent;
 class GeometryComponent;
 class AtlasComponent;

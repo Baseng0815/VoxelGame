@@ -1,0 +1,48 @@
+
+                              ษอออออออออป
+                         ๔    บ  ASCII  บ    ๔
+                         ณ    บ   for   บ    ณ
+                         ๕    บ Windows บ    ๕
+                              ศอออออออออผ
+
+
+Now it comes to an end with the terriblly Windows Fonts which hold so good as
+no Special characters. I drew every ASCII character of the original IBM Font
+that everyone has in his Computer (Bios, DOS and Linux) and saved it as a
+Windows Bitmap Font Pixel for pixels Character of characters now you can
+imagine what for a work this was.
+
+ASCII.ttf 
+  A normal True Type Font wich shows all ASCII characters properly.
+  I suggest a Font size of 11.
+
+ASCII.fon
+  This Font can be used as a normal Font under Windows and also in
+  DOS boxes (commandline mode) (9 x 16 and 9 x 8).
+
+  Every character of the ASCII VGA Font is 9 x 16 pixel
+  ASCII EGA Font is 9 x 8 pixel like the original.
+
+
+If you encounter any errors i made please e-mail me at [ Eistee18@gmx.net ].
+
+ASCII-Table.nfo
+  I created this file before i made the actual Font because i needed it in the
+  DOS Editor under DOS 6.22 to draw the characters right. And here a little
+  tipif you need a certain character print this file and use the parameters
+  under Dec as an example 148 stands for the smal ” do this [Alt] + 0148 to
+  make it clearer for you use [Alt] + 0{Dec} for a Special character.
+
+Now i wish you all much fun with this Font and please make it public
+
+Finally i want to refer to that i see this Font as my property so please dont
+steal it sure u can give it away for free or host it on your site unchanged
+of course the same applies for the Nfos which allways schould be given out
+with the Font together. It is strictly forbidden to use this Font without my
+agreement in commercial products that means if somebody wants to use this
+Font in his Product u have to contact me first.
+
+
+(bad) ;> english translation by Cr4bl3r
+
+                                                                (c) Eistee 2001

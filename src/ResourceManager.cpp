@@ -1,21 +1,25 @@
 #include "../include/ResourceManager.h"
 #include <utility>
 
+#include "../include/Font.h"
 #include "../include/Shader.h"
 #include "../include/Texture.h"
 
 std::map<std::string, Resource*> ResourceManager::resources;
 
+// TODO remove
+#include <iostream>
+
 void ResourceManager::loadResources() {
     // textures
     // TODO use Configuration::ResourceBasePath
-    resources.insert(std::make_pair("textureAtlas", new Texture("Resources/Textures/textureAtlas0.png")));
+    resources.insert(std::make_pair("textureAtlas", new Texture("Textures/textureAtlas0.png")));
 
     // shaders
-    resources.insert(std::make_pair("chunkShader", new Shader("Resources/Shaders/chunkShader")));
-    resources.insert(std::make_pair("guiShader", new Shader("Resources/Shaders/guiShader")));
-    resources.insert(std::make_pair("skyboxShader", new Shader("Resources/Shaders/skyboxShader")));
-    resources.insert(std::make_pair("lightingShader", new Shader("Resources/Shaders/lightingShader")));
+    resources.insert(std::make_pair("chunkShader", new Shader("Shaders/chunkShader")));
+    resources.insert(std::make_pair("guiShader", new Shader("Shaders/guiShader")));
+    resources.insert(std::make_pair("skyboxShader", new Shader("Shaders/skyboxShader")));
+    resources.insert(std::make_pair("lightingShader", new Shader("Shaders/lightingShader")));
 
     std::vector<std::string> attribs = {
         "position",
@@ -36,6 +40,15 @@ void ResourceManager::loadResources() {
     shader->upload("gPosition", 0);
     shader->upload("gNormal", 1);
     shader->upload("gAlbedo", 2);
+    // guiShader
+    shader = getResource<Shader>("guiShader");
+    attribs = {
+        "vertex"
+    };
+    shader->setAttributes(attribs);
+
+    // fonts
+    resources.insert(std::make_pair("fontKoruri", new Font("Fonts/Koruri-Regular.ttf")));
 }
 
 void ResourceManager::freeResources() {
@@ -57,3 +70,4 @@ T* ResourceManager::getResource(const std::string& id) {
 
 template Texture* ResourceManager::getResource<Texture>(const std::string&);
 template Shader* ResourceManager::getResource<Shader>(const std::string&);
+template Font* ResourceManager::getResource<Font>(const std::string&);

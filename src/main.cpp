@@ -5,11 +5,12 @@
 #include <mcheck.h>
 
 int main(int argc, char **argv) {
-    mtrace();
+    //mtrace();
+
     Application application;
 
     application.run();
-    muntrace();
+    //muntrace();
 }
 
 #else

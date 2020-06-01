@@ -1,0 +1,51 @@
+
+                              ÉÍÍÍÍÍÍÍÍÍ»
+                         ô    º  ASCII  º    ô
+                         ³    º   for   º    ³
+                         õ    º Windows º    õ
+                              ÈÍÍÍÍÍÍÍÍÍ¼
+
+
+So jetzt ist Schluss mit den gr„sslichen Windows Fonts die so gut wie keine
+Sonderzeichen enthalten. Ich habe per hand s„mtliche ASCII Zeichen der original
+IBM Font die jeder in seinem Rechner hat (Bios, DOS und Linux) und diese als
+Windows Bitmap Font gespeichert Pixel fr Pixel Zeichen fr Zeichen also k”nnt
+ihr euch ja vorstellen welche arbeit das macht.
+
+ASCII.ttf :
+  Eine normale True Type Font welche alle ASCII Zeichen korrekt darstellt.
+  Ich empfehle Schriftgr”áe 11 da die Vectorzeichen andernfals in der gr”áe
+  ge„ndert werden und da besonders bei den Zeichen ° ± und ² streifen auftreten
+  k”nnen.
+
+ASCII.fon :
+  Diese Schriftart kann unter Windows als normale Font und auch in
+  DOS boxen (9 x 16 und 9 x 8) benutzt werden.
+
+  Jedes Zeichen der ASCII VGA Font ist 9 x 16 Pixel
+  und der ASCII EGA Font 9 x 8 Pixel wie die Orginal.
+
+
+Falls fehler gefunden werden bitte ich euch mir zu 
+Mail'en [ Eistee18@gmx.net ] welches Zeichen es ist.
+
+ASCII-Table.nfo
+ Diese File habe ich erstellt bevor ich mit der Font angefangen habe da ich
+ diese im DOS Editor unter DOS 6.22 zum abzeichnen der Buchstaben brauchte.
+ Als kleinen tipp wenn ihr ein bestimmtes Zeichen braucht druckt euch diese
+ File aus und die Werte die unter Dec stehen z.b. 148 fr das kleine ” k”nnt
+ ihr mit [Alt] + 0148 also um das mal als allgemeines Beispiel
+ darzustellen [Alt] + 0{Dec} in eueren Editor einfgen.
+
+
+Ich wnsche euch jetzt viel spaá mit der Font und bitte macht sie publik
+
+Abschlieáend m”chte ich darauf hinweisen das ich hiermit diese Font als mein
+Eigentum betrachte also Bitte stehlt sie nicht ihr drf sie aber frei
+weitergeben oder auf anderen Seiten Hosten gleiches gilt fr die NFO welche
+immer mit der Font zusammen weitergegeben werden soll. Die Font darf nicht
+ohne meine Einwilligung kommerziell genutzt werden. Das heiát wenn irgend wer
+diese Font mit einem Produkt zusammen verkaufen will Bitte vorher eine Mail
+an mich.
+
+                                                                (c) Eistee 2001

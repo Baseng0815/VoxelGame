@@ -7,7 +7,7 @@
 /*
 #include "LightingShader.h"
 
-class Event;
+struct Event;
 
 class LightRenderSystem : public System {
     private:

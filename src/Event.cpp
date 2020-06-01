@@ -75,7 +75,7 @@ std::string FramebufferSizeEvent::toString() const {
     return ss.str();
 }
 
-FramebufferSizeEvent::FramebufferSizeEvent(Application* app, int width, int height)
+FramebufferSizeEvent::FramebufferSizeEvent(Application* app, float width, float height)
 	: app(app), width(width), height(height) {}
 
 EventType EnterChunkEvent::type() const {
@@ -117,6 +117,20 @@ std::string BlockChangedEvent::toString() const {
 //    return EntityMovedEvent::TYPE;
 //}
 
+EventType MouseButtonEvent::type() const {
+    return MouseButtonEvent::TYPE;
+}
+
+std::string MouseButtonEvent::toString() const {
+    std::stringstream ss;
+    ss << "button: " << button << " action: " << action << " mods: " << mods;
+    return ss.str();
+}
+
+MouseButtonEvent::MouseButtonEvent(Application* app, int button, int action, int mods)
+    : app(app), button(button), action(action), mods(mods) {}
+
+// predefine templates here
 template KeyEvent* Event::get<KeyEvent>();
 template MouseButtonEvent* Event::get<MouseButtonEvent>();
 template ScrollEvent* Event::get<ScrollEvent>();
@@ -124,4 +138,5 @@ template CursorEvent* Event::get<CursorEvent>();
 template FramebufferSizeEvent* Event::get<FramebufferSizeEvent>();
 template EnterChunkEvent* Event::get<EnterChunkEvent>();
 template BlockChangedEvent* Event::get<BlockChangedEvent>();
-//template EntityMovedEvent* Event::get<EntityMovedEvent>();
+template EntityMovedEvent* Event::get<EntityMovedEvent>();
+template MouseButtonEvent* Event::get<MouseButtonEvent>();

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Colors.h"
 #include <queue>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 class Application;
-class Event;
+struct Event;
 
 class Window {
 private:
@@ -18,21 +18,24 @@ private:
     int m_prevX, m_prevY;
     bool m_isFullscreen = false;
 
-    std::queue<Event*> m_events;
+    void handleKeyPress(Event* e);
 
 public:
-    Window(Application* app);
+    Window(Application* app, int width, int height);
 
-    void clear(glm::vec3 clearColor = Colors::Black);
+    void clear(glm::vec3 clearColor = glm::vec3(0, 0, 0));
     void display();
 
     void toggleFullscreen();
+    void enableCursor();
+    void disableCursor();
 
     // return true if the key is pressed
     bool getKey(int key) const;
     GLFWwindow* getHandle() const;
 
-    Event* nextEvent();
+    int getWidth() const;
+    int getHeight() const;
 
     void close();
 };

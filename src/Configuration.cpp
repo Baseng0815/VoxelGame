@@ -4,14 +4,16 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 
+#include "../include/Event.h"
+
 std::map<std::string, float> Configuration::floatValues;
 std::map<std::string, std::string> Configuration::stringValues;
 BlockDataMap Configuration::blockDataMap;
 
 using json = nlohmann::json;
 
-void Configuration::loadConfiguration(const std::string& baseResourcePath) {
-    setValue("ResourceBasePath", baseResourcePath);
+void Configuration::loadConfiguration(const std::string& resourceBasePath) {
+    setValue("ResourceBasePath", resourceBasePath);
 
     // load blockData.json
     std::ifstream file(getStringValue("ResourceBasePath") + "/Misc/BlockData.json");
@@ -39,7 +41,7 @@ void Configuration::loadConfiguration(const std::string& baseResourcePath) {
     blockDataMap[BlockType::BLOCK_ORE_IRON].oreData = OreData(20, 0, 64, 9);
 
     // load biomeInfo.json
-    file.open(baseResourcePath + "/Misc/BiomeInfo.json");
+    file.open(resourceBasePath + "Misc/BiomeInfo.json");
     if (!file.good())
         std::cout << "Failed to open BiomeInfo.json" << std::endl;
 
@@ -47,7 +49,7 @@ void Configuration::loadConfiguration(const std::string& baseResourcePath) {
     file.close();    
 
     // load other configuration data
-    file.open(baseResourcePath + "/Misc/Settings.json");
+    file.open(resourceBasePath + "/Misc/Settings.json");
     if (!file.good())
         std::cout << "Failed to open Settings.json" << std::endl;
 

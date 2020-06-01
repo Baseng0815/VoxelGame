@@ -5,12 +5,28 @@
 #ifdef WIN32
 #include <stdexcept>
 #endif
+#include "../include/Window.h"
+#include "../include/Configuration.h"
+#include "../include/EventDispatcher.h"
+#include "../include/Application.h"
 
-Window::Window(Application* app) {
+// TODO prevent camera from receiving events when ALT is pressed
+void Window::handleKeyPress(Event* e) {
+    KeyEvent keyEvent = *e->get<KeyEvent>();
+    if (keyEvent.key == GLFW_KEY_LEFT_ALT) {
+        if (keyEvent.action == GLFW_PRESS) {
+            enableCursor();
+        } else if (keyEvent.action == GLFW_RELEASE) {
+            disableCursor();
+        }
+    }
+}
+
+Window::Window(Application* app, int width, int height) {
     Configuration::loadConfiguration("Resources/");
     glfwInit();
 
-    m_window = glfwCreateWindow(Configuration::getFloatValue("WINDOW_WIDTH"), Configuration::getFloatValue("WINDOW_HEIGHT"), "GLFW window", nullptr, nullptr);
+    m_window = glfwCreateWindow(width, height, "GLFW window", nullptr, nullptr);
     if (!m_window)
         throw std::runtime_error("Failed to create GLFW window.");
 
@@ -26,6 +42,9 @@ Window::Window(Application* app) {
     glewInit();
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    ADD_EVENT(handleKeyPress, KEY_EVENT);
 }
 
 void Window::clear(glm::vec3 clearColor) {
@@ -60,18 +79,21 @@ void Window::toggleFullscreen() {
     }
 }
 
+void Window::enableCursor() {
+    glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}
+
+void Window::disableCursor() {
+    glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+}
+
 bool Window::getKey(int key) const {
     return glfwGetKey(m_window, key);
 }
 
 GLFWwindow* Window::getHandle() const {
     return m_window;
-}
-
-Event* Window::nextEvent() {
-    Event* e = m_events.front();
-    m_events.pop();
-    return e;
 }
 
 void Window::close() {

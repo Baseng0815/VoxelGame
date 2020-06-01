@@ -1,12 +1,39 @@
 #pragma once
 
-#include "Colors.h"
+#include "Widget.h"
+#include "RenderQuad.h"
 
-#include <string>
+#include <vector>
 
-struct Text {
-	std::string text;
-	glm::vec2 position = glm::vec2(0, 0);
-        glm::vec3 color = Colors::White;
-	float scale = 1;
+class Font;
+class Layout;
+class Shader;
+
+class Text : public Widget {
+    private:
+        std::vector<RenderQuad> m_charRenderQuads;
+
+        std::string m_string = "";
+
+        const Font* m_font = nullptr;
+
+        // TODO create text properties
+        float m_scale = 0.3f;
+
+        void updateTextRenderQuads();
+
+        // updates minWidth and minHeight without recreating any quads
+        void updateTextDimensions();
+        void _draw(Shader& shader) const override;
+
+    public:
+        Text(const std::string& id);
+
+        void updateArea(const Rectangle& parent) override;
+        virtual void updateScreenElements() override;
+
+        const std::string& getString() const;
+        void setString(const std::string& str);
+        const Font* getFont() const;
+        void setFont(const Font* font);
 };

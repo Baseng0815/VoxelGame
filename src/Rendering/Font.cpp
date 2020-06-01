@@ -4,20 +4,23 @@
 #include <freetype2/ft2build.h>
 #include <freetype2/freetype/freetype.h>
 
-void Font::init(const char *file) {
+#include "../include/Configuration.h"
+#include "../include/ResourceManager.h"
+
+Font::Font(const std::string& file) {
     FT_Library ft;
     if (FT_Init_FreeType(&ft))
         std::cout << "Error while initializing freetype library." << std::endl;
 
     FT_Face face;
-    if (FT_New_Face(ft, file, 0, &face))
+    if (FT_New_Face(ft, (Configuration::getStringValue("ResourceBasePath") + file).c_str(), 0, &face))
         std::cout << "Failed to load font file " << file << std::endl;
 
     FT_Set_Pixel_Sizes(face, 0, 48);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     // load ASCII character set
-    for (unsigned char c = 0; c < 128; c++) {
+    for (char c = 32; c < 127; c++) {
         if (FT_Load_Char(face, c, FT_LOAD_RENDER)) {
                 std::cout << "Failed to load glyph " << c << std::endl;
                 continue;
@@ -25,6 +28,7 @@ void Font::init(const char *file) {
 
         GLuint texture;
         glGenTextures(1, &texture);
+        glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, face->glyph->bitmap.width, face->glyph->bitmap.rows, 0, GL_RED, GL_UNSIGNED_BYTE, face->glyph->bitmap.buffer);
 
@@ -40,6 +44,10 @@ void Font::init(const char *file) {
         };
         m_characters.insert(std::make_pair(c, character));
     }
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+    FT_Done_Face(face);
+    FT_Done_FreeType(ft);
 }
 
 Font::~Font() {
