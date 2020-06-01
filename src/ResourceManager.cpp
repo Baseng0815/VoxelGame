@@ -1,10 +1,7 @@
 #include "../include/ResourceManager.h"
 #include <utility>
 
-<<<<<<< HEAD
 #include "../include/Rendering/Font.h"
-=======
->>>>>>> WorldGeneration
 #include "../include/Rendering/Shader.h"
 #include "../include/Rendering/Texture.h"
 

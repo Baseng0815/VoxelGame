@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-#include "../../include/Rendering/Font.h"
-
->>>>>>> WorldGeneration
 #include <iostream>
 #include <freetype2/ft2build.h>
 #include <freetype2/freetype/freetype.h>

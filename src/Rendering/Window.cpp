@@ -42,15 +42,11 @@ Window::Window(Application* app, int width, int height) {
     // init glew and load function pointers
     glewInit();
     glEnable(GL_DEPTH_TEST);
-<<<<<<< HEAD
     glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     ADD_EVENT(handleKeyPress, KEY_EVENT);
     ADD_EVENT(handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT);
-=======
-    glEnable(GL_CULL_FACE);    
->>>>>>> WorldGeneration
 }
 
 void Window::clear(glm::vec3 clearColor) {
