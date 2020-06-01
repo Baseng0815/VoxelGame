@@ -6,9 +6,12 @@
 
 #define randNext(min, max) ((min + (max-min) * (float)rand() / RAND_MAX))
 
+#include <utility>
+#include <functional>
+
 class HashFunction {
-public:
-	inline long operator()(const glm::ivec2& vec) const {
-		return std::hash<float>()(vec.x) ^ (std::hash<float>()(vec.y) << 1);
-	}
+    public:
+        inline long operator()(const glm::ivec2& vec) const {
+            return std::hash<float>{}(vec.x) ^ (std::hash<float>{}(vec.y) << 1);
+        }
 };
