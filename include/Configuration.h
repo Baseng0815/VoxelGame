@@ -9,7 +9,7 @@
 typedef std::map<BlockType, BlockData> BlockDataMap;
 typedef std::map<BiomeID, BiomeInfo> BiomeInfoMap;
 
-class Event;
+struct Event;
 
 class Configuration {
     private:

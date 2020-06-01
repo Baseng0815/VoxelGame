@@ -11,9 +11,9 @@ class Shader;
 
 class Widget {
     protected:
-        // m_area is in screen space
-        mutable Rectangle m_area;
-        Layout* m_parent;
+        // everything is in screen space
+        Rectangle m_finalArea; // the final area the widget ends up taking
+        float m_minWidth = 0, m_minHeight = 0; // the minimal area the widget needs
 
         UiProperties m_properties;
 
@@ -29,14 +29,13 @@ class Widget {
         virtual void _draw(Shader& shader) const;
 
     public:
-        Widget(const std::string& id, Layout* parent);
+        Widget(const std::string& id);
         virtual ~Widget() = default;
 
         void draw(Shader& shader) const;
 
         // updates the area which the widget occupies
-        // parent argument only relevant to root layout
-        virtual void updateArea(Rectangle parent = Rectangle());
+        virtual void updateArea(const Rectangle& parent);
 
         // updates on-screen elements based on the area, like
         // the background color quad

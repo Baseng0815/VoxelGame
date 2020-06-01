@@ -25,7 +25,7 @@ class Constraint {
 
 struct UiConstraints {
     Constraint x = RelativeConstraint(0), y = RelativeConstraint(0),
-               width = RelativeConstraint(1), height = RelativeConstraint(1);
+               width = MatchConstraint(), height = MatchConstraint();
 
-    Rectangle getRect(const Rectangle& parent) const;
+    Rectangle getRect(const Rectangle& parent, int minWidth, int minHeight) const;
 };

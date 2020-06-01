@@ -45,6 +45,8 @@ file(GLOB_RECURSE SOURCES
     include/*.h
     src/*.cpp)
 
+link_directories("/usr/local/lib")
+
 add_executable(VoxelGame ${SOURCES})
 target_link_libraries(VoxelGame
     ${OPENGL_LIBRARIES}

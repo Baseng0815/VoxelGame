@@ -4,7 +4,7 @@
 
 #include "Shader.h"
 
-class Event;
+struct Event;
 
 struct Light {
     glm::vec3 position;

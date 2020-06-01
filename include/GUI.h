@@ -2,7 +2,7 @@
 
 #include "Layout.h"
 
-class Event;
+struct Event;
 class Shader;
 class CameraComponent;
 

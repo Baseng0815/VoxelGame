@@ -29,10 +29,10 @@ class Layout : public Widget {
         void _draw(Shader& shader) const override;
 
     public:
-        Layout(std::string id, GUI* gui, Layout* parent = nullptr);
+        Layout(std::string id, GUI* gui);
 
         void setStackMode(StackMode stackMode, bool invertStack = false);
-        void updateArea(Rectangle parent = Rectangle()) override;
+        void updateArea(const Rectangle& parent) override;
         void updateScreenElements() override;
 
         // create new widget
@@ -42,7 +42,6 @@ class Layout : public Widget {
         // add existing widget
         Widget* addWidget(Widget* widget);
         void removeWidget(std::string id);
-        bool isRootLayout() const;
 
         WidgetIt begin();
         WidgetIt end();

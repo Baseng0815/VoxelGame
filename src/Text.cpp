@@ -7,31 +7,40 @@
 #include <iostream>
 
 void Text::updateTextRenderQuads() {
-    float scale = 0.8f;
-    float x = m_area.position.x;
+    float x = m_finalArea.position.x;
 
     m_charRenderQuads.resize(m_string.size());
 
     for (int i = 0; i < m_charRenderQuads.size(); i++) {
         const Character& ch = m_font->getCharacter(m_string[i]);
-        float xpos = x + ch.bearing.x * scale;
-        float ypos = m_area.position.y - (ch.size.y - ch.bearing.y) * scale;
+        float xpos = x + ch.bearing.x * m_scale;
+        float ypos = m_finalArea.position.y - (ch.size.y - ch.bearing.y) * m_scale;
 
-        float w = ch.size.x * scale;
-        float h = ch.size.y * scale;
-
-        if (h > m_textHeight)
-            m_textHeight = h;
+        float w = ch.size.x * m_scale;
+        float h = ch.size.y * m_scale;
 
         m_charRenderQuads[i].resize(Rectangle(xpos, ypos, w, h), true);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, ch.texture);
 
-        x += (ch.advance >> 6) * scale;
+        x += (ch.advance >> 6) * m_scale;
     }
+}
 
-    m_textWidth = x - m_area.position.x;
+void Text::updateTextDimensions() {
+    m_minWidth = 0;
+
+    for (int i = 0; i < m_charRenderQuads.size(); i++) {
+        const Character& ch = m_font->getCharacter(m_string[i]);
+
+        float h = ch.size.y * m_scale;
+
+        if (h > m_minHeight)
+            m_minHeight = h;
+
+        m_minWidth += (ch.advance >> 6) * m_scale;
+    }
 }
 
 void Text::_draw(Shader& shader) const {
@@ -47,23 +56,18 @@ void Text::_draw(Shader& shader) const {
     }
 }
 
-Text::Text(const std::string& id, Layout* parent)
-    : Widget(id, parent) {}
+Text::Text(const std::string& id)
+    : Widget(id) {}
 
-void Text::updateArea(Rectangle parent) {
-    m_area = m_properties.constraints.getRect(m_parent->getArea());
+void Text::updateArea(const Rectangle& parent) {
+    updateTextDimensions();
 
-    if (m_properties.constraints.width.getType() == CONSTRAINT_MATCH)
-        m_area.size.x = m_textWidth;
-    if (m_properties.constraints.height.getType() == CONSTRAINT_MATCH)
-        m_area.size.y = m_textHeight;
-
+    m_finalArea = m_properties.constraints.getRect(parent, m_minWidth, m_minHeight);
 }
 
 void Text::updateScreenElements() {
-    m_renderQuadBackground.resize(m_area);
+    m_renderQuadBackground.resize(m_finalArea);
     updateTextRenderQuads();
-
 }
 
 const std::string& Text::getString() const {

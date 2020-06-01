@@ -6,7 +6,7 @@
 #include <glm/glm.hpp>
 
 class Application;
-class Event;
+struct Event;
 
 class Window {
 private:

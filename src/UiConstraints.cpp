@@ -24,13 +24,28 @@ ConstraintType Constraint::getType() const {
     return type;
 }
 
-Rectangle UiConstraints::getRect(const Rectangle& parent) const {
-    float w = width.getValue(parent.size.x);
-    float h = height.getValue(parent.size.y);
+Rectangle UiConstraints::getRect(const Rectangle& parent, int minWidth, int minHeight) const {
+    float w, h;
+    if (width.getType() == CONSTRAINT_MATCH)
+        w = minWidth;
+    else
+        w = width.getValue(parent.size.x);
+
+    if (height.getType() == CONSTRAINT_MATCH)
+        h = minHeight;
+    else
+        h = height.getValue(parent.size.y);
 
     Rectangle rect(x.getValue(parent.size.x),
                          y.getValue(parent.size.y),
                          w, h);
+
+    // center if ConstraintType == CONSTRAINT_CENTER
+    if (x.getType() == CONSTRAINT_CENTER)
+        rect.position.x -= w / 2;
+    if (y.getType() == CONSTRAINT_CENTER)
+        rect.position.y -= h / 2;
+
 
     return rect;
 }

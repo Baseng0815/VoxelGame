@@ -5,7 +5,7 @@
 #include <entt/entt.hpp>
 
 class System;
-class Event;
+struct Event;
 struct SharedContext;
 
 class SystemManager {

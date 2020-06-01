@@ -12,20 +12,24 @@ class Shader;
 class Text : public Widget {
     private:
         std::vector<RenderQuad> m_charRenderQuads;
-        glm::mat4 m_renderQuadTranslation;
-        float m_textWidth = 0, m_textHeight = 0;
 
         std::string m_string = "";
 
         const Font* m_font = nullptr;
 
+        // TODO create text properties
+        float m_scale = 0.3f;
+
         void updateTextRenderQuads();
+
+        // updates minWidth and minHeight without recreating any quads
+        void updateTextDimensions();
         void _draw(Shader& shader) const override;
 
     public:
-        Text(const std::string& id, Layout* parent);
+        Text(const std::string& id);
 
-        virtual void updateArea(Rectangle parent = Rectangle()) override;
+        void updateArea(const Rectangle& parent) override;
         virtual void updateScreenElements() override;
 
         const std::string& getString() const;

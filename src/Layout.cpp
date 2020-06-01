@@ -8,35 +8,41 @@
 
 #include <algorithm>
 
+// TODO remove
+#include <iostream>
+
 void Layout::arrangeWidgets() {
     // set position of widgets based on stack mode and widget dimensions
-    switch (m_stackMode) {
-        case STACK_HORIZONTAL: {
-            int xoff = 0;
-            for (auto widget : m_widgets) {
-                widget->setPosition(widget->getPosition() + glm::vec2(xoff, 0));
-                if (!m_invertStack)
-                    xoff += widget->getSize().x;
-                else
-                    xoff -= widget->getSize().x;
+    if (m_stackMode == STACK_VERTICAL) {
+        if (m_invertStack) {
+            int currentY = -30 + m_finalArea.position.y + m_finalArea.size.y - m_widgets.back()->getSize().y;
+            for (auto it = m_widgets.rbegin(); it != m_widgets.rend(); it++) {
+                (*it)->setPosition(glm::vec2((*it)->getPosition().x, currentY));
+                // TODO use margin/padding
+                currentY -= 2 * (*it)->getSize().y;
             }
-            break;
-        }
-
-        case STACK_VERTICAL: {
-            int yoff = 0;
+        } else {
+            int currentY = m_finalArea.position.y;
             for (auto widget : m_widgets) {
-                widget->setPosition(widget->getPosition() + glm::vec2(0, yoff));
-                if (!m_invertStack)
-                    yoff -= widget->getSize().y;
-                else
-                    yoff += widget->getSize().y;
+                widget->setPosition(glm::vec2(widget->getPosition().x, currentY));
+                currentY += widget->getSize().y;
             }
-            break;
         }
-
-        default:
-            break;
+    } else if (m_stackMode == STACK_HORIZONTAL) {
+        if (m_invertStack) {
+            int currentX = m_finalArea.position.x + m_finalArea.size.x - m_widgets.back()->getSize().x;
+            for (auto it = m_widgets.rbegin(); it != m_widgets.rend(); it++) {
+                (*it)->setPosition(glm::vec2(currentX, (*it)->getPosition().y));
+                currentX -= (*it)->getSize().x;
+            }
+        } else {
+            int currentX = m_finalArea.position.x;
+            for (auto widget : m_widgets) {
+                // TODO maybe change m_finalArea.position.y to widget.getPosition().y ?
+                widget->setPosition(glm::vec2(currentX, m_finalArea.position.y));
+                currentX += widget->getSize().x;
+            }
+        }
     }
 }
 
@@ -45,26 +51,22 @@ void Layout::_draw(Shader& shader) const {
         widget->draw(shader);
 }
 
-Layout::Layout(std::string id, GUI* gui, Layout* parent)
-    : Widget(id, parent), m_gui(gui) {
-    m_gui->registerWidget(this);
-}
+Layout::Layout(std::string id, GUI* gui)
+    : Widget(id), m_gui(gui) {
+        m_gui->registerWidget(this);
+    }
 
 void Layout::setStackMode(StackMode stackMode, bool invertStack) {
     m_stackMode = stackMode;
     m_invertStack = invertStack;
 }
 
-void Layout::updateArea(Rectangle parent) {
-    if (isRootLayout()) {
-        m_area = parent;
-    } else {
-        m_area = m_properties.constraints.getRect(parent);
-    }
+void Layout::updateArea(const Rectangle& parent) {
+    m_finalArea = m_properties.constraints.getRect(parent, m_minWidth, m_minHeight);
 
     // update all child areas
     for (auto widget : m_widgets)
-        widget->updateArea();
+        widget->updateArea(m_finalArea);
 }
 
 void Layout::updateScreenElements() {
@@ -73,12 +75,12 @@ void Layout::updateScreenElements() {
     for (auto widget : m_widgets)
         widget->updateScreenElements();
 
-    m_renderQuadBackground.resize(m_area);
+    m_renderQuadBackground.resize(m_finalArea);
 }
 
 template<typename T>
 T* Layout::addWidget(std::string id) {
-    T* widget = new T(id, this);
+    T* widget = new T(id);
     m_widgets.push_back(widget);
     m_gui->registerWidget(widget);
     return widget;
@@ -86,7 +88,7 @@ T* Layout::addWidget(std::string id) {
 
 template<>
 Layout* Layout::addWidget(std::string id) {
-    Layout* widget = new Layout(id, m_gui, this);
+    Layout* widget = new Layout(id, m_gui);
     m_widgets.push_back(widget);
     m_gui->registerWidget(widget);
     return widget;
@@ -95,10 +97,6 @@ Layout* Layout::addWidget(std::string id) {
 Widget* Layout::addWidget(Widget* widget) {
     m_widgets.push_back(widget);
     return widget;
-}
-
-bool Layout::isRootLayout() const {
-    return m_parent == nullptr;
 }
 
 WidgetIt Layout::begin() {
