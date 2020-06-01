@@ -1,8 +1,7 @@
 #pragma once
-
 #include "CaveGenerator.h"
+#include "TerrainHeightGenerator.h"
 #include "TerrainGenerator.h"
-#include "BiomeGenerator.h"
 
 #include <glm/glm.hpp>
 #include <unordered_map>
@@ -12,7 +11,7 @@
 using namespace noise;
 using namespace noise::module;
 
-// Forward-Deklaration ist möglich, weil ein Zeiger immer 4 byte beansprucht und
+// Forward-Deklaration ist mï¿½glich, weil ein Zeiger immer 4 byte beansprucht und
 // der compiler die Klasse daher nicht kennen muss
 class Block;
 class ChunkComponent;
@@ -26,8 +25,9 @@ class WorldGenerator {
 private:
 	WorldType m_type = WorldType::WORLD_FLAT;	
 
-	BiomeGenerator m_biomeGenerator;
+	//BiomeGenerator m_biomeGenerator;
 	CaveGenerator m_caveGenerator;
+	TerrainHeightGenerator m_heightGenerator;
 	TerrainGenerator m_terrainGenerator;
 			
 	void generateOres(BiomeID** biomes, Block*** blocks) const;	
@@ -40,6 +40,6 @@ public:
 
 	void init(WorldType worldType);
 
-	void generate(glm::vec2 position, BiomeID** biomes, Block*** blocks);
+	void generate(glm::ivec2 position, BiomeID** biomes, Block*** blocks);
 };
 

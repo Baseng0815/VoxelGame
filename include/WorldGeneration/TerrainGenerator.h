@@ -1,17 +1,16 @@
 #pragma once
-#include <glm/glm.hpp>
-#include <vector>
 #include "Biome.h"
+#include <vector>
 
 struct Block;
 
 class TerrainGenerator {
 private:
-	std::vector<Biome> m_biomes;
-public:		
+    std::vector<Biome> m_biomes;
 
-	TerrainGenerator();	
-	~TerrainGenerator();
+    Biome getBiome(BiomeID id) const;
+public:
+    TerrainGenerator();
 
-	void generate(glm::vec2 chunkPosition, BiomeID** biomes, Block*** blocks, bool needsInterpolation = false);				
+    void createBlocks(Block*** blocks, int** heightMap, BiomeID** biomes) const;
 };

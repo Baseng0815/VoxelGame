@@ -1,6 +1,7 @@
 // in der .cpp kann man einbinden, was man will, da entsteht kein Problem
 #include "../../include/WorldGeneration/WorldGenerator.h"
 #include "../../include/WorldGeneration/noiseutils.h"
+#include "../../include/WorldGeneration/Biome.h"
 #include "../../include/Block.h"
 #include "../../include/BlockData.h"
 #include "../../include/Configuration.h"
@@ -8,7 +9,6 @@
 
 using namespace noise::utils;
 using namespace noise::model;
-using namespace noise::module;
 
 WorldGenerator::WorldGenerator(WorldType worldType) {
 	m_type = worldType;	
@@ -59,11 +59,14 @@ void WorldGenerator::generateOres(BiomeID** biomes, Block*** blocks) const {
 	}
 }
 
-void WorldGenerator::generate(glm::vec2 position, BiomeID** biomes, Block*** blocks) {
-	bool needsInterpolation = m_biomeGenerator.generateBiomes(position, biomes);
-	m_terrainGenerator.generate(position, biomes, blocks, needsInterpolation);
 
+void WorldGenerator::generate(glm::ivec2 position, BiomeID** biomes, Block*** blocks) {
+	int** heightMap = new int*[CHUNK_SIZE];
+	for(int i = 0; i < CHUNK_SIZE; i++) heightMap[i] = new int[CHUNK_SIZE];
+
+	m_heightGenerator.generateChunkHeight(position, heightMap, biomes);
+	m_terrainGenerator.createBlocks(blocks, heightMap, biomes);
 	//generateOres(biomes, blocks);
 
-	m_caveGenerator.generate(position, blocks);
+	//m_caveGenerator.generate(position, blocks);
 }

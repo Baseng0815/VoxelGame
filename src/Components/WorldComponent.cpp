@@ -9,8 +9,8 @@
 
 void WorldComponent::getChunkCoords(glm::ivec3 worldPos, glm::ivec2& chunkPos, glm::ivec3& localPos) {
 	chunkPos = glm::ivec2(worldPos.x, worldPos.z) / Configuration::CHUNK_SIZE;
-	
-	int cx = worldPos.x % Configuration::CHUNK_SIZE;	
+
+	int cx = worldPos.x % Configuration::CHUNK_SIZE;
 	int cz = worldPos.z % Configuration::CHUNK_SIZE;
 	if (cx < 0)
 		cx = Configuration::CHUNK_SIZE - abs(cx);
@@ -27,7 +27,12 @@ void WorldComponent::getChunkCoords(glm::ivec3 worldPos, glm::ivec2& chunkPos, g
 }
 
 entt::entity WorldComponent::getChunk(glm::ivec2 chunk) const {
-	return chunksLookup.at(chunk);
+	//try {
+		return chunksLookup.at(chunk);
+	/*}
+	catch (std::out_of_range) {
+		return entt::entity();
+	}*/
 }
 
 Block WorldComponent::getBlock(entt::registry& registry, glm::ivec3 position) const {
@@ -37,6 +42,7 @@ Block WorldComponent::getBlock(entt::registry& registry, glm::ivec3 position) co
 	getChunkCoords(position, chunkPosition, localPosition);
 
 	auto entity = getChunk(chunkPosition);
+
 	ChunkComponent& chunk = registry.get<ChunkComponent>(entity);
 
 	std::unique_lock blockLock(*chunk.blockMutex);

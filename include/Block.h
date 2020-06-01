@@ -14,4 +14,6 @@ public:
     BlockType type;
 
     std::string toString() const;
+
+    bool isSolid();
 };

@@ -67,6 +67,7 @@ void PhysicsSystem::_update(int dt) {
 
                     camera.relVelocity += dv;
 
+<<<<<<< HEAD
                     camera.isFalling = world.getBlock(registry, glm::ivec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).type == BlockType::BLOCK_AIR;
                     if (!camera.isFalling) {
                         camera.relVelocity.y = 0;
@@ -81,6 +82,24 @@ void PhysicsSystem::_update(int dt) {
                     if (camera.relVelocity.y < 0)
                         camera.relVelocity.y = 0;
                 }
+=======
+					camera.isFalling = !world.getBlock(registry, glm::ivec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).isSolid();
+					if (!camera.isFalling) {
+						camera.relVelocity.y = 0;
+					}
+
+					if (camera.relVelocity.y < -Configuration::getFloatValue("MAX_FALL_SPEED")) {
+						camera.relVelocity.y = -Configuration::getFloatValue("MAX_FALL_SPEED");
+					}
+				}
+				else {
+					camera.isFalling = !world.getBlock(registry, glm::ivec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).isSolid();
+					if (camera.relVelocity.y < 0)
+						camera.relVelocity.y = 0;
+				}
+			
+				//std::cout << "x: " << camera.relVelocity.x << " y: " << camera.relVelocity.y << " z: " << camera.relVelocity.z << " is flying: " << camera.isFlying << std::endl;
+>>>>>>> WorldGeneration
 
                 //std::cout << "x: " << camera.relVelocity.x << " y: " << camera.relVelocity.y << " z: " << camera.relVelocity.z << " is flying: " << camera.isFlying << std::endl;
 
@@ -191,11 +210,19 @@ void PhysicsSystem::solveBlockCollisions() {
             // check block has collision
             int y = (int)blockPos.y % Configuration::CHUNK_HEIGHT;
 
+<<<<<<< HEAD
             if (y <= 1 || y > Configuration::CHUNK_HEIGHT)
                 hasCollision = false;
             else {
                 hasCollision = world.getBlock(registry, blockPos).type != BlockType::BLOCK_AIR;
             }
+=======
+			if (y <= 1 || y > Configuration::CHUNK_HEIGHT)
+				hasCollision = false;
+			else {
+				hasCollision = world.getBlock(registry, blockPos).isSolid();
+			}
+>>>>>>> WorldGeneration
 
             // break collision detection
             if (!hasCollision)

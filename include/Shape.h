@@ -5,9 +5,15 @@
 struct TransformationComponent;
 
 struct Triangle {
+<<<<<<< HEAD
     glm::vec3 p1, p2, p3;
     glm::vec2 t1, t2, t3;
     glm::vec3 normal;
+=======
+	glm::vec3 p1, p2, p3;
+	glm::ivec2 t1, t2, t3;
+	glm::vec3 normal;
+>>>>>>> WorldGeneration
 };
 
 struct Shape {
