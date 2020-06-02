@@ -15,3 +15,13 @@ class HashFunction {
             return std::hash<float>{}(vec.x) ^ (std::hash<float>{}(vec.y) << 1);
         }
 };
+
+glm::vec3* GetCavePoints(glm::vec2 chunk, int count, int seed = 0);
+
+glm::vec3* GetBezierPoints(glm::vec3* points, int count, int* resultCount);
+
+glm::vec3 GetBezierPoint(glm::vec3* points, int count, float t);
+
+struct Block;
+
+void FillSphere(glm::vec3 center, float radius, Block*** blocks, BlockType fillType = BlockType::BLOCK_AIR);

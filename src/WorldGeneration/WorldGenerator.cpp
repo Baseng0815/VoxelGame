@@ -38,14 +38,17 @@ void WorldGenerator::generateOres(BiomeID** biomes, Block*** blocks) const {
 
 			for(int x1 = -a; x1 <= a; x1++)
 				for (int z1 = -2 * a; z1 <= 2 * a; z1++) {
-					double fSquared = pow(a, 2) - pow(x1, 2) - (pow(z1, 2) / pow(a, 2));
+					double fSquared = pow(a, 2) - pow(x1, 2) - (pow(z1, 2) / pow(a, 2));					
 
 					if (fSquared >= 0) {
 						double ymin = -pow(fSquared, 0.5);
 						double ymax = -ymin;
 
 						for (int y1 = ymin; y1 <= ymax; y1++) {
-							glm::ivec3 pos = orePos + glm::ivec3(x1, y1, z1);							
+							glm::ivec3 pos = orePos + glm::ivec3(x1, y1, z1);	
+
+							if(pos.x < 0 || pos.x >= CHUNK_SIZE || pos.y < 0 || pos.y >= CHUNK_HEIGHT || pos.z < 0 || pos.z >= CHUNK_SIZE)						
+								continue;
 
 							if (blocks[pos.x][pos.y][pos.z].type == BlockType::BLOCK_STONE) {
 								blocks[pos.x][pos.y][pos.z] = Block(block);
@@ -66,7 +69,7 @@ void WorldGenerator::generate(glm::ivec2 position, BiomeID** biomes, Block*** bl
 
 	m_heightGenerator.generateChunkHeight(position, heightMap, biomes);
 	m_terrainGenerator.createBlocks(blocks, heightMap, biomes);
-	//generateOres(biomes, blocks);
+	generateOres(biomes, blocks);
 
 	//m_caveGenerator.generate(position, blocks);
 }

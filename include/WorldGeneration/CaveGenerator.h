@@ -8,15 +8,14 @@ struct Block;
 
 class CaveGenerator {
 private:
-    module::RidgedMulti caveNoise1;
-    module::RidgedMulti caveNoise2;
-    module::Multiply caveNoiseProd;
-    module::Clamp caveNoiseClamp;
+    module::Billow caveNoise1;
+    module::Perlin caveNoise2;
+    module::Multiply caveNoiseSum;
+    module::Const cave;
+    module::Const solid;
+    module::ScalePoint scale;
 
-    module::Turbulence caveTurb;    
-
-    module::ScaleBias caveNoise;
-    
+    module::Select caveNoise;    
 
 public:
     CaveGenerator();
