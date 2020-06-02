@@ -32,6 +32,8 @@ class Text : public Widget {
         void updateArea(const Rectangle& parent) override;
         virtual void updateScreenElements() override;
 
+        void setScale(float scale);
+        float getScale() const;
         const std::string& getString() const;
         void setString(const std::string& str);
         const Font* getFont() const;

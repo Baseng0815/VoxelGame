@@ -1,6 +1,5 @@
 #include "../../include/Gui/UiConstraints.h"
 
-
 Constraint::Constraint(ConstraintType type, float value)
     : type(type), value(value) {}
 
@@ -12,8 +11,6 @@ float Constraint::getValue(float parent) const {
             return parent / 2.f;
         case CONSTRAINT_PIXEL:
             return value;
-        case CONSTRAINT_MATCH:
-            return 0;
 
         default:
             return 0;
@@ -26,6 +23,7 @@ ConstraintType Constraint::getType() const {
 
 Rectangle UiConstraints::getRect(const Rectangle& parent, int minWidth, int minHeight) const {
     float w, h;
+    // handle match constraints
     if (width.getType() == CONSTRAINT_MATCH)
         w = minWidth;
     else
@@ -45,7 +43,6 @@ Rectangle UiConstraints::getRect(const Rectangle& parent, int minWidth, int minH
         rect.position.x -= w / 2;
     if (y.getType() == CONSTRAINT_CENTER)
         rect.position.y -= h / 2;
-
 
     return rect;
 }

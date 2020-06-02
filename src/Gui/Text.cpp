@@ -68,6 +68,14 @@ void Text::updateScreenElements() {
     updateTextRenderQuads();
 }
 
+void Text::setScale(float scale) {
+    m_scale = scale;
+}
+
+float Text::getScale() const {
+    return m_scale;
+}
+
 const std::string& Text::getString() const {
     return m_string;
 }

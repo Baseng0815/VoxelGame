@@ -9,34 +9,63 @@
 
 void Layout::arrangeWidgets() {
     // set position of widgets based on stack mode and widget dimensions
+    int start = m_invertStackWidgets ? m_widgets.size() - 1 : 0;
+    // end = first nonvalid element
+    int end =   m_invertStackWidgets ? -1 : m_widgets.size();
+    int direction = m_invertStackWidgets ? -1 : 1;
+
     if (m_stackMode == STACK_VERTICAL) {
-        if (m_invertStack) {
-            int currentY = -30 + m_finalArea.position.y + m_finalArea.size.y - m_widgets.back()->getSize().y;
-            for (auto it = m_widgets.rbegin(); it != m_widgets.rend(); it++) {
-                (*it)->setPosition(glm::vec2((*it)->getPosition().x, currentY));
-                // TODO use margin/padding
-                currentY -= 2 * (*it)->getSize().y;
+        if (m_invertStack) { // DOWN
+            int currentY = m_finalArea.position.y + m_finalArea.size.y - m_widgets[start]->getSize().y;
+            for (int i = start; i != end; i += direction) {
+                Widget& widget = *m_widgets[i];
+                widget.setPosition(glm::vec2(widget.getPosition().x, currentY));
+                if (i != end - direction) {
+                    // margin from current element
+                    currentY -= widget.getProperties().margin.bottom;
+                    // margin and size from next element
+                    currentY -= m_widgets[i + direction]->getProperties().margin.top
+                        + m_widgets[i + direction]->getSize().y;
+                }
             }
-        } else {
+        } else { // UP
             int currentY = m_finalArea.position.y;
-            for (auto widget : m_widgets) {
-                widget->setPosition(glm::vec2(widget->getPosition().x, currentY));
-                currentY += widget->getSize().y;
+            for (int i = start; i != end; i+= direction) {
+                Widget& widget = *m_widgets[i];
+                widget.setPosition(glm::vec2(widget.getPosition().x, currentY));
+                if (i != end - direction) {
+                    // margin and size from current element
+                    currentY += widget.getSize().y + widget.getProperties().margin.top;
+                    // margin from next element
+                    currentY += m_widgets[i + direction]->getProperties().margin.bottom;
+                }
             }
         }
     } else if (m_stackMode == STACK_HORIZONTAL) {
-        if (m_invertStack) {
-            int currentX = m_finalArea.position.x + m_finalArea.size.x - m_widgets.back()->getSize().x;
-            for (auto it = m_widgets.rbegin(); it != m_widgets.rend(); it++) {
-                (*it)->setPosition(glm::vec2(currentX, (*it)->getPosition().y));
-                currentX -= (*it)->getSize().x;
+        if (m_invertStack) { // LEFT
+            int currentX = m_finalArea.position.x + m_finalArea.size.x - m_widgets[start]->getSize().x;
+            for (int i = start; i != end; i += direction) {
+                Widget& widget = *m_widgets[i];
+                widget.setPosition(glm::vec2(currentX, widget.getPosition().y));
+                if (i != end - direction) {
+                    // margin from current element
+                    currentX -= widget.getProperties().margin.left;
+                    // margin and size from next element
+                    currentX -= m_widgets[i + direction]->getProperties().margin.right
+                        + m_widgets[i + direction]->getSize().x;
+                }
             }
-        } else {
+        } else { // RIGHT
             int currentX = m_finalArea.position.x;
-            for (auto widget : m_widgets) {
-                // TODO maybe change m_finalArea.position.y to widget.getPosition().y ?
-                widget->setPosition(glm::vec2(currentX, m_finalArea.position.y));
-                currentX += widget->getSize().x;
+            for (int i = start; i != end; i+= direction) {
+                Widget& widget = *m_widgets[i];
+                widget.setPosition(glm::vec2(currentX, widget.getPosition().y));
+                if (i != end - direction) {
+                    // margin and size from current element
+                    currentX += widget.getSize().x + widget.getProperties().margin.right;
+                    // margin from next element
+                    currentX += m_widgets[i + direction]->getProperties().margin.left;
+                }
             }
         }
     }
@@ -52,9 +81,10 @@ Layout::Layout(std::string id, GUI* gui)
         m_gui->registerWidget(this);
     }
 
-void Layout::setStackMode(StackMode stackMode, bool invertStack) {
+void Layout::setStackMode(StackMode stackMode, bool invertStack, bool invertStackWidgets) {
     m_stackMode = stackMode;
     m_invertStack = invertStack;
+    m_invertStackWidgets = invertStackWidgets;
 }
 
 void Layout::updateArea(const Rectangle& parent) {
