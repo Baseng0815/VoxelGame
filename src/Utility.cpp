@@ -16,9 +16,10 @@ glm::vec3* GetCavePoints(glm::vec2 chunk, int count, int seed) {
 }
 
 glm::vec3* GetBezierPoints(glm::vec3* points, int count, int* resultCount) {
-    float t = 0; 
+    float t = 0;
     float step = 0.1;
-    glm::vec3* bezierPoints = new glm::vec3[1 / step];
+    // TODO replace dynamic arrays with std::vector
+    glm::vec3* bezierPoints = new glm::vec3[(int)(1 / step)];
 
     for(; t <= 1; t += step) {
         bezierPoints[(int)(1 / t)] = GetBezierPoint(points, count, t);
@@ -50,5 +51,5 @@ glm::vec3 GetBezierPoint(glm::vec3* points, int count, float t) {
 #include "../include/Block.h"
 
 void FillSphere(glm::vec3 center, float radius, Block*** blocks, BlockType fillType) {
-    
+
 }
