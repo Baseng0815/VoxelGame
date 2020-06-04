@@ -2,79 +2,64 @@
 
 #include "../../include/Configuration.h"
 #include "../../include/Block.h"
+#include "../../include/Components/WorldComponent.h"
+#include "../../include/WorldGeneration/PerlinWorm.h"
 
 #include <iostream>
 
+void CaveGenerator::createWorm(glm::vec2 chunk) {
+    glm::vec3 head = glm::vec3(8, 32, 8);
+
+    glm::vec3 worldCoords = GetWorldCoords(chunk, head);
+
+    PerlinWorm worm = PerlinWorm(cavePerlin, worldCoords, 16, 255);
+    m_worms.push_back(worm);
+
+    std::vector<WormPart> chunkWorms;
+    DivideWorm(worm, chunkWorms);
+
+    for(WormPart chunkWorm : chunkWorms) {
+        try {
+            auto wormColl = m_cache.at(chunkWorm.chunk);
+            wormColl.push_back(chunkWorm);
+        }
+        catch (std::out_of_range) {
+            m_cache.insert_or_assign(chunkWorm.chunk, std::vector<WormPart>{chunkWorm});
+        }
+    }
+}
+
 CaveGenerator::CaveGenerator() {
-	caveNoise1.SetSeed(rand());
-	caveNoise1.SetFrequency(0.075);
-	caveNoise1.SetOctaveCount(1);
-	caveNoise1.SetPersistence(0.25);	
+    cavePerlin.SetFrequency(0.5);    
+    cavePerlin.SetOctaveCount(3);
+    cavePerlin.SetPersistence(2);
+    cavePerlin.SetLacunarity(3);
 
-	caveNoise2.SetSeed(rand());
-	caveNoise2.SetFrequency(0.01);
-	caveNoise2.SetOctaveCount(3);
-	caveNoise2.SetPersistence(1.1);	
-
-	caveNoiseSum.SetSourceModule(0, caveNoise1);
-	caveNoiseSum.SetSourceModule(1, caveNoise2);
-
-	cave.SetConstValue(1);
-	solid.SetConstValue(0);
-
-	scale.SetSourceModule(0, caveNoiseSum);	
-	scale.SetScale(0.75, 1, 0.75);
-
-	caveNoise.SetSourceModule(0, solid);
-	caveNoise.SetSourceModule(1, cave);
-	caveNoise.SetSourceModule(2, scale);
-
-	caveNoise.SetBounds(0.25, 1);
+    createWorm(glm::vec2(0, 0));
+    
 }
 
-CaveGenerator& CaveGenerator::operator=(const CaveGenerator& generator) {	
-	caveNoise1.SetFrequency(generator.caveNoise1.GetFrequency());
-	caveNoise1.SetOctaveCount(generator.caveNoise1.GetOctaveCount());
-	caveNoise1.SetPersistence(generator.caveNoise1.GetPersistence());
-	caveNoise1.SetSeed(generator.caveNoise1.GetSeed());
+void CaveGenerator::generate(glm::vec2 position, Block*** blocks) {
+    try {
+	    std::vector<WormPart>& parts = m_cache.at(position);
 
-    caveNoise2.SetFrequency(generator.caveNoise2.GetFrequency());
-    caveNoise2.SetOctaveCount(generator.caveNoise2.GetOctaveCount());
-    caveNoise2.SetPersistence(generator.caveNoise2.GetPersistence());
-    caveNoise2.SetSeed(generator.caveNoise2.GetSeed());
+        // foreach worm part
+        for(auto part : parts) {
+            // foreach segment
+            glm::vec3 pos = part.head;
+            for(auto seg : part.segments) {
+                glm::vec3 blockDir = glm::normalize(seg) * (float)sqrt(2);
+                glm::vec3 relPos = glm::vec3();
 
-	caveNoiseSum.SetSourceModule(0, caveNoise1);
-	caveNoiseSum.SetSourceModule(1, caveNoise2);
+                // foreach block in segment 
+                for(int i = 0; i < length(seg); i++) {
+                    FillSphere(pos + relPos, 5, blocks, (char)BlockType::BLOCK_STONE);
+                    relPos += blockDir;
+                }
+            }
+        }
+    }
+    catch (std::out_of_range) {
 
-	cave.SetConstValue(1);
-	solid.SetConstValue(0);
-
-	caveNoise.SetSourceModule(0, solid);
-	caveNoise.SetSourceModule(1, cave);
-	caveNoise.SetSourceModule(2, caveNoiseSum);
-
-	caveNoise.SetBounds(-1, -0.25);
-
-	return *this;
-}
-
-void CaveGenerator::generate(glm::ivec2 position, Block*** blocks) {
-	for (int cx = 0; cx < CHUNK_SIZE; cx++) {
-		for (int cy = 0; cy < CHUNK_HEIGHT / 2; cy++) {
-			for (int cz = 0; cz < CHUNK_SIZE; cz++) {
-				int x = cx + position.x * CHUNK_SIZE;
-				int y = cy;
-				int z = cz + position.y * CHUNK_SIZE;
-
-				float caveNoise = this->caveNoise.GetValue(x, y, z);
-
-				if (caveNoise == 1) {
-					/*if (blocks[cx][cy][cz].type != BlockType::BLOCK_BRICKS)
-						blocks[cx][cy][cz] = Block(BlockType::BLOCK_AIR);*/
-					blocks[cx][cy][cz] = Block(BlockType::BLOCK_STONE);
-
-				}
-			}
-		}
-	}
+    }
 }

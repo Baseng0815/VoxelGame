@@ -14,12 +14,6 @@ WorldGenerator::WorldGenerator(WorldType worldType) {
 	m_type = worldType;	
 }
 
-WorldGenerator& WorldGenerator::operator=(const WorldGenerator& generator) {
-	m_caveGenerator = generator.m_caveGenerator;
-
-	return *this;
-}
-
 void WorldGenerator::generateOres(BiomeID** biomes, Block*** blocks) const {
 	for (BlockType block = BlockType::BLOCK_ORE_GOLD; block <= BlockType::BLOCK_ORE_COAL; ) {
 		BlockData blockData = Configuration::getBlockData(block);
@@ -67,9 +61,9 @@ void WorldGenerator::generate(glm::ivec2 position, BiomeID** biomes, Block*** bl
 	int** heightMap = new int*[CHUNK_SIZE];
 	for(int i = 0; i < CHUNK_SIZE; i++) heightMap[i] = new int[CHUNK_SIZE];
 
-	m_heightGenerator.generateChunkHeight(position, heightMap, biomes);
-	m_terrainGenerator.createBlocks(blocks, heightMap, biomes);
-	generateOres(biomes, blocks);
+	//m_heightGenerator.generateChunkHeight(position, heightMap, biomes);
+	//m_terrainGenerator.createBlocks(blocks, heightMap, biomes);
+	//generateOres(biomes, blocks);
 
-	//m_caveGenerator.generate(position, blocks);
+	m_caveGenerator.generate(position, blocks);
 }

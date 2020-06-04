@@ -1,27 +1,26 @@
 #pragma once
 #include <vector>
+#include <unordered_map>
 #include <glm/glm.hpp>
-#include "noise/noise.h"
+#include <noise/noise.h>
+#include "../Utility.h"
+#include "PerlinWorm.h"
 
-using namespace noise;
-struct Block;
+class Block;
+using namespace noise::module;
 
 class CaveGenerator {
 private:
-    module::Billow caveNoise1;
-    module::Perlin caveNoise2;
-    module::Multiply caveNoiseSum;
-    module::Const cave;
-    module::Const solid;
-    module::ScalePoint scale;
+    Perlin cavePerlin;
 
-    module::Select caveNoise;    
+    std::vector<PerlinWorm> m_worms;
+    std::unordered_map<glm::vec2, std::vector<WormPart>, HashFunction> m_cache;
+
+    void createWorm(glm::vec2 chunk);
 
 public:
-    CaveGenerator();
+    CaveGenerator();        
 
-    CaveGenerator& operator=(const CaveGenerator&);
-
-    void generate(glm::ivec2 position, Block*** blocks);
+    void generate(glm::vec2 position, Block*** blocks);
 };
 

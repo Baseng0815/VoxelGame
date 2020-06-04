@@ -34,9 +34,7 @@ private:
 
 public:
 	WorldGenerator(WorldType type);
-	WorldGenerator(const WorldGenerator&);
-
-	WorldGenerator& operator=(const WorldGenerator&);
+	WorldGenerator(const WorldGenerator&);	
 
 	void init(WorldType worldType);
 

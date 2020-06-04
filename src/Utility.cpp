@@ -1,54 +1,78 @@
 #include "../include/Utility.h"
 #include "../include/Configuration.h"
 
-glm::vec3* GetCavePoints(glm::vec2 chunk, int count, int seed) {
-    glm::vec3* points = new glm::vec3[count];
+glm::vec2 GetChunk(glm::vec3 worldCoords, glm::vec3& localCoords) {
+    glm::vec2 chunkPos;
 
-    for(int i = 0; i < count; i++) {
-        int x = ((rand() + seed) & 0xFFFFFFFF) % CHUNK_SIZE;
-        int y = ((rand() + seed) & 0xFFFFFFFF) % CHUNK_HEIGHT;
-        int z = ((rand() + seed) & 0xFFFFFFFF) % CHUNK_SIZE;
+    chunkPos.x = (int)worldCoords.x / CHUNK_SIZE;
+    chunkPos.y = (int)worldCoords.z / CHUNK_SIZE;
+    int cx = (int)worldCoords.x % CHUNK_SIZE;
+    int cz = (int)worldCoords.z % CHUNK_SIZE;
 
-        points[i] = glm::vec3(x, y, z);
+    if(cx < 0)
+        cx = CHUNK_SIZE - abs(cx);
+    if(cz < 0)
+        cz = CHUNK_SIZE - abs(cz);
+
+    if(worldCoords.x < 0 && cx != 0) {
+        chunkPos.x -= 1;
     }
 
-    return points;
+    if(worldCoords.z < 0 && cz != 0) {
+        chunkPos.y -= 1;
+    }
+
+    localCoords = glm::vec3(cx, worldCoords.y, cz);
+    return chunkPos;
 }
 
-glm::vec3* GetBezierPoints(glm::vec3* points, int count, int* resultCount) {
-    float t = 0; 
-    float step = 0.1;
-    glm::vec3* bezierPoints = new glm::vec3[1 / step];
+glm::vec3 GetWorldCoords(glm::vec2 chunk, glm::vec3 chunkCoords) {    
+    glm::mat2x3 chunkTransform = glm::mat2x3(0.0f);     
+    chunkTransform[0][0] = CHUNK_SIZE;
+    chunkTransform[1][2] = CHUNK_SIZE;
 
-    for(; t <= 1; t += step) {
-        bezierPoints[(int)(1 / t)] = GetBezierPoint(points, count, t);
-    }
-
-    *resultCount = 1 / step;
-
-    return bezierPoints;
+    return chunkTransform * chunk + chunkCoords;
 }
 
-glm::vec3 GetBezierPoint(glm::vec3* points, int count, float t) {
-    if(count == 1)
-        return points[0];
+glm::vec3 GetChunkCoords(glm::vec3 worldCoords) {
+    int cx = (int)worldCoords.x % CHUNK_SIZE;
+    int cz = (int)worldCoords.z % CHUNK_SIZE;
 
-    glm::vec3* newPoints = new glm::vec3[count - 1];
+    if (cx < 0)
+        cx = CHUNK_SIZE - abs(cx);
+    if (cz < 0)
+        cz = CHUNK_SIZE - abs(cz);
 
-    for (int i = 0; i < count - 1; i++){
-        glm::vec3 dP = points[i + 1] - points[i];
+    return glm::vec3(cx, worldCoords.y, cz);
+}
 
-        newPoints[i] = points[i] + t * dP;
-    }
+template<typename T>
+void swap(std::vector<T>* vec, int pos1, int pos2) {
+    T tmp = vec[pos2];
+    vec[pos2] = vec[pos1];
+    vec[pos1] = tmp;
+}
 
-    glm::vec3 point = GetBezierPoint(newPoints, count - 1, t);
-    delete[] points;
-
-    return point;
+bool InChunk(glm::vec3 pos){
+    return pos.x >= 0 && pos.x < CHUNK_SIZE && pos.y >= 0 && pos.y < CHUNK_HEIGHT && pos.z >= 0 && pos.z < CHUNK_SIZE;
 }
 
 #include "../include/Block.h"
 
-void FillSphere(glm::vec3 center, float radius, Block*** blocks, BlockType fillType) {
-    
+void FillSphere(glm::vec3 center, float radius, Block*** blocks, char fillType) {
+    float x, y, z;
+    float radiusSquare = radius * radius;
+
+    for(x = -radius; x <= radius; x++) {
+        float zMax = sqrt(radiusSquare - x * x);
+        for(z = -zMax; z <= zMax; z++) {
+            float yMax = sqrt(radiusSquare - (x * x + z * z));
+            for(y = -yMax; y <= yMax; y++) {
+                glm::vec3 position = center + glm::vec3(x, y, z);
+                if(InChunk(position)) {
+                    blocks[(int)position.x][(int)position.y][(int)position.z] = Block((BlockType)fillType);
+                }
+            }
+        }
+    }
 }

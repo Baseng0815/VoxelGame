@@ -89,11 +89,11 @@ void ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int c
 		for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
 			blocks[x][y] = new Block[Configuration::CHUNK_SIZE];
 
-			if (y < 63) {
+			/*if (y < 63) {
 				for (int z = 0; z < CHUNK_SIZE; z++) {
 					blocks[x][y][z] = Block(BlockType::BLOCK_WATER);
 				}
-			}
+			}*/
 		}
 	}
 
@@ -365,7 +365,7 @@ void ChunkCreateSystem::_update(int dt) {
 
 					m_futures.push_back(std::async(std::launch::async, [=]() {
 						updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ);
-						}));
+					}));
 				}
 				// update vertices
 				else if (chunk.verticesOutdated) {
