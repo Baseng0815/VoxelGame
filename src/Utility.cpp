@@ -2,9 +2,9 @@
 #include "../include/Configuration.h"
 
 glm::vec2 GetChunk(glm::vec3 worldCoords, glm::vec3& localCoords) {
-    glm::vec2 chunkPos;
+    glm::vec2 chunkPos;    
 
-    chunkPos.x = (int)worldCoords.x / CHUNK_SIZE;
+    /*chunkPos.x = (int)worldCoords.x / CHUNK_SIZE;
     chunkPos.y = (int)worldCoords.z / CHUNK_SIZE;
     int cx = (int)worldCoords.x % CHUNK_SIZE;
     int cz = (int)worldCoords.z % CHUNK_SIZE;
@@ -14,26 +14,22 @@ glm::vec2 GetChunk(glm::vec3 worldCoords, glm::vec3& localCoords) {
     if(cz < 0)
         cz = CHUNK_SIZE - abs(cz);
 
-<<<<<<< HEAD
     if(worldCoords.x < 0 && cx != 0) {
         chunkPos.x -= 1;
-=======
-glm::vec3* GetBezierPoints(glm::vec3* points, int count, int* resultCount) {
-    float t = 0;
-    float step = 0.1;
-    // TODO replace dynamic arrays with std::vector
-    glm::vec3* bezierPoints = new glm::vec3[(int)(1 / step)];
-
-    for(; t <= 1; t += step) {
-        bezierPoints[(int)(1 / t)] = GetBezierPoint(points, count, t);
->>>>>>> 46c21a7c554023057da23128351cce523f4a8bed
     }
 
     if(worldCoords.z < 0 && cz != 0) {
         chunkPos.y -= 1;
     }
 
-    localCoords = glm::vec3(cx, worldCoords.y, cz);
+    localCoords = glm::vec3(cx, worldCoords.y, cz);*/
+    chunkPos.x = floor((worldCoords.x + 0.5) / CHUNK_SIZE);
+    chunkPos.y = floor((worldCoords.z + 0.5) / CHUNK_SIZE);
+
+    localCoords.x = CHUNK_SIZE * (worldCoords.x / CHUNK_SIZE - floor(worldCoords.x / CHUNK_SIZE));
+    localCoords.y = worldCoords.y;
+    localCoords.z = CHUNK_SIZE * (worldCoords.z / CHUNK_SIZE - floor(worldCoords.z / CHUNK_SIZE));
+
     return chunkPos;
 }
 
@@ -70,7 +66,6 @@ bool InChunk(glm::vec3 pos){
 
 #include "../include/Block.h"
 
-<<<<<<< HEAD
 void FillSphere(glm::vec3 center, float radius, Block*** blocks, char fillType) {
     float x, y, z;
     float radiusSquare = radius * radius;
@@ -88,8 +83,3 @@ void FillSphere(glm::vec3 center, float radius, Block*** blocks, char fillType) 
         }
     }
 }
-=======
-void FillSphere(glm::vec3 center, float radius, Block*** blocks, BlockType fillType) {
-
-}
->>>>>>> 46c21a7c554023057da23128351cce523f4a8bed

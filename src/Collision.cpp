@@ -52,13 +52,13 @@ void BoxCollision::getMinMax(const glm::vec3 position, glm::vec3* min, glm::vec3
 
 Ray::Ray(glm::vec3 start, glm::vec3 dir) : start(start), direction(glm::normalize(dir)) {}
 
-std::vector<glm::ivec3> Ray::getAffectedBlocks(float length) const {
-	std::vector<glm::ivec3> blocks = std::vector<glm::ivec3>();
-	glm::ivec3 lastPos = glm::ivec3(INT32_MAX, INT32_MAX, INT32_MAX);
+std::vector<glm::vec3> Ray::getAffectedBlocks(float length) const {
+	std::vector<glm::vec3> blocks = std::vector<glm::vec3>();
+	glm::vec3 lastPos = glm::vec3(INT32_MAX, INT32_MAX, INT32_MAX);
 
 	int count = ceil(length);
 	for (int i = 0; i < count; i++) {
-		glm::ivec3 pos = round(start + (float)i * direction);
+		glm::vec3 pos = round(start + (float)i * direction);
 
 		if (pos != lastPos) {
 			blocks.push_back(pos);
@@ -69,7 +69,7 @@ std::vector<glm::ivec3> Ray::getAffectedBlocks(float length) const {
 	return blocks;
 }
 
-glm::ivec3 Ray::getIntersectionFace(glm::ivec3 block) const {
+glm::vec3 Ray::getIntersectionFace(glm::vec3 block) const {
 	float fractions[] = {
 		// x
 		(block.x + 1 - start.x) / direction.x,

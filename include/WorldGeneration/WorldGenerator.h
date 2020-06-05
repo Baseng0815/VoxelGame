@@ -38,6 +38,6 @@ public:
 
 	void init(WorldType worldType);
 
-	void generate(glm::ivec2 position, BiomeID** biomes, Block*** blocks);
+	void generate(glm::vec2 position, BiomeID** biomes, Block*** blocks);
 };
 

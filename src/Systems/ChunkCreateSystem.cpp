@@ -44,7 +44,7 @@ void ChunkCreateSystem::handleEnterChunk(Event* e) {
 	// create new chunks which have come into range
 	for (int x = event.newX + Configuration::CHUNK_PRELOAD_SIZE; x >= event.newX - (int)Configuration::CHUNK_PRELOAD_SIZE; x--) {
 		for (int z = event.newZ + Configuration::CHUNK_PRELOAD_SIZE; z >= event.newZ - (int)Configuration::CHUNK_PRELOAD_SIZE; z--) {
-			glm::ivec2 pos(x, z);
+			glm::vec2 pos(x, z);
 			if (std::count(loadedChunks.begin(), loadedChunks.end(), pos) == 0) {
 				auto& registry = m_systemManager->getRegistry();
 				auto entity = registry.create();
@@ -74,9 +74,8 @@ void ChunkCreateSystem::handleBlockChanged(Event* e) {
 	}
 
 
-	glm::ivec3 localPos;
-	glm::ivec2 chunkPos;
-	WorldComponent::getChunkCoords(blockChangedEvent.position, chunkPos, localPos);
+	glm::vec3 localPos;
+	glm::vec2 chunkPos = GetChunk(blockChangedEvent.position, localPos);
 
 	auto chunkEntity = world.getChunk(chunkPos);
 	m_outdatedChunks.push_back(chunkEntity);
@@ -101,7 +100,7 @@ void ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int c
 	for (int z = 0; z < Configuration::CHUNK_SIZE; z++)
 		biomes[z] = new BiomeID[Configuration::CHUNK_SIZE];
 
-	m_generator.generate(glm::ivec2(chunkX, chunkZ), biomes, blocks);
+	m_generator.generate(glm::vec2(chunkX, chunkZ), biomes, blocks);
 
 	GenerationData data = GenerationData();
 	data.blocks = blocks;
@@ -286,7 +285,7 @@ void ChunkCreateSystem::_update(int dt) {
 		auto& chunk = registry.get<ChunkComponent>(*it);
 
 		if (!chunk.threadActiveOnSelf && chunk.blocks) {
-			glm::ivec2 pos(chunk.chunkX, chunk.chunkZ);
+			glm::vec2 pos(chunk.chunkX, chunk.chunkZ);
 
 			world.removeChunk(*it);
 
@@ -361,7 +360,7 @@ void ChunkCreateSystem::_update(int dt) {
 				if (chunk.blocks == nullptr) {
 					constructionCount++;
 					chunk.threadActiveOnSelf = true;
-					world.addChunk(entity, glm::ivec2(chunk.chunkX, chunk.chunkZ));
+					world.addChunk(entity, glm::vec2(chunk.chunkX, chunk.chunkZ));
 
 					m_futures.push_back(std::async(std::launch::async, [=]() {
 						updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ);

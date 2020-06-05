@@ -9,19 +9,18 @@ struct Block;
 
 class WorldComponent {
 private:
-	std::unordered_map<glm::ivec2, entt::entity, HashFunction> chunksLookup = std::unordered_map<glm::ivec2, entt::entity, HashFunction>();;
+	std::unordered_map<glm::vec2, entt::entity, HashFunction> chunksLookup = std::unordered_map<glm::vec2, entt::entity, HashFunction>();;
 
 public:
 	WorldComponent() = default;
 
 	unsigned int worldID = 0;
-
-	static void getChunkCoords(glm::ivec3 position, glm::ivec2& chunk, glm::ivec3& chunkPosition);
-	entt::entity getChunk(glm::ivec2 chunk) const;
 	
-	Block getBlock(entt::registry& registry, glm::ivec3 position) const;
-	void setBlock(entt::registry& registry, glm::ivec3 position, Block block);
+	entt::entity getChunk(glm::vec2 chunk) const;
+	
+	Block getBlock(entt::registry& registry, glm::vec3 position) const;
+	void setBlock(entt::registry& registry, glm::vec3 position, Block block);
 
-	void addChunk(entt::entity entity, glm::ivec2 position);
+	void addChunk(entt::entity entity, glm::vec2 position);
 	void removeChunk(entt::entity entity);
 };

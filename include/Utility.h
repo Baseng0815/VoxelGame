@@ -31,10 +31,6 @@ void swap(std::vector<T>* vec, int pos1, int pos2);
 
 bool InChunk(glm::vec3 position);
 
-<<<<<<< HEAD
 struct Block;
 
 void FillSphere(glm::vec3 center, float radius, Block*** blocks, char fillType = 0);
-=======
-void FillSphere(glm::vec3 center, float radius, Block*** blocks, BlockType fillType = BlockType::BLOCK_AIR);
->>>>>>> 46c21a7c554023057da23128351cce523f4a8bed

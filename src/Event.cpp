@@ -95,7 +95,7 @@ EventType BlockChangedEvent::type() const {
     return BlockChangedEvent::TYPE;
 }
 
-BlockChangedEvent::BlockChangedEvent(Application* app, glm::ivec3 position) : app(app), position(position) {}
+BlockChangedEvent::BlockChangedEvent(Application* app, glm::vec3 position) : app(app), position(position) {}
 
 std::string BlockChangedEvent::toString() const {
     std::stringstream ss;

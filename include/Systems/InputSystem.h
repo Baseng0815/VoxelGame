@@ -14,7 +14,7 @@ struct Event;
 // also updates the camera
 class InputSystem : public System {
     private:
-        struct LookData { glm::ivec3 block; glm::ivec3 face; bool valid; };
+        struct LookData { glm::vec3 block; glm::vec3 face; bool valid; };
 
         void handleKeyPressEvent(Event* e);
         void handleMouseButtonEvent(Event* e);

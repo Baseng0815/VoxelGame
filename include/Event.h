@@ -113,11 +113,11 @@ struct BlockChangedEvent : public Event {
     static constexpr EventType TYPE = BLOCK_CHANGED_EVENT;
 
     Application* app;
-    glm::ivec3 position;
+    glm::vec3 position;
 
     EventType type() const override final;
     std::string toString() const override final;
-    BlockChangedEvent(Application* app = nullptr, glm::ivec3 position = glm::ivec3());
+    BlockChangedEvent(Application* app = nullptr, glm::vec3 position = glm::vec3());
 };
 
 struct EntityMovedEvent : public Event {

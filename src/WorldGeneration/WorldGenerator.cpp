@@ -22,7 +22,7 @@ void WorldGenerator::generateOres(BiomeID** biomes, Block*** blocks) const {
 			int x = rand() % CHUNK_SIZE;
 			int y = rand() % (blockData.oreData.maxHeight - blockData.oreData.minHeight) + blockData.oreData.minHeight;
 			int z = rand() % CHUNK_SIZE;	
-			glm::ivec3 orePos = glm::ivec3(x, y, z);
+			glm::vec3 orePos = glm::vec3(x, y, z);
 
 			double a = pow(3 * blockData.oreData.size / (16 * PI), 1 / 3.0);
 
@@ -39,13 +39,13 @@ void WorldGenerator::generateOres(BiomeID** biomes, Block*** blocks) const {
 						double ymax = -ymin;
 
 						for (int y1 = ymin; y1 <= ymax; y1++) {
-							glm::ivec3 pos = orePos + glm::ivec3(x1, y1, z1);	
+							glm::vec3 pos = orePos + glm::vec3(x1, y1, z1);	
 
 							if(pos.x < 0 || pos.x >= CHUNK_SIZE || pos.y < 0 || pos.y >= CHUNK_HEIGHT || pos.z < 0 || pos.z >= CHUNK_SIZE)						
 								continue;
 
-							if (blocks[pos.x][pos.y][pos.z].type == BlockType::BLOCK_STONE) {
-								blocks[pos.x][pos.y][pos.z] = Block(block);
+							if (blocks[(int)pos.x][(int)pos.y][(int)pos.z].type == BlockType::BLOCK_STONE) {
+								blocks[(int)pos.x][(int)pos.y][(int)pos.z] = Block(block);
 							}
 						}
 					}
@@ -57,13 +57,13 @@ void WorldGenerator::generateOres(BiomeID** biomes, Block*** blocks) const {
 }
 
 
-void WorldGenerator::generate(glm::ivec2 position, BiomeID** biomes, Block*** blocks) {
+void WorldGenerator::generate(glm::vec2 position, BiomeID** biomes, Block*** blocks) {
 	int** heightMap = new int*[CHUNK_SIZE];
 	for(int i = 0; i < CHUNK_SIZE; i++) heightMap[i] = new int[CHUNK_SIZE];
 
-	//m_heightGenerator.generateChunkHeight(position, heightMap, biomes);
-	//m_terrainGenerator.createBlocks(blocks, heightMap, biomes);
+	m_heightGenerator.generateChunkHeight(position, heightMap, biomes);
+	m_terrainGenerator.createBlocks(blocks, heightMap, biomes);
 	//generateOres(biomes, blocks);
 
-	m_caveGenerator.generate(position, blocks);
+	//m_caveGenerator.generate(position, blocks);
 }

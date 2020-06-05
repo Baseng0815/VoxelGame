@@ -4,6 +4,7 @@
 #include "../../include/Collision.h"
 #include "../../include/Configuration.h"
 #include "../../include/EventDispatcher.h"
+#include "../../include/Utility.h"
 #include "../../include/Systems/SystemManager.h"
 
 #include "../../include/Components/ChunkComponent.h"
@@ -101,7 +102,7 @@ void InputSystem::handleMouseButtonEvent(Event* e) {
                 case GLFW_MOUSE_BUTTON_RIGHT:
                     if (mouseButtonEvent.action == GLFW_PRESS) {
                         if (selectedBlock.valid) {
-                            glm::ivec3 pos = selectedBlock.block + selectedBlock.face;
+                            glm::vec3 pos = selectedBlock.block + selectedBlock.face;
                             world.setBlock(m_systemManager->getRegistry(), pos, Block(BlockType::BLOCK_WOOD));
                         }
                     }
@@ -178,8 +179,8 @@ void InputSystem::updateSelectedBlock(CameraComponent& camera, TransformationCom
     glm::vec3 pos = transformation.position;
     Ray r = Ray(pos, camera.front);
 
-    std::vector<glm::ivec3> blocks = r.getAffectedBlocks(5);
-    glm::ivec3 block;
+    std::vector<glm::vec3> blocks = r.getAffectedBlocks(5);
+    glm::vec3 block;
 
     float minLength = FLT_MAX;
     for (auto b : blocks) {
@@ -195,11 +196,11 @@ void InputSystem::updateSelectedBlock(CameraComponent& camera, TransformationCom
     }
 
     if (minLength != FLT_MAX) {
-        glm::ivec3 intersectionFace = r.getIntersectionFace(block);
+        glm::vec3 intersectionFace = r.getIntersectionFace(block);
         selectedBlock = { block, intersectionFace, true };
     }
     else {
-        selectedBlock = { glm::ivec3(), glm::ivec3(), false };
+        selectedBlock = { glm::vec3(), glm::vec3(), false };
     }
 }
 

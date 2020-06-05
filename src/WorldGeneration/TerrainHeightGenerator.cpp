@@ -66,7 +66,7 @@ TerrainHeightGenerator::TerrainHeightGenerator() {
     m_terrainSelect.SetEdgeFalloff(5);
 }
 
-void TerrainHeightGenerator::generateChunkHeight(glm::ivec2 chunkPos, int** heightMap, BiomeID** biomes) const {    
+void TerrainHeightGenerator::generateChunkHeight(glm::vec2 chunkPos, int** heightMap, BiomeID** biomes) const {    
     for(int cx = 0; cx < CHUNK_SIZE; cx++)
         for(int cz = 0; cz < CHUNK_SIZE; cz++) {
             float x = chunkPos.x * CHUNK_SIZE + cx;

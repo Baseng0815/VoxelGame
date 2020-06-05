@@ -38,7 +38,7 @@ class ChunkCreateSystem : public System {
 
         std::atomic_int constructionCount;
         std::vector<entt::entity> m_destructionQueue;
-        std::vector<glm::ivec2> loadedChunks;
+        std::vector<glm::vec2> loadedChunks;
 
         void handleEnterChunk(Event*);
         void handleBlockChanged(Event*);
