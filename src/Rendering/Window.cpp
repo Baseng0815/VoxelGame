@@ -45,8 +45,8 @@ Window::Window(Application* app, int width, int height) {
     glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    ADD_EVENT(handleKeyPress, KEY_EVENT);
-    ADD_EVENT(handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT);
+    EventDispatcher::addCallback(CB_FUN(handleKeyPress), KEY_EVENT);
+    EventDispatcher::addCallback(CB_FUN(handleFramebufferSize), FRAMEBUFFER_SIZE_EVENT);
 }
 
 void Window::clear(glm::vec3 clearColor) {

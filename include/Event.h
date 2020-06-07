@@ -2,25 +2,16 @@
 
 #include <string.h>
 #include <iostream>
-#include <functional>
 
 #include <glm/glm.hpp>
 #include <entt/entt.hpp>
+
+#include "Callback.h"
 
 using namespace std::placeholders;
 
 class Application;
 struct Block;
-
-typedef unsigned int CallbackId;
-
-enum EventType {
-    // basic events
-    KEY_EVENT, MOUSE_BUTTON_EVENT, CURSOR_EVENT, SCROLL_EVENT, FRAMEBUFFER_SIZE_EVENT,
-
-    // advanced events
-    ENTER_CHUNK_EVENT, BLOCK_CHANGED_EVENT, ENTITY_MOVED_EVENT
-};
 
 struct Event {
     virtual EventType type() const = 0;
@@ -32,8 +23,6 @@ struct Event {
 
     friend std::ostream& operator<<(std::ostream& ostream, const Event& event);
 };
-
-typedef std::function<void(Event*)> Callback;
 
 struct KeyEvent : public Event {
     static constexpr EventType TYPE = KEY_EVENT;

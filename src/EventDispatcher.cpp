@@ -5,7 +5,7 @@ bool EventDispatcher::m_firstMouse = true;
 double EventDispatcher::m_prevX = 0;
 double EventDispatcher::m_prevY = 0;
 CallbackId EventDispatcher::m_cbCounter = 0;
-std::map<EventType, std::vector<std::pair<CallbackId, Callback>>> EventDispatcher::m_callbacks;
+std::map<EventType, std::vector<Callback>> EventDispatcher::m_callbacks;
 
 void EventDispatcher::attachToWindow(const Window& window) {
     GLFWwindow* hwnd = window.getHandle();
@@ -70,22 +70,40 @@ void EventDispatcher::dispatch(Event *e) {
     if (cbIt == m_callbacks.end()) return;
 
     for (auto& callback : (*cbIt).second)
-        callback.second(e);
+        if (callback.isActive)
+            callback.fun(e);
 }
 
-CallbackId EventDispatcher::addCallback(Callback callback, EventType callbackType) {
-    auto listPair = m_callbacks.insert(std::make_pair(callbackType, std::vector<std::pair<CallbackId, Callback>>()));
-
-    listPair.first->second.push_back(std::make_pair(m_cbCounter, callback));
+CallbackId EventDispatcher::addCallback(CallbackFun fun, EventType type) {
     m_cbCounter++;
-    return m_cbCounter;
+
+    Callback callback(fun, type);
+    callback.id = m_cbCounter;
+
+    auto listPair = m_callbacks.insert(std::make_pair(callback.type, std::vector<Callback>()));
+    listPair.first->second.push_back(callback);
+
+    return callback.id;
 }
 
 void EventDispatcher::removeCallback(CallbackId callbackId) {
-    for (auto it = m_callbacks.begin(); it != m_callbacks.end(); it++)
-        for (auto jt = it->second.begin(); jt != it->second.end(); jt++)
-            if (jt->first == callbackId)
-                it->second.erase(jt);
+    for (auto& [key, val] : m_callbacks) {
+        auto it = std::find(val.begin(), val.end(), callbackId);
+        if (it != val.end()) {
+            val.erase(it);
+            return;
+        }
+    }
+}
+
+void EventDispatcher::setCallbackActive(CallbackId callbackId, bool active) {
+    for (auto& [key, val] : m_callbacks) {
+        auto it = std::find(val.begin(), val.end(), callbackId);
+        if (it != val.end()) {
+            it->isActive = active;
+            return;
+        }
+    }
 }
 
 void EventDispatcher::resetMouseState() {

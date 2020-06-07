@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../include/Rendering/Window.h"
 #include "../include/Event.h"
+#include "../include/Rendering/Window.h"
 
 #include <map>
 #include <vector>
 
-#define ADD_EVENT(func, type) EventDispatcher::addCallback([=](Event* e){this->func(e);}, type);
+#define CB_FUN(func) ([=](Event* e){this->func(e);})
 
 class EventDispatcher {
 private:
@@ -14,7 +14,7 @@ private:
     static double m_prevX, m_prevY;
 
     static CallbackId m_cbCounter;
-    static std::map<EventType, std::vector<std::pair<CallbackId, Callback>>> m_callbacks;
+    static std::map<EventType, std::vector<Callback>> m_callbacks;
 
     static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
     static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
@@ -27,8 +27,9 @@ private:
 public:
     static void attachToWindow(const Window& window);
 
-    static CallbackId addCallback(Callback callback, EventType callbackType);
-    static void removeCallback(CallbackId callbackId);
+    static CallbackId addCallback(CallbackFun fun, EventType type);
+    static void removeCallback(CallbackId id);
+    static void setCallbackActive(CallbackId callbackId, bool active);
 
     // sets mouse state to firstMouse so the first input event is ignored
     static void resetMouseState();
