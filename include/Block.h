@@ -15,5 +15,6 @@ public:
 
     std::string toString() const;
 
-    bool isSolid();
+    bool isSolid() const;
+    bool isTransparent() const;
 };

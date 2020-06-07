@@ -176,22 +176,28 @@ void InputSystem::updateProjectionMatrix(CameraComponent& camera) {
 
 void InputSystem::updateSelectedBlock(CameraComponent& camera, TransformationComponent& transformation) {
     WorldComponent& world = m_systemManager->getCurrentWorld();
-    glm::vec3 pos = transformation.position;
+    glm::vec3 pos = transformation.position;    
+
     Ray r = Ray(pos, camera.front);
 
-    std::vector<glm::vec3> blocks = r.getAffectedBlocks(5);
+    std::vector<glm::vec3> blocks = r.getIntersectionBlocks(5);
     glm::vec3 block;
 
     float minLength = FLT_MAX;
     for (auto b : blocks) {
-        if (world.getBlock(m_systemManager->getRegistry(), b).type != BlockType::BLOCK_AIR) {
-            glm::vec3 diff = pos - (glm::vec3)b;
-            float length = glm::length(diff);
+        try{
+            if (world.getBlock(m_systemManager->getRegistry(), b).type != BlockType::BLOCK_AIR) {
+                glm::vec3 diff = pos - (glm::vec3)b;
+                float length = glm::length(diff);
 
-            if (length < minLength) {
-                block = b;
-                minLength = length;
+                if (length < minLength) {
+                    block = b;
+                    minLength = length;
+                }
             }
+        }
+        catch(std::out_of_range) {
+            continue;
         }
     }
 

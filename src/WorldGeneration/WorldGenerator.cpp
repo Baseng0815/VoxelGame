@@ -56,14 +56,13 @@ void WorldGenerator::generateOres(BiomeID** biomes, Block*** blocks) const {
 	}
 }
 
-
 void WorldGenerator::generate(glm::vec2 position, BiomeID** biomes, Block*** blocks) {
 	int** heightMap = new int*[CHUNK_SIZE];
 	for(int i = 0; i < CHUNK_SIZE; i++) heightMap[i] = new int[CHUNK_SIZE];
 
 	m_heightGenerator.generateChunkHeight(position, heightMap, biomes);
 	m_terrainGenerator.createBlocks(blocks, heightMap, biomes);
-	//generateOres(biomes, blocks);
+	generateOres(biomes, blocks);
 
 	//m_caveGenerator.generate(position, blocks);
 }

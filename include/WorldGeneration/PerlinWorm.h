@@ -14,6 +14,8 @@ public:
 
     PerlinWorm() = default;
     PerlinWorm(noise::module::Perlin& wormNoise, glm::vec3 head, int segmentsCount, float maxLength);    
+
+    std::vector<glm::vec3> getBlocks(float radius, glm::vec2 chunk) const;
 };
 
 class WormPart : public PerlinWorm {

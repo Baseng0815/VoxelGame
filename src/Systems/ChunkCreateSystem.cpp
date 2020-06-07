@@ -88,11 +88,11 @@ void ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int c
 		for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
 			blocks[x][y] = new Block[Configuration::CHUNK_SIZE];
 
-			/*if (y < 63) {
+			if (y < 63) {
 				for (int z = 0; z < CHUNK_SIZE; z++) {
 					blocks[x][y][z] = Block(BlockType::BLOCK_WATER);
 				}
-			}*/
+			}
 		}
 	}
 
@@ -132,32 +132,32 @@ void ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block*** blocks
 
 					// negative X
 					if (x > 0) {
-						if (blocks[x - 1][y][z].type == BlockType::BLOCK_AIR) draw[0] = true;
+						if (blocks[x - 1][y][z].isTransparent()) draw[0] = true;
 					}
 					else draw[0] = true;
 					// positive X
 					if (x < Configuration::CHUNK_SIZE - 1) {
-						if (blocks[x + 1][y][z].type == BlockType::BLOCK_AIR) draw[1] = true;
+						if (blocks[x + 1][y][z].isTransparent()) draw[1] = true;
 					}
 					else draw[1] = true;
 					// negative Y
 					if (y > 0) {
-						if (blocks[x][y - 1][z].type == BlockType::BLOCK_AIR) draw[2] = true;
+						if (blocks[x][y - 1][z].isTransparent()) draw[2] = true;
 					}
 					else draw[2] = true;
 					// positive Y
 					if (y < Configuration::CHUNK_HEIGHT - 1) {
-						if (blocks[x][y + 1][z].type == BlockType::BLOCK_AIR || blocks[x][y + 1][z].type == BlockType::BLOCK_WATER) draw[3] = true;
+						if (blocks[x][y + 1][z].isTransparent()) draw[3] = true;
 					}
 					else draw[3] = true;
 					// negative Z
 					if (z > 0) {
-						if (blocks[x][y][z - 1].type == BlockType::BLOCK_AIR) draw[4] = true;
+						if (blocks[x][y][z - 1].isTransparent()) draw[4] = true;
 					}
 					else draw[4] = true;
 					// positive Z
 					if (z < Configuration::CHUNK_SIZE - 1) {
-						if (blocks[x][y][z + 1].type == BlockType::BLOCK_AIR) draw[5] = true;
+						if (blocks[x][y][z + 1].isTransparent()) draw[5] = true;
 					}
 					else draw[5] = true;
 				}
@@ -360,11 +360,12 @@ void ChunkCreateSystem::_update(int dt) {
 				if (chunk.blocks == nullptr) {
 					constructionCount++;
 					chunk.threadActiveOnSelf = true;
-					world.addChunk(entity, glm::vec2(chunk.chunkX, chunk.chunkZ));
 
 					m_futures.push_back(std::async(std::launch::async, [=]() {
 						updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ);
 					}));
+					
+					world.addChunk(entity, glm::vec2(chunk.chunkX, chunk.chunkZ));
 				}
 				// update vertices
 				else if (chunk.verticesOutdated) {

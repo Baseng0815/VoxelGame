@@ -1,4 +1,5 @@
 #include "../include/Collision.h"
+#include "../include/Utility.h"
 
 BoxCollision::BoxCollision(glm::vec3 pos, float width, float height, float length) : relativePos(pos), width(width), height(height), length(length) {}
 
@@ -52,7 +53,14 @@ void BoxCollision::getMinMax(const glm::vec3 position, glm::vec3* min, glm::vec3
 
 Ray::Ray(glm::vec3 start, glm::vec3 dir) : start(start), direction(glm::normalize(dir)) {}
 
-std::vector<glm::vec3> Ray::getAffectedBlocks(float length) const {
+std::vector<glm::vec3> Ray::getIntersectionBlocks(float length) const {
+	/*std::vector<glm::vec3> blocks = std::vector<glm::vec3>();			
+	
+	float dx = length * direction.x;
+	float dy = length * direction.y;
+	float dz = length * direction.z;	
+
+	return blocks;*/
 	std::vector<glm::vec3> blocks = std::vector<glm::vec3>();
 	glm::vec3 lastPos = glm::vec3(INT32_MAX, INT32_MAX, INT32_MAX);
 
@@ -89,7 +97,7 @@ glm::vec3 Ray::getIntersectionFace(glm::vec3 block) const {
 		if (p < minFrac) {
 			glm::vec3 point = start + p * direction;
 
-			glm::vec3 pb = abs((glm::vec3)block - point);
+			glm::vec3 pb = abs(block - point);
 
 			// check if intersection point is on block face
 			bool onFace =

@@ -12,6 +12,15 @@ entt::entity WorldComponent::getChunk(glm::vec2 chunk) const {
 	return chunksLookup.at(chunk);
 }
 
+bool WorldComponent::chunkCreated(glm::vec2 chunk) const {
+	try{
+		chunksLookup.at(chunk);
+		return true;
+	} catch(std::out_of_range) {
+		return false;
+	}
+}
+
 Block WorldComponent::getBlock(entt::registry& registry, glm::vec3 position) const {
 	glm::vec2 chunkPosition;
 	glm::vec3 localPosition;
@@ -22,7 +31,11 @@ Block WorldComponent::getBlock(entt::registry& registry, glm::vec3 position) con
 
 	ChunkComponent& chunk = registry.get<ChunkComponent>(entity);
 
-	std::unique_lock blockLock(*chunk.blockMutex);
+	if(!chunk.chunkBlocksCreated) {
+		throw std::out_of_range("blocks not created");
+	}
+
+	std::unique_lock blockLock(*chunk.blockMutex);	
 	Block block = chunk.blocks[(int)localPosition.x][(int)localPosition.y][(int)localPosition.z];
 	blockLock.unlock();
 

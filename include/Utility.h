@@ -9,9 +9,12 @@
 
 #define randNext(min, max) ((min + (max-min) * (float)rand() / RAND_MAX))
 #define min(x, y) (((x) < (y)) ? (x) : (y))
+#define sign(x) (((x) < 0) ? (-1) : 1)
 
 #include <utility>
 #include <functional>
+
+struct WorldComponent;
 
 class HashFunction {
     public:
@@ -34,3 +37,6 @@ bool InChunk(glm::vec3 position);
 struct Block;
 
 void FillSphere(glm::vec3 center, float radius, Block*** blocks, char fillType = 0);
+
+std::ostream &operator<<(std::ostream &os, const glm::vec2 &vec);
+std::ostream &operator<<(std::ostream &os, const glm::vec3 &vec);

@@ -67,7 +67,7 @@ void PhysicsSystem::_update(int dt) {
 
                     camera.relVelocity += dv;
 
-                    camera.isFalling = world.getBlock(registry, glm::vec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).type == BlockType::BLOCK_AIR;
+                    camera.isFalling = !world.getBlock(registry, glm::vec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).isSolid();
                     if (!camera.isFalling) {
                         camera.relVelocity.y = 0;
                     }
@@ -77,7 +77,7 @@ void PhysicsSystem::_update(int dt) {
                     }
                 }
                 else {
-                    camera.isFalling = world.getBlock(registry, glm::vec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).type == BlockType::BLOCK_AIR;
+                    camera.isFalling = !world.getBlock(registry, glm::vec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).isSolid();
                     if (camera.relVelocity.y < 0)
                         camera.relVelocity.y = 0;
                 }

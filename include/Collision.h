@@ -22,7 +22,7 @@ struct Ray {
 	Ray() = default;
 	Ray(glm::vec3 start, glm::vec3 dir);
 
-	std::vector<glm::vec3> getAffectedBlocks(float length) const;
+	std::vector<glm::vec3> getIntersectionBlocks(float length) const;
 	glm::vec3 getIntersectionFace(glm::vec3 block) const;
 };
 

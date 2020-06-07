@@ -8,6 +8,9 @@ void PerlinWorm::generateWorm(noise::module::Perlin &wormNoise, glm::vec3 head, 
     glm::vec3 phiOffset = glm::vec3(1, 0, 1);
     glm::vec3 noiseDirection = glm::vec3(0, 1, 0);
     glm::vec3 currPos = head;
+
+    std::cout << head << std::endl;
+    float theta = 0, phi = 0;
     
     for (int i = 0; i < segmentsCount; i++) {
         // spherical coords
@@ -17,9 +20,8 @@ void PerlinWorm::generateWorm(noise::module::Perlin &wormNoise, glm::vec3 head, 
         glm::vec3 noisePointPhi = head + phiOffset + (float)i * noiseDirection;
 
         // calc segment angles
-        float theta, phi;
-        theta = wormNoise.GetValue(noisePointTheta.x, noisePointTheta.y, noisePointTheta.z);
-        phi = wormNoise.GetValue(noisePointPhi.x, noisePointPhi.y, noisePointPhi.z) * 2.0f;
+        theta += wormNoise.GetValue(noisePointTheta.x, noisePointTheta.y, noisePointTheta.z) * PI;
+        phi += wormNoise.GetValue(noisePointPhi.x, noisePointPhi.y, noisePointPhi.z) * PI;
         std::cout << "theta: " << theta << " phi: " << phi << std::endl;
 
         // calc cartesian coords
@@ -35,6 +37,7 @@ void PerlinWorm::generateWorm(noise::module::Perlin &wormNoise, glm::vec3 head, 
 
         // store segment
         segments.push_back(round(segment));
+        std::cout << "segment " << i + 1 << ": " << segment << std::endl;
     }
 }
 

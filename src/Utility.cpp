@@ -1,6 +1,8 @@
 #include "../include/Utility.h"
 #include "../include/Configuration.h"
 
+#include "../include/Components/WorldComponent.h"
+
 glm::vec2 GetChunk(glm::vec3 worldCoords, glm::vec3& localCoords) {
     glm::vec2 chunkPos;    
 
@@ -82,4 +84,17 @@ void FillSphere(glm::vec3 center, float radius, Block*** blocks, char fillType) 
             }
         }
     }
+}
+
+std::ostream& operator<<(std::ostream& os, const glm::vec2 &vec) {
+    os << "x: " << vec.x << " ";
+    os << "y: " << vec.y;
+    return os;
+}
+
+std::ostream& operator<<(std::ostream& os, const glm::vec3 &vec) {
+    os << "x: " << vec.x << " ";
+    os << "y: " << vec.y << " ";
+    os << "z: " << vec.z;
+    return os;
 }
