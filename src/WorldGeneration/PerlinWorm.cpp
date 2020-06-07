@@ -66,7 +66,7 @@ void DivideWorm(PerlinWorm worm, std::vector<WormPart>& parts) {
         else {                 
             float rx = (ceil(pos.x / CHUNK_SIZE) * CHUNK_SIZE - (1 + pos.x)) / segment.x;
             float rz = (ceil(pos.z / CHUNK_SIZE) * CHUNK_SIZE - (1 + pos.z)) / segment.z;
-            float r_min = min(rx, rz);
+            float r_min = std::min(rx, rz);
 
             glm::vec3 end = localPos + r_min * segment;
             chunkWorm.segments.push_back(end - localPos);
@@ -79,7 +79,7 @@ void DivideWorm(PerlinWorm worm, std::vector<WormPart>& parts) {
 
             float tx = rx + 1.0f / segment.x;
             float tz = rz + 1.0f / segment.z;
-            float t_min = min(tx, tz);
+            float t_min = std::min(tx, tz);
 
             glm::vec3 newHead = pos + t_min * segment;
             chunkWorm.chunk = GetChunk(newHead, chunkWorm.head);

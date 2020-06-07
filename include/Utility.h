@@ -8,7 +8,6 @@
 #define PI 3.1415926535897932384626433832f
 
 #define randNext(min, max) ((min + (max-min) * (float)rand() / RAND_MAX))
-#define min(x, y) (((x) < (y)) ? (x) : (y))
 
 #include <utility>
 #include <functional>
