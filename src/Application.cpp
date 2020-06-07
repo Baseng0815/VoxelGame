@@ -33,7 +33,7 @@ Application::Application()
     srand(time(NULL));
 
     EventDispatcher::attachToWindow(m_window);
-    ADD_EVENT(handleKeys, KEY_EVENT);
+    EventDispatcher::addCallback(CB_FUN(handleKeys), KEY_EVENT);
 
     // raise beginning events
     EnterChunkEvent e;

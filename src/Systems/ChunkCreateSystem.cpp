@@ -11,74 +11,73 @@
 
 #include "../../include/Components/ChunkComponent.h"
 #include "../../include/Components/AtlasComponent.h"
+#include "../../include/Components/WorldComponent.h"
 #include "../../include/Components/TextureComponent.h"
 #include "../../include/Components/GeometryComponent.h"
 #include "../../include/Components/TransformationComponent.h"
-#include "../../include/Components/WorldComponent.h"
 
 #include <mutex>
-
 #include <iostream>
 
 void ChunkCreateSystem::handleEnterChunk(Event* e) {
-	EnterChunkEvent event = *e->get<EnterChunkEvent>();
+    EnterChunkEvent event = *e->get<EnterChunkEvent>();
 
-	// remove old chunks from ECS system and queue chunk data deletion
-	auto view = m_systemManager->getRegistry().view<TransformationComponent, GeometryComponent, ChunkComponent>();
+    // remove old chunks from ECS system and queue chunk data deletion
+    auto view = m_systemManager->getRegistry().view<TransformationComponent, GeometryComponent, ChunkComponent>();
 
-	for (auto entity : view) {
-		auto& chunk = view.get<ChunkComponent>(entity);
+    for (auto entity : view) {
+        auto& chunk = view.get<ChunkComponent>(entity);
 
-		if (std::abs(event.newX - chunk.chunkX) >
-			Configuration::CHUNK_PRELOAD_SIZE ||
-			std::abs(event.newZ - chunk.chunkZ) >
-			Configuration::CHUNK_PRELOAD_SIZE) {
+        if (std::abs(event.newX - chunk.chunkX) >
+                Configuration::CHUNK_PRELOAD_SIZE ||
+                std::abs(event.newZ - chunk.chunkZ) >
+                Configuration::CHUNK_PRELOAD_SIZE) {
 
-			if (!std::count(m_destructionQueue.begin(), m_destructionQueue.end(), entity)) {
-				m_destructionQueue.push_back(entity);
-			}
+            if (!std::count(m_destructionQueue.begin(), m_destructionQueue.end(), entity)) {
+                m_destructionQueue.push_back(entity);
+            }
 
-		}
-	}
+        }
+    }
 
-	// create new chunks which have come into range
-	for (int x = event.newX + Configuration::CHUNK_PRELOAD_SIZE; x >= event.newX - (int)Configuration::CHUNK_PRELOAD_SIZE; x--) {
-		for (int z = event.newZ + Configuration::CHUNK_PRELOAD_SIZE; z >= event.newZ - (int)Configuration::CHUNK_PRELOAD_SIZE; z--) {
-			glm::vec2 pos(x, z);
-			if (std::count(loadedChunks.begin(), loadedChunks.end(), pos) == 0) {
-				auto& registry = m_systemManager->getRegistry();
-				auto entity = registry.create();
+    // create new chunks which have come into range
+    for (int x = event.newX + Configuration::CHUNK_PRELOAD_SIZE; x >= event.newX - (int)Configuration::CHUNK_PRELOAD_SIZE; x--) {
+        for (int z = event.newZ + Configuration::CHUNK_PRELOAD_SIZE; z >= event.newZ - (int)Configuration::CHUNK_PRELOAD_SIZE; z--) {
+            glm::vec2 pos(x, z);
+            if (std::count(loadedChunks.begin(), loadedChunks.end(), pos) == 0) {
+                auto& registry = m_systemManager->getRegistry();
+                auto entity = registry.create();
 
-				registry.emplace<TransformationComponent>(entity, glm::vec3(x * Configuration::CHUNK_SIZE,
-					0, z * Configuration::CHUNK_SIZE));
-				registry.emplace<GeometryComponent>(entity);
-				auto& chunk = registry.emplace<ChunkComponent>(entity, x, z);
-				chunk.blockMutex = new std::mutex();
-				registry.emplace<TextureComponent>(entity, ResourceManager::getResource<Texture>("textureAtlas"));
+                registry.emplace<TransformationComponent>(entity, glm::vec3(x * Configuration::CHUNK_SIZE,
+                            0, z * Configuration::CHUNK_SIZE));
+                registry.emplace<GeometryComponent>(entity);
+                auto& chunk = registry.emplace<ChunkComponent>(entity, x, z);
+                chunk.blockMutex = new std::mutex();
+                registry.emplace<TextureComponent>(entity, ResourceManager::getResource<Texture>("textureAtlas"));
 
-				loadedChunks.push_back(pos);
-			}
-		}
-	}
+                loadedChunks.push_back(pos);
+            }
+        }
+    }
 }
 
 void ChunkCreateSystem::handleBlockChanged(Event* e) {
-	BlockChangedEvent blockChangedEvent = *e->get<BlockChangedEvent>();
+    BlockChangedEvent blockChangedEvent = *e->get<BlockChangedEvent>();
 
-	auto worldView = m_systemManager->getRegistry().view<WorldComponent>();
-	WorldComponent& world = worldView.get<WorldComponent>(worldView.front());
-	for (auto worldEntity : worldView) {
-		auto& worldComponent = worldView.get<WorldComponent>(worldEntity);
-		if (worldComponent.worldID == 0)
-			world = worldComponent;
-	}
+    auto worldView = m_systemManager->getRegistry().view<WorldComponent>();
+    WorldComponent& world = worldView.get<WorldComponent>(worldView.front());
+    for (auto worldEntity : worldView) {
+        auto& worldComponent = worldView.get<WorldComponent>(worldEntity);
+        if (worldComponent.worldID == 0)
+            world = worldComponent;
+    }
 
 
-	glm::vec3 localPos;
-	glm::vec2 chunkPos = GetChunk(blockChangedEvent.position, localPos);
+    glm::vec3 localPos;
+    glm::vec2 chunkPos = GetChunk(blockChangedEvent.position, localPos);
 
-	auto chunkEntity = world.getChunk(chunkPos);
-	m_outdatedChunks.push_back(chunkEntity);
+    auto chunkEntity = world.getChunk(chunkPos);
+    m_outdatedChunks.push_back(chunkEntity);
 }
 
 void ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ) {
@@ -242,33 +241,33 @@ void ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block*** blocks
 }
 
 void ChunkCreateSystem::updateChunkBuffers(GeometryComponent& geometry,
-	const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices) {
-	if (!geometry.buffersInitialized) {
-		glGenVertexArrays(1, &geometry.vao);
-		glBindVertexArray(geometry.vao);
-		glGenBuffers(1, &geometry.vbo);
-		glGenBuffers(1, &geometry.ebo);
-		glBindBuffer(GL_ARRAY_BUFFER, geometry.vbo);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry.ebo);
+        const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices) {
+    if (!geometry.buffersInitialized) {
+        glGenVertexArrays(1, &geometry.vao);
+        glBindVertexArray(geometry.vao);
+        glGenBuffers(1, &geometry.vbo);
+        glGenBuffers(1, &geometry.ebo);
+        glBindBuffer(GL_ARRAY_BUFFER, geometry.vbo);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry.ebo);
 
-		glEnableVertexAttribArray(0);
-		glEnableVertexAttribArray(1);
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(0));
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(sizeof(glm::vec3)));
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(sizeof(glm::vec3) * 2));
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(0));
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(sizeof(glm::vec3)));
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), BUFFER_OFFSET(sizeof(glm::vec3) * 2));
 
-		geometry.buffersInitialized = true;
-	}
+        geometry.buffersInitialized = true;
+    }
 
-	glBindVertexArray(geometry.vao);
-	glBindBuffer(GL_ARRAY_BUFFER, geometry.vbo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry.ebo);
+    glBindVertexArray(geometry.vao);
+    glBindBuffer(GL_ARRAY_BUFFER, geometry.vbo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, geometry.ebo);
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * vertices.size(), vertices.data(), GL_DYNAMIC_DRAW);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * indices.size(), indices.data(), GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * vertices.size(), vertices.data(), GL_DYNAMIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * indices.size(), indices.data(), GL_DYNAMIC_DRAW);
 
-	geometry.drawCount = indices.size();
+    geometry.drawCount = indices.size();
 }
 
 #include <iostream>
@@ -382,7 +381,9 @@ void ChunkCreateSystem::_update(int dt) {
 }
 
 ChunkCreateSystem::ChunkCreateSystem(SystemManager* systemManager)
-	: System(systemManager, 50), constructionCount(0) {
-	ADD_EVENT(handleEnterChunk, ENTER_CHUNK_EVENT);
-	ADD_EVENT(handleBlockChanged, BLOCK_CHANGED_EVENT);
+    : System(systemManager, 50), constructionCount(0) {
+
+        // event callbacks
+        m_callbacks.push_back(EventDispatcher::addCallback(CB_FUN(handleEnterChunk), ENTER_CHUNK_EVENT));
+        m_callbacks.push_back(EventDispatcher::addCallback(CB_FUN(handleBlockChanged), BLOCK_CHANGED_EVENT));
 }

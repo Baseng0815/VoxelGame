@@ -75,10 +75,10 @@ GUI::GUI() {
                 Configuration::INITIAL_WINDOW_WIDTH, Configuration::INITIAL_WINDOW_HEIGHT));
     rootLayout->updateScreenElements();
 
-    ADD_EVENT(handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT);
-    ADD_EVENT(handleCursorMove, CURSOR_EVENT);
-    ADD_EVENT(handleButtonPress, CURSOR_EVENT);
-    ADD_EVENT(handleKeyPress, KEY_EVENT);
+    EventDispatcher::addCallback(CB_FUN(handleFramebufferSize), FRAMEBUFFER_SIZE_EVENT);
+    EventDispatcher::addCallback(CB_FUN(handleCursorMove), CURSOR_EVENT);
+    EventDispatcher::addCallback(CB_FUN(handleButtonPress), CURSOR_EVENT);
+    EventDispatcher::addCallback(CB_FUN(handleKeyPress), KEY_EVENT);
 }
 
 GUI::~GUI() {

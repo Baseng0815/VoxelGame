@@ -8,8 +8,11 @@
 #define PI 3.1415926535897932384626433832f
 
 #define randNext(min, max) ((min + (max-min) * (float)rand() / RAND_MAX))
+<<<<<<< HEAD
 #define min(x, y) (((x) < (y)) ? (x) : (y))
 #define sign(x) (((x) < 0) ? (-1) : 1)
+=======
+>>>>>>> 7de3dddff0952867ccbc22339d68c6ef75f85dd0
 
 #include <utility>
 #include <functional>

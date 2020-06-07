@@ -220,9 +220,9 @@ void InputSystem::_update(int dt) {
 
 InputSystem::InputSystem(SystemManager* systemManager)
     : System(systemManager, 0) {
-        ADD_EVENT(handleKeyPressEvent, KEY_EVENT);
-        ADD_EVENT(handleMouseMoveEvent, CURSOR_EVENT);
-        ADD_EVENT(handleScrollEvent, SCROLL_EVENT);
-        ADD_EVENT(handleFramebufferSizeEvent, FRAMEBUFFER_SIZE_EVENT);
-        ADD_EVENT(handleMouseButtonEvent, MOUSE_BUTTON_EVENT);	
+        m_callbacks.push_back(EventDispatcher::addCallback(CB_FUN(handleKeyPressEvent), KEY_EVENT));
+        m_callbacks.push_back(EventDispatcher::addCallback(CB_FUN(handleMouseMoveEvent), CURSOR_EVENT));
+        m_callbacks.push_back(EventDispatcher::addCallback(CB_FUN(handleScrollEvent), SCROLL_EVENT));
+        m_callbacks.push_back(EventDispatcher::addCallback(CB_FUN(handleFramebufferSizeEvent), FRAMEBUFFER_SIZE_EVENT));
+        m_callbacks.push_back(EventDispatcher::addCallback(CB_FUN(handleMouseButtonEvent), MOUSE_BUTTON_EVENT));
     }

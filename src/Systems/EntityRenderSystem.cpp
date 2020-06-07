@@ -1,8 +1,8 @@
 #include "../../include/Systems/EntityRenderSystem.h"
 
-#include "../../include/Systems/SystemManager.h"
 #include "../../include/EventDispatcher.h"
 #include "../../include/ResourceManager.h"
+#include "../../include/Systems/SystemManager.h"
 
 #include "../../include/Components/ChunkComponent.h"
 #include "../../include/Components/CameraComponent.h"
@@ -82,7 +82,8 @@ void EntityRenderSystem::_update(int dt) {
 
 EntityRenderSystem::EntityRenderSystem(SystemManager* systemManager)
     : System(systemManager, 0), m_renderQuad(Rectangle(0, 0, Configuration::INITIAL_WINDOW_WIDTH, Configuration::INITIAL_WINDOW_HEIGHT)) {
-    ADD_EVENT(EntityRenderSystem::handleFramebufferSize, FRAMEBUFFER_SIZE_EVENT);
+        // add events
+        m_callbacks.push_back(EventDispatcher::addCallback(CB_FUN(handleFramebufferSize), FRAMEBUFFER_SIZE_EVENT));
 
 	// TODO change naming scheme
 	m_blockShader = ResourceManager::getResource<Shader>("chunkShader");
