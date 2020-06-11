@@ -2,6 +2,7 @@
 #include "../../include/Utility.h"
 #include "../../include/Configuration.h"
 #include <iostream>
+#include <algorithm>
 
 void PerlinWorm::generateWorm(noise::module::Perlin &wormNoise, glm::vec3 head, int segmentsCount, float maxLength) {
     float maxSegmentLength = maxLength / segmentsCount;

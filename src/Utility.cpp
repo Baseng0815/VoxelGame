@@ -2,6 +2,7 @@
 #include "../include/Configuration.h"
 
 #include "../include/Components/WorldComponent.h"
+#include <iostream>
 
 glm::vec2 GetChunk(glm::vec3 worldCoords, glm::vec3& localCoords) {
     glm::vec2 chunkPos;    

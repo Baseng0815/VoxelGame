@@ -68,12 +68,12 @@ else()
     
     find_package(GLEW REQUIRED)
     if (GLEW_FOUND)
-    message("GLEW was found")
+        message("GLEW was found")
     endif()
     
     find_package(Freetype REQUIRED)
     if (FREETYPE_FOUND)
-    message("Freetype was found")
+        message("Freetype was found")
     endif()
     
     message("GLFW LIBRARIES: ${GLFW_LIBRARIES}")
