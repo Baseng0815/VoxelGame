@@ -10,6 +10,7 @@
 #define randNext(min, max) ((min + (max-min) * (float)rand() / RAND_MAX))
 #define sign(x) (((x) < 0) ? (-1) : 1)
 
+#include <vector>
 #include <utility>
 #include <functional>
 

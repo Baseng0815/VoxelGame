@@ -4,8 +4,10 @@
 #include "../include/Components/WorldComponent.h"
 #include <iostream>
 
+#include <iostream>
+
 glm::vec2 GetChunk(glm::vec3 worldCoords, glm::vec3& localCoords) {
-    glm::vec2 chunkPos;    
+    glm::vec2 chunkPos;
 
     /*chunkPos.x = (int)worldCoords.x / CHUNK_SIZE;
     chunkPos.y = (int)worldCoords.z / CHUNK_SIZE;
