@@ -5,12 +5,12 @@
 #include "../Callback.h"
 
 class Event;
-class SystemManager;
 struct SharedContext;
 
 class System {
     protected:
-        SystemManager* m_systemManager;
+        entt::registry* m_registry;
+
         int m_currentTime = 0;
         int m_updateDelay;
         std::vector<CallbackId> m_callbacks;
@@ -18,11 +18,9 @@ class System {
         virtual void _update(int dt) = 0;
 
     public:
-        System(SystemManager* systemManager, int updateDelay);
+        System(entt::registry* registry, int updateDelay);
+        ~System();
 
         // dt in milliseconds
         void update(int dt);
-
-        void detachEvents() const;
-        void attachEvents() const;
 };

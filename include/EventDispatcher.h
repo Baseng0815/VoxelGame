@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../include/Event.h"
-#include "../include/Rendering/Window.h"
+#include "Event.h"
+#include "Rendering/Window.h"
 
 #include <map>
 #include <vector>

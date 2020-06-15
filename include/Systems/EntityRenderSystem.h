@@ -28,11 +28,12 @@ class EntityRenderSystem : public System {
         Light m_light;
         GBuffer m_gBuffer;
         RenderQuad m_renderQuad;
+        glm::mat4 m_orthoProjection;
 
         void handleFramebufferSize(Event* e);
 
         void _update(int dt) override;
 
     public:
-        EntityRenderSystem(SystemManager* systemManager);
+        EntityRenderSystem(entt::registry* registry);
 };

@@ -2,13 +2,15 @@
 
 #include "Gui/GUI.h"
 #include "Rendering/Window.h"
-#include "Systems/SystemManager.h"
+
+#include "MainMenuLayer.h"
 
 class Application {
 private:
     Window m_window;
-    SystemManager m_systemManager;
     GUI m_gui;
+
+    GameLayer* m_currentLayer;
 
     friend class EventDispatcher;
 

@@ -4,7 +4,7 @@
 #include "../../include/Configuration.h"
 
 struct CameraComponent {
-    glm::mat4 perspectiveProjection, orthoProjection, viewMatrix;
+    glm::mat4 perspectiveProjection, viewMatrix;
     glm::vec3 front, front_noY, right;
     float width  = Configuration::INITIAL_WINDOW_WIDTH;
     float height = Configuration::INITIAL_WINDOW_HEIGHT;

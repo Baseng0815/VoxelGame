@@ -22,7 +22,7 @@ private:
 	void checkAndHandleCollisions(const BoxCollision&, const BoxCollision&,
 		glm::vec3&, glm::vec3&) const;
 public:
-	PhysicsSystem(SystemManager* systemManager);
+	PhysicsSystem(entt::registry* registry);
 
 	~PhysicsSystem();
 };

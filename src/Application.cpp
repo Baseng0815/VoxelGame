@@ -4,8 +4,11 @@
 #include "../include/EventDispatcher.h"
 #include "../include/ResourceManager.h"
 
+#include "../include/IngameLayer.h"
+
 #include "../include/Components/CameraComponent.h"
 
+#include <chrono>
 #include <iostream>
 
 void Application::handleKeys(Event* event) {
@@ -28,17 +31,15 @@ void Application::handleKeys(Event* event) {
 }
 
 Application::Application()
-    : m_window(this, Configuration::INITIAL_WINDOW_WIDTH, Configuration::INITIAL_WINDOW_HEIGHT),
-    m_systemManager() {
+    : m_window(this, Configuration::INITIAL_WINDOW_WIDTH, Configuration::INITIAL_WINDOW_HEIGHT) {
     srand(time(NULL));
+
+    ResourceManager::loadResources();
 
     EventDispatcher::attachToWindow(m_window);
     EventDispatcher::addCallback(CB_FUN(handleKeys), KEY_EVENT);
 
-    // raise beginning events
-    EnterChunkEvent e;
-    e.newX = e.newZ = e.oldX = e.oldZ = 0;
-    EventDispatcher::raiseEvent(&e);
+    m_currentLayer = new IngameLayer();
 }
 
 Application::~Application() {
@@ -69,16 +70,7 @@ void Application::run() {
         auto startTime = std::chrono::high_resolution_clock::now();
 
         m_window.clear();
-
-        // updating and drawing entities
-        m_systemManager.update(m_deltaTime);
-
-        // drawing GUI
-        m_systemManager.getRegistry().view<CameraComponent>().each(
-            [=](const auto& camera) {
-            m_gui.draw(camera);
-        });
-
+        m_currentLayer->update(m_deltaTime);
         m_window.display();
 
         auto endTime = std::chrono::high_resolution_clock::now();

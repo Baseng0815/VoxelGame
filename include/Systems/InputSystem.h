@@ -34,5 +34,5 @@ class InputSystem : public System {
         LookData selectedBlock;
 
     public:
-        InputSystem(SystemManager* systemManager);
+        InputSystem(entt::registry* registry);
 };

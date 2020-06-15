@@ -1,5 +1,4 @@
 #include "../../include/Systems/PhysicsSystem.h"
-#include "../../include/Systems/SystemManager.h"
 
 #include "../../include/Components/ChunkComponent.h"
 #include "../../include/Components/WorldComponent.h"
@@ -27,20 +26,19 @@
 //		v z
 
 void PhysicsSystem::_update(int dt) {
-    if (!m_systemManager->physicsActive)
+    // TODO reimplement this stuff
+    if (false)
         return;
 
     float dtSec = dt / 1000.f;
 
-    auto& registry = m_systemManager->getRegistry();
-
-    auto worldView = registry.view<WorldComponent>();
+    auto worldView = m_registry->view<WorldComponent>();
 
     WorldComponent& world = worldView.get(worldView.front());
 
     // update velocities
     {
-        auto view = registry.view<TransformationComponent, RigidBodyComponent, VelocityComponent>();
+        auto view = m_registry->view<TransformationComponent, RigidBodyComponent, VelocityComponent>();
 
         glm::vec3 gravitationAcceleration = glm::vec3(0, -Configuration::getFloatValue("G_CONSTANT"), 0);
 
@@ -54,10 +52,10 @@ void PhysicsSystem::_update(int dt) {
             // dv = dt * a = dt * F/m
             // dt in milliseconds
 
-            bool isCamera = registry.has<CameraComponent>(entity);
+            bool isCamera = m_registry->has<CameraComponent>(entity);
 
             if (isCamera) {
-                CameraComponent& camera = registry.get<CameraComponent>(entity);
+                CameraComponent& camera = m_registry->get<CameraComponent>(entity);
 
                 if (camera.isFlying) {
 
@@ -67,7 +65,7 @@ void PhysicsSystem::_update(int dt) {
 
                     camera.relVelocity += dv;
 
-                    camera.isFalling = !world.getBlock(registry, glm::vec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).isSolid();
+                    camera.isFalling = !world.getBlock(*m_registry, glm::vec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).isSolid();
                     if (!camera.isFalling) {
                         camera.relVelocity.y = 0;
                     }
@@ -77,7 +75,8 @@ void PhysicsSystem::_update(int dt) {
                     }
                 }
                 else {
-                    camera.isFalling = !world.getBlock(registry, glm::vec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).isSolid();
+                    // TODO reintroduce
+                    //camera.isFalling = !world.getBlock(*m_registry, glm::vec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).isSolid();
                     if (camera.relVelocity.y < 0)
                         camera.relVelocity.y = 0;
                 }
@@ -100,18 +99,18 @@ void PhysicsSystem::_update(int dt) {
 
     // update transformations
     {
-        auto view = registry.view<TransformationComponent, VelocityComponent>();
+        auto view = m_registry->view<TransformationComponent, VelocityComponent>();
 
         for (auto entity : view) {
             TransformationComponent& transformation = view.get<TransformationComponent>(entity);
             VelocityComponent& velocity = view.get<VelocityComponent>(entity);
 
-            bool isCamera = registry.has<CameraComponent>(entity);
+            bool isCamera = m_registry->has<CameraComponent>(entity);
             //glm::vec3 oldPos = transformation.position;		
             //glm::vec3 newPos = oldPos;
 
             if (isCamera) {
-                CameraComponent& camera = registry.get<CameraComponent>(entity);
+                CameraComponent& camera = m_registry->get<CameraComponent>(entity);
 
                 int prevChunkX = transformation.position.x / Configuration::CHUNK_SIZE;
                 int prevChunkZ = transformation.position.z / Configuration::CHUNK_SIZE;
@@ -164,9 +163,8 @@ void PhysicsSystem::_update(int dt) {
 }
 
 void PhysicsSystem::solveBlockCollisions() {
-    auto& registry = m_systemManager->getRegistry();
-    auto chunksView = m_systemManager->getRegistry().view<ChunkComponent>();
-    auto worldView = m_systemManager->getRegistry().view<WorldComponent>();
+    auto chunksView = m_registry->view<ChunkComponent>();
+    auto worldView = m_registry->view<WorldComponent>();
 
     WorldComponent& world = worldView.get<WorldComponent>(worldView.front());
     for (auto worldEntity : worldView) {
@@ -176,8 +174,8 @@ void PhysicsSystem::solveBlockCollisions() {
     }
 
     for (auto entity : movedObjects) {
-        TransformationComponent& transformation = registry.get<TransformationComponent>(entity);
-        RigidBodyComponent& rigidBody = registry.get<RigidBodyComponent>(entity);
+        TransformationComponent& transformation = m_registry->get<TransformationComponent>(entity);
+        RigidBodyComponent& rigidBody = m_registry->get<RigidBodyComponent>(entity);
 
         BoxCollision collision = BoxCollision(*rigidBody.collision);
 
@@ -191,11 +189,11 @@ void PhysicsSystem::solveBlockCollisions() {
             // check block has collision
             int y = (int)blockPos.y % Configuration::CHUNK_HEIGHT;
 
-			if (y <= 1 || y > Configuration::CHUNK_HEIGHT)
-				hasCollision = false;
-			else {
-				hasCollision = world.getBlock(registry, blockPos).isSolid();
-			}
+            if (y <= 1 || y > Configuration::CHUNK_HEIGHT)
+                hasCollision = false;
+            else {
+                hasCollision = world.getBlock(*m_registry, blockPos).isSolid();
+            }
 
             // break collision detection
             if (!hasCollision)
@@ -241,7 +239,6 @@ void PhysicsSystem::checkAndHandleCollisions(const BoxCollision& collisionA, con
     }
 }
 
-PhysicsSystem::PhysicsSystem(SystemManager* systemManager)
-    : System(systemManager, 0) {
-    }
+PhysicsSystem::PhysicsSystem(entt::registry* registry)
+    : System(registry, 0) {}
 

@@ -5,7 +5,6 @@
 #include "../../include/Configuration.h"
 #include "../../include/EventDispatcher.h"
 #include "../../include/Utility.h"
-#include "../../include/Systems/SystemManager.h"
 
 #include "../../include/Components/ChunkComponent.h"
 #include "../../include/Components/WorldComponent.h"
@@ -22,7 +21,7 @@
 void InputSystem::handleKeyPressEvent(Event* e) {
     KeyEvent keyEvent = *e->get<KeyEvent>();
 
-    m_systemManager->getRegistry().view<CameraComponent, VelocityComponent, TransformationComponent>().each(
+    m_registry->view<CameraComponent, VelocityComponent, TransformationComponent>().each(
             [&](auto& camera, auto& velocity, auto& transformation) {
             switch (keyEvent.key) {
                 case GLFW_KEY_W:
@@ -78,15 +77,16 @@ void InputSystem::handleKeyPressEvent(Event* e) {
             }
 
             updateSelectedBlock(camera, transformation);
-            m_systemManager->physicsActive = true;
             });
 }
 
 void InputSystem::handleMouseButtonEvent(Event* e) {
     MouseButtonEvent mouseButtonEvent = *e->get<MouseButtonEvent>();
 
-    m_systemManager->getRegistry().view<CameraComponent, TransformationComponent>().each(
+    m_registry->view<CameraComponent, TransformationComponent>().each(
             [&](CameraComponent& camera, TransformationComponent& transformation) {
+            // TODO reimplement this
+            /*
             WorldComponent& world = m_systemManager->getCurrentWorld();
 
             switch (mouseButtonEvent.button) {
@@ -94,7 +94,7 @@ void InputSystem::handleMouseButtonEvent(Event* e) {
                     if (mouseButtonEvent.action == GLFW_PRESS) {
                         // if block selected
                         if (selectedBlock.valid) {
-                            world.setBlock(m_systemManager->getRegistry(), selectedBlock.block, BlockType::BLOCK_AIR);
+                            world.setBlock(*m_registry, selectedBlock.block, BlockType::BLOCK_AIR);
                         }
                     }
                     break;
@@ -103,20 +103,21 @@ void InputSystem::handleMouseButtonEvent(Event* e) {
                     if (mouseButtonEvent.action == GLFW_PRESS) {
                         if (selectedBlock.valid) {
                             glm::vec3 pos = selectedBlock.block + selectedBlock.face;
-                            world.setBlock(m_systemManager->getRegistry(), pos, Block(BlockType::BLOCK_WOOD));
+                            world.setBlock(*m_registry, pos, Block(BlockType::BLOCK_WOOD));
                         }
                     }
                     break;
                 default:
                     break;
             }
+            */
             });
 }
 
 void InputSystem::handleMouseMoveEvent(Event* e) {
     CursorEvent cursorEvent = *e->get<CursorEvent>();
 
-    m_systemManager->getRegistry().view<CameraComponent, VelocityComponent, TransformationComponent>().each(
+    m_registry->view<CameraComponent, VelocityComponent, TransformationComponent>().each(
             [&](auto& camera, auto& velocity, auto& transformation) {
             camera.yaw += cursorEvent.dx * Configuration::getFloatValue("MOUSE_SENSITIVITY");
             camera.pitch -= cursorEvent.dy * Configuration::getFloatValue("MOUSE_SENSITIVITY");
@@ -132,7 +133,7 @@ void InputSystem::handleMouseMoveEvent(Event* e) {
 void InputSystem::handleScrollEvent(Event* e) {
     ScrollEvent scrollEvent = *e->get<ScrollEvent>();
 
-    m_systemManager->getRegistry().view<CameraComponent>().each(
+    m_registry->view<CameraComponent>().each(
             [&](auto& camera) {
 
             camera.fov -= scrollEvent.dy;
@@ -147,7 +148,7 @@ void InputSystem::handleScrollEvent(Event* e) {
 void InputSystem::handleFramebufferSizeEvent(Event* e) {
     FramebufferSizeEvent sizeEvent = *e->get<FramebufferSizeEvent>();
 
-    m_systemManager->getRegistry().view<CameraComponent>().each(
+    m_registry->view<CameraComponent>().each(
             [&](auto& camera) {
 
             camera.width = sizeEvent.width;
@@ -171,12 +172,13 @@ void InputSystem::updateViewMatrix(CameraComponent& camera, TransformationCompon
 
 void InputSystem::updateProjectionMatrix(CameraComponent& camera) {
     camera.perspectiveProjection = glm::perspective(glm::radians(camera.fov), camera.width / (float)camera.height, 0.1f, 1000.f);
-    camera.orthoProjection = glm::ortho(0.f, camera.width, 0.f, camera.height);
 }
 
 void InputSystem::updateSelectedBlock(CameraComponent& camera, TransformationComponent& transformation) {
+    // TODO reimplement this
+    /*
     WorldComponent& world = m_systemManager->getCurrentWorld();
-    glm::vec3 pos = transformation.position;    
+    glm::vec3 pos = transformation.position;
 
     Ray r = Ray(pos, camera.front);
 
@@ -186,7 +188,7 @@ void InputSystem::updateSelectedBlock(CameraComponent& camera, TransformationCom
     float minLength = FLT_MAX;
     for (auto b : blocks) {
         try{
-            if (world.getBlock(m_systemManager->getRegistry(), b).type != BlockType::BLOCK_AIR) {
+            if (world.getBlock(*m_registry, b).type != BlockType::BLOCK_AIR) {
                 glm::vec3 diff = pos - (glm::vec3)b;
                 float length = glm::length(diff);
 
@@ -208,18 +210,19 @@ void InputSystem::updateSelectedBlock(CameraComponent& camera, TransformationCom
     else {
         selectedBlock = { glm::vec3(), glm::vec3(), false };
     }
+    */
 }
 
 void InputSystem::_update(int dt) {
     // TODO make event based
-    m_systemManager->getRegistry().view<CameraComponent, TransformationComponent>().each(
+    m_registry->view<CameraComponent, TransformationComponent>().each(
             [&](auto& camera, auto& transformation) {
             updateViewMatrix(camera, transformation);
         });
 }
 
-InputSystem::InputSystem(SystemManager* systemManager)
-    : System(systemManager, 0) {
+InputSystem::InputSystem(entt::registry* registry)
+    : System(registry, 0) {
         m_callbacks.push_back(EventDispatcher::addCallback(CB_FUN(handleKeyPressEvent), KEY_EVENT));
         m_callbacks.push_back(EventDispatcher::addCallback(CB_FUN(handleMouseMoveEvent), CURSOR_EVENT));
         m_callbacks.push_back(EventDispatcher::addCallback(CB_FUN(handleScrollEvent), SCROLL_EVENT));

@@ -1,16 +1,16 @@
 #pragma once
-#include "../../include/Shape.h"
-#include "../../include/Collision.h"
+#include "../Shape.h"
+#include "../Collision.h"
 
 struct TransformationComponent;
 
 struct RigidBodyComponent {
-	float mass = 0;
+    float mass = 0;
 
-	glm::vec3 centerOfMass = glm::vec3();	
+    glm::vec3 centerOfMass = glm::vec3();
 
-	Shape* shape = nullptr;
-	BoxCollision* collision = nullptr;
+    Shape* shape = nullptr;
+    BoxCollision* collision = nullptr;
 
-	RigidBodyComponent(Shape*, float, BoxCollision* collision = nullptr);	
+    RigidBodyComponent(Shape*, float, BoxCollision* collision = nullptr);	
 };

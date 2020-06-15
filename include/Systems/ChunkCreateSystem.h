@@ -52,5 +52,5 @@ class ChunkCreateSystem : public System {
         void _update(int dt) override;
 
     public:
-        ChunkCreateSystem(SystemManager* systemManager);
+        ChunkCreateSystem(entt::registry* registry);
 };
