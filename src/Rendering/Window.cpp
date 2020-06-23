@@ -1,6 +1,8 @@
 #include "../../include/Rendering/Window.h"
 #include "../../include/Configuration.h"
-#include "../../include/EventDispatcher.h"
+#include "../../include/Events/EventDispatcher.h"
+
+#include <glm/gtc/matrix_transform.hpp>
 
 #ifdef WIN32
 #include <stdexcept>

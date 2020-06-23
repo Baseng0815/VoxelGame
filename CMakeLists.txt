@@ -27,10 +27,10 @@ if(WIN32)
     include_directories("C:/lib/nlohmannjson/include")
     include_directories("C:/lib/freetype2/include")
     include_directories("C:/lib/freetype2/include/freetype2")
-    include_directories("C:/lib/SOIL/src")        
+    include_directories("C:/lib/SOIL/src")
 
     find_library(GLEW_LIBRARIES glew32 C:/lib/GLEW/lib/Release/Win32)
-    find_library(GLFW_LIBRARIES glfw3 C:/lib/GLFW/lib)    
+    find_library(GLFW_LIBRARIES glfw3 C:/lib/GLFW/lib)
     find_library(FREETYPE_LIBRARIES freetype C:/lib/freetype2/Win32)
     find_library(LIBNOISE_LIBRARIES libnoise C:/lib/libnoise/bin)
     find_library(SOIL_LIBRARIES SOIL C:/lib/SOIL/lib)
@@ -41,9 +41,9 @@ if(WIN32)
     endif()
 
     file(GLOB_RECURSE SOURCES
-    include/*.h
-    src/*.cpp)
-    
+        include/*.h
+        src/*.cpp)
+
     add_executable(VoxelGame ${SOURCES})
     target_link_libraries(VoxelGame "-SAFESEH:NO"
         ${OPENGL_LIBRARIES}
@@ -60,38 +60,38 @@ else()
     if (GLFW_FOUND)
         message("GLFW was found")
     endif()
-    
+
     find_package(OpenGL REQUIRED)
     if (OPENGL_FOUND)
         message("OpenGL was found")
     endif()
-    
+
     find_package(GLEW REQUIRED)
     if (GLEW_FOUND)
         message("GLEW was found")
     endif()
-    
+
     find_package(Freetype REQUIRED)
     if (FREETYPE_FOUND)
         message("Freetype was found")
     endif()
-    
+
     message("GLFW LIBRARIES: ${GLFW_LIBRARIES}")
     message("OpenGL LIBRARIES: ${OPENGL_LIBRARIES}")
     message("GLEW LIBRARIES: ${GLEW_LIBRARIES}")
-    
+
     # ./libnoise
     include_directories(/usr/include)
-    
+
     # freetype
     include_directories(/usr/include/freetype2)
-    
+
     link_directories("/usr/local/lib")
-    
+
     file(GLOB_RECURSE SOURCES
-    include/*.h
-    src/*.cpp)
-    
+        include/*.h
+        src/*.cpp)
+
     add_executable(VoxelGame ${SOURCES})
     target_link_libraries(VoxelGame
         ${OPENGL_LIBRARIES}

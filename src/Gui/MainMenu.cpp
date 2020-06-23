@@ -6,12 +6,26 @@
 MainMenu::MainMenu()
     : GUI() {
     // add elements
-    Text* t = m_rootLayout->addWidget<Text>("start");
+    // text being abused as button
+    Text* t = m_rootLayout->addWidget<Text>("button_quit");
+    t->getProperties().backgroundColor = Color::Gray;
+    t->getProperties().foregroundColor = Color::Emerald;
     t->getProperties().constraints.x = CenterConstraint();
-    t->getProperties().constraints.y = CenterConstraint();
-    t->getProperties().backgroundColor = glm::vec4(1, 0, 0, 1);
+    t->getProperties().constraints.y = RelativeConstraint(0.3);
+    t->getProperties().padding.both(20);
     t->setFont(ResourceManager::getResource<Font>("fontKoruri"));
-    t->setString("Hallo Welt");
+    t->setString("Quit");
+
+    t = m_rootLayout->addWidget<Text>("button_start");
+    //t->getProperties().padding.both(20);
+    t->getProperties().margin.vertical(100);
+    t->getProperties().backgroundColor = Color::Gray;
+    t->getProperties().foregroundColor = Color::Emerald;
+    t->getProperties().constraints.x = CenterConstraint();
+    t->getProperties().constraints.y = RelativeConstraint(0.6);
+    t->getProperties().padding.both(20);
+    t->setFont(ResourceManager::getResource<Font>("fontKoruri"));
+    t->setString("Start");
 }
 
 MainMenu::~MainMenu() {

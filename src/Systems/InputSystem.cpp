@@ -3,7 +3,7 @@
 #include "../../include/Block.h"
 #include "../../include/Collision.h"
 #include "../../include/Configuration.h"
-#include "../../include/EventDispatcher.h"
+#include "../../include/Events/EventDispatcher.h"
 #include "../../include/Utility.h"
 
 #include "../../include/Components/ChunkComponent.h"

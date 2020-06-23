@@ -2,7 +2,7 @@
 
 #include <entt/entt.hpp>
 
-#include "../Callback.h"
+#include "../Typedefs.h"
 
 class Event;
 struct SharedContext;

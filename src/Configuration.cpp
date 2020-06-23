@@ -4,8 +4,6 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 
-#include "../include/Event.h"
-
 std::map<std::string, float> Configuration::floatValues;
 std::map<std::string, std::string> Configuration::stringValues;
 BlockDataMap Configuration::blockDataMap;
@@ -46,7 +44,7 @@ void Configuration::loadConfiguration(const std::string& resourceBasePath) {
         std::cout << "Failed to open BiomeInfo.json" << std::endl;
 
     file >> root;
-    file.close();    
+    file.close();
 
     // load other configuration data
     file.open(resourceBasePath + "/Misc/Settings.json");

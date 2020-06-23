@@ -11,7 +11,7 @@
 #include "../../include/Event.h"
 #include "../../include/Collision.h"
 #include "../../include/Configuration.h"
-#include "../../include/EventDispatcher.h"
+#include "../../include/Events/EventDispatcher.h"
 
 #include <glm/glm.hpp>
 

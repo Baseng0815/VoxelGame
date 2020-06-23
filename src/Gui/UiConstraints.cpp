@@ -1,5 +1,7 @@
 #include "../../include/Gui/UiConstraints.h"
 
+#include "../../include/Gui/UiProperties.h"
+
 Constraint::Constraint(ConstraintType type, float value)
     : type(type), value(value) {}
 
@@ -21,7 +23,7 @@ ConstraintType Constraint::getType() const {
     return type;
 }
 
-Rectangle UiConstraints::getRect(const Rectangle& parent, int minWidth, int minHeight) const {
+Rectangle UiConstraints::getRect(const Rectangle& parent, const UiProperties& properties, int minWidth, int minHeight) const {
     float w, h;
     // handle match constraints
     if (width.getType() == CONSTRAINT_MATCH)

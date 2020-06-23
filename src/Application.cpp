@@ -1,7 +1,7 @@
 #include "../include/Application.h"
 
 #include "../include/Configuration.h"
-#include "../include/EventDispatcher.h"
+#include "../include/Events/EventDispatcher.h"
 #include "../include/ResourceManager.h"
 
 #include "../include/IngameLayer.h"
@@ -39,7 +39,8 @@ Application::Application()
     EventDispatcher::attachToWindow(m_window);
     EventDispatcher::addCallback(CB_FUN(handleKeys), KEY_EVENT);
 
-    m_currentLayer = new IngameLayer();
+    //m_currentLayer = new IngameLayer();
+    m_currentLayer = new MainMenuLayer();
 }
 
 Application::~Application() {

@@ -13,7 +13,7 @@
 #include "../include/Components/TransformationComponent.h"
 
 #include "../include/ResourceManager.h"
-#include "../include/EventDispatcher.h"
+#include "../include/Events/EventDispatcher.h"
 #include "../include/Rendering/Texture.h"
 
 IngameLayer::IngameLayer() {

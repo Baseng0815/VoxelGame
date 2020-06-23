@@ -1,30 +1,90 @@
 #include "../../include/Gui/Widget.h"
 #include "../../include/Gui/Layout.h"
 
+#include "../../include/ResourceManager.h"
 #include "../../include/Rendering/Shader.h"
 
 #include <algorithm>
 
-void Widget::_draw(Shader& shader) const {
+Color Widget::getBackgroundColor() const {
+    if (m_isPressed)
+        return m_properties.pressBackground;
+    else if (m_isHovering)
+        return m_properties.hoverBackground;
+    else
+        return m_properties.backgroundColor;
+}
+
+Color Widget::getForegroundColor() const {
+    if (m_isPressed)
+        return m_properties.pressForeground;
+    else if (m_isHovering)
+        return m_properties.hoverForeground;
+    else
+        return m_properties.foregroundColor;
+}
+
+void Widget::applyPadding() {
+    m_finalArea = m_widgetArea;
+    m_finalArea.position.x -= m_properties.padding.left;
+    m_finalArea.size.x += m_properties.padding.right + m_properties.padding.left;
+    m_finalArea.position.y -= m_properties.padding.bottom;
+    m_finalArea.size.y += m_properties.padding.top + m_properties.padding.bottom;
+}
+
+void Widget::_onMove(int x, int y) {}
+void Widget::_onEnter(int x, int y) {}
+void Widget::_onLeave(int x, int y) {}
+void Widget::_onPress(int x, int y) {}
+void Widget::_onRelease(int x, int y) {}
+
+void Widget::onMove(int x, int y) {
+    _onMove(x, y);
+}
+
+void Widget::onEnter(int x, int y) {
+    m_isHovering = true;
+    _onEnter(x, y);
+}
+
+void Widget::onLeave(int x, int y) {
+    m_isHovering = false;
+    _onLeave(x, y);
+}
+
+void Widget::onPress(int x, int y) {
+    m_isPressed = true;
+    _onPress(x, y);
+}
+
+void Widget::onRelease(int x, int y) {
+    m_isPressed = false;
+    _onRelease(x, y);
+}
+
+void Widget::_draw(const glm::mat4& projection) const {
     // default widget does nothing special
 }
 
 Widget::Widget(const std::string& id)
-    : m_id(id) {}
+    : m_id(id) {
+    m_coloredQuadShader = ResourceManager::getResource<Shader>("shaderColoredQuad");
+}
 
-void Widget::draw(Shader& shader) const {
+void Widget::draw(const glm::mat4& projection) const {
     // draw background
-    shader.upload("color", m_properties.backgroundColor);
-    shader.upload("textureVisibility", 0.f);
+    m_coloredQuadShader->bind();
+    m_coloredQuadShader->upload("color", m_properties.backgroundColor);
+    m_coloredQuadShader->upload("projectionMatrix", projection);
     m_renderQuadBackground.render();
 
     // draw custom
-    shader.upload("textureVisibility", 1.f);
-    _draw(shader);
+    _draw(projection);
 }
 
 void Widget::updateArea(const Rectangle& parent) {
-    m_finalArea = m_properties.constraints.getRect(parent, m_minWidth, m_minHeight);
+    m_widgetArea = m_properties.constraints.getRect(parent, m_properties, m_minWidth, m_minHeight);
+    applyPadding();
 }
 
 void Widget::updateScreenElements() {
@@ -45,6 +105,12 @@ glm::vec2 Widget::getSize() const {
 
 void Widget::setPosition(glm::vec2 position) {
     m_finalArea.position = position;
+
+    // readjust widget area
+    m_widgetArea.position.x = m_finalArea.position.x + m_properties.padding.left;
+    m_widgetArea.position.y = m_finalArea.position.y + m_properties.padding.bottom;
+    m_widgetArea.size.x = m_finalArea.size.x - m_properties.padding.right;
+    m_widgetArea.size.y = m_finalArea.size.y - m_properties.padding.top;
 }
 
 const std::string& Widget::getId() const {

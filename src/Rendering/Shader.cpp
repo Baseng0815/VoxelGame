@@ -88,7 +88,7 @@ Shader::Shader(const std::string& file) {
     glLinkProgram(m_program);
     checkShaderError(m_program, GL_LINK_STATUS, GL_TRUE, "Error: Program failed to link: ");
     glValidateProgram(m_program);
-    checkShaderError(m_program, GL_VALIDATE_STATUS, GL_TRUE, "Error: Program is invalid: ");
+    checkShaderError(m_program, GL_VALIDATE_STATUS, GL_TRUE, "Error: Program is invalid: " + file);
 }
 
 Shader::~Shader() {
@@ -110,15 +110,15 @@ void Shader::bind() const {
     glUseProgram(m_program);
 }
 
-void Shader::upload(const std::string& location, glm::mat4 value) {
+void Shader::upload(const std::string& location, const glm::mat4& value) {
     glUniformMatrix4fv(getLocation(location), 1, GL_FALSE, glm::value_ptr(value));
 }
 
-void Shader::upload(const std::string& location, glm::vec3 value) {
+void Shader::upload(const std::string& location, const glm::vec3& value) {
     glUniform3f(getLocation(location), value.x, value.y, value.z);
 }
 
-void Shader::upload(const std::string& location, glm::vec4 value) {
+void Shader::upload(const std::string& location, const glm::vec4& value) {
     glUniform4f(getLocation(location), value.x, value.y, value.z, value.w);
 }
 
@@ -128,4 +128,8 @@ void Shader::upload(const std::string& location, float value) {
 
 void Shader::upload(const std::string& location, int value) {
     glUniform1i(getLocation(location), value);
+}
+
+void Shader::upload(const std::string& location, const Color& color) {
+    glUniform4f(getLocation(location), color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f);
 }

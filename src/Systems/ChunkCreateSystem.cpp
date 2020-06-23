@@ -6,7 +6,7 @@
 #include "../../include/Utility.h"
 #include "../../include/Configuration.h"
 #include "../../include/ResourceManager.h"
-#include "../../include/EventDispatcher.h"
+#include "../../include/Events/EventDispatcher.h"
 
 #include "../../include/Components/ChunkComponent.h"
 #include "../../include/Components/AtlasComponent.h"

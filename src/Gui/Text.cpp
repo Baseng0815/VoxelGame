@@ -3,26 +3,29 @@
 
 #include "../../include/Rendering/Font.h"
 #include "../../include/Rendering/Shader.h"
+#include "../../include/Rendering/Window.h"
+
+#include "../../include/ResourceManager.h"
 
 void Text::updateTextRenderQuads() {
-    float x = m_finalArea.position.x;
+    float x = m_widgetArea.position.x;
 
     m_charRenderQuads.resize(m_string.size());
 
     for (int i = 0; i < m_charRenderQuads.size(); i++) {
         const Character& ch = m_font->getCharacter(m_string[i]);
-        float xpos = x + ch.bearing.x * m_scale;
-        float ypos = m_finalArea.position.y - (ch.size.y - ch.bearing.y) * m_scale;
+        float xpos = x + ch.bearing.x * m_textScale;
+        float ypos = m_widgetArea.position.y - (ch.size.y - ch.bearing.y) * m_textScale;
 
-        float w = ch.size.x * m_scale;
-        float h = ch.size.y * m_scale;
+        float w = ch.size.x * m_textScale;
+        float h = ch.size.y * m_textScale;
 
         m_charRenderQuads[i].resize(Rectangle(xpos, ypos, w, h), true);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, ch.texture);
 
-        x += (ch.advance >> 6) * m_scale;
+        x += (ch.advance >> 6) * m_textScale;
     }
 }
 
@@ -32,19 +35,22 @@ void Text::updateTextDimensions() {
     for (int i = 0; i < m_charRenderQuads.size(); i++) {
         const Character& ch = m_font->getCharacter(m_string[i]);
 
-        float h = ch.size.y * m_scale;
+        float h = ch.size.y * m_textScale;
 
         if (h > m_minHeight)
             m_minHeight = h;
 
-        m_minWidth += (ch.advance >> 6) * m_scale;
+        m_minWidth += (ch.advance >> 6) * m_textScale;
     }
 }
 
-void Text::_draw(Shader& shader) const {
+void Text::_draw(const glm::mat4& projection) const {
     if (m_font == nullptr || m_string.size() == 0)
         return;
 
+    m_textShader->bind();
+    m_textShader->upload("projectionMatrix", projection);
+    m_textShader->upload("textColor", getForegroundColor());
     for (int i = 0; i < m_string.size(); i++) {
         const Character& ch = m_font->getCharacter(m_string[i]);
 
@@ -54,13 +60,16 @@ void Text::_draw(Shader& shader) const {
     }
 }
 
-Text::Text(const std::string& id)
-    : Widget(id) {}
+Text::Text(const std::string& id, float textScale)
+    : Widget(id), m_textScale(textScale) {
+    m_textShader = ResourceManager::getResource<Shader>("shaderText");
+}
 
 void Text::updateArea(const Rectangle& parent) {
     updateTextDimensions();
 
-    m_finalArea = m_properties.constraints.getRect(parent, m_minWidth, m_minHeight);
+    m_widgetArea = m_properties.constraints.getRect(parent, m_properties, m_minWidth, m_minHeight);
+    applyPadding();
 }
 
 void Text::updateScreenElements() {
@@ -69,11 +78,11 @@ void Text::updateScreenElements() {
 }
 
 void Text::setScale(float scale) {
-    m_scale = scale;
+    m_textScale = scale;
 }
 
 float Text::getScale() const {
-    return m_scale;
+    return m_textScale;
 }
 
 const std::string& Text::getString() const {

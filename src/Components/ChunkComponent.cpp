@@ -1,11 +1,10 @@
 #include "../../include/Components/ChunkComponent.h"
+
 #include "../../include/Configuration.h"
 #include "../../include/Block.h"
 #include "../../include/WorldGeneration/WorldGenerator.h"
-#include "../../include/Event.h"
-#include "../../include/EventDispatcher.h"
-
-
+#include "../../include/Events/Event.h"
+#include "../../include/Events/EventDispatcher.h"
 
 ChunkComponent::ChunkComponent(int chunkX, int chunkZ) :
 	chunkX(chunkX), chunkZ(chunkZ) {

@@ -27,12 +27,12 @@ class Layout : public Widget {
 
         virtual void arrangeWidgets();
 
-        void _draw(Shader& shader) const override;
+        void _draw(const glm::mat4& projection) const override;
 
     public:
         Layout(std::string id, GUI* gui);
 
-        void setStackMode(StackMode stackMode, bool invertStack = false, bool invertStackWidgets = false);
+        void setStackMode(StackMode stackMode, bool invertStack, bool invertStackWidgets = false);
         void updateArea(const Rectangle& parent) override;
         void updateScreenElements() override;
 

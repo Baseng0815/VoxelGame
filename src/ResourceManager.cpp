@@ -13,42 +13,34 @@ std::map<std::string, Resource*> ResourceManager::resources;
 void ResourceManager::loadResources() {
     // textures
     // TODO use Configuration::ResourceBasePath
-    resources.insert(std::make_pair("textureAtlas", new Texture("Textures/textureAtlas0.png")));
+    resources.emplace("textureAtlas", new Texture("Textures/textureAtlas0.png"));
 
     // shaders
-    resources.insert(std::make_pair("chunkShader", new Shader("Shaders/chunkShader")));
-    resources.insert(std::make_pair("guiShader", new Shader("Shaders/guiShader")));
-    resources.insert(std::make_pair("skyboxShader", new Shader("Shaders/skyboxShader")));
-    resources.insert(std::make_pair("lightingShader", new Shader("Shaders/lightingShader")));
-
-    std::vector<std::string> attribs = {
-        "position",
-        "normal",
-        "uvCoords"
-    };
+    resources.emplace("chunkShader", new Shader("Shaders/chunkShader"));
+    resources.emplace("shaderTexturedQuad", new Shader("Shaders/texturedQuadShader"));
+    resources.emplace("shaderColoredQuad", new Shader("Shaders/coloredQuadShader"));
+    resources.emplace("skyboxShader", new Shader("Shaders/skyboxShader"));
+    resources.emplace("lightingShader", new Shader("Shaders/lightingShader"));
+    resources.emplace("shaderText", new Shader("Shaders/textShader"));
 
     // chunkShader
     Shader* shader = getResource<Shader>("chunkShader");
-    shader->setAttributes(attribs);
+    shader->setAttributes({"position", "normal", "uvCoords"});
     // lightingShader
     shader = getResource<Shader>("lightingShader");
-    attribs = {
-        "position",
-        "uvCoords"
-    };
-    shader->setAttributes(attribs);
+    shader->setAttributes({"position", "uvCoords"});
     shader->upload("gPosition", 0);
     shader->upload("gNormal", 1);
     shader->upload("gAlbedo", 2);
-    // guiShader
-    shader = getResource<Shader>("guiShader");
-    attribs = {
-        "vertex"
-    };
-    shader->setAttributes(attribs);
+
+    // quad shaders
+    shader = getResource<Shader>("shaderTexturedQuad");
+    shader->setAttributes({"vertex"});
+    shader = getResource<Shader>("shaderColoredQuad");
+    shader->setAttributes({"vertex"});
 
     // fonts
-    resources.insert(std::make_pair("fontKoruri", new Font("Fonts/Koruri-Regular.ttf")));
+    resources.emplace("fontKoruri", new Font("Fonts/Koruri-Regular.ttf"));
 }
 
 void ResourceManager::freeResources() {

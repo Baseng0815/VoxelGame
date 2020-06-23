@@ -13,13 +13,14 @@ class GUI {
         // contains all widgets which are currently alive
         std::map<std::string, Widget*> m_widgets;
 
+        bool coordinatesInWidget(const Widget& widget, int x, int y);
+
         std::vector<CallbackId> m_callbackIds;
         void handleFramebufferSize(Event* event);
         void handleCursorMove(Event* e);
         void handleButtonPress(Event* e);
         void handleKeyPress(Event* e);
 
-        Shader* m_guiShader;
         glm::mat4 m_orthoProjection;
 
         // TODO improve performance by moving outdated flag into widgets

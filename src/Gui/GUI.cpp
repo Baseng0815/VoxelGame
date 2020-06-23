@@ -4,10 +4,18 @@
 #include "../../include/Rendering/Shader.h"
 
 #include "../../include/Configuration.h"
-#include "../../include/EventDispatcher.h"
+#include "../../include/Events/EventDispatcher.h"
 #include "../../include/ResourceManager.h"
 
 #include <glm/gtc/matrix_transform.hpp>
+
+bool GUI::coordinatesInWidget(const Widget& widget, int x, int y) {
+    Rectangle widgetArea = widget.getArea();
+    if (x > widgetArea.position.x && x < widgetArea.position.x + widgetArea.size.x &&
+        y > widgetArea.position.y && y < widgetArea.position.y + widgetArea.size.y)
+        return true;
+    else return false;
+}
 
 void GUI::handleFramebufferSize(Event* event) {
     FramebufferSizeEvent e = *event->get<FramebufferSizeEvent>();
@@ -18,18 +26,37 @@ void GUI::handleFramebufferSize(Event* event) {
 }
 
 void GUI::handleCursorMove(Event* e) {
+    CursorEvent event = *e->get<CursorEvent>();
+    for (auto const& [key, val] : m_widgets) {
+        bool inArea = coordinatesInWidget(*val, event.x, event.y);
+        if (val->m_isHovering) {
+            if (!inArea)
+                val->onLeave(event.x, event.y);
+            else
+                val->onMove(event.x, event.y, event.dx, event.dy);
+        } else {
+            if (inArea) {
+                val->onEnter(event.x, event.y);
+            }
+        }
+    }
 }
 
 void GUI::handleButtonPress(Event* e) {
+    MouseButtonEvent event = *e->get<MouseButtonEvent>();
+    for (auto const& [key, val] : m_widgets) {
+        if (!val->m_isHovering) continue;
+        if (event.action == GLFW_PRESS)
+            val->onPress(event.);
+        else if (event.action == GLFW_RELEASE)
+            val->onRelease(event.key);
+    }
 }
 
 void GUI::handleKeyPress(Event* e) {
 }
 
 GUI::GUI() {
-    m_guiShader = ResourceManager::getResource<Shader>("guiShader");
-    m_orthoProjection = glm::ortho(0.f, Configuration::INITIAL_WINDOW_WIDTH, 0.f, Configuration::INITIAL_WINDOW_HEIGHT, 0.1f, 100.f);
-
     m_rootLayout = new Layout("root_layout", this);
     m_rootLayout->getProperties().constraints.width = RelativeConstraint(1);
     m_rootLayout->getProperties().constraints.height = RelativeConstraint(1);
@@ -89,11 +116,9 @@ GUI::~GUI() {
 void GUI::draw() {
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
-    m_guiShader->bind();
-    m_guiShader->upload("projectionMatrix", m_orthoProjection);
 
     // a layout is responsible to draw its children
-    m_rootLayout->draw(*m_guiShader);
+    m_rootLayout->draw(m_orthoProjection);
 
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
@@ -105,8 +130,7 @@ void GUI::invalidate() {
 
 void GUI::update() {
     if (m_isOutdated) {
-        m_rootLayout->updateArea(Rectangle(0, 0,
-                    Configuration::INITIAL_WINDOW_WIDTH, Configuration::INITIAL_WINDOW_HEIGHT));
+        m_rootLayout->updateArea(m_rootLayout->getArea());
         m_rootLayout->updateScreenElements();
 
         m_isOutdated = false;

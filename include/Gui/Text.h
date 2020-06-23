@@ -16,18 +16,18 @@ class Text : public Widget {
         std::string m_string = "";
 
         const Font* m_font = nullptr;
+        // TODO maybe make static
+        Shader* m_textShader;
 
-        // TODO create text properties
-        float m_scale = 0.3f;
-
+        float m_textScale;
         void updateTextRenderQuads();
 
         // updates minWidth and minHeight without recreating any quads
         void updateTextDimensions();
-        void _draw(Shader& shader) const override;
+        void _draw(const glm::mat4& projection) const override;
 
     public:
-        Text(const std::string& id);
+        Text(const std::string& id, float textScale = 1.0f);
 
         void updateArea(const Rectangle& parent) override;
         virtual void updateScreenElements() override;

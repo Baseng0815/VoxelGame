@@ -6,6 +6,7 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
+#include "../Color.h"
 #include "../Resource.h"
 
 // a class used for all shader programs
@@ -31,9 +32,10 @@ class Shader : public Resource {
         void setAttributes(const std::vector<std::string>& attribs);
         void bind() const;
 
-        void upload(const std::string& location, glm::mat4 value);
-        void upload(const std::string& location, glm::vec3 value);
-        void upload(const std::string& location, glm::vec4 value);
+        void upload(const std::string& location, const glm::mat4& value);
+        void upload(const std::string& location, const glm::vec3& value);
+        void upload(const std::string& location, const glm::vec4& value);
         void upload(const std::string& location, float value);
         void upload(const std::string& location, int value);
+        void upload(const std::string& location, const Color& color);
 };

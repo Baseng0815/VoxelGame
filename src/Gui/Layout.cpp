@@ -29,7 +29,7 @@ void Layout::arrangeWidgets() {
                 }
             }
         } else { // UP
-            int currentY = m_finalArea.position.y;
+            int currentY = m_finalArea.position.y + m_widgets[0]->getProperties().margin.bottom;
             for (int i = start; i != end; i+= direction) {
                 Widget& widget = *m_widgets[i];
                 widget.setPosition(glm::vec2(widget.getPosition().x, currentY));
@@ -71,15 +71,15 @@ void Layout::arrangeWidgets() {
     }
 }
 
-void Layout::_draw(Shader& shader) const {
+void Layout::_draw(const glm::mat4& projection) const {
     for (auto widget : m_widgets)
-        widget->draw(shader);
+        widget->draw(projection);
 }
 
 Layout::Layout(std::string id, GUI* gui)
     : Widget(id), m_gui(gui) {
-        m_gui->registerWidget(this);
-    }
+    m_gui->registerWidget(this);
+}
 
 void Layout::setStackMode(StackMode stackMode, bool invertStack, bool invertStackWidgets) {
     m_stackMode = stackMode;
@@ -88,7 +88,8 @@ void Layout::setStackMode(StackMode stackMode, bool invertStack, bool invertStac
 }
 
 void Layout::updateArea(const Rectangle& parent) {
-    m_finalArea = m_properties.constraints.getRect(parent, m_minWidth, m_minHeight);
+    m_widgetArea = m_properties.constraints.getRect(parent, m_properties, m_minWidth, m_minHeight);
+    applyPadding();
 
     // update all child areas
     for (auto widget : m_widgets)

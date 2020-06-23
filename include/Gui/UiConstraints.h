@@ -23,10 +23,12 @@ class Constraint {
 #define PixelConstraint(value)      Constraint(CONSTRAINT_PIXEL, value)
 #define MatchConstraint()           Constraint(CONSTRAINT_MATCH, 0)
 
+class UiProperties;
+
 struct UiConstraints {
     Constraint x = RelativeConstraint(0), y = RelativeConstraint(0),
                width = MatchConstraint(), height = MatchConstraint();
 
     // calculate the final area a widget occupies
-    Rectangle getRect(const Rectangle& parent, int minWidth, int minHeight) const;
+    Rectangle getRect(const Rectangle& parent, const UiProperties& widgetProperties, int minWidth, int minHeight) const;
 };

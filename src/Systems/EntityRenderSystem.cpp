@@ -1,6 +1,6 @@
 #include "../../include/Systems/EntityRenderSystem.h"
 
-#include "../../include/EventDispatcher.h"
+#include "../../include/Events/EventDispatcher.h"
 #include "../../include/ResourceManager.h"
 
 #include "../../include/Components/ChunkComponent.h"
