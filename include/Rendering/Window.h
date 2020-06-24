@@ -5,8 +5,10 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+struct KeyEvent;
+struct FramebufferSizeEvent;
+
 class Application;
-struct Event;
 
 class Window {
 private:
@@ -18,8 +20,8 @@ private:
     int m_prevX, m_prevY;
     bool m_isFullscreen = false;
 
-    void handleKeyPress(Event* e);
-    void handleFramebufferSize(Event* e);
+    void handleKeyPress(const KeyEvent&);
+    void handleFramebufferSize(const FramebufferSizeEvent&);
 
 public:
     Window(Application* app, int width, int height);

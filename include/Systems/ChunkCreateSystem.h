@@ -1,7 +1,7 @@
 #pragma once
 
 #include "System.h"
-#include "../../include/WorldGeneration/WorldGenerator.h"
+#include "../WorldGeneration/WorldGenerator.h"
 
 #include <map>
 #include <mutex>
@@ -9,7 +9,9 @@
 #include <future>
 #include <entt/entt.hpp>
 
-struct Event;
+struct EnterChunkEvent;
+struct BlockChangedEvent;
+
 class ChunkComponent;
 class GeometryComponent;
 class AtlasComponent;
@@ -40,8 +42,8 @@ class ChunkCreateSystem : public System {
         std::vector<entt::entity> m_destructionQueue;
         std::vector<glm::vec2> loadedChunks;
 
-        void handleEnterChunk(Event*);
-        void handleBlockChanged(Event*);
+        void handleEnterChunk(const EnterChunkEvent& e);
+        void handleBlockChanged(const BlockChangedEvent& e);
 
         void updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ);
         void updateChunkVertices(entt::entity entity, Block*** blocks,

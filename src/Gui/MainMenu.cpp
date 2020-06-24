@@ -17,8 +17,6 @@ MainMenu::MainMenu()
     t->setString("Quit");
 
     t = m_rootLayout->addWidget<Text>("button_start");
-    //t->getProperties().padding.both(20);
-    t->getProperties().margin.vertical(100);
     t->getProperties().backgroundColor = Color::Gray;
     t->getProperties().foregroundColor = Color::Emerald;
     t->getProperties().constraints.x = CenterConstraint();

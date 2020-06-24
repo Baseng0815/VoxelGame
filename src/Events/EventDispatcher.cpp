@@ -6,6 +6,21 @@ bool EventDispatcher::m_firstMouse = true;
 double EventDispatcher::m_prevX = 0;
 double EventDispatcher::m_prevY = 0;
 
+glm::vec2 EventDispatcher::m_framebufferSize = {0, 0};
+
+CallbackList<KeyEvent> EventDispatcher::onKeyPress;
+CallbackList<MouseButtonEvent> EventDispatcher::onMouseButtonPress;
+CallbackList<CursorEvent> EventDispatcher::onCursorMove;
+CallbackList<ScrollEvent> EventDispatcher::onMouseScroll;
+CallbackList<FramebufferSizeEvent> EventDispatcher::onFramebufferSize;
+
+CallbackList<EnterChunkEvent> EventDispatcher::onEnterChunk;
+CallbackList<BlockChangedEvent> EventDispatcher::onBlockChange;
+
+glm::vec2 EventDispatcher::getFramebufferSize() {
+    return m_framebufferSize;
+}
+
 void EventDispatcher::attachToWindow(const Window& window) {
     GLFWwindow* hwnd = window.getHandle();
 
@@ -61,6 +76,7 @@ void EventDispatcher::framebufferSizeCallback(GLFWwindow* window, int width, int
     Application* application = (Application*)glfwGetWindowUserPointer(window);
 
     FramebufferSizeEvent e(application, width, height);
+    m_framebufferSize = {width, height};
     raiseEvent(e);
 }
 
@@ -86,4 +102,12 @@ void EventDispatcher::raiseEvent(const ScrollEvent& e) {
 
 void EventDispatcher::raiseEvent(const FramebufferSizeEvent& e) {
     onFramebufferSize.invoke(e);
+}
+
+void EventDispatcher::raiseEvent(const EnterChunkEvent& e) {
+    onEnterChunk.invoke(e);
+}
+
+void EventDispatcher::raiseEvent(const BlockChangedEvent& e) {
+    onBlockChange.invoke(e);
 }

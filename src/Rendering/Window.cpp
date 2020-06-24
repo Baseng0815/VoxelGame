@@ -9,20 +9,18 @@
 #endif
 
 // TODO prevent camera from receiving events when ALT is pressed
-void Window::handleKeyPress(Event* e) {
-    KeyEvent keyEvent = *e->get<KeyEvent>();
-    if (keyEvent.key == GLFW_KEY_LEFT_ALT) {
-        if (keyEvent.action == GLFW_PRESS) {
+void Window::handleKeyPress(const KeyEvent& e) {
+    if (e.key == GLFW_KEY_LEFT_ALT) {
+        if (e.action == GLFW_PRESS) {
             enableCursor();
-        } else if (keyEvent.action == GLFW_RELEASE) {
+        } else if (e.action == GLFW_RELEASE) {
             disableCursor();
         }
     }
 }
 
-void Window::handleFramebufferSize(Event* e) {
-    FramebufferSizeEvent event = *e->get<FramebufferSizeEvent>();
-    glViewport(0, 0, event.width, event.height);
+void Window::handleFramebufferSize(const FramebufferSizeEvent& e) {
+    glViewport(0, 0, e.width, e.height);
 }
 
 Window::Window(Application* app, int width, int height) {
@@ -47,8 +45,12 @@ Window::Window(Application* app, int width, int height) {
     glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    EventDispatcher::addCallback(CB_FUN(handleKeyPress), KEY_EVENT);
-    EventDispatcher::addCallback(CB_FUN(handleFramebufferSize), FRAMEBUFFER_SIZE_EVENT);
+    EventDispatcher::onKeyPress += [this](const KeyEvent& e) {
+        handleKeyPress(e);
+    };
+    EventDispatcher::onFramebufferSize += [this](const FramebufferSizeEvent& e) {
+        handleFramebufferSize(e);
+    };
 }
 
 void Window::clear(glm::vec3 clearColor) {

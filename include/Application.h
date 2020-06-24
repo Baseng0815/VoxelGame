@@ -5,14 +5,14 @@
 
 #include "MainMenuLayer.h"
 
+struct KeyEvent;
+
 class Application {
 private:
     Window m_window;
     GUI m_gui;
 
     GameLayer* m_currentLayer;
-
-    friend class EventDispatcher;
 
     // delta time
     int m_prevTime = 0, m_deltaTime = 0;
@@ -24,7 +24,7 @@ private:
     // frametime, in microseconds, only related to the rendering process
     int m_frameTime = 0;
 
-    void handleKeys(Event* event);
+    void handleKeys(const KeyEvent&);
 
 public:
     Application();

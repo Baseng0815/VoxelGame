@@ -18,18 +18,16 @@
 #include <mutex>
 #include <iostream>
 
-void ChunkCreateSystem::handleEnterChunk(Event* e) {
-    EnterChunkEvent event = *e->get<EnterChunkEvent>();
-
+void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e) {
     // remove old chunks from ECS system and queue chunk data deletion
     auto view = m_registry->view<TransformationComponent, GeometryComponent, ChunkComponent>();
 
     for (auto entity : view) {
         auto& chunk = view.get<ChunkComponent>(entity);
 
-        if (std::abs(event.newX - chunk.chunkX) >
+        if (std::abs(e.newX - chunk.chunkX) >
                 Configuration::CHUNK_PRELOAD_SIZE ||
-                std::abs(event.newZ - chunk.chunkZ) >
+                std::abs(e.newZ - chunk.chunkZ) >
                 Configuration::CHUNK_PRELOAD_SIZE) {
 
             if (!std::count(m_destructionQueue.begin(), m_destructionQueue.end(), entity)) {
@@ -40,8 +38,8 @@ void ChunkCreateSystem::handleEnterChunk(Event* e) {
     }
 
     // create new chunks which have come into range
-    for (int x = event.newX + Configuration::CHUNK_PRELOAD_SIZE; x >= event.newX - (int)Configuration::CHUNK_PRELOAD_SIZE; x--) {
-        for (int z = event.newZ + Configuration::CHUNK_PRELOAD_SIZE; z >= event.newZ - (int)Configuration::CHUNK_PRELOAD_SIZE; z--) {
+    for (int x = e.newX + Configuration::CHUNK_PRELOAD_SIZE; x >= e.newX - (int)Configuration::CHUNK_PRELOAD_SIZE; x--) {
+        for (int z = e.newZ + Configuration::CHUNK_PRELOAD_SIZE; z >= e.newZ - (int)Configuration::CHUNK_PRELOAD_SIZE; z--) {
             glm::vec2 pos(x, z);
             if (std::count(loadedChunks.begin(), loadedChunks.end(), pos) == 0) {
                 auto entity = m_registry->create();
@@ -59,9 +57,7 @@ void ChunkCreateSystem::handleEnterChunk(Event* e) {
     }
 }
 
-void ChunkCreateSystem::handleBlockChanged(Event* e) {
-    BlockChangedEvent blockChangedEvent = *e->get<BlockChangedEvent>();
-
+void ChunkCreateSystem::handleBlockChanged(const BlockChangedEvent& e) {
     auto worldView = m_registry->view<WorldComponent>();
     WorldComponent& world = worldView.get<WorldComponent>(worldView.front());
     for (auto worldEntity : worldView) {
@@ -72,7 +68,7 @@ void ChunkCreateSystem::handleBlockChanged(Event* e) {
 
 
     glm::vec3 localPos;
-    glm::vec2 chunkPos = GetChunk(blockChangedEvent.position, localPos);
+    glm::vec2 chunkPos = GetChunk(e.position, localPos);
 
     auto chunkEntity = world.getChunk(chunkPos);
     m_outdatedChunks.push_back(chunkEntity);
@@ -359,8 +355,8 @@ void ChunkCreateSystem::_update(int dt) {
                     chunk.threadActiveOnSelf = true;
 
                     m_futures.push_back(std::async(std::launch::async, [=]() {
-                                updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ);
-                                }));
+                        updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ);
+                    }));
 
                     world.addChunk(entity, glm::vec2(chunk.chunkX, chunk.chunkZ));
                 }
@@ -368,10 +364,10 @@ void ChunkCreateSystem::_update(int dt) {
                 else if (chunk.verticesOutdated) {
                     chunk.threadActiveOnSelf = true;
                     m_registry->view<AtlasComponent>().each([&](auto& atlas) {
-                            m_futures.push_back(std::async(std::launch::async, [=]() {
-                                        updateChunkVertices(entity, chunk.blocks, atlas, chunk.blockMutex);
-                                        }));
-                            });
+                        m_futures.push_back(std::async(std::launch::async, [=]() {
+                            updateChunkVertices(entity, chunk.blocks, atlas, chunk.blockMutex);
+                        }));
+                    });
                 }
             }
         }
@@ -382,6 +378,10 @@ ChunkCreateSystem::ChunkCreateSystem(entt::registry* registry)
     : System(registry, 50), constructionCount(0) {
 
         // event callbacks
-        m_callbacks.push_back(EventDispatcher::addCallback(CB_FUN(handleEnterChunk), ENTER_CHUNK_EVENT));
-        m_callbacks.push_back(EventDispatcher::addCallback(CB_FUN(handleBlockChanged), BLOCK_CHANGED_EVENT));
+        EventDispatcher::onEnterChunk += [this](const EnterChunkEvent& e) {
+            handleEnterChunk(e);
+        };
+        EventDispatcher::onBlockChange += [this](const BlockChangedEvent& e) {
+            handleBlockChanged(e);
+        };
     }

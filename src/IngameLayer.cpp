@@ -44,10 +44,10 @@ IngameLayer::IngameLayer() {
     // raise beginning events
     EnterChunkEvent e;
     e.newX = e.newZ = e.oldX = e.oldZ = 0;
-    EventDispatcher::raiseEvent(&e);
+    EventDispatcher::raiseEvent(e);
 
     FramebufferSizeEvent event = FramebufferSizeEvent(nullptr, 800, 600);
-    EventDispatcher::raiseEvent(&event);
+    EventDispatcher::raiseEvent(event);
 }
 
 IngameLayer::~IngameLayer() {

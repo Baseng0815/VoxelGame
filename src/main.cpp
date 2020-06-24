@@ -4,6 +4,8 @@
 #ifndef WIN32
 #include <mcheck.h>
 
+#include "../include/Events/EventDispatcher.h"
+
 int main(int argc, char **argv) {
     //mtrace();
 

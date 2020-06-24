@@ -8,7 +8,6 @@
 #include "../../include/Components/TransformationComponent.h"
 
 #include "../../include/Block.h"
-#include "../../include/Event.h"
 #include "../../include/Collision.h"
 #include "../../include/Configuration.h"
 #include "../../include/Events/EventDispatcher.h"
@@ -131,7 +130,7 @@ void PhysicsSystem::_update(int dt) {
                     e.newX = newChunkX;
                     e.newZ = newChunkZ;
 
-                    EventDispatcher::raiseEvent(&e);
+                    EventDispatcher::raiseEvent(e);
                 }
 
                 if (length(velocity.velocity) != 0) {

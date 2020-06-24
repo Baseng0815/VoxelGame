@@ -4,8 +4,6 @@
 
 #include "../../include/Rendering/Shader.h"
 
-struct Event;
-
 struct Light {
     glm::vec3 dir;
     glm::vec3 color;
@@ -16,6 +14,8 @@ class Texture;
 
 struct CameraComponent;
 struct TransformationComponent;
+
+struct FramebufferSizeEvent;
 
 class EntityRenderSystem : public System {
     private:
@@ -30,7 +30,7 @@ class EntityRenderSystem : public System {
         RenderQuad m_renderQuad;
         glm::mat4 m_orthoProjection;
 
-        void handleFramebufferSize(Event* e);
+        void handleFramebufferSize(const FramebufferSizeEvent& e);
 
         void _update(int dt) override;
 

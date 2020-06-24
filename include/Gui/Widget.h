@@ -31,7 +31,7 @@ class Widget {
 
         // these event handlers are called by the GUI and invoke the EventDispatcher
         // as well as the custom event handlers
-        void onMove(int x, int y, int dx, int dy);
+        void onMove(int x, int y);
         void onEnter(int x, int y);
         void onLeave(int x, int y);
         void onPress(int x, int y);

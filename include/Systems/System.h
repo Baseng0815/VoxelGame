@@ -1,11 +1,9 @@
 #pragma once
 
+#include <vector>
 #include <entt/entt.hpp>
 
 #include "../Typedefs.h"
-
-class Event;
-struct SharedContext;
 
 class System {
     protected:
@@ -19,7 +17,6 @@ class System {
 
     public:
         System(entt::registry* registry, int updateDelay);
-        ~System();
 
         // dt in milliseconds
         void update(int dt);

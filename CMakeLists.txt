@@ -81,12 +81,12 @@ else()
     message("GLEW LIBRARIES: ${GLEW_LIBRARIES}")
 
     # ./libnoise
-    include_directories(/usr/include)
+    # include_directories(/usr/include)
 
     # freetype
     include_directories(/usr/include/freetype2)
 
-    link_directories("/usr/local/lib")
+    # link_directories("/usr/local/lib")
 
     file(GLOB_RECURSE SOURCES
         include/*.h

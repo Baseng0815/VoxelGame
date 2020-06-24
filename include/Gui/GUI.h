@@ -2,7 +2,11 @@
 
 #include "Layout.h"
 
-struct Event;
+struct FramebufferSizeEvent;
+struct CursorEvent;
+struct MouseButtonEvent;
+struct KeyEvent;
+
 class Shader;
 class CameraComponent;
 
@@ -15,11 +19,10 @@ class GUI {
 
         bool coordinatesInWidget(const Widget& widget, int x, int y);
 
-        std::vector<CallbackId> m_callbackIds;
-        void handleFramebufferSize(Event* event);
-        void handleCursorMove(Event* e);
-        void handleButtonPress(Event* e);
-        void handleKeyPress(Event* e);
+        void handleFramebufferSize(const FramebufferSizeEvent&);
+        void handleCursorMove(const CursorEvent&);
+        void handleButtonPress(const MouseButtonEvent&);
+        void handleKeyPress(const KeyEvent&);
 
         glm::mat4 m_orthoProjection;
 

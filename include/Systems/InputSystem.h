@@ -8,7 +8,11 @@ class CameraComponent;
 class TransformationComponent;
 class VelocityComponent;
 
-struct Event;
+struct KeyEvent;
+struct MouseButtonEvent;
+struct CursorEvent;
+struct ScrollEvent;
+struct FramebufferSizeEvent;
 
 // handles player movement input
 // also updates the camera
@@ -16,11 +20,11 @@ class InputSystem : public System {
     private:
         struct LookData { glm::vec3 block; glm::vec3 face; bool valid; };
 
-        void handleKeyPressEvent(Event* e);
-        void handleMouseButtonEvent(Event* e);
-        void handleMouseMoveEvent(Event* e);
-        void handleScrollEvent(Event* e);
-        void handleFramebufferSizeEvent(Event* e);
+        void handleKeyPressEvent(const KeyEvent&);
+        void handleMouseButtonEvent(const MouseButtonEvent&);
+        void handleMouseMoveEvent(const CursorEvent&);
+        void handleScrollEvent(const ScrollEvent&);
+        void handleFramebufferSizeEvent(const FramebufferSizeEvent&);
 
         void updateSelectedBlock(CameraComponent& camera, TransformationComponent& transformation);
 

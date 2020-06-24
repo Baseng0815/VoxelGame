@@ -1,6 +1,7 @@
 #include "../include/Application.h"
 
 #include "../include/Configuration.h"
+#include "../include/Events/Event.h"
 #include "../include/Events/EventDispatcher.h"
 #include "../include/ResourceManager.h"
 
@@ -11,17 +12,15 @@
 #include <chrono>
 #include <iostream>
 
-void Application::handleKeys(Event* event) {
-    KeyEvent* kE = event->get<KeyEvent>();
-
-    switch (kE->key) {
+void Application::handleKeys(const KeyEvent& e) {
+    switch (e.key) {
         case GLFW_KEY_ESCAPE:
-            if (kE->action == GLFW_PRESS)
+            if (e.action == GLFW_PRESS)
                 m_isRunning = false;
             break;
 
         case GLFW_KEY_F:
-            if (kE->action == GLFW_PRESS)
+            if (e.action == GLFW_PRESS)
                 m_window.toggleFullscreen();
             break;
 
@@ -37,7 +36,9 @@ Application::Application()
     ResourceManager::loadResources();
 
     EventDispatcher::attachToWindow(m_window);
-    EventDispatcher::addCallback(CB_FUN(handleKeys), KEY_EVENT);
+    EventDispatcher::onKeyPress += [this](const KeyEvent& e) {
+        handleKeys(e);
+    };
 
     //m_currentLayer = new IngameLayer();
     m_currentLayer = new MainMenuLayer();

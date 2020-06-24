@@ -12,9 +12,9 @@ struct Event;
 class Configuration {
     private:
         static std::map<std::string, float> floatValues;
-        static std::map<std::string, std::string> stringValues;        
+        static std::map<std::string, std::string> stringValues;
 
-        static BlockDataMap blockDataMap;        
+        static BlockDataMap blockDataMap;
 
     public:
         static constexpr int CHUNK_SIZE = 16;
@@ -32,7 +32,7 @@ class Configuration {
         static void setValue(const std::string& location, float value);
         static void setValue(const std::string& location, std::string value);
 
-        static const BlockData& getBlockData(BlockType block);        
+        static const BlockData& getBlockData(BlockType block);
 };
 
 #define CHUNK_SIZE Configuration::CHUNK_SIZE

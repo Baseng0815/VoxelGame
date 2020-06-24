@@ -9,6 +9,9 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+// TODO remove
+#include <iostream>
+
 bool GUI::coordinatesInWidget(const Widget& widget, int x, int y) {
     Rectangle widgetArea = widget.getArea();
     if (x > widgetArea.position.x && x < widgetArea.position.x + widgetArea.size.x &&
@@ -17,43 +20,41 @@ bool GUI::coordinatesInWidget(const Widget& widget, int x, int y) {
     else return false;
 }
 
-void GUI::handleFramebufferSize(Event* event) {
-    FramebufferSizeEvent e = *event->get<FramebufferSizeEvent>();
+void GUI::handleFramebufferSize(const FramebufferSizeEvent& e) {
     m_orthoProjection = glm::ortho(0.f, e.width, 0.f, e.height);
 
     m_widgets["root_layout"]->updateArea(Rectangle(0, 0, e.width, e.height));
     m_widgets["root_layout"]->updateScreenElements();
 }
 
-void GUI::handleCursorMove(Event* e) {
-    CursorEvent event = *e->get<CursorEvent>();
+void GUI::handleCursorMove(const CursorEvent& e) {
     for (auto const& [key, val] : m_widgets) {
-        bool inArea = coordinatesInWidget(*val, event.x, event.y);
+        // cursor y position is inverted in GUI space
+        bool inArea = coordinatesInWidget(*val, e.x, EventDispatcher::getFramebufferSize().y - e.y);
         if (val->m_isHovering) {
             if (!inArea)
-                val->onLeave(event.x, event.y);
+                val->onLeave(e.x, e.y);
             else
-                val->onMove(event.x, event.y, event.dx, event.dy);
+                val->onMove(e.x, e.y);
         } else {
             if (inArea) {
-                val->onEnter(event.x, event.y);
+                val->onEnter(e.x, e.y);
             }
         }
     }
 }
 
-void GUI::handleButtonPress(Event* e) {
-    MouseButtonEvent event = *e->get<MouseButtonEvent>();
+void GUI::handleButtonPress(const MouseButtonEvent& e) {
     for (auto const& [key, val] : m_widgets) {
         if (!val->m_isHovering) continue;
-        if (event.action == GLFW_PRESS)
-            val->onPress(event.);
-        else if (event.action == GLFW_RELEASE)
-            val->onRelease(event.key);
+        if (e.action == GLFW_PRESS)
+            val->onPress(0, 0);
+        else if (e.action == GLFW_RELEASE)
+            val->onRelease(0, 0);
     }
 }
 
-void GUI::handleKeyPress(Event* e) {
+void GUI::handleKeyPress(const KeyEvent& e) {
 }
 
 GUI::GUI() {
@@ -100,15 +101,21 @@ GUI::GUI() {
     t->setString("5) Camera position and direction");
     */
 
-    m_callbackIds.push_back(EventDispatcher::addCallback(CB_FUN(handleFramebufferSize), FRAMEBUFFER_SIZE_EVENT));
-    m_callbackIds.push_back(EventDispatcher::addCallback(CB_FUN(handleCursorMove), CURSOR_EVENT));
-    m_callbackIds.push_back(EventDispatcher::addCallback(CB_FUN(handleButtonPress), CURSOR_EVENT));
-    m_callbackIds.push_back(EventDispatcher::addCallback(CB_FUN(handleKeyPress), KEY_EVENT));
+    EventDispatcher::onFramebufferSize += [this](const FramebufferSizeEvent& e) {
+        handleFramebufferSize(e);
+    };
+    EventDispatcher::onCursorMove += [this](const CursorEvent& e) {
+        handleCursorMove(e);
+    };
+    EventDispatcher::onMouseButtonPress += [this](const MouseButtonEvent& e) {
+        handleButtonPress(e);
+    };
+    EventDispatcher::onKeyPress += [this](const KeyEvent& e) {
+        handleKeyPress(e);
+    };
 }
 
 GUI::~GUI() {
-    for (auto id : m_callbackIds)
-        EventDispatcher::removeCallback(id);
     for (auto widget : m_widgets)
         delete widget.second;
 }

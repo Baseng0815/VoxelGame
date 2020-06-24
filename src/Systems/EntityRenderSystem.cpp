@@ -11,11 +11,10 @@
 
 #include "../../include/Rendering/Texture.h"
 
-void EntityRenderSystem::handleFramebufferSize(Event* e) {
-    FramebufferSizeEvent fbsE = *e->get<FramebufferSizeEvent>();
-    m_gBuffer.resize(fbsE.width, fbsE.height);
-    m_renderQuad.resize(Rectangle(0, 0, fbsE.width, fbsE.height));
-    m_orthoProjection = glm::ortho(0.f, fbsE.width, 0.f, fbsE.height);
+void EntityRenderSystem::handleFramebufferSize(const FramebufferSizeEvent& e) {
+    m_gBuffer.resize(e.width, e.height);
+    m_renderQuad.resize(Rectangle(0, 0, e.width, e.height));
+    m_orthoProjection = glm::ortho(0.f, e.width, 0.f, e.height);
 }
 
 // TODO remove
@@ -89,7 +88,9 @@ void EntityRenderSystem::_update(int dt) {
 EntityRenderSystem::EntityRenderSystem(entt::registry* registry)
     : System(registry, 0), m_renderQuad(Rectangle(0, 0, Configuration::INITIAL_WINDOW_WIDTH, Configuration::INITIAL_WINDOW_HEIGHT)) {
         // add events
-        m_callbacks.push_back(EventDispatcher::addCallback(CB_FUN(handleFramebufferSize), FRAMEBUFFER_SIZE_EVENT));
+        EventDispatcher::onFramebufferSize += [this](const FramebufferSizeEvent& e) {
+            handleFramebufferSize(e);
+        };
 
 	// TODO change naming scheme
 	m_blockShader = ResourceManager::getResource<Shader>("chunkShader");
