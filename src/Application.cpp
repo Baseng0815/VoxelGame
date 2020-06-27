@@ -5,7 +5,7 @@
 #include "../include/Events/EventDispatcher.h"
 #include "../include/ResourceManager.h"
 
-#include "../include/IngameLayer.h"
+#include "../include/MainMenuLayer.h"
 
 #include "../include/Components/CameraComponent.h"
 
@@ -30,7 +30,7 @@ void Application::handleKeys(const KeyEvent& e) {
 }
 
 Application::Application()
-    : m_window(this, Configuration::INITIAL_WINDOW_WIDTH, Configuration::INITIAL_WINDOW_HEIGHT) {
+    : m_window(this, 800, 600) {
     srand(time(NULL));
 
     ResourceManager::loadResources();
@@ -52,6 +52,10 @@ Application::~Application() {
     ResourceManager::freeResources();
     m_window.close();
     glfwTerminate();
+}
+
+void Application::setNewLayer(GameLayer* newLayer) {
+    m_currentLayer = newLayer;
 }
 
 void Application::run() {

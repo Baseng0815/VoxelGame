@@ -13,12 +13,9 @@
 
 void EntityRenderSystem::handleFramebufferSize(const FramebufferSizeEvent& e) {
     m_gBuffer.resize(e.width, e.height);
-    m_renderQuad.resize(Rectangle(0, 0, e.width, e.height));
+    m_renderQuad.resize(Rectangle(0, 0, e.width, e.height), true);
     m_orthoProjection = glm::ortho(0.f, e.width, 0.f, e.height);
 }
-
-// TODO remove
-#include <iostream>
 
 void EntityRenderSystem::_update(int dt) {
     // clear screen framebuffer
@@ -86,11 +83,14 @@ void EntityRenderSystem::_update(int dt) {
 }
 
 EntityRenderSystem::EntityRenderSystem(entt::registry* registry)
-    : System(registry, 0), m_renderQuad(Rectangle(0, 0, Configuration::INITIAL_WINDOW_WIDTH, Configuration::INITIAL_WINDOW_HEIGHT)) {
+    : System(registry, 0), m_gBuffer(Configuration::getFloatValue("WINDOW_WIDTH"), Configuration::getFloatValue("WINDOW_HEIGHT")),
+      m_renderQuad(Rectangle(0, 0, Configuration::getFloatValue("WINDOW_WIDTH"), Configuration::getFloatValue("WINDOW_HEIGHT")), true) {
         // add events
         EventDispatcher::onFramebufferSize += [this](const FramebufferSizeEvent& e) {
             handleFramebufferSize(e);
         };
+
+        m_orthoProjection = glm::ortho(0.f, Configuration::getFloatValue("WINDOW_WIDTH"), 0.f, Configuration::getFloatValue("WINDOW_HEIGHT"));
 
 	// TODO change naming scheme
 	m_blockShader = ResourceManager::getResource<Shader>("chunkShader");

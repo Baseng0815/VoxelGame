@@ -24,10 +24,15 @@ void Window::handleKeyPress(const KeyEvent& e) {
 
 void Window::handleFramebufferSize(const FramebufferSizeEvent& e) {
     glViewport(0, 0, e.width, e.height);
+    Configuration::setValue("WINDOW_WIDTH", e.width);
+    Configuration::setValue("WINDOW_HEIGHT", e.height);
 }
 
 Window::Window(Application* app, int width, int height) {
     Configuration::loadConfiguration("Resources/");
+    Configuration::setValue("WINDOW_WIDTH", width);
+    Configuration::setValue("WINDOW_HEIGHT", height);
+
     glfwInit();
 
     m_window = glfwCreateWindow(width, height, "GLFW window", nullptr, nullptr);

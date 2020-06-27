@@ -6,8 +6,8 @@
 struct CameraComponent {
     glm::mat4 perspectiveProjection, viewMatrix;
     glm::vec3 front, front_noY, right;
-    float width  = Configuration::INITIAL_WINDOW_WIDTH;
-    float height = Configuration::INITIAL_WINDOW_HEIGHT;
+    float width;
+    float height;
 
     glm::vec3 relVelocity = glm::vec3(0);
 
@@ -18,5 +18,5 @@ struct CameraComponent {
 
     unsigned int worldId = 0;
 
-    CameraComponent(float fov);
+    CameraComponent(float fov, float width, float height);
 };

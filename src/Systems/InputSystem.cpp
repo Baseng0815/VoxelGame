@@ -10,6 +10,7 @@
 #include "../../include/Components/WorldComponent.h"
 #include "../../include/Components/CameraComponent.h"
 #include "../../include/Components/VelocityComponent.h"
+#include "../../include/Components/RigidBodyComponent.h"
 #include "../../include/Components/TransformationComponent.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
@@ -139,12 +140,12 @@ void InputSystem::handleScrollEvent(const ScrollEvent& e) {
 
 void InputSystem::handleFramebufferSizeEvent(const FramebufferSizeEvent& e) {
     m_registry->view<CameraComponent>().each(
-            [&](auto& camera) {
+        [&](auto& camera) {
 
-            camera.width = e.width;
-            camera.height = e.height;
-            updateProjectionMatrix(camera);
-            });
+        camera.width = e.width;
+        camera.height = e.height;
+        updateProjectionMatrix(camera);
+    });
 }
 
 void InputSystem::updateVectors(CameraComponent& camera) {
@@ -213,6 +214,20 @@ void InputSystem::_update(int dt) {
 
 InputSystem::InputSystem(entt::registry* registry)
     : System(registry, 0) {
+        // create camera and update projection matrix
+        // TODO put into extra system
+        entt::entity entity = m_registry->create();
+        m_registry->emplace<CameraComponent>(entity, 90.f, Configuration::getFloatValue("WINDOW_WIDTH"), Configuration::getFloatValue("WINDOW_HEIGHT"));
+        m_registry->emplace<TransformationComponent>(entity, glm::vec3(0, 100, 0), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
+        m_registry->emplace<VelocityComponent>(entity);
+        BoxCollision* cameraCollision = new BoxCollision(glm::vec3(-0.5f, -1.5f, -0.5f), 1, 2, 1);
+        m_registry->emplace<RigidBodyComponent>(entity, new Shape(std::vector<Triangle>()), 0, cameraCollision);
+
+        m_registry->view<CameraComponent>().each(
+            [&](auto& camera) {
+            updateProjectionMatrix(camera);
+        });
+
         EventDispatcher::onKeyPress += [this](const KeyEvent &e) {
             handleKeyPressEvent(e);
         };

@@ -40,4 +40,6 @@ class GUI {
 
         // widgets register and unregister themselves
         void registerWidget(Widget* widget);
+
+        Widget& getWidget(const std::string& id);
 };

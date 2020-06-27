@@ -5,7 +5,10 @@
 #endif
 #include <stdexcept>
 
-void GBuffer::create() {
+void GBuffer::create(int width, int height) {
+    m_width = width;
+    m_height = height;
+
     glGenFramebuffers(1, &m_gBuffer);
     glBindFramebuffer(GL_FRAMEBUFFER, m_gBuffer);
 
@@ -57,8 +60,8 @@ void GBuffer::destroy() {
     glDeleteFramebuffers(1, &m_gBuffer);
 }
 
-GBuffer::GBuffer() {
-    create();
+GBuffer::GBuffer(int width, int height) {
+    create(width, height);
 }
 
 GBuffer::~GBuffer() {
@@ -66,20 +69,17 @@ GBuffer::~GBuffer() {
 }
 
 int GBuffer::getWidth() const {
-    return width;
+    return m_width;
 }
 
 int GBuffer::getHeight() const {
-    return height;
+    return m_height;
 }
 
 // TODO find a better way of resizing
 void GBuffer::resize(int width, int height) {
-    this->width = width;
-    this->height = height;
-
     destroy();
-    create();
+    create(width, height);
 }
 
 void GBuffer::bindFramebuffer(bool readOnly) {

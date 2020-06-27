@@ -152,3 +152,11 @@ void GUI::update() {
 void GUI::registerWidget(Widget* widget) {
     m_widgets.insert(std::make_pair(widget->getId(), widget));
 }
+
+Widget& GUI::getWidget(const std::string& id) {
+    auto it = m_widgets.find(id);
+    if (it != m_widgets.end())
+        return *(it->second);
+    else
+        std::cout << "Widget with ID " << id << " not found" << std::endl;
+}

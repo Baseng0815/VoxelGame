@@ -9,7 +9,7 @@ class MainMenuLayer : public GameLayer {
 
     public:
         MainMenuLayer(Application* application);
-        ~MainMenuLayer();
+        ~MainMenuLayer() = default;
 
         void update(int dt) override;
 };

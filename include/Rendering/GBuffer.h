@@ -12,15 +12,13 @@ class GBuffer {
 
         void recreate();
 
-        int width = Configuration::getFloatValue("WINDOW_WIDTH"),
-            height = Configuration::getFloatValue("WINDOW_HEIGHT");
+        int m_width, m_height;
 
-        void create();
+        void create(int width, int height);
         void destroy();
 
     public:
-
-        GBuffer();
+        GBuffer(int width, int height);
         ~GBuffer();
 
         int getWidth() const;

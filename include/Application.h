@@ -1,17 +1,13 @@
 #pragma once
 
-#include "Gui/GUI.h"
 #include "Rendering/Window.h"
 
-#include "MainMenuLayer.h"
-
 struct KeyEvent;
+class GameLayer;
 
 class Application {
 private:
     Window m_window;
-    GUI m_gui;
-
     GameLayer* m_currentLayer;
 
     // delta time
@@ -31,6 +27,8 @@ public:
     ~Application();
 
     Window& getWindow();
+
+    void setNewLayer(GameLayer* newLayer);
 
     // enter game loop
     void run();

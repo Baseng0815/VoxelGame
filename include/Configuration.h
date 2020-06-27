@@ -22,7 +22,6 @@ class Configuration {
         static constexpr int CHUNK_PRELOAD_SIZE = 8;
         static constexpr int CHUNK_MAX_LOADING = 6;
         static constexpr int MAP_SEED_SIZE=256;
-        static constexpr float INITIAL_WINDOW_WIDTH = 800, INITIAL_WINDOW_HEIGHT = 600;
 
         // path contains settings.json, blockData.json and biomeInfo.json
         static void loadConfiguration(const std::string& resourceBasePath);

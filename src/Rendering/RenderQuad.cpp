@@ -17,6 +17,8 @@ RenderQuad::RenderQuad() {
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 4, BUFFER_OFFSET(0));
 }
 
+#include <iostream>
+
 RenderQuad::RenderQuad(const Rectangle& area, bool flipY)
     : RenderQuad() {
     resize(area, flipY);
