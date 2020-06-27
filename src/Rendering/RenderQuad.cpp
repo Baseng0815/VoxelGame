@@ -40,10 +40,10 @@ void RenderQuad::resize(const Rectangle& area, bool flipY) const {
 
     float quadVertices[] = {
         // positions	    // texture Coords
-        x1, y1, 0.0f, flipY ? 1.0f : 0.0f,
-        x2, y2, 1.0f, flipY ? 0.0f : 1.0f,
-        x2, y1, 1.0f, flipY ? 1.0f : 0.0f,
-        x1, y2, 0.0f, flipY ? 0.0f : 1.0f,
+        x1, y1, 0.0f, flipY ? 0.0f : 1.0f,
+        x2, y2, 1.0f, flipY ? 1.0f : 0.0f,
+        x2, y1, 1.0f, flipY ? 0.0f : 1.0f,
+        x1, y2, 0.0f, flipY ? 1.0f : 0.0f,
     };
 
     unsigned int indices[]= {

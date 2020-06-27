@@ -32,36 +32,6 @@ void Widget::applyPadding() {
     m_finalArea.size.y += m_properties.padding.top + m_properties.padding.bottom;
 }
 
-void Widget::_onMove(int x, int y) {}
-void Widget::_onEnter(int x, int y) {}
-void Widget::_onLeave(int x, int y) {}
-void Widget::_onPress(int x, int y) {}
-void Widget::_onRelease(int x, int y) {}
-
-void Widget::onMove(int x, int y) {
-    _onMove(x, y);
-}
-
-void Widget::onEnter(int x, int y) {
-    m_isHovering = true;
-    _onEnter(x, y);
-}
-
-void Widget::onLeave(int x, int y) {
-    m_isHovering = false;
-    _onLeave(x, y);
-}
-
-void Widget::onPress(int x, int y) {
-    m_isPressed = true;
-    _onPress(x, y);
-}
-
-void Widget::onRelease(int x, int y) {
-    m_isPressed = false;
-    _onRelease(x, y);
-}
-
 void Widget::_draw(const glm::mat4& projection) const {
     // default widget does nothing special
 }

@@ -16,13 +16,13 @@ class Text : public Widget {
         std::string m_string = "";
 
         const Font* m_font = nullptr;
-        // TODO maybe make static
+        // TODO maybe make static or access every frame
         Shader* m_textShader;
 
         float m_textScale;
         void updateTextRenderQuads();
 
-        // updates minWidth and minHeight without recreating any quads
+        // update minWidth and minHeight
         void updateTextDimensions();
         void _draw(const glm::mat4& projection) const override;
 
@@ -30,7 +30,7 @@ class Text : public Widget {
         Text(const std::string& id, float textScale = 1.0f);
 
         void updateArea(const Rectangle& parent) override;
-        virtual void updateScreenElements() override;
+        void updateScreenElements() override;
 
         void setScale(float scale);
         float getScale() const;

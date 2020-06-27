@@ -1,3 +1,5 @@
+#pragma once
+
 #include "GameLayer.h"
 #include "Gui/MainMenu.h"
 
@@ -6,7 +8,7 @@ class MainMenuLayer : public GameLayer {
         MainMenu m_mainMenu;
 
     public:
-        MainMenuLayer();
+        MainMenuLayer(Application* application);
         ~MainMenuLayer();
 
         void update(int dt) override;

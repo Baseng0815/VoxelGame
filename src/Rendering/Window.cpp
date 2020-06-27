@@ -9,7 +9,9 @@
 #endif
 
 // TODO prevent camera from receiving events when ALT is pressed
+// also move this into the corresponding layer for finer control
 void Window::handleKeyPress(const KeyEvent& e) {
+    /*
     if (e.key == GLFW_KEY_LEFT_ALT) {
         if (e.action == GLFW_PRESS) {
             enableCursor();
@@ -17,6 +19,7 @@ void Window::handleKeyPress(const KeyEvent& e) {
             disableCursor();
         }
     }
+    */
 }
 
 void Window::handleFramebufferSize(const FramebufferSizeEvent& e) {

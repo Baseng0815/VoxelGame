@@ -7,6 +7,7 @@
 
 class GUI;
 class Text;
+class Image;
 class Widget;
 
 typedef std::vector<Widget*>::iterator WidgetIt;

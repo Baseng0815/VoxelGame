@@ -12,8 +12,8 @@ std::map<std::string, Resource*> ResourceManager::resources;
 
 void ResourceManager::loadResources() {
     // textures
-    // TODO use Configuration::ResourceBasePath
     resources.emplace("textureAtlas", new Texture("Textures/textureAtlas0.png"));
+    resources.emplace("textureBackgroundMainMenu", new Texture("Textures/background_mainmenu.png"));
 
     // shaders
     resources.emplace("chunkShader", new Shader("Shaders/chunkShader"));

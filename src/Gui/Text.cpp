@@ -20,7 +20,7 @@ void Text::updateTextRenderQuads() {
         float w = ch.size.x * m_textScale;
         float h = ch.size.y * m_textScale;
 
-        m_charRenderQuads[i].resize(Rectangle(xpos, ypos, w, h), true);
+        m_charRenderQuads[i].resize(Rectangle(xpos, ypos, w, h));
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, ch.texture);

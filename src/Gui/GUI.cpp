@@ -9,9 +9,6 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-// TODO remove
-#include <iostream>
-
 bool GUI::coordinatesInWidget(const Widget& widget, int x, int y) {
     Rectangle widgetArea = widget.getArea();
     if (x > widgetArea.position.x && x < widgetArea.position.x + widgetArea.size.x &&
@@ -28,29 +25,37 @@ void GUI::handleFramebufferSize(const FramebufferSizeEvent& e) {
 }
 
 void GUI::handleCursorMove(const CursorEvent& e) {
-    for (auto const& [key, val] : m_widgets) {
+    for (auto widget = m_rootLayout->begin(); widget != m_rootLayout->end(); widget++) {
         // cursor y position is inverted in GUI space
-        bool inArea = coordinatesInWidget(*val, e.x, EventDispatcher::getFramebufferSize().y - e.y);
-        if (val->m_isHovering) {
-            if (!inArea)
-                val->onLeave(e.x, e.y);
-            else
-                val->onMove(e.x, e.y);
+        bool inArea = coordinatesInWidget(*(*widget), e.x, EventDispatcher::getFramebufferSize().y - e.y);
+        if ((*widget)->m_isHovering) {
+            if (!inArea) {
+                (*widget)->onLeave.invoke(e.x, e.y);
+                (*widget)->m_isHovering = false;
+            }
+            else {
+                (*widget)->onMove.invoke(e.x, e.y);
+            }
         } else {
             if (inArea) {
-                val->onEnter(e.x, e.y);
+                (*widget)->onEnter.invoke(e.x, e.y);
+                (*widget)->m_isHovering = true;
             }
         }
     }
 }
 
 void GUI::handleButtonPress(const MouseButtonEvent& e) {
-    for (auto const& [key, val] : m_widgets) {
-        if (!val->m_isHovering) continue;
-        if (e.action == GLFW_PRESS)
-            val->onPress(0, 0);
-        else if (e.action == GLFW_RELEASE)
-            val->onRelease(0, 0);
+    for (auto widget = m_rootLayout->begin(); widget != m_rootLayout->end(); widget++) {
+        if (!(*widget)->m_isHovering) continue;
+        if (e.action == GLFW_PRESS) {
+            (*widget)->onPress.invoke(0, 0);
+            (*widget)->m_isPressed = true;
+        }
+        else if (e.action == GLFW_RELEASE) {
+            (*widget)->onRelease.invoke(0, 0);
+            (*widget)->m_isPressed = false;
+        }
     }
 }
 

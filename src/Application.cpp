@@ -41,7 +41,11 @@ Application::Application()
     };
 
     //m_currentLayer = new IngameLayer();
-    m_currentLayer = new MainMenuLayer();
+    m_currentLayer = new MainMenuLayer(this);
+}
+
+Window& Application::getWindow() {
+    return m_window;
 }
 
 Application::~Application() {

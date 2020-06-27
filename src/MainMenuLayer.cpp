@@ -1,7 +1,10 @@
 #include "../include/MainMenuLayer.h"
 
-MainMenuLayer::MainMenuLayer() {
+#include "../include/Application.h"
 
+MainMenuLayer::MainMenuLayer(Application* application)
+    : GameLayer(application) {
+    application->getWindow().enableCursor();
 }
 
 MainMenuLayer::~MainMenuLayer() {

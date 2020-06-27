@@ -1,4 +1,5 @@
 #include "../../include/Gui/Text.h"
+#include "../../include/Gui/Image.h"
 #include "../../include/Gui/GUI.h"
 #include "../../include/Gui/Layout.h"
 
@@ -123,6 +124,7 @@ Layout* Layout::addWidget(std::string id) {
 
 Widget* Layout::addWidget(Widget* widget) {
     m_widgets.push_back(widget);
+    m_gui->registerWidget(widget);
     return widget;
 }
 
@@ -136,3 +138,4 @@ WidgetIt Layout::end() {
 
 // predefine templates here
 template Text* Layout::addWidget<Text>(std::string);
+template Image* Layout::addWidget<Image>(std::string);

@@ -30,6 +30,8 @@ public:
     Application();
     ~Application();
 
+    Window& getWindow();
+
     // enter game loop
     void run();
 

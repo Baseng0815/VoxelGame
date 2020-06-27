@@ -12,11 +12,15 @@
 #include "../include/Components/RigidBodyComponent.h"
 #include "../include/Components/TransformationComponent.h"
 
+#include "../include/Application.h"
 #include "../include/ResourceManager.h"
 #include "../include/Events/EventDispatcher.h"
 #include "../include/Rendering/Texture.h"
 
-IngameLayer::IngameLayer() {
+IngameLayer::IngameLayer(Application* application)
+    : GameLayer(application) {
+    m_application->getWindow().disableCursor();
+
     // create all systems
     m_systems.push_back(new ChunkCreateSystem(&m_registry));
     m_systems.push_back(new PhysicsSystem(&m_registry));

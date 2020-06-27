@@ -11,7 +11,7 @@ class IngameLayer : public GameLayer {
         entt::registry m_registry;
 
     public:
-        IngameLayer();
+        IngameLayer(Application* application);
         ~IngameLayer();
 
         void update(int dt) override;

@@ -3,6 +3,8 @@
 #include "UiProperties.h"
 #include "../Rendering/RenderQuad.h"
 
+#include "../Events/CallbackList.h"
+
 #include <map>
 #include <string>
 
@@ -22,20 +24,6 @@ class Widget {
         UiProperties m_properties;
         std::string m_id;
 
-        // these custom event handlers are invoked by the functions below
-        virtual void _onMove(int x, int y);
-        virtual void _onEnter(int x, int y);
-        virtual void _onLeave(int x, int y);
-        virtual void _onPress(int x, int y);
-        virtual void _onRelease(int x, int y);
-
-        // these event handlers are called by the GUI and invoke the EventDispatcher
-        // as well as the custom event handlers
-        void onMove(int x, int y);
-        void onEnter(int x, int y);
-        void onLeave(int x, int y);
-        void onPress(int x, int y);
-        void onRelease(int x, int y);
         bool m_isHovering = false, m_isPressed = false;
 
         // get current background color based on hovering and pressed
@@ -49,6 +37,12 @@ class Widget {
         virtual void _draw(const glm::mat4& projection) const;
 
     public:
+        CallbackList<int, int> onMove;
+        CallbackList<int, int> onEnter;
+        CallbackList<int, int> onLeave;
+        CallbackList<int, int> onPress;
+        CallbackList<int, int> onRelease;
+
         Widget(const std::string& id);
         virtual ~Widget() = default;
 
