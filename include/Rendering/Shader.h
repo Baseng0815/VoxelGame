@@ -7,10 +7,9 @@
 #include <glm/glm.hpp>
 
 #include "../Color.h"
-#include "../Resource.h"
 
 // a class used for all shader programs
-class Shader : public Resource {
+class Shader {
     protected:
         static const unsigned int NUM_SHADERS = 2;
 

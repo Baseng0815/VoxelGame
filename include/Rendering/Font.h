@@ -5,8 +5,6 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
-#include "../Resource.h"
-
 struct Character {
     GLuint texture; // GL texture handle
     glm::vec2 size; // size of glyph
@@ -14,7 +12,7 @@ struct Character {
     GLuint advance; // offset to next glyph
 };
 
-class Font : public Resource {
+class Font {
     private:
         std::map<char, Character> m_characters;
 

@@ -15,18 +15,18 @@ struct Block;
 enum BiomeID : char;
 
 struct ChunkComponent {
-public:
+    std::mutex *blockMutex;
+    int chunkX, chunkZ;
+
     Block*** blocks = nullptr;
     BiomeID** biomes = nullptr;
-    std::mutex *blockMutex;
 
     std::atomic_bool verticesOutdated   = false;
     std::atomic_bool threadActiveOnSelf = false;
     std::atomic_bool chunkBlocksCreated = false;
 
-    int chunkX, chunkZ;
-
-    ChunkComponent(int chunkX, int chunkZ);
+    // TODO make this use aggregate initialization
+    ChunkComponent(std::mutex* blockMutex, int chunkX, int chunkZ);
     ChunkComponent(const ChunkComponent& other);
     ChunkComponent& operator=(const ChunkComponent& other);
 

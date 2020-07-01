@@ -13,8 +13,6 @@ class RenderQuad {
         GLuint m_ebo;
         GLuint m_vbo;
 
-        bool m_firstBuffer = true;
-
     public:
         // area in screen space
         RenderQuad();

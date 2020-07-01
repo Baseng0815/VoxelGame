@@ -1,10 +1,9 @@
 #pragma once
 
+#include <string>
 #include <GL/glew.h>
 
-#include "../Resource.h"
-
-class Texture : public Resource {
+class Texture {
     private:
         GLuint m_texture;
         int m_width, m_height, m_channels;

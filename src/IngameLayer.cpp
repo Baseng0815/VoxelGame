@@ -3,7 +3,7 @@
 #include "../include/Systems/InputSystem.h"
 #include "../include/Systems/PhysicsSystem.h"
 #include "../include/Systems/ChunkCreateSystem.h"
-#include "../include/Systems/EntityRenderSystem.h"
+#include "../include/Systems/MeshRenderSystem.h"
 
 #include "../include/Components/AtlasComponent.h"
 #include "../include/Components/WorldComponent.h"
@@ -25,7 +25,7 @@ IngameLayer::IngameLayer(Application* application)
     m_systems.push_back(new ChunkCreateSystem(&m_registry));
     m_systems.push_back(new PhysicsSystem(&m_registry));
     m_systems.push_back(new InputSystem(&m_registry));
-    m_systems.push_back(new EntityRenderSystem(&m_registry));
+    m_systems.push_back(new MeshRenderSystem(&m_registry));
 
     // world
     auto entity = m_registry.create();

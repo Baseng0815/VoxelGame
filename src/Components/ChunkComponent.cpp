@@ -6,8 +6,8 @@
 #include "../../include/Events/Event.h"
 #include "../../include/Events/EventDispatcher.h"
 
-ChunkComponent::ChunkComponent(int chunkX, int chunkZ) :
-	chunkX(chunkX), chunkZ(chunkZ) {
+ChunkComponent::ChunkComponent(std::mutex* blockMutex, int chunkX, int chunkZ) :
+	blockMutex(blockMutex), chunkX(chunkX), chunkZ(chunkZ) {
 }
 
 ChunkComponent::ChunkComponent(const ChunkComponent& other) :

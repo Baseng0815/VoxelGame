@@ -5,7 +5,7 @@
 #include "../include/Rendering/Shader.h"
 #include "../include/Rendering/Texture.h"
 
-std::map<std::string, Resource*> ResourceManager::resources;
+std::map<std::string, void*> ResourceManager::resources;
 
 // TODO remove
 #include <iostream>
@@ -16,22 +16,15 @@ void ResourceManager::loadResources() {
     resources.emplace("textureBackgroundMainMenu", new Texture("Textures/background_mainmenu.png"));
 
     // shaders
-    resources.emplace("chunkShader", new Shader("Shaders/chunkShader"));
+    resources.emplace("shaderMeshRender", new Shader("Shaders/meshRenderShader"));
     resources.emplace("shaderTexturedQuad", new Shader("Shaders/texturedQuadShader"));
     resources.emplace("shaderColoredQuad", new Shader("Shaders/coloredQuadShader"));
     resources.emplace("skyboxShader", new Shader("Shaders/skyboxShader"));
-    resources.emplace("lightingShader", new Shader("Shaders/lightingShader"));
     resources.emplace("shaderText", new Shader("Shaders/textShader"));
 
-    // chunkShader
-    Shader* shader = getResource<Shader>("chunkShader");
+    // meshRenderShader
+    Shader* shader = getResource<Shader>("shaderMeshRender");
     shader->setAttributes({"position", "normal", "uvCoords"});
-    // lightingShader
-    shader = getResource<Shader>("lightingShader");
-    shader->setAttributes({"position", "uvCoords"});
-    shader->upload("gPosition", 0);
-    shader->upload("gNormal", 1);
-    shader->upload("gAlbedo", 2);
 
     // quad shaders
     shader = getResource<Shader>("shaderTexturedQuad");
@@ -48,11 +41,11 @@ void ResourceManager::freeResources() {
         delete resource.second;
 }
 
-Resource* ResourceManager::getResourceBase(const std::string& id) {
+void* ResourceManager::getResourceBase(const std::string& id) {
     auto it = resources.find(id);
     if (it == resources.end())
         return nullptr;
-    else return &(*it->second);
+    else return it->second;
 }
 
 template<class T>

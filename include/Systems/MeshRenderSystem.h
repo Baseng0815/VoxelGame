@@ -17,23 +17,14 @@ struct TransformationComponent;
 
 struct FramebufferSizeEvent;
 
-class EntityRenderSystem : public System {
+class MeshRenderSystem : public System {
     private:
         // first render pass
-        Shader* m_blockShader;
-        Shader* m_lightingShader;
+        Shader* m_meshRenderShader;
         Texture* m_atlas;
-
-        // second render pass
-        Light m_light;
-        GBuffer m_gBuffer;
-        RenderQuad m_renderQuad;
-        glm::mat4 m_orthoProjection;
-
-        void handleFramebufferSize(const FramebufferSizeEvent& e);
 
         void _update(int dt) override;
 
     public:
-        EntityRenderSystem(entt::registry* registry);
+        MeshRenderSystem(entt::registry* registry);
 };
