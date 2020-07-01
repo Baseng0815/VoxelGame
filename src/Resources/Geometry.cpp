@@ -1,4 +1,4 @@
-#include "../../include/Rendering/Geometry.h"
+#include "../../include/Resources/Geometry.h"
 
 #include "../../include/Utility.h"
 
@@ -34,6 +34,8 @@ Geometry::Geometry() {
 
 void Geometry::fillBuffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) {
     glBindVertexArray(m_vao);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices[0]) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices[0]) * indices.size(), indices.data(), GL_STATIC_DRAW);
     glBindVertexArray(0);

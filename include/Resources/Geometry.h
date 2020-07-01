@@ -3,9 +3,11 @@
 #include <string>
 #include <GL/glew.h>
 #include <vector>
-#include "Vertex.h"
+#include "../Rendering/Vertex.h"
 
-class Geometry {
+#include "Resource.h"
+
+class Geometry : public Resource {
     private:
         GLuint m_vao, m_vbo, m_ebo;
         unsigned int m_drawCount;

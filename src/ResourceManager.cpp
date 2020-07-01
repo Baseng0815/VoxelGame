@@ -1,14 +1,12 @@
 #include "../include/ResourceManager.h"
 #include <utility>
 
-#include "../include/Rendering/Font.h"
-#include "../include/Rendering/Shader.h"
-#include "../include/Rendering/Texture.h"
+#include "../include/Resources/Font.h"
+#include "../include/Resources/Shader.h"
+#include "../include/Resources/Texture.h"
+#include "../include/Resources/Geometry.h"
 
-std::map<std::string, void*> ResourceManager::resources;
-
-// TODO remove
-#include <iostream>
+std::map<std::string, Resource*> ResourceManager::resources;
 
 void ResourceManager::loadResources() {
     // textures
@@ -41,11 +39,11 @@ void ResourceManager::freeResources() {
         delete resource.second;
 }
 
-void* ResourceManager::getResourceBase(const std::string& id) {
+Resource* ResourceManager::getResourceBase(const std::string& id) {
     auto it = resources.find(id);
     if (it == resources.end())
         return nullptr;
-    else return it->second;
+    else return &(*it->second);
 }
 
 template<class T>
@@ -56,3 +54,4 @@ T* ResourceManager::getResource(const std::string& id) {
 template Texture* ResourceManager::getResource<Texture>(const std::string&);
 template Shader* ResourceManager::getResource<Shader>(const std::string&);
 template Font* ResourceManager::getResource<Font>(const std::string&);
+template Geometry* ResourceManager::getResource<Geometry>(const std::string&);

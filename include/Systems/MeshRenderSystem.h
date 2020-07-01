@@ -2,8 +2,6 @@
 #include "../../include/Rendering/GBuffer.h"
 #include "../../include/Rendering/RenderQuad.h"
 
-#include "../../include/Rendering/Shader.h"
-
 struct Light {
     glm::vec3 dir;
     glm::vec3 color;

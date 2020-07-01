@@ -7,7 +7,8 @@
 #include "../../include/Components/MeshRenderComponent.h"
 #include "../../include/Components/TransformationComponent.h"
 
-#include "../../include/Rendering/Texture.h"
+#include "../../include/Resources/Shader.h"
+#include "../../include/Resources/Texture.h"
 
 void MeshRenderSystem::_update(int dt) {
     // clear screen framebuffer
@@ -25,8 +26,8 @@ void MeshRenderSystem::_update(int dt) {
     m_registry->view<TransformationComponent, MeshRenderComponent>().each(
             [&](auto& transformation, auto& meshRenderer) {
         if (meshRenderer.geometry.getDrawCount() > 0) {
+            m_meshRenderShader->upload("modelMatrix", transformation.getModelMatrix());
             meshRenderer.material.diffuseMap->bind(GL_TEXTURE0);
-            std::cout << meshRenderer.geometry.getVao() << " " << meshRenderer.geometry.getDrawCount() << std::endl;
             glBindVertexArray(meshRenderer.geometry.getVao());
             // URGENT: TODO fix this crash
             glDrawElements(GL_TRIANGLES, meshRenderer.geometry.getDrawCount(), GL_UNSIGNED_INT, nullptr);

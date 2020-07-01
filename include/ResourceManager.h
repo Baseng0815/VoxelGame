@@ -5,15 +5,17 @@
 #include <memory>
 #include <string>
 
+class Resource;
+
 class ResourceManager {
     private:
-        static std::map<std::string, void*> resources;
+        static std::map<std::string, Resource*> resources;
 
     public:
         static void loadResources();
         static void freeResources();
 
-        static void* getResourceBase(const std::string& id);
+        static Resource* getResourceBase(const std::string& id);
         template <class T>
         static T* getResource(const std::string& id);
 };

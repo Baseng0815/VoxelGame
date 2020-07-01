@@ -1,7 +1,7 @@
 #include "../../include/Gui/GUI.h"
 #include "../../include/Gui/Text.h"
 
-#include "../../include/Rendering/Shader.h"
+#include "../../include/Resources/Shader.h"
 
 #include "../../include/Configuration.h"
 #include "../../include/Events/EventDispatcher.h"

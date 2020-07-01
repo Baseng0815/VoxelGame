@@ -3,7 +3,9 @@
 #include <string>
 #include <GL/glew.h>
 
-class Texture {
+#include "Resource.h"
+
+class Texture : public Resource {
     private:
         GLuint m_texture;
         int m_width, m_height, m_channels;

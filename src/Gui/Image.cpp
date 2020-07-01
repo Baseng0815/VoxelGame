@@ -1,8 +1,8 @@
 #include "../../include/Gui/Image.h"
 
 #include "../../include/ResourceManager.h"
-#include "../../include/Rendering/Shader.h"
-#include "../../include/Rendering/Texture.h"
+#include "../../include/Resources/Shader.h"
+#include "../../include/Resources/Texture.h"
 
 void Image::updateImageDimensions() {
     m_minWidth = m_texture->getWidth();

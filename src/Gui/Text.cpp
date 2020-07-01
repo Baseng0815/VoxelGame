@@ -1,8 +1,8 @@
 #include "../../include/Gui/Text.h"
 #include "../../include/Gui/Layout.h"
 
-#include "../../include/Rendering/Font.h"
-#include "../../include/Rendering/Shader.h"
+#include "../../include/Resources/Font.h"
+#include "../../include/Resources/Shader.h"
 #include "../../include/Rendering/Window.h"
 
 #include "../../include/ResourceManager.h"

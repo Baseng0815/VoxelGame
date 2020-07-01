@@ -15,7 +15,7 @@
 #include "../include/Application.h"
 #include "../include/ResourceManager.h"
 #include "../include/Events/EventDispatcher.h"
-#include "../include/Rendering/Texture.h"
+#include "../include/Resources/Texture.h"
 
 IngameLayer::IngameLayer(Application* application)
     : GameLayer(application) {

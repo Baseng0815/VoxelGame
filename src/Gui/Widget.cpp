@@ -2,7 +2,7 @@
 #include "../../include/Gui/Layout.h"
 
 #include "../../include/ResourceManager.h"
-#include "../../include/Rendering/Shader.h"
+#include "../../include/Resources/Shader.h"
 
 #include <algorithm>
 
