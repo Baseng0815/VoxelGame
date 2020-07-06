@@ -15,12 +15,21 @@ void MeshRenderSystem::_update(int dt) {
     glClearColor(0, 0, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    m_meshRenderShader->bind();
-
+    // upload common values for both shaders
+    m_meshRenderShaderColor->bind();
     m_registry->view<CameraComponent>().each(
             [&](auto& camera) {
-        m_meshRenderShader->upload("viewMatrix", camera.viewMatrix);
-        m_meshRenderShader->upload("projectionMatrix", camera.perspectiveProjection);
+        m_meshRenderShaderColor->bind();
+        m_meshRenderShaderColor->upload("viewMatrix", camera.viewMatrix);
+        m_meshRenderShaderColor->upload("projectionMatrix", camera.perspectiveProjection);
+    });
+
+    m_meshRenderShaderTexture->bind();
+    m_registry->view<CameraComponent>().each(
+            [&](auto& camera) {
+        m_meshRenderShaderTexture->bind();
+        m_meshRenderShaderTexture->upload("viewMatrix", camera.viewMatrix);
+        m_meshRenderShaderTexture->upload("projectionMatrix", camera.perspectiveProjection);
     });
 
     m_registry->view<TransformationComponent, MeshRenderComponent>().each(
@@ -37,5 +46,6 @@ void MeshRenderSystem::_update(int dt) {
 
 MeshRenderSystem::MeshRenderSystem(entt::registry* registry)
     : System(registry, 0) {
-        m_meshRenderShader = ResourceManager::getResource<Shader>("shaderMeshRender");
+        m_meshRenderShaderColor = ResourceManager::getResource<Shader>("shaderMeshRenderColor");
+        m_meshRenderShaderTexture = ResourceManager::getResource<Shader>("shaderMeshRenderTexture");
     }

@@ -1,6 +1,7 @@
 #include "../../include/Systems/System.h"
 #include "../../include/Rendering/GBuffer.h"
 #include "../../include/Rendering/RenderQuad.h"
+#include "../../include/Rendering/Light.h"
 
 struct Light {
     glm::vec3 dir;
@@ -17,9 +18,11 @@ struct FramebufferSizeEvent;
 
 class MeshRenderSystem : public System {
     private:
-        // first render pass
-        Shader* m_meshRenderShader;
+        Shader* m_meshRenderShaderColor;
+        Shader* m_meshRenderShaderTexture;
         Texture* m_atlas;
+
+        PointLight light;
 
         void _update(int dt) override;
 

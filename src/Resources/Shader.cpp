@@ -77,10 +77,10 @@ GLint Shader::getLocation(const std::string& location) {
 }
 
 // Public functions
-Shader::Shader(const std::string& file) {
+Shader::Shader(const std::string& vertex, const std::string& fragment) {
     m_program = glCreateProgram();
-    m_shaders[0] = createShader(loadShader(Configuration::getStringValue("ResourceBasePath") + file + ".vert"), GL_VERTEX_SHADER);
-    m_shaders[1] = createShader(loadShader(Configuration::getStringValue("ResourceBasePath") + file + ".frag"), GL_FRAGMENT_SHADER);
+    m_shaders[0] = createShader(loadShader(Configuration::getStringValue("ResourceBasePath") + vertex), GL_VERTEX_SHADER);
+    m_shaders[1] = createShader(loadShader(Configuration::getStringValue("ResourceBasePath") + fragment), GL_FRAGMENT_SHADER);
 
     for (unsigned int i = 0; i < NUM_SHADERS; i++)
         glAttachShader(m_program, m_shaders[i]);
@@ -88,8 +88,11 @@ Shader::Shader(const std::string& file) {
     glLinkProgram(m_program);
     checkShaderError(m_program, GL_LINK_STATUS, GL_TRUE, "Error: Program failed to link: ");
     glValidateProgram(m_program);
-    checkShaderError(m_program, GL_VALIDATE_STATUS, GL_TRUE, "Error: Program is invalid: " + file);
+    checkShaderError(m_program, GL_VALIDATE_STATUS, GL_TRUE, "Error: Program is invalid!");
 }
+
+Shader::Shader(const std::string& file)
+    : Shader(file + ".vert", file + ".frag") {}
 
 Shader::~Shader() {
     for (unsigned int i = 0; i < NUM_SHADERS; i++) {

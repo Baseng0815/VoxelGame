@@ -2,9 +2,9 @@
 
 #include <glm/glm.hpp>
 
-struct Light {
-    glm::vec3 dir;
-    glm::vec3 color;
-
-    Light(glm::vec3 direction = glm::vec3(-0.25f, 1, -0.25f), glm::vec3 color = glm::vec3(0.2f, 0.2f, 0.2f));
+struct PointLight {
+    glm::vec3 position = glm::vec3(0.0f);
+    glm::vec3 ambient = glm::vec3(1.0f);
+    glm::vec3 diffuse = glm::vec3(1.0f);
+    glm::vec3 specular = glm::vec3(1.0f);
 };

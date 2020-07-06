@@ -26,6 +26,7 @@ class Shader : public Resource {
         GLint getLocation(const std::string& location);
 
     public:
+        Shader(const std::string& vertex, const std::string& fragment);
         Shader(const std::string& file);
         ~Shader();
 

@@ -14,7 +14,8 @@ void ResourceManager::loadResources() {
     resources.emplace("textureBackgroundMainMenu", new Texture("Textures/background_mainmenu.png"));
 
     // shaders
-    resources.emplace("shaderMeshRender", new Shader("Shaders/meshRenderShader"));
+    resources.emplace("shaderMeshRenderTexture", new Shader("Shaders/meshRenderShader.vert", "Shaders/meshRenderShaderTexture.frag"));
+    resources.emplace("shaderMeshRenderColor", new Shader("Shaders/meshRenderShader.vert", "Shaders/meshRenderShaderColor.frag"));
     resources.emplace("shaderTexturedQuad", new Shader("Shaders/texturedQuadShader"));
     resources.emplace("shaderColoredQuad", new Shader("Shaders/coloredQuadShader"));
     resources.emplace("skyboxShader", new Shader("Shaders/skyboxShader"));
