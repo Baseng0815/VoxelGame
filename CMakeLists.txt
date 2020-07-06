@@ -80,19 +80,17 @@ else()
     message("OpenGL LIBRARIES: ${OPENGL_LIBRARIES}")
     message("GLEW LIBRARIES: ${GLEW_LIBRARIES}")
 
-    # ./libnoise
-    # include_directories(/usr/include)
-
-    # freetype
-    include_directories(/usr/include/freetype2)
-
-    # link_directories("/usr/local/lib")
-
     file(GLOB_RECURSE SOURCES
         include/*.h
         src/*.cpp)
 
     add_executable(VoxelGame ${SOURCES})
+
+    # add include directories
+    target_include_directories(VoxelGame PUBLIC
+        /usr/include/freetype2)
+
+    # add libraries
     target_link_libraries(VoxelGame
         ${OPENGL_LIBRARIES}
         glfw ${GLFW_LIBRARIES}
