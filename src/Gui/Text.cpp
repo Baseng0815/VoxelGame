@@ -1,3 +1,4 @@
+#include "../../include/Gui/GUI.h"
 #include "../../include/Gui/Text.h"
 #include "../../include/Gui/Layout.h"
 
@@ -10,6 +11,8 @@
 void Text::updateTextRenderQuads() {
     float x = m_widgetArea.position.x;
 
+    // TODO find out why the hell just resizing the quads does NOT work (text becomes white)
+    m_charRenderQuads.clear();
     m_charRenderQuads.resize(m_string.size());
 
     for (int i = 0; i < m_charRenderQuads.size(); i++) {
@@ -32,8 +35,8 @@ void Text::updateTextRenderQuads() {
 void Text::updateTextDimensions() {
     m_minWidth = 0;
 
-    for (int i = 0; i < m_charRenderQuads.size(); i++) {
-        const Character& ch = m_font->getCharacter(m_string[i]);
+    for (char c : m_string) {
+        const Character& ch = m_font->getCharacter(c);
 
         float h = ch.size.y * m_textScale;
 
@@ -60,8 +63,8 @@ void Text::_draw(const glm::mat4& projection) const {
     }
 }
 
-Text::Text(const std::string& id, float textScale)
-    : Widget(id), m_textScale(textScale) {
+Text::Text(const std::string& id, GUI* gui, float textScale)
+    : Widget(id, gui), m_textScale(textScale) {
     m_textShader = ResourceManager::getResource<Shader>("shaderText");
 }
 
@@ -91,6 +94,7 @@ const std::string& Text::getString() const {
 
 void Text::setString(const std::string& string) {
     m_string = string;
+    m_gui->__invalidate();
 }
 
 const Font* Text::getFont() const {

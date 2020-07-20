@@ -5,6 +5,9 @@
 #include <glm/gtc/type_ptr.hpp>
 
 #include "../../include/Configuration.h"
+#include "../../include/Color.h"
+#include "../../include/Rendering/Light.h"
+#include "../../include/Resources/Material.h"
 
 // Private functions
 
@@ -78,6 +81,7 @@ GLint Shader::getLocation(const std::string& location) {
 
 // Public functions
 Shader::Shader(const std::string& vertex, const std::string& fragment) {
+    std::cout << "loading vertex shader " << vertex << " and fragment shader " << fragment << std::endl;
     m_program = glCreateProgram();
     m_shaders[0] = createShader(loadShader(Configuration::getStringValue("ResourceBasePath") + vertex), GL_VERTEX_SHADER);
     m_shaders[1] = createShader(loadShader(Configuration::getStringValue("ResourceBasePath") + fragment), GL_FRAGMENT_SHADER);
@@ -86,15 +90,15 @@ Shader::Shader(const std::string& vertex, const std::string& fragment) {
         glAttachShader(m_program, m_shaders[i]);
 
     glLinkProgram(m_program);
-    checkShaderError(m_program, GL_LINK_STATUS, GL_TRUE, "Error: Program failed to link: ");
+    checkShaderError(m_program, GL_LINK_STATUS, GL_TRUE, "Error: Program failed to link");
     glValidateProgram(m_program);
-    checkShaderError(m_program, GL_VALIDATE_STATUS, GL_TRUE, "Error: Program is invalid!");
+    checkShaderError(m_program, GL_VALIDATE_STATUS, GL_TRUE, "Error: Program is invalid");
 }
 
 Shader::Shader(const std::string& file)
     : Shader(file + ".vert", file + ".frag") {}
 
-Shader::~Shader() {
+void Shader::free() {
     for (unsigned int i = 0; i < NUM_SHADERS; i++) {
         glDetachShader(m_program, m_shaders[i]);
         glDeleteShader(m_shaders[i]);
@@ -135,4 +139,28 @@ void Shader::upload(const std::string& location, int value) {
 
 void Shader::upload(const std::string& location, const Color& color) {
     glUniform4f(getLocation(location), color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f);
+}
+
+void Shader::upload(const std::string& location, const PointLight& pointLight) {
+    upload(location + ".position", pointLight.position);
+    upload(location + ".ambient", pointLight.ambient);
+    upload(location + ".diffuse", pointLight.diffuse);
+    upload(location + ".specular", pointLight.specular);
+    upload(location + ".constant", pointLight.constant);
+    upload(location + ".linear", pointLight.linear);
+    upload(location + ".quadratic", pointLight.quadratic);
+}
+
+void Shader::upload(const std::string& location, const DirectionalLight& dirLight) {
+    upload(location + ".direction", dirLight.direction);
+    upload(location + ".ambient", dirLight.ambient);
+    upload(location + ".diffuse", dirLight.diffuse);
+    upload(location + ".specular", dirLight.specular);
+}
+
+void Shader::upload(const std::string& location, const Material& material) {
+    upload(location + ".ambient", material.ambient);
+    upload(location + ".diffuse", material.diffuse);
+    upload(location + ".specular", material.specular);
+    upload(location + ".shininess", material.shininess);
 }

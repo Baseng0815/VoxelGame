@@ -6,6 +6,7 @@
 #include "../include/ResourceManager.h"
 
 #include "../include/MainMenuLayer.h"
+#include "../include/IngameLayer.h"
 
 #include "../include/Components/CameraComponent.h"
 
@@ -40,8 +41,8 @@ Application::Application()
         handleKeys(e);
     };
 
-    //m_currentLayer = new IngameLayer();
-    m_currentLayer = new MainMenuLayer(this);
+    m_currentLayer = new IngameLayer(this);
+    //m_currentLayer = new MainMenuLayer(this);
 }
 
 Window& Application::getWindow() {
@@ -65,7 +66,12 @@ void Application::run() {
 
         // fps and render time
         if (m_time > 1000) {
-            std::cout << m_frameCounter / (float)m_time * 1000 << " fps" << std::endl;
+            std::cout << m_frameCounter / (float)m_time * 1000 << "fps, "
+                << m_time / (float)m_frameCounter << "ms avg. frame render time" << std::endl;
+
+            // TODO make this right
+            (static_cast<IngameLayer*>(m_currentLayer))->setDebugInfo(m_frameCounter / (float) m_time * 1000, m_time / (float)m_frameCounter * 1000, 0);
+
             m_frameTime = 0;
             m_frameCounter = 0;
             m_time = 0;

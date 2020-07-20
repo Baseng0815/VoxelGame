@@ -21,7 +21,7 @@ class Font : public Resource {
 
     public:
         Font(const std::string& file);
-        ~Font();
+        void free() override;
 
         const Character& getCharacter(char c) const;
 };

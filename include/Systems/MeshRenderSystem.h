@@ -3,11 +3,6 @@
 #include "../../include/Rendering/RenderQuad.h"
 #include "../../include/Rendering/Light.h"
 
-struct Light {
-    glm::vec3 dir;
-    glm::vec3 color;
-};
-
 class Shader;
 class Texture;
 
@@ -16,13 +11,18 @@ struct TransformationComponent;
 
 struct FramebufferSizeEvent;
 
+// TODO add light components instead of hard coding
+#define MAX_LIGHTS 1
+
 class MeshRenderSystem : public System {
     private:
+        // TODO use dynamically each frame instead of storing it here
         Shader* m_meshRenderShaderColor;
         Shader* m_meshRenderShaderTexture;
         Texture* m_atlas;
 
-        PointLight light;
+        PointLight m_pointLights[MAX_LIGHTS];
+        DirectionalLight m_sun;
 
         void _update(int dt) override;
 

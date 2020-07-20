@@ -5,17 +5,17 @@
 
 #include "../Color.h"
 
-// TODO add content-align (e.g. for text inside of large widget)
 struct UiProperties {
-    bool isVisible;
+    bool isVisible = true;
+    bool receiveEvents = true;
     UiConstraints constraints;
     Margin margin;
     Padding padding;
 
-    Color backgroundColor = Color::Black;
+    Color backgroundColor = Color::Transparent;
     Color foregroundColor = Color::White;
-    Color hoverBackground = Color::Black;
+    Color hoverBackground = Color::Transparent;
     Color hoverForeground = Color::White;
-    Color pressBackground = Color::Black;
+    Color pressBackground = Color::Transparent;
     Color pressForeground = Color::White;
 };

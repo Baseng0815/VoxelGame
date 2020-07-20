@@ -1,3 +1,6 @@
 #pragma once
 
-class Resource {};
+class Resource {
+    public:
+        virtual void free();
+};

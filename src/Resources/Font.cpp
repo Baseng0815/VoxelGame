@@ -8,6 +8,8 @@
 #include "../../include/ResourceManager.h"
 
 Font::Font(const std::string& file) {
+    std::cout << "loading font " << file << std::endl;
+
     FT_Library ft;
     if (FT_Init_FreeType(&ft))
         std::cout << "Error while initializing freetype library." << std::endl;
@@ -50,7 +52,7 @@ Font::Font(const std::string& file) {
     FT_Done_FreeType(ft);
 }
 
-Font::~Font() {
+void Font::free() {
     for (auto it = m_characters.begin(); it != m_characters.end(); it++)
         glDeleteTextures(1, &it->second.texture);
 }

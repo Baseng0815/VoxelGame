@@ -158,7 +158,7 @@ void InputSystem::updateVectors(CameraComponent& camera) {
 }
 
 void InputSystem::updateViewMatrix(CameraComponent& camera, TransformationComponent& transform) {
-    camera.viewMatrix = glm::lookAt(transform.position, transform.position + camera.front, glm::vec3(0, 1, 0));
+    camera.viewMatrix = glm::lookAt(transform.getPosition(), transform.getPosition() + camera.front, glm::vec3(0, 1, 0));
 }
 
 void InputSystem::updateProjectionMatrix(CameraComponent& camera) {

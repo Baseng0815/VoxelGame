@@ -8,22 +8,22 @@
 
 #include <glm/glm.hpp>
 
-struct ChunkComponent;
 struct BoxCollision;
+struct ChunkComponent;
+struct TransformationComponent;
 
 class PhysicsSystem : public System {
-private:
-	std::vector<entt::entity> movedObjects = std::vector<entt::entity>();
+    private:
+        std::vector<entt::entity> movedObjects;
 
-	void _update(int dt) override final;
+        void _update(int dt) override final;
 
-	void solveBlockCollisions();
+        void solveBlockCollisions();
 
-	void checkAndHandleCollisions(const BoxCollision&, const BoxCollision&,
-		glm::vec3&, glm::vec3&) const;
-public:
-	PhysicsSystem(entt::registry* registry);
+        void checkAndHandleCollisions(const BoxCollision&, const BoxCollision&,
+                TransformationComponent&, glm::vec3&) const;
+    public:
+        PhysicsSystem(entt::registry* registry);
 
-	~PhysicsSystem();
+        ~PhysicsSystem();
 };
-

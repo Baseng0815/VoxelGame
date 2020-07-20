@@ -2,6 +2,8 @@
 
 #include "../../include/Utility.h"
 
+#include <iostream>
+
 void Geometry::initBuffers() {
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
@@ -20,6 +22,7 @@ void Geometry::initBuffers() {
 }
 
 Geometry::Geometry(const std::string& file) {
+    std::cout << "loading geometry " << file << std::endl;
     // TODO implement .obj file loading
 }
 
@@ -32,6 +35,12 @@ Geometry::Geometry() {
     initBuffers();
 }
 
+void Geometry::free() {
+    glDeleteBuffers(1, &m_vbo);
+    glDeleteBuffers(1, &m_ebo);
+    glDeleteVertexArrays(1, &m_vao);
+}
+
 void Geometry::fillBuffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) {
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
@@ -41,6 +50,7 @@ void Geometry::fillBuffers(const std::vector<Vertex>& vertices, const std::vecto
     glBindVertexArray(0);
 
     m_drawCount = indices.size();
+    m_isReady = true;
 }
 
 GLuint Geometry::getVao() const {
@@ -57,4 +67,8 @@ GLuint Geometry::getEbo() const {
 
 unsigned int Geometry::getDrawCount() const {
     return m_drawCount;
+}
+
+bool Geometry::isReady() const {
+    return m_isReady;
 }

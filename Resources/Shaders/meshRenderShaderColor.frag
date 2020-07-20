@@ -1,9 +1,8 @@
 #version 420
-// ^nice^
 
 in vec3 pass_normal;
 in vec3 pass_fragPos;
-in vec2 pass_uvCoords;
+// in vec2 pass_uvCoords;
 
 struct Material {
     vec3 diffuse;
@@ -36,9 +35,10 @@ void main() {
     vec3 reflectDir = reflect(-lightDir, norm);
     float spec = pow(max(dot(viewDir, reflectDir), 0.0f), 32.0f);
 
+    // combine
     vec3 ambient = light.ambient * material.ambient;
     vec3 diffuse = light.diffuse * (diff * material.diffuse);
     vec3 specular = light.specular * (spec * material.specular);
 
-    out_Color = ambient + diffuse + specular
+     out_Color = vec4(ambient + diffuse + specular, 1.0f);
 }

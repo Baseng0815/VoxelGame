@@ -36,22 +36,25 @@ void Widget::_draw(const glm::mat4& projection) const {
     // default widget does nothing special
 }
 
-Widget::Widget(const std::string& id)
-    : m_id(id) {
+Widget::Widget(const std::string& id, GUI *gui)
+    : m_id(id), m_gui(gui) {
     m_coloredQuadShader = ResourceManager::getResource<Shader>("shaderColoredQuad");
 }
 
 void Widget::draw(const glm::mat4& projection) const {
-    // draw background
-    m_coloredQuadShader->bind();
-    m_coloredQuadShader->upload("color", m_properties.backgroundColor);
-    m_coloredQuadShader->upload("projectionMatrix", projection);
-    m_renderQuadBackground.render();
+    if (m_properties.isVisible) {
+        // draw background
+        m_coloredQuadShader->bind();
+        m_coloredQuadShader->upload("color", m_properties.backgroundColor);
+        m_coloredQuadShader->upload("projectionMatrix", projection);
+        m_renderQuadBackground.render();
 
-    // draw custom
-    _draw(projection);
+        // draw custom
+        _draw(projection);
+    }
 }
 
+#include <iostream>
 void Widget::updateArea(const Rectangle& parent) {
     m_widgetArea = m_properties.constraints.getRect(parent, m_properties, m_minWidth, m_minHeight);
     applyPadding();

@@ -64,7 +64,7 @@ void PhysicsSystem::_update(int dt) {
 
                     camera.relVelocity += dv;
 
-                    camera.isFalling = !world.getBlock(*m_registry, glm::vec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).isSolid();
+                    camera.isFalling = !world.getBlock(*m_registry, transformation.getPosition() + glm::vec3(0, -1.5f, 0)).isSolid();
                     if (!camera.isFalling) {
                         camera.relVelocity.y = 0;
                     }
@@ -75,7 +75,7 @@ void PhysicsSystem::_update(int dt) {
                 }
                 else {
                     // TODO reintroduce
-                    //camera.isFalling = !world.getBlock(*m_registry, glm::vec3(transformation.position.x, transformation.position.y - 1.5f, transformation.position.z)).isSolid();
+                    //camera.isFalling = !world.getBlock(*m_registry, transformation.getPosition() + glm::vec3(0, 1.5f, 0)).isSolid();
                     if (camera.relVelocity.y < 0)
                         camera.relVelocity.y = 0;
                 }
@@ -105,23 +105,23 @@ void PhysicsSystem::_update(int dt) {
             VelocityComponent& velocity = view.get<VelocityComponent>(entity);
 
             bool isCamera = m_registry->has<CameraComponent>(entity);
-            //glm::vec3 oldPos = transformation.position;		
+            //glm::vec3 oldPos = transformation.position;
             //glm::vec3 newPos = oldPos;
 
             if (isCamera) {
                 CameraComponent& camera = m_registry->get<CameraComponent>(entity);
 
-                int prevChunkX = transformation.position.x / Configuration::CHUNK_SIZE;
-                int prevChunkZ = transformation.position.z / Configuration::CHUNK_SIZE;
+                int prevChunkX = transformation.getPosition().x / Configuration::CHUNK_SIZE;
+                int prevChunkZ = transformation.getPosition().z / Configuration::CHUNK_SIZE;
 
                 velocity.velocity = camera.relVelocity.x * camera.right
                     + camera.relVelocity.y * glm::vec3(0, 1, 0)
                     + camera.relVelocity.z * camera.front_noY;
 
-                transformation.position += (velocity.velocity) * (float)dtSec * Configuration::getFloatValue("CAMERA_MOVE_SPEED");
+                transformation.move(velocity.velocity * (float)dtSec * Configuration::getFloatValue("CAMERA_MOVE_SPEED"));
 
-                int newChunkX = transformation.position.x / Configuration::CHUNK_SIZE;
-                int newChunkZ = transformation.position.z / Configuration::CHUNK_SIZE;
+                int newChunkX = transformation.getPosition().x / Configuration::CHUNK_SIZE;
+                int newChunkZ = transformation.getPosition().z / Configuration::CHUNK_SIZE;
 
                 if (newChunkX != prevChunkX || newChunkZ != prevChunkZ) {
                     EnterChunkEvent e;
@@ -135,19 +135,19 @@ void PhysicsSystem::_update(int dt) {
 
                 if (length(velocity.velocity) != 0) {
                     movedObjects.push_back(entity);
-                    //newPos = transformation.position;
+                    //newPos = transformation.getPosition();
                 }
             }
             else {
-                transformation.position += velocity.velocity * (float)dtSec;
+                transformation.move(velocity.velocity * (float)dtSec);
 
                 if (length(velocity.velocity) != 0) {
                     movedObjects.push_back(entity);
-                    //newPos = transformation.position;
+                    //newPos = transformation.getPosition();
                 }
             }
 
-            //if (newPos != oldPos) {				
+            //if (newPos != oldPos) {
             //	EntityMovedEvent e;
             //	e.entity = entity;
             //	e.oldPos = oldPos;
@@ -178,7 +178,7 @@ void PhysicsSystem::solveBlockCollisions() {
 
         BoxCollision collision = BoxCollision(*rigidBody.collision);
 
-        std::vector<glm::vec3> affectedBlocks = collision.getAffectedBlocks(transformation.position);
+        std::vector<glm::vec3> affectedBlocks = collision.getAffectedBlocks(transformation.getPosition());
         glm::vec3 moveOutVec = glm::vec3();
         bool hasCollision = false;
 
@@ -202,7 +202,7 @@ void PhysicsSystem::solveBlockCollisions() {
             BoxCollision blockCollision = BoxCollision(glm::vec3(-0.5f, -0.5f, -0.5f), 1, 1, 1);
             blockCollision.dynamic = false;
 
-            checkAndHandleCollisions(collision, blockCollision, transformation.position, blockPos);
+            checkAndHandleCollisions(collision, blockCollision, transformation, blockPos);
         }
     }
 
@@ -210,10 +210,10 @@ void PhysicsSystem::solveBlockCollisions() {
 }
 
 void PhysicsSystem::checkAndHandleCollisions(const BoxCollision& collisionA, const BoxCollision& collisionB,
-        glm::vec3& posA, glm::vec3& posB) const {
+        TransformationComponent& transform, glm::vec3& posB) const {
 
-    if (Collision::intersects(&collisionA, posA, &collisionB, posB)) {
-        std::vector<glm::vec3> translationVectors = Collision::getTranslationVectors(&collisionA, posA, &collisionB, posB);
+    if (Collision::intersects(&collisionA, transform.getPosition(), &collisionB, posB)) {
+        std::vector<glm::vec3> translationVectors = Collision::getTranslationVectors(&collisionA, transform.getPosition(), &collisionB, posB);
 
         glm::vec3 mtv = glm::vec3();
         float minLenght = FLT_MAX;
@@ -226,11 +226,13 @@ void PhysicsSystem::checkAndHandleCollisions(const BoxCollision& collisionA, con
         }
 
         if (collisionA.dynamic && collisionB.dynamic) {
-            posA += 0.55f * mtv;
+            //posA += 0.55f * mtv;
+            transform.move(0.55f * mtv);
             posB += 0.55f * -mtv;
         }
         else if (collisionA.dynamic) {
-            posA += 1.1f * mtv;
+            //posA += 1.1f * mtv;
+            transform.move(1.1f * mtv);
         }
         else if (collisionB.dynamic) {
             posB += 1.1f * -mtv;

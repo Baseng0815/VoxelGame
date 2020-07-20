@@ -18,7 +18,7 @@ class Image : public Widget {
         void _draw(const glm::mat4& projection) const override;
 
     public:
-        Image(const std::string& id, Texture* texture = nullptr);
+        Image(const std::string& id, GUI *gui, Texture* texture = nullptr);
 
         void updateArea(const Rectangle& parent) override;
         void updateScreenElements() override;

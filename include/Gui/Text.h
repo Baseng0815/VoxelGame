@@ -27,7 +27,7 @@ class Text : public Widget {
         void _draw(const glm::mat4& projection) const override;
 
     public:
-        Text(const std::string& id, float textScale = 1.0f);
+        Text(const std::string& id, GUI* gui, float textScale = 1.0f);
 
         void updateArea(const Rectangle& parent) override;
         void updateScreenElements() override;
@@ -35,6 +35,7 @@ class Text : public Widget {
         void setScale(float scale);
         float getScale() const;
         const std::string& getString() const;
+        // TODO add invalidate system to widgets
         void setString(const std::string& str);
         const Font* getFont() const;
         void setFont(const Font* font);

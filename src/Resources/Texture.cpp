@@ -11,11 +11,12 @@
 #include "../../include/Configuration.h"
 
 Texture::Texture(const std::string& file) {
+    std::cout << "loading texture " << file << std::endl;
     glGenTextures(1, &m_texture);
 
     unsigned char* data = SOIL_load_image((Configuration::getStringValue("ResourceBasePath") + file).c_str(), &m_width, &m_height, &m_channels, SOIL_LOAD_RGBA);
     if (!data)
-        std::cout << "Failed to load texture" << file << std::endl;
+        std::cout << "failed to load texture" << file << std::endl;
 
     glBindTexture(GL_TEXTURE_2D, m_texture);
 
@@ -29,7 +30,7 @@ Texture::Texture(const std::string& file) {
     SOIL_free_image_data(data);
 }
 
-Texture::~Texture() {
+void Texture::free() {
     glDeleteTextures(1, &m_texture);
 }
 

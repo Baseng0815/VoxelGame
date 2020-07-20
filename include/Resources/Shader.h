@@ -6,8 +6,12 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-#include "../Color.h"
 #include "Resource.h"
+
+struct Color;
+struct PointLight;
+struct DirectionalLight;
+struct Material;
 
 // a class used for all shader programs
 class Shader : public Resource {
@@ -28,7 +32,7 @@ class Shader : public Resource {
     public:
         Shader(const std::string& vertex, const std::string& fragment);
         Shader(const std::string& file);
-        ~Shader();
+        void free() override;
 
         void setAttributes(const std::vector<std::string>& attribs);
         void bind() const;
@@ -39,4 +43,7 @@ class Shader : public Resource {
         void upload(const std::string& location, float value);
         void upload(const std::string& location, int value);
         void upload(const std::string& location, const Color& color);
+        void upload(const std::string& location, const PointLight& pointLight);
+        void upload(const std::string& location, const DirectionalLight& dirLight);
+        void upload(const std::string& location, const Material& material);
 };

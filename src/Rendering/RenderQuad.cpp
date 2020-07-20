@@ -15,9 +15,8 @@ RenderQuad::RenderQuad() {
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 6, NULL, GL_DYNAMIC_DRAW);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 4, BUFFER_OFFSET(0));
+    glBindVertexArray(0);
 }
-
-#include <iostream>
 
 RenderQuad::RenderQuad(const Rectangle& area, bool flipY)
     : RenderQuad() {

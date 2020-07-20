@@ -77,9 +77,9 @@ void Layout::_draw(const glm::mat4& projection) const {
         widget->draw(projection);
 }
 
-Layout::Layout(std::string id, GUI* gui)
-    : Widget(id), m_gui(gui) {
-    m_gui->registerWidget(this);
+Layout::Layout(const std::string& id, GUI* gui)
+    : Widget(id, gui) {
+    m_gui->__registerWidget(this);
 }
 
 void Layout::setStackMode(StackMode stackMode, bool invertStack, bool invertStackWidgets) {
@@ -107,24 +107,24 @@ void Layout::updateScreenElements() {
 }
 
 template<typename T>
-T* Layout::addWidget(std::string id) {
-    T* widget = new T(id);
+T* Layout::addWidget(const std::string& id) {
+    T* widget = new T(id, m_gui);
     m_widgets.push_back(widget);
-    m_gui->registerWidget(widget);
+    m_gui->__registerWidget(widget);
     return widget;
 }
 
 template<>
-Layout* Layout::addWidget(std::string id) {
+Layout* Layout::addWidget(const std::string& id) {
     Layout* widget = new Layout(id, m_gui);
     m_widgets.push_back(widget);
-    m_gui->registerWidget(widget);
+    m_gui->__registerWidget(widget);
     return widget;
 }
 
 Widget* Layout::addWidget(Widget* widget) {
     m_widgets.push_back(widget);
-    m_gui->registerWidget(widget);
+    m_gui->__registerWidget(widget);
     return widget;
 }
 
@@ -137,5 +137,5 @@ WidgetIt Layout::end() {
 }
 
 // predefine templates here
-template Text* Layout::addWidget<Text>(std::string);
-template Image* Layout::addWidget<Image>(std::string);
+template Text* Layout::addWidget<Text>(const std::string&);
+template Image* Layout::addWidget<Image>(const std::string&);

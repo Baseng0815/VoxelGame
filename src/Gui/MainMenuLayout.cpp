@@ -1,19 +1,22 @@
-#include "../../include/Gui/MainMenu.h"
+#include "../../include/Gui/MainMenuLayout.h"
 
 #include "../../include/Gui/Text.h"
-#include "../../include/Gui/Image.h".h"
+#include "../../include/Gui/Image.h"
 #include "../../include/ResourceManager.h"
 
-MainMenu::MainMenu()
-    : GUI() {
+MainMenuLayout::MainMenuLayout(GUI* gui)
+    : Layout("layout_mainmenu", gui) {
+    m_properties.constraints.width = RelativeConstraint(1);
+    m_properties.constraints.height = RelativeConstraint(1);
+
     // add elements
-    Image* img = new Image("image_background", ResourceManager::getResource<Texture>("textureBackgroundMainMenu"));
+    Image* img = new Image("image_background", gui, ResourceManager::getResource<Texture>("textureBackgroundMainMenu"));
     img->getProperties().constraints.width = RelativeConstraint(1);
     img->getProperties().constraints.height = RelativeConstraint(1);
-    m_rootLayout->addWidget(img);
+    this->addWidget(img);
 
     // text being (ab)used as button
-    Text* t = m_rootLayout->addWidget<Text>("button_quit");
+    Text* t = this->addWidget<Text>("button_quit");
     t->getProperties().backgroundColor = Color::Gray;
     t->getProperties().foregroundColor = Color::Emerald;
     t->getProperties().constraints.x = CenterConstraint();
@@ -22,7 +25,7 @@ MainMenu::MainMenu()
     t->setFont(ResourceManager::getResource<Font>("fontKoruri"));
     t->setString("Quit");
 
-    t = m_rootLayout->addWidget<Text>("button_start");
+    t = this->addWidget<Text>("button_start");
     t->getProperties().backgroundColor = Color::Gray;
     t->getProperties().foregroundColor = Color::Emerald;
     t->getProperties().constraints.x = CenterConstraint();
@@ -30,8 +33,4 @@ MainMenu::MainMenu()
     t->getProperties().padding.both(20);
     t->setFont(ResourceManager::getResource<Font>("fontKoruri"));
     t->setString("Start");
-}
-
-MainMenu::~MainMenu() {
-
 }

@@ -42,7 +42,7 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e) {
 
                 m_registry->emplace<TransformationComponent>(entity, TransformationComponent {glm::vec3(x * Configuration::CHUNK_SIZE,
                             0, z * Configuration::CHUNK_SIZE)});
-                m_registry->emplace<MeshRenderComponent>(entity, MeshRenderComponent {ResourceManager::getResource<Texture>("textureAtlas")});
+                m_registry->emplace<MeshRenderComponent>(entity, MeshRenderComponent {ResourceManager::getResource<Material>("materialChunkBlocks")});
                 m_registry->emplace<ChunkComponent>(entity, ChunkComponent(new std::mutex(), x, z));
 
                 loadedChunks.push_back(pos);
@@ -237,6 +237,7 @@ void ChunkCreateSystem::updateChunkBuffers(Geometry& geometry,
 void ChunkCreateSystem::_update(int dt) {
     auto worldView = m_registry->view<WorldComponent>();
 
+    // TODO REWORK THIS WHOLE STUPID AND COMPLICATED CHUNK CREATE WORKFLOW
     WorldComponent& world = worldView.get(worldView.front());
 
     // delete queued chunks if no thread is active on them
@@ -352,4 +353,6 @@ ChunkCreateSystem::ChunkCreateSystem(entt::registry* registry)
         EventDispatcher::onBlockChange += [this](const BlockChangedEvent& e) {
             handleBlockChanged(e);
         };
+
+        handleEnterChunk(EnterChunkEvent());
     }

@@ -13,42 +13,41 @@
 #include "../include/Components/TransformationComponent.h"
 
 #include "../include/Application.h"
+#include "../include/Gui/DebugLayout.h"
 #include "../include/ResourceManager.h"
-#include "../include/Events/EventDispatcher.h"
 #include "../include/Resources/Texture.h"
+#include "../include/Events/EventDispatcher.h"
+
 
 IngameLayer::IngameLayer(Application* application)
     : GameLayer(application) {
-    m_application->getWindow().disableCursor();
+        m_application->getWindow().disableCursor();
 
-    // create all systems
-    m_systems.push_back(new ChunkCreateSystem(&m_registry));
-    m_systems.push_back(new PhysicsSystem(&m_registry));
-    m_systems.push_back(new InputSystem(&m_registry));
-    m_systems.push_back(new MeshRenderSystem(&m_registry));
+        // create all systems
+        m_systems.push_back(new ChunkCreateSystem(&m_registry));
+        m_systems.push_back(new PhysicsSystem(&m_registry));
+        m_systems.push_back(new InputSystem(&m_registry));
+        m_systems.push_back(new MeshRenderSystem(&m_registry));
 
-    // world
-    auto entity = m_registry.create();
-    m_registry.emplace<WorldComponent>(entity);
+        // world
+        auto entity = m_registry.create();
+        m_registry.emplace<WorldComponent>(entity);
 
-    // atlas
-    entity = m_registry.create();
-    Texture* atlasTexture = ResourceManager::getResource<Texture>("textureAtlas");
-    m_registry.emplace<AtlasComponent>(entity, atlasTexture->getWidth(), atlasTexture->getHeight(), 16);
+        // atlas
+        entity = m_registry.create();
+        Texture* atlasTexture = ResourceManager::getResource<Texture>("textureAtlas");
+        m_registry.emplace<AtlasComponent>(entity, atlasTexture->getWidth(), atlasTexture->getHeight(), 16);
 
-    // raise beginning events
-    EnterChunkEvent e;
-    e.newX = e.newZ = e.oldX = e.oldZ = 0;
-    EventDispatcher::raiseEvent(e);
-}
+        m_gui.addPanel(new DebugLayout(&m_gui));
+    }
 
 IngameLayer::~IngameLayer() {
     m_registry.view<CameraComponent, RigidBodyComponent>().each(
-        [&](CameraComponent& camera, RigidBodyComponent& rigidBody) {
+            [&](CameraComponent& camera, RigidBodyComponent& rigidBody) {
             delete rigidBody.collision;
             delete rigidBody.shape;
-        }
-    );
+            }
+            );
 
     for (auto system : m_systems)
         delete system;
@@ -57,4 +56,11 @@ IngameLayer::~IngameLayer() {
 void IngameLayer::update(int dt) {
     for (auto system : m_systems)
         system->update(dt);
+
+    m_gui.update();
+    m_gui.draw();
+}
+
+void IngameLayer::setDebugInfo(int fps, int rendertime, int chunkCount) {
+    m_gui.getWidget<DebugLayout>("layout_debugpanel").setValues(fps, rendertime, chunkCount);
 }

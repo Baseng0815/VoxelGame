@@ -20,8 +20,6 @@ class Layout : public Widget {
     protected:
         std::vector<Widget*> m_widgets;
 
-        // used for registering widgets
-        GUI* m_gui;
         StackMode m_stackMode = STACK_NONE;
         bool m_invertStack = false;
         bool m_invertStackWidgets = false;
@@ -31,7 +29,7 @@ class Layout : public Widget {
         void _draw(const glm::mat4& projection) const override;
 
     public:
-        Layout(std::string id, GUI* gui);
+        Layout(const std::string& id, GUI* gui);
 
         void setStackMode(StackMode stackMode, bool invertStack, bool invertStackWidgets = false);
         void updateArea(const Rectangle& parent) override;
@@ -39,11 +37,11 @@ class Layout : public Widget {
 
         // create new widget
         template<class T>
-        T* addWidget(std::string id);
+        T* addWidget(const std::string& id);
 
         // add existing widget
         Widget* addWidget(Widget* widget);
-        void removeWidget(std::string id);
+        void removeWidget(const std::string& id);
 
         WidgetIt begin();
         WidgetIt end();

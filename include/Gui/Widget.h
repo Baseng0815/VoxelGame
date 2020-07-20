@@ -8,8 +8,12 @@
 #include <map>
 #include <string>
 
+class GUI;
 class Layout;
 class Shader;
+
+struct CursorEvent;
+struct MouseButtonEvent;
 
 class Widget {
     protected:
@@ -17,7 +21,10 @@ class Widget {
         Rectangle m_finalArea; // the final area the widget ends up taking, including padding
         Rectangle m_widgetArea; // the area the widget ends up taking, excluding padding
 
-        friend class GUI;
+        friend GUI;
+        // used for registering widgets and invalidating the whole GUI
+        GUI* m_gui;
+
         void applyPadding();
         float m_minWidth = 0, m_minHeight = 0; // the minimal area the widget needs
 
@@ -37,13 +44,13 @@ class Widget {
         virtual void _draw(const glm::mat4& projection) const;
 
     public:
-        CallbackList<int, int> onMove;
-        CallbackList<int, int> onEnter;
-        CallbackList<int, int> onLeave;
-        CallbackList<int, int> onPress;
-        CallbackList<int, int> onRelease;
+        CallbackList<const CursorEvent&> onMove;
+        CallbackList<const CursorEvent&> onEnter;
+        CallbackList<const CursorEvent&> onLeave;
+        CallbackList<const MouseButtonEvent&> onPress;
+        CallbackList<const MouseButtonEvent&> onRelease;
 
-        Widget(const std::string& id);
+        Widget(const std::string &id, GUI *gui);
         virtual ~Widget() = default;
 
         void draw(const glm::mat4& projection) const;

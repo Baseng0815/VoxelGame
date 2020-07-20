@@ -12,7 +12,7 @@ class Texture : public Resource {
 
     public:
         Texture(const std::string& file);
-        ~Texture();
+        void free() override;
 
         void bind(int textureUnit);
         int getWidth() const;

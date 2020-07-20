@@ -11,6 +11,7 @@ class Geometry : public Resource {
     private:
         GLuint m_vao, m_vbo, m_ebo;
         unsigned int m_drawCount;
+        bool m_isReady = false;
 
         void initBuffers();
 
@@ -18,6 +19,7 @@ class Geometry : public Resource {
         Geometry(const std::string& file);
         Geometry(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
         Geometry();
+        void free() override;
 
         void fillBuffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 
@@ -25,4 +27,5 @@ class Geometry : public Resource {
         GLuint getVbo() const;
         GLuint getEbo() const;
         unsigned int getDrawCount() const;
+        bool isReady() const;
 };

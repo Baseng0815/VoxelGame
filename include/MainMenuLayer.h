@@ -1,11 +1,11 @@
 #pragma once
 
 #include "GameLayer.h"
-#include "Gui/MainMenu.h"
+#include "Gui/GUI.h"
 
 class MainMenuLayer : public GameLayer {
     private:
-        MainMenu m_mainMenu;
+        GUI m_mainMenu;
 
     public:
         MainMenuLayer(Application* application);

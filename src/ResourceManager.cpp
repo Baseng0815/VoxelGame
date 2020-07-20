@@ -1,10 +1,12 @@
 #include "../include/ResourceManager.h"
-#include <utility>
+//#include <utility>
+#include <iostream>
 
 #include "../include/Resources/Font.h"
 #include "../include/Resources/Shader.h"
 #include "../include/Resources/Texture.h"
 #include "../include/Resources/Geometry.h"
+#include "../include/Resources/Material.h"
 
 std::map<std::string, Resource*> ResourceManager::resources;
 
@@ -12,6 +14,8 @@ void ResourceManager::loadResources() {
     // textures
     resources.emplace("textureAtlas", new Texture("Textures/textureAtlas0.png"));
     resources.emplace("textureBackgroundMainMenu", new Texture("Textures/background_mainmenu.png"));
+    resources.emplace("textureWhite", new Texture("Textures/white.png"));
+    resources.emplace("textureBlack", new Texture("Textures/black.png"));
 
     // shaders
     resources.emplace("shaderMeshRenderTexture", new Shader("Shaders/meshRenderShader.vert", "Shaders/meshRenderShaderTexture.frag"));
@@ -21,8 +25,18 @@ void ResourceManager::loadResources() {
     resources.emplace("skyboxShader", new Shader("Shaders/skyboxShader"));
     resources.emplace("shaderText", new Shader("Shaders/textShader"));
 
-    // meshRenderShader
-    Shader* shader = getResource<Shader>("shaderMeshRender");
+    // materials
+    resources.emplace("materialChunkBlocks", new Material(ResourceManager::getResource<Texture>("textureAtlas"),
+                ResourceManager::getResource<Texture>("textureBlack"), glm::vec3(0.0f), glm::vec3(0.0f), glm::vec3(0.0f), 32.0f));
+
+    // meshRenderShaderTexture
+    Shader* shader = getResource<Shader>("shaderMeshRenderTexture");
+    shader->setAttributes({"position", "normal", "uvCoords"});
+    shader->upload("material.diffuseMap", 0);
+    shader->upload("material.specularMap", 1);
+
+    // meshRenderShaderColor
+    shader = getResource<Shader>("shaderMeshRenderTexture");
     shader->setAttributes({"position", "normal", "uvCoords"});
 
     // quad shaders
@@ -33,11 +47,15 @@ void ResourceManager::loadResources() {
 
     // fonts
     resources.emplace("fontKoruri", new Font("Fonts/Koruri-Regular.ttf"));
+
+    std::cout << "loaded " << resources.size() << " resources" << std::endl;
 }
 
 void ResourceManager::freeResources() {
-    for (auto resource : resources)
+    for (auto resource : resources) {
+        resource.second->free();
         delete resource.second;
+    }
 }
 
 Resource* ResourceManager::getResourceBase(const std::string& id) {
@@ -56,3 +74,4 @@ template Texture* ResourceManager::getResource<Texture>(const std::string&);
 template Shader* ResourceManager::getResource<Shader>(const std::string&);
 template Font* ResourceManager::getResource<Font>(const std::string&);
 template Geometry* ResourceManager::getResource<Geometry>(const std::string&);
+template Material* ResourceManager::getResource<Material>(const std::string&);
