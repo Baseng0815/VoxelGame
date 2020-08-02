@@ -11,8 +11,8 @@ class PhysicsSystem : public System {
 private:
     void _update(int dt) override;
 
-    void updatePlayer(PlayerComponent& player, TransformationComponent& transform, VelocityComponent& velocity, int dt);
+    static void updatePlayer(PlayerComponent& player, TransformationComponent& transform, VelocityComponent& velocity, int dt);
 
 public:
     PhysicsSystem(entt::registry* registry);
-}
+};

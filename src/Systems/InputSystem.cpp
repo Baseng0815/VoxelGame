@@ -132,6 +132,8 @@ void InputSystem::handleFramebufferSizeEvent(const FramebufferSizeEvent& e) {
     });
 }
 
+#include <iostream>
+
 void InputSystem::updateVectors(CameraComponent& camera) {
     camera.front.x = cos(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
     camera.front.y = sin(glm::radians(camera.pitch));
@@ -142,7 +144,7 @@ void InputSystem::updateVectors(CameraComponent& camera) {
 }
 
 void InputSystem::updateViewMatrix(CameraComponent& camera, TransformationComponent& transform) {
-    camera.viewMatrix = glm::lookAt(transform.getPosition(), transform.getPosition() + camera.playerOffset + camera.front, glm::vec3(0, 1, 0));
+    camera.viewMatrix = glm::lookAt(transform.getPosition() + camera.playerOffset, transform.getPosition() + camera.playerOffset + camera.front, glm::vec3(0, 1, 0));
 }
 
 void InputSystem::updateProjectionMatrix(CameraComponent& camera) {
