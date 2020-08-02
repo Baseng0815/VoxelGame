@@ -9,14 +9,9 @@ struct CameraComponent {
     float width;
     float height;
 
-    glm::vec3 relVelocity = glm::vec3(0);
+    glm::vec3 playerOffset;
 
-    float yaw = 0, pitch = 0, fov;
-
-    bool isFalling = false;
-    bool isFlying = false;
-
-    unsigned int worldId = 0;
+    float yaw = 0, pitch = 0, fov;    
 
     CameraComponent(float fov, float width, float height);
 };

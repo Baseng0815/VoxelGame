@@ -1,7 +1,8 @@
 #include "../include/IngameLayer.h"
 
 #include "../include/Systems/InputSystem.h"
-#include "../include/Systems/PhysicsSystem.h"
+//#include "../include/Systems/PhysicsSystem.h"
+#include "../include/Systems/PlayerMovementSystem.h"
 #include "../include/Systems/ChunkCreateSystem.h"
 #include "../include/Systems/MeshRenderSystem.h"
 
@@ -25,7 +26,8 @@ IngameLayer::IngameLayer(Application* application)
 
         // create all systems
         m_systems.push_back(new ChunkCreateSystem(&m_registry));
-        m_systems.push_back(new PhysicsSystem(&m_registry));
+        //m_systems.push_back(new PhysicsSystem(&m_registry));
+        m_systems.push_back(new PlayerMovementSystem(&m_registry, 0));
         m_systems.push_back(new InputSystem(&m_registry));
         m_systems.push_back(new MeshRenderSystem(&m_registry));
 
@@ -43,11 +45,11 @@ IngameLayer::IngameLayer(Application* application)
 
 IngameLayer::~IngameLayer() {
     m_registry.view<CameraComponent, RigidBodyComponent>().each(
-            [&](CameraComponent& camera, RigidBodyComponent& rigidBody) {
+        [&](CameraComponent& camera, RigidBodyComponent& rigidBody) {
             delete rigidBody.collision;
             delete rigidBody.shape;
-            }
-            );
+        }
+    );
 
     for (auto system : m_systems)
         delete system;

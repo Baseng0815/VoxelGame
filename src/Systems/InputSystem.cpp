@@ -12,6 +12,7 @@
 #include "../../include/Components/VelocityComponent.h"
 #include "../../include/Components/RigidBodyComponent.h"
 #include "../../include/Components/TransformationComponent.h"
+#include "../../include/Components/PlayerComponent.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/transform.hpp>
@@ -19,64 +20,47 @@
 #include <iostream>
 
 
-void InputSystem::handleKeyPressEvent(const KeyEvent& e) {
-    m_registry->view<CameraComponent, VelocityComponent, TransformationComponent>().each(
-            [&](auto& camera, auto& velocity, auto& transformation) {
-            switch (e.key) {
-            case GLFW_KEY_W:
-            if (e.action == GLFW_PRESS)
-            camera.relVelocity.z += -1;
-            else if (e.action == GLFW_RELEASE)
-            camera.relVelocity.z -= -1;
-            break;
-            case GLFW_KEY_S:
-            if (e.action == GLFW_PRESS)
-            camera.relVelocity.z += 1;
-            else if (e.action == GLFW_RELEASE)
-            camera.relVelocity.z -= 1;
-            break;
-            case GLFW_KEY_A:
-            if (e.action == GLFW_PRESS)
-            camera.relVelocity.x += -1;
-            else if (e.action == GLFW_RELEASE)
-            camera.relVelocity.x -= -1;
-            break;
-            case GLFW_KEY_D:
-            if (e.action == GLFW_PRESS)
-                camera.relVelocity.x += 1;
-            else if (e.action == GLFW_RELEASE)
-                camera.relVelocity.x -= 1;
-            break;
-            case GLFW_KEY_LEFT_SHIFT:
-            if (e.action == GLFW_PRESS)
-                camera.relVelocity.y += -1;
-            else if (e.action == GLFW_RELEASE)
-                camera.relVelocity.y -= -1;
-            break;
-            case GLFW_KEY_SPACE:
-            if (e.action == GLFW_PRESS) {
-                int currTime = glfwGetTime();
-                int dt = currTime - lastSpacePress;
-                if (dt >= 0 && dt < 1) {
-                    camera.isFlying = !camera.isFlying;
-                    camera.relVelocity.y = 0;
-                }
+void InputSystem::handleKeyPressEvent(const KeyEvent& e) {          
+    byte inputCode = 0;  
+    switch (e.key) {
+    case GLFW_KEY_W:
+        inputCode = 1;
+        break;
+    case GLFW_KEY_S:
+        inputCode = 2;
+        break;
+    case GLFW_KEY_A:
+        inputCode = 4;
+        break;
+    case GLFW_KEY_D:
+        inputCode = 8;
+        break;
+    case GLFW_KEY_SPACE:
+        inputCode = 16;
+        break;
+    case GLFW_KEY_LEFT_SHIFT:
+        inputCode = 32;
+        break;
+    }
 
-                lastSpacePress = currTime;
-                camera.relVelocity.y += 5;
-            }
-            else if (e.action == GLFW_RELEASE)
-                if (!camera.isFalling || camera.isFlying)
-                    camera.relVelocity.y -= 5;
-                else
-                    camera.relVelocity.y = 0;
-            break;
-            default:
-            break;
-            }
+    if(e.action == GLFW_PRESS) {
+        playerInputState |= inputCode;
+    }
+    else if(e.action == GLFW_RELEASE) {
+        playerInputState &= ~inputCode;
+    }
 
-            updateSelectedBlock(camera, transformation);
-            });
+    float xAxisInput = (playerInputState & 1) - ((playerInputState & 2) >> 1);
+    float yAxisInput = ((playerInputState & 4) >> 2) - ((playerInputState & 8) >> 3);
+    float zAxisInput = ((playerInputState & 16) >> 4) - ((playerInputState & 32) >> 5);
+    
+    m_registry->view<PlayerComponent>().each(
+        [&](PlayerComponent& player) {
+            player.xAxisInput = xAxisInput;
+            player.yAxisInput = yAxisInput;
+            player.zAxisInput = zAxisInput;
+        }
+    );
 }
 
 void InputSystem::handleMouseButtonEvent(const MouseButtonEvent& e) {
@@ -113,29 +97,29 @@ void InputSystem::handleMouseButtonEvent(const MouseButtonEvent& e) {
 
 void InputSystem::handleMouseMoveEvent(const CursorEvent& e) {
     m_registry->view<CameraComponent, VelocityComponent, TransformationComponent>().each(
-            [&](auto& camera, auto& velocity, auto& transformation) {
-            camera.yaw += e.dx * Configuration::getFloatValue("MOUSE_SENSITIVITY");
-            camera.pitch -= e.dy * Configuration::getFloatValue("MOUSE_SENSITIVITY");
+        [&](auto& camera, auto& velocity, auto& transformation) {
+        camera.yaw += e.dx * Configuration::getFloatValue("MOUSE_SENSITIVITY");
+        camera.pitch -= e.dy * Configuration::getFloatValue("MOUSE_SENSITIVITY");
 
-            if (camera.pitch > 89.99) camera.pitch = 89.99;
-            else if (camera.pitch < -89.99) camera.pitch = -89.99;
+        if (camera.pitch > 89.99) camera.pitch = 89.99;
+        else if (camera.pitch < -89.99) camera.pitch = -89.99;
 
-            updateVectors(camera);
-            updateSelectedBlock(camera, transformation);
-            });
+        updateVectors(camera);
+        updateSelectedBlock(camera, transformation);
+    });
 }
 
 void InputSystem::handleScrollEvent(const ScrollEvent& e) {
     m_registry->view<CameraComponent>().each(
-            [&](auto& camera) {
+        [&](auto& camera) {
 
-            camera.fov -= e.dy;
+        camera.fov -= e.dy;
 
-            if (camera.fov > 179) camera.fov = 179;
-            else if (camera.fov < 1) camera.fov = 1;
+        if (camera.fov > 179) camera.fov = 179;
+        else if (camera.fov < 1) camera.fov = 1;
 
-            updateProjectionMatrix(camera);
-            });
+        updateProjectionMatrix(camera);
+    });
 }
 
 void InputSystem::handleFramebufferSizeEvent(const FramebufferSizeEvent& e) {
@@ -207,9 +191,9 @@ void InputSystem::updateSelectedBlock(CameraComponent& camera, TransformationCom
 void InputSystem::_update(int dt) {
     // TODO make event based
     m_registry->view<CameraComponent, TransformationComponent>().each(
-            [&](auto& camera, auto& transformation) {
-            updateViewMatrix(camera, transformation);
-            });
+        [&](auto& camera, auto& transformation) {
+            updateViewMatrix(camera, transformation);   
+    });
 }
 
 InputSystem::InputSystem(entt::registry* registry)
@@ -220,6 +204,7 @@ InputSystem::InputSystem(entt::registry* registry)
         m_registry->emplace<CameraComponent>(entity, 90.f, Configuration::getFloatValue("WINDOW_WIDTH"), Configuration::getFloatValue("WINDOW_HEIGHT"));
         m_registry->emplace<TransformationComponent>(entity, glm::vec3(0, 100, 0), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
         m_registry->emplace<VelocityComponent>(entity);
+        m_registry->emplace<PlayerComponent>(entity);
         BoxCollision* cameraCollision = new BoxCollision(glm::vec3(-0.5f, -1.5f, -0.5f), 1, 2, 1);
         m_registry->emplace<RigidBodyComponent>(entity, new Shape(std::vector<Triangle>()), 0, cameraCollision);
 

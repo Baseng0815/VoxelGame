@@ -33,10 +33,10 @@ class InputSystem : public System {
         void updateProjectionMatrix(CameraComponent& camera);
 
         void _update(int dt) override;
-
-        int lastSpacePress = INT_MAX;
+        
         LookData selectedBlock;
 
+        byte playerInputState;
     public:
         InputSystem(entt::registry* registry);
 };
