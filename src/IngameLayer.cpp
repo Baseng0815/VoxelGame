@@ -35,7 +35,7 @@ IngameLayer::IngameLayer(Application* application)
 
         // atlas
         entity = m_registry.create();
-        Texture* atlasTexture = ResourceManager::getResource<Texture>("textureAtlas");
+        const Texture *atlasTexture = ResourceManager::getResource<Texture>("textureAtlas");
         m_registry.emplace<AtlasComponent>(entity, atlasTexture->getWidth(), atlasTexture->getHeight(), 16);
 
         m_gui.addPanel(new DebugLayout(&m_gui));

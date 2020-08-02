@@ -18,7 +18,7 @@ void Image::_draw(const glm::mat4& projection) const {
     }
 }
 
-Image::Image(const std::string& id, GUI *gui, Texture* texture)
+Image::Image(const std::string& id, GUI *gui, const Texture *texture)
     : Widget(id, gui), m_texture(texture) {
     m_texturedQuadShader = ResourceManager::getResource<Shader>("shaderTexturedQuad");
 }

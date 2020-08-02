@@ -79,16 +79,13 @@ else()
     message("GLFW LIBRARIES: ${GLFW_LIBRARIES}")
     message("OpenGL LIBRARIES: ${OPENGL_LIBRARIES}")
     message("GLEW LIBRARIES: ${GLEW_LIBRARIES}")
+    message("SOIL LIBRARIES: ${SOIL_LIBRARIES}")
 
     file(GLOB_RECURSE SOURCES
         include/*.h
         src/*.cpp)
 
     add_executable(VoxelGame ${SOURCES})
-
-    # add include directories
-    target_include_directories(VoxelGame PUBLIC
-        /usr/include/freetype2)
 
     # add libraries
     target_link_libraries(VoxelGame
@@ -99,4 +96,3 @@ else()
         libnoise.so
         libSOIL.so)
 endif()
-

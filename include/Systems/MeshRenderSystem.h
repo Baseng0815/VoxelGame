@@ -16,10 +16,9 @@ struct FramebufferSizeEvent;
 
 class MeshRenderSystem : public System {
     private:
-        // TODO use dynamically each frame instead of storing it here
-        Shader* m_meshRenderShaderColor;
-        Shader* m_meshRenderShaderTexture;
-        Texture* m_atlas;
+        // TODO maybe use dynamically each frame instead of storing it here
+        const Shader *m_meshRenderShaderColor;
+        const Shader *m_meshRenderShaderTexture;
 
         PointLight m_pointLights[MAX_LIGHTS];
         DirectionalLight m_sun;

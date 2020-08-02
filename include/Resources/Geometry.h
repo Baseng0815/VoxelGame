@@ -14,12 +14,16 @@ class Geometry : public Resource {
         bool m_isReady = false;
 
         void initBuffers();
+        void release() override;
 
     public:
         Geometry(const std::string& file);
         Geometry(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
         Geometry();
-        void free() override;
+        ~Geometry();
+
+        Geometry(Geometry&&) noexcept;
+        Geometry &operator=(Geometry&&);
 
         void fillBuffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
 

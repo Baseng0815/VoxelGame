@@ -1,11 +1,19 @@
 #include "../../include/Resources/Font.h"
 
 #include <iostream>
-#include <freetype2/ft2build.h>
-#include <freetype2/freetype/freetype.h>
+#include <ft2build.h>
+#include <freetype/freetype.h>
 
 #include "../../include/Configuration.h"
 #include "../../include/ResourceManager.h"
+
+void Font::release()
+{
+    for (auto it = m_characters.begin(); it != m_characters.end(); it++) {
+        glDeleteTextures(1, &it->second.texture);
+        it->second.texture = 0;
+    }
+}
 
 Font::Font(const std::string& file) {
     std::cout << "loading font " << file << std::endl;
@@ -52,9 +60,25 @@ Font::Font(const std::string& file) {
     FT_Done_FreeType(ft);
 }
 
-void Font::free() {
-    for (auto it = m_characters.begin(); it != m_characters.end(); it++)
-        glDeleteTextures(1, &it->second.texture);
+Font::~Font()
+{
+    release();
+}
+
+Font::Font(Font &&other) noexcept
+    :m_characters(std::move(other.m_characters))
+{
+    other.m_characters.clear();
+}
+
+Font &Font::operator=(Font &&other) noexcept
+{
+    if (this != &other) {
+        release();
+        std::swap(m_characters, other.m_characters);
+    }
+
+    return *this;
 }
 
 const Character& Font::getCharacter(char c) const {
