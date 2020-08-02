@@ -1,7 +1,6 @@
 #include "../../include/Systems/ChunkCreateSystem.h"
 
 #include "../../include/Block.h"
-#include "../../include/Rendering/Vertex.h"
 
 #include "../../include/Utility.h"
 #include "../../include/Configuration.h"
