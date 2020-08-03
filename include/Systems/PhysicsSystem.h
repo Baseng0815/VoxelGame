@@ -1,7 +1,6 @@
 #pragma once
 
 #include "System.h"
-#include <entt/entt.hpp>
 
 struct PlayerComponent;
 struct TransformationComponent;

@@ -40,5 +40,8 @@ void PhysicsSystem::updatePlayer(PlayerComponent& player, TransformationComponen
     if(newChunk != oldChunk)    {
         EnterChunkEvent e = EnterChunkEvent(nullptr, oldChunk.x, oldChunk.y, newChunk.x, newChunk.y);
         EventDispatcher::raiseEvent(e);
+
     }
+    
+    std::cout << "chunk x:" << newChunk.x << " y: " << newChunk.y << std::endl;
 }
