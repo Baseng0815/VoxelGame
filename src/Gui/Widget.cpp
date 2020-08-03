@@ -37,9 +37,8 @@ void Widget::_draw(const glm::mat4& projection) const {
 }
 
 Widget::Widget(const std::string& id, GUI *gui)
-    : m_id(id), m_gui(gui) {
-    m_coloredQuadShader = ResourceManager::getResource<Shader>("shaderColoredQuad");
-}
+    : m_id(id), m_gui(gui), m_coloredQuadShader(ResourceManager::getResource<Shader>("shaderColoredQuad"))
+{}
 
 void Widget::draw(const glm::mat4& projection) const {
     if (m_properties.isVisible) {

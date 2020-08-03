@@ -10,11 +10,16 @@ class Texture : public Resource {
         GLuint m_texture;
         int m_width, m_height, m_channels;
 
+        void release() override;
+
     public:
         Texture(const std::string& file);
-        void free() override;
+        ~Texture();
 
-        void bind(int textureUnit);
+        Texture(Texture&&) noexcept;
+        Texture &operator=(Texture&&) noexcept;
+
+        void bind(int textureUnit) const;
         int getWidth() const;
         int getHeight() const;
         int getTexture() const;

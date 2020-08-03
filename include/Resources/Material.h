@@ -6,10 +6,14 @@
 
 class Texture;
 
-struct Material : public Resource {
+class Material : public Resource {
+    protected:
+        void release() override;
+
+    public:
     // texture properties
-    Texture* diffuseMap;
-    Texture* specularMap;
+    const Texture *diffuseMap;
+    const Texture *specularMap;
 
     // color properties
     glm::vec3 ambient;
@@ -17,5 +21,12 @@ struct Material : public Resource {
     glm::vec3 specular;
     float shininess;
 
-    Material(Texture*, Texture*, glm::vec3, glm::vec3, glm::vec3, float);
+    Material(const Texture*, const Texture*, glm::vec3, glm::vec3, glm::vec3, float);
+
+    // TODO kind of unnecessary, maybe handle material differently?
+    // material does not fit into RAII very well
+    ~Material() = default;
+
+    Material(Material&&) noexcept;
+    Material &operator=(Material&&) noexcept;
 };

@@ -10,6 +10,11 @@
 
 #include "../../include/Configuration.h"
 
+void Texture::release()
+{
+    glDeleteTextures(1, &m_texture);
+}
+
 Texture::Texture(const std::string& file) {
     std::cout << "loading texture " << file << std::endl;
     glGenTextures(1, &m_texture);
@@ -30,11 +35,34 @@ Texture::Texture(const std::string& file) {
     SOIL_free_image_data(data);
 }
 
-void Texture::free() {
-    glDeleteTextures(1, &m_texture);
+Texture::~Texture()
+{
+    release();
 }
 
-void Texture::bind(int textureUnit) {
+Texture::Texture(Texture &&other) noexcept
+    : m_texture(other.m_texture), m_width(other.m_width),
+    m_height(other.m_height), m_channels(other.m_channels)
+{
+    other.m_texture = 0;
+    other.m_height = 0;
+    other.m_width = 0;
+    other.m_channels = 0;
+}
+
+Texture &Texture::operator=(Texture &&other) noexcept
+{
+    if (this != &other) {
+        std::swap(m_texture, other.m_texture);
+        std::swap(m_width, other.m_width);
+        std::swap(m_height, other.m_height);
+        std::swap(m_channels, other.m_channels);
+    }
+
+    return *this;
+}
+
+void Texture::bind(int textureUnit) const {
     glActiveTexture(textureUnit);
     glBindTexture(GL_TEXTURE_2D, m_texture);
 }

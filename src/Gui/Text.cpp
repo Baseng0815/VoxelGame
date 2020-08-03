@@ -64,8 +64,8 @@ void Text::_draw(const glm::mat4& projection) const {
 }
 
 Text::Text(const std::string& id, GUI* gui, float textScale)
-    : Widget(id, gui), m_textScale(textScale) {
-    m_textShader = ResourceManager::getResource<Shader>("shaderText");
+    : Widget(id, gui), m_textScale(textScale),
+    m_textShader(ResourceManager::getResource<Shader>("shaderText")) {
 }
 
 void Text::updateArea(const Rectangle& parent) {

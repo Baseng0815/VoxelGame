@@ -19,9 +19,14 @@ class Font : public Resource {
     private:
         std::map<char, Character> m_characters;
 
+        void release() override;
+
     public:
         Font(const std::string& file);
-        void free() override;
+        ~Font();
+
+        Font(Font&&) noexcept;
+        Font &operator=(Font&&) noexcept;
 
         const Character& getCharacter(char c) const;
 };

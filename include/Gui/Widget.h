@@ -39,7 +39,7 @@ class Widget {
         Color getForegroundColor() const;
 
         RenderQuad m_renderQuadBackground;
-        Shader* m_coloredQuadShader;
+        const Shader* m_coloredQuadShader;
 
         virtual void _draw(const glm::mat4& projection) const;
 

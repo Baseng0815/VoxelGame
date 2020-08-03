@@ -2,8 +2,6 @@
 
 #include "../../include/Utility.h"
 
-#include <iostream>
-
 void Geometry::initBuffers() {
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
@@ -12,6 +10,7 @@ void Geometry::initBuffers() {
     glGenBuffers(1, &m_ebo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
+    // TODO disable unnecessary vertex attrib arrays when rendering other stuff
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glEnableVertexAttribArray(2);
@@ -21,27 +20,58 @@ void Geometry::initBuffers() {
     glBindVertexArray(0);
 }
 
-Geometry::Geometry(const std::string& file) {
-    std::cout << "loading geometry " << file << std::endl;
-    // TODO implement .obj file loading
-}
-
-Geometry::Geometry(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) {
-    initBuffers();
-    fillBuffers(vertices, indices);
-}
-
-Geometry::Geometry() {
-    initBuffers();
-}
-
-void Geometry::free() {
+void Geometry::release()
+{
     glDeleteBuffers(1, &m_vbo);
     glDeleteBuffers(1, &m_ebo);
     glDeleteVertexArrays(1, &m_vao);
 }
 
-void Geometry::fillBuffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices) {
+Geometry::Geometry(const std::string& file)
+{
+    // TODO implement .obj file loading
+}
+
+Geometry::Geometry(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
+{
+    initBuffers();
+    fillBuffers(vertices, indices);
+}
+
+Geometry::Geometry()
+{
+    initBuffers();
+}
+
+Geometry::~Geometry()
+{
+    release();
+}
+
+Geometry::Geometry(Geometry &&other) noexcept
+    : m_vao(other.m_vao), m_vbo(other.m_vbo), m_ebo(other.m_ebo)
+{
+    other.m_vao = 0;
+    other.m_vbo = 0;
+    other.m_ebo = 0;
+    other.m_drawCount = 0;
+}
+
+Geometry &Geometry::operator=(Geometry &&other)
+{
+    if (this != &other) {
+        release();
+        std::swap(m_vao, other.m_vao);
+        std::swap(m_vbo, other.m_vbo);
+        std::swap(m_ebo, other.m_ebo);
+        std::swap(m_drawCount, other.m_drawCount);
+    }
+
+    return *this;
+}
+
+void Geometry::fillBuffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)
+{
     glBindVertexArray(m_vao);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
@@ -53,22 +83,27 @@ void Geometry::fillBuffers(const std::vector<Vertex>& vertices, const std::vecto
     m_isReady = true;
 }
 
-GLuint Geometry::getVao() const {
+GLuint Geometry::getVao() const
+{
     return m_vao;
 }
 
-GLuint Geometry::getVbo() const {
+GLuint Geometry::getVbo() const
+{
     return m_vbo;
 }
 
-GLuint Geometry::getEbo() const {
+GLuint Geometry::getEbo() const
+{
     return m_ebo;
 }
 
-unsigned int Geometry::getDrawCount() const {
+unsigned int Geometry::getDrawCount() const
+{
     return m_drawCount;
 }
 
-bool Geometry::isReady() const {
+bool Geometry::isReady() const
+{
     return m_isReady;
 }

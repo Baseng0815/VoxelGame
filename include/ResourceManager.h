@@ -6,16 +6,18 @@
 #include <string>
 
 class Resource;
+using ResourceHandle = std::unique_ptr<Resource>;
 
 class ResourceManager {
     private:
-        static std::map<std::string, Resource*> resources;
+
+        // TODO RAII this whole thing
+        static std::map<std::string, ResourceHandle> resources;
 
     public:
         static void loadResources();
-        static void freeResources();
 
-        static Resource* getResourceBase(const std::string& id);
+        static const Resource* getResourceBase(const std::string& id);
         template <class T>
-        static T* getResource(const std::string& id);
+        static const T* getResource(const std::string& id);
 };

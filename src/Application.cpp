@@ -50,7 +50,6 @@ Window& Application::getWindow() {
 }
 
 Application::~Application() {
-    ResourceManager::freeResources();
     m_window.close();
     glfwTerminate();
 }

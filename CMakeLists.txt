@@ -14,8 +14,8 @@ set(CMAKE_BUILD_TYPE Debug)
 if(WIN32)
     message("WIN32")
     set(CMAKE_CXX_STANDARD 17)
-    set(CAMKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GCTHREADS:16")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SAFESEH:NO")
+    set(CAMKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GCTHREADS:8")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SAFESEH:NO /NODEFAULTLIB:MSVCRT")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /SAFESEH:NO")
     set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /SAFESEH:NO")
 
@@ -79,16 +79,13 @@ else()
     message("GLFW LIBRARIES: ${GLFW_LIBRARIES}")
     message("OpenGL LIBRARIES: ${OPENGL_LIBRARIES}")
     message("GLEW LIBRARIES: ${GLEW_LIBRARIES}")
+    message("SOIL LIBRARIES: ${SOIL_LIBRARIES}")
 
     file(GLOB_RECURSE SOURCES
         include/*.h
         src/*.cpp)
 
     add_executable(VoxelGame ${SOURCES})
-
-    # add include directories
-    target_include_directories(VoxelGame PUBLIC
-        /usr/include/freetype2)
 
     # add libraries
     target_link_libraries(VoxelGame
@@ -99,4 +96,3 @@ else()
         libnoise.so
         libSOIL.so)
 endif()
-

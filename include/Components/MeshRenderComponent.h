@@ -4,6 +4,6 @@
 #include "../Resources/Geometry.h"
 
 struct MeshRenderComponent {
-    Material* material;
+    const Material *material;
     Geometry geometry;
 };

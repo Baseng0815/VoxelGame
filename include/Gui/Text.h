@@ -15,9 +15,9 @@ class Text : public Widget {
 
         std::string m_string = "";
 
-        const Font* m_font = nullptr;
+        const Font *m_font = nullptr;
         // TODO maybe make static or access every frame
-        Shader* m_textShader;
+        const Shader *m_textShader;
 
         float m_textScale;
         void updateTextRenderQuads();
