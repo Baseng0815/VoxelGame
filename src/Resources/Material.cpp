@@ -1,4 +1,5 @@
 #include "../../include/Resources/Material.h"
+#include <algorithm>
 
 void Material::release()
 {}

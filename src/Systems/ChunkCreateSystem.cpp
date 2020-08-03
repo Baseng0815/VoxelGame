@@ -13,6 +13,7 @@
 #include "../../include/Components/WorldComponent.h"
 #include "../../include/Components/MeshRenderComponent.h"
 #include "../../include/Components/TransformationComponent.h"
+#include "../../include/Resources/Geometry.h"
 
 #include <mutex>
 #include <iostream>

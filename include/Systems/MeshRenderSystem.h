@@ -2,6 +2,7 @@
 #include "../../include/Rendering/GBuffer.h"
 #include "../../include/Rendering/RenderQuad.h"
 #include "../../include/Rendering/Light.h"
+#include "../../include/Resources/Shader.h"
 
 class Shader;
 class Texture;

@@ -2,6 +2,7 @@
 
 #include "System.h"
 #include "../WorldGeneration/WorldGenerator.h"
+#include "../Resources/Geometry.h"
 
 #include <map>
 #include <mutex>
@@ -13,7 +14,6 @@ struct EnterChunkEvent;
 struct BlockChangedEvent;
 
 class Vertex;
-class Geometry;
 class AtlasComponent;
 class ChunkComponent;
 
