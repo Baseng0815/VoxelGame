@@ -3,6 +3,7 @@
 
 struct PlayerComponent;
 struct VelocityComponent;
+struct CameraComponent;
 
 class PlayerMovementSystem : public System {
 private:
@@ -10,7 +11,7 @@ private:
 
     void _update(int dt) override;
 
-    void updatePlayerSpeed(PlayerComponent& player, VelocityComponent& velocity);
+    void updatePlayerSpeed(PlayerComponent& player, VelocityComponent& velocity, CameraComponent& camera) const;
 public:
     PlayerMovementSystem(entt::registry* registry, int updateDelay);
 

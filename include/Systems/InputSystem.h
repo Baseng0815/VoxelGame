@@ -36,7 +36,7 @@ class InputSystem : public System {
         
         LookData selectedBlock;
 
-        byte playerInputState;
+        byte playerInputState = 0;
     public:
         InputSystem(entt::registry* registry);
 };

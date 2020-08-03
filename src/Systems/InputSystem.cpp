@@ -56,8 +56,8 @@ void InputSystem::handleKeyPressEvent(const KeyEvent& e) {
     
     m_registry->view<PlayerComponent>().each(
         [&](PlayerComponent& player) {
-            player.xAxisInput = xAxisInput;
-            player.yAxisInput = yAxisInput;
+            player.xAxisInput = -xAxisInput;
+            player.yAxisInput = -yAxisInput;
             player.zAxisInput = zAxisInput;
         }
     );

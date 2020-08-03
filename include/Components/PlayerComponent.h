@@ -1,7 +1,8 @@
 #pragma once
 
 struct PlayerComponent {
-    float maxMovementSpeed = 10.0f;
+    // 30 m / s
+    float maxMovementSpeed = 30.0f;
 
     float xAxisInput, yAxisInput, zAxisInput;
 
