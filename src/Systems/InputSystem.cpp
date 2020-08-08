@@ -2,7 +2,6 @@
 
 #include "../../include/Block.h"
 #include "../../include/Utility.h"
-#include "../../include/Collision.h"
 #include "../../include/Configuration.h"
 #include "../../include/Events/EventDispatcher.h"
 
@@ -64,35 +63,16 @@ void InputSystem::handleKeyPressEvent(const KeyEvent& e) {
 }
 
 void InputSystem::handleMouseButtonEvent(const MouseButtonEvent& e) {
-    m_registry->view<CameraComponent, TransformationComponent>().each(
-            [&](CameraComponent& camera, TransformationComponent& transformation) {
-            // TODO reimplement this
-            /*
-               WorldComponent& world = m_systemManager->getCurrentWorld();
+    if(e.button == GLFW_MOUSE_BUTTON_LEFT) {
+        m_registry->view<PlayerComponent>().each(
+            [&](PlayerComponent& player) {
+                glm::vec3 block = player.lookAt;
 
-               switch (e.button) {
-               case GLFW_MOUSE_BUTTON_LEFT:
-               if (e.action == GLFW_PRESS) {
-            // if block selected
-            if (selectedBlock.valid) {
-            world.setBlock(*m_registry, selectedBlock.block, BlockType::BLOCK_AIR);
+                WorldComponent& world = m_registry->get<WorldComponent>(m_registry->view<WorldComponent>().front());
+                world.setBlock(m_registry, block, Block());
             }
-            }
-            break;
-
-            case GLFW_MOUSE_BUTTON_RIGHT:
-            if (e.action == GLFW_PRESS) {
-            if (selectedBlock.valid) {
-            glm::vec3 pos = selectedBlock.block + selectedBlock.face;
-            world.setBlock(*m_registry, pos, Block(BlockType::BLOCK_WOOD));
-            }
-            }
-            break;
-            default:
-            break;
-            }
-            */
-            });
+        );
+    }
 }
 
 void InputSystem::handleMouseMoveEvent(const CursorEvent& e) {
@@ -207,8 +187,8 @@ InputSystem::InputSystem(entt::registry* registry)
         m_registry->emplace<TransformationComponent>(entity, glm::vec3(0, 100, 0), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
         m_registry->emplace<VelocityComponent>(entity);
         m_registry->emplace<PlayerComponent>(entity);
-        BoxCollision* cameraCollision = new BoxCollision(glm::vec3(-0.5f, -1.5f, -0.5f), 1, 2, 1);
-        m_registry->emplace<RigidBodyComponent>(entity, new Shape(std::vector<Triangle>()), 0, cameraCollision);
+        /*BoxCollision* cameraCollision = new BoxCollision(glm::vec3(-0.5f, -1.5f, -0.5f), 1, 2, 1);
+        m_registry->emplace<RigidBodyComponent>(entity, new Shape(std::vector<Triangle>()), 0, cameraCollision);*/
 
         m_registry->view<CameraComponent>().each(
             [&](auto& camera) {

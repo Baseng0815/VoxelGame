@@ -55,5 +55,4 @@ out/*
 
 .vscode/*
 vc140.pdb
-updateSolution.ps1
-createFile.ps1
+copyDlls.cmd

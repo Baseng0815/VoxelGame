@@ -1,8 +1,7 @@
 #pragma once
 #include "../Shape.h"
-#include "../Collision.h"
 
-struct TransformationComponent;
+/*struct TransformationComponent;
 
 struct RigidBodyComponent {
     float mass = 0;
@@ -13,4 +12,4 @@ struct RigidBodyComponent {
     BoxCollision* collision = nullptr;
 
     RigidBodyComponent(Shape*, float, BoxCollision* collision = nullptr);	
-};
+};*/

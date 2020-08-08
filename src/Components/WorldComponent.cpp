@@ -24,35 +24,39 @@ bool WorldComponent::chunkCreated(glm::vec2 chunk) const {
     }
 }
 
-Block WorldComponent::getBlock(entt::registry& registry, glm::vec3 position) const {
+Block WorldComponent::getBlock(const entt::registry* registry, glm::vec3 position) const {
     glm::vec2 chunkPosition;
     glm::vec3 localPosition;
 
     chunkPosition = GetChunk(position, localPosition);
 
-    auto entity = getChunk(chunkPosition);
+    try {
+        auto entity = getChunk(chunkPosition);
 
-    ChunkComponent& chunk = registry.get<ChunkComponent>(entity);
+        const ChunkComponent& chunk = registry->get<ChunkComponent>(entity);
 
-    if(!chunk.chunkBlocksCreated) {
-        throw std::out_of_range("blocks not created");
+        if(!chunk.chunkBlocksCreated) {
+            throw std::out_of_range("blocks not created");
+        }
+
+        std::unique_lock blockLock(*chunk.blockMutex);
+        Block block = chunk.blocks[(int)localPosition.x][(int)localPosition.y][(int)localPosition.z];
+        blockLock.unlock();
+        return block;
+    } catch(std::out_of_range) {
+        return Block();
     }
 
-    std::unique_lock blockLock(*chunk.blockMutex);
-    Block block = chunk.blocks[(int)localPosition.x][(int)localPosition.y][(int)localPosition.z];
-    blockLock.unlock();
-
-    return block;
 }
 
-void WorldComponent::setBlock(entt::registry& registry, glm::vec3 position, Block block) {
+void WorldComponent::setBlock(entt::registry* registry, glm::vec3 position, Block block) {
     glm::vec2 chunkPosition;
     glm::vec3 localPosition;
 
     chunkPosition = GetChunk(position, localPosition);
 
     auto entity = getChunk(chunkPosition);
-    ChunkComponent& chunk = registry.get<ChunkComponent>(entity);
+    ChunkComponent& chunk = registry->get<ChunkComponent>(entity);
 
     std::unique_lock blockLock(*chunk.blockMutex);
     chunk.blocks[(int)localPosition.x][(int)localPosition.y][(int)localPosition.z] = block;

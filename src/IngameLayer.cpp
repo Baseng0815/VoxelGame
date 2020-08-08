@@ -4,6 +4,7 @@
 #include "../include/Systems/PhysicsSystem.h"
 #include "../include/Systems/PlayerMovementSystem.h"
 #include "../include/Systems/ChunkCreateSystem.h"
+#include "../include/Systems/CollisionSystem.h"
 #include "../include/Systems/MeshRenderSystem.h"
 
 #include "../include/Components/AtlasComponent.h"
@@ -30,6 +31,7 @@ IngameLayer::IngameLayer(Application* application)
         m_systems.push_back(new PlayerMovementSystem(&m_registry, 0));
         m_systems.push_back(new InputSystem(&m_registry));
         m_systems.push_back(new MeshRenderSystem(&m_registry));
+        m_systems.push_back(new CollisionSystem(&m_registry));
 
         // world
         auto entity = m_registry.create();
@@ -44,12 +46,12 @@ IngameLayer::IngameLayer(Application* application)
     }
 
 IngameLayer::~IngameLayer() {
-    m_registry.view<CameraComponent, RigidBodyComponent>().each(
+    /*m_registry.view<CameraComponent, RigidBodyComponent>().each(
         [&](CameraComponent& camera, RigidBodyComponent& rigidBody) {
             delete rigidBody.collision;
             delete rigidBody.shape;
         }
-    );
+    );*/
 
     for (auto system : m_systems)
         delete system;

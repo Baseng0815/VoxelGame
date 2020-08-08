@@ -29,6 +29,8 @@ glm::vec3 GetWorldCoords(glm::vec2 chunk, glm::vec3 chunkCoords);
 
 glm::vec3 GetChunkCoords(glm::vec3 worldPos);
 
+glm::vec3 getBlockCoords(glm::vec3 coords);
+
 template<typename T>
 void swap(std::vector<T>* vec, int pos1, int pos2);
 

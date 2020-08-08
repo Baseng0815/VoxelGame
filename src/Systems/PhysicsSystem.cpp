@@ -43,5 +43,5 @@ void PhysicsSystem::updatePlayer(PlayerComponent& player, TransformationComponen
 
     }
     
-    std::cout << "chunk x:" << newChunk.x << " y: " << newChunk.y << std::endl;
+    //std::cout << "chunk x:" << newChunk.x << " y: " << newChunk.y << std::endl;
 }

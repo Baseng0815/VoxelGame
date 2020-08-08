@@ -1,4 +1,5 @@
 #pragma once
+#include <glm/glm.hpp>
 
 struct PlayerComponent {
     // 30 m / s

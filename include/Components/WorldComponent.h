@@ -19,8 +19,8 @@ class WorldComponent {
         entt::entity getChunk(glm::vec2 chunk) const;
         bool chunkCreated(glm::vec2 chunk) const;
 
-        Block getBlock(entt::registry& registry, glm::vec3 position) const;
-        void setBlock(entt::registry& registry, glm::vec3 position, Block block);
+        Block getBlock(const entt::registry* registry, glm::vec3 position) const;
+        void setBlock(entt::registry* registry, glm::vec3 position, Block block);
 
         void addChunk(entt::entity entity, glm::vec2 position);
         void removeChunk(entt::entity entity);

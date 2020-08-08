@@ -4,10 +4,15 @@
 
 Plane::Plane() : Plane(glm::vec3(), glm::vec3()) {}
 
-Plane::Plane(glm::vec3 normal, glm::vec3 p) : normal(normal), p(p) {
-    d = glm::dot(normal, p);
+Plane::Plane(glm::vec3 normal, glm::vec3 p) {
+    this->normal = glm::normalize(normal);
+    d = glm::dot(this->normal, p);
 }
 
+Plane::Plane(glm::vec3 normal, float d) {
+    this->normal = glm::normalize(normal);
+    this->d = d / glm::length(normal);
+}
 
 glm::vec3 Plane::getIntersectionPoint(const Ray ray) const {
     if(glm::dot(ray.getDirection(), normal) == 0) {

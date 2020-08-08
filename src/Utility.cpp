@@ -7,33 +7,13 @@
 #include <iostream>
 
 glm::vec2 GetChunk(glm::vec3 worldCoords, glm::vec3& localCoords) {
-    glm::vec2 chunkPos;
+    glm::vec2 chunkPos;    
+    chunkPos.x = floor(worldCoords.x / CHUNK_SIZE);
+    chunkPos.y = floor(worldCoords.z / CHUNK_SIZE);
 
-    /*chunkPos.x = (int)worldCoords.x / CHUNK_SIZE;
-    chunkPos.y = (int)worldCoords.z / CHUNK_SIZE;
-    int cx = (int)worldCoords.x % CHUNK_SIZE;
-    int cz = (int)worldCoords.z % CHUNK_SIZE;
-
-    if(cx < 0)
-        cx = CHUNK_SIZE - abs(cx);
-    if(cz < 0)
-        cz = CHUNK_SIZE - abs(cz);
-
-    if(worldCoords.x < 0 && cx != 0) {
-        chunkPos.x -= 1;
-    }
-
-    if(worldCoords.z < 0 && cz != 0) {
-        chunkPos.y -= 1;
-    }
-
-    localCoords = glm::vec3(cx, worldCoords.y, cz);*/
-    chunkPos.x = floor((worldCoords.x + 0.5) / CHUNK_SIZE);
-    chunkPos.y = floor((worldCoords.z + 0.5) / CHUNK_SIZE);
-
-    localCoords.x = CHUNK_SIZE * (worldCoords.x / CHUNK_SIZE - floor(worldCoords.x / CHUNK_SIZE));
+    localCoords.x = worldCoords.x - floor(worldCoords.x / CHUNK_SIZE) * CHUNK_SIZE;
     localCoords.y = worldCoords.y;
-    localCoords.z = CHUNK_SIZE * (worldCoords.z / CHUNK_SIZE - floor(worldCoords.z / CHUNK_SIZE));
+    localCoords.z = worldCoords.z - floor(worldCoords.z / CHUNK_SIZE) * CHUNK_SIZE;
 
     return chunkPos;
 }
@@ -47,15 +27,22 @@ glm::vec3 GetWorldCoords(glm::vec2 chunk, glm::vec3 chunkCoords) {
 }
 
 glm::vec3 GetChunkCoords(glm::vec3 worldCoords) {
-    int cx = (int)worldCoords.x % CHUNK_SIZE;
-    int cz = (int)worldCoords.z % CHUNK_SIZE;
-
-    if (cx < 0)
-        cx = CHUNK_SIZE - abs(cx);
-    if (cz < 0)
-        cz = CHUNK_SIZE - abs(cz);
+    int cx = worldCoords.x - floor(worldCoords.x / CHUNK_SIZE) * CHUNK_SIZE;
+    int cz = worldCoords.z - floor(worldCoords.z / CHUNK_SIZE) * CHUNK_SIZE;
 
     return glm::vec3(cx, worldCoords.y, cz);
+}
+
+glm::vec3 getBlockCoords(glm::vec3 coords) {
+    glm::vec3 block = glm::vec3();
+
+    for(int i = 0; i < 3; i++) {
+        float a = coords[i] - floor(coords[i]);
+
+        block[i] = a <= 0.5 ? floor(coords[i]) : ceil(coords[i]);
+    }
+
+    return block;
 }
 
 template<typename T>

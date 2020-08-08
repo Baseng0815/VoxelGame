@@ -34,5 +34,5 @@ public:
     void run();
 
     // set isRunning to false
-    void stop();
+    void stop();    
 };
