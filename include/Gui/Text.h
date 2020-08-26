@@ -20,23 +20,19 @@ class Text : public Widget {
         const Shader *m_textShader;
 
         float m_textScale;
-        void updateTextRenderQuads();
 
-        // update minWidth and minHeight
-        void updateTextDimensions();
         void _draw(const glm::mat4& projection) const override;
+        void _updateScreenElements() override;
+        void _updateMinimumSize() override;
 
     public:
-        Text(const std::string& id, GUI* gui, float textScale = 1.0f);
-
-        void updateArea(const Rectangle& parent) override;
-        void updateScreenElements() override;
+        Text(const std::string &id, GUI *gui, float textScale = 1.0f);
 
         void setScale(float scale);
         float getScale() const;
         const std::string& getString() const;
-        // TODO add invalidate system to widgets
-        void setString(const std::string& str);
-        const Font* getFont() const;
-        void setFont(const Font* font);
+
+        void setString(const std::string &str);
+        const Font *getFont() const;
+        void setFont(const Font *font);
 };

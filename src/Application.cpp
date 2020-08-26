@@ -37,7 +37,7 @@ Application::Application()
     ResourceManager::loadResources();
 
     EventDispatcher::attachToWindow(m_window);
-    EventDispatcher::onKeyPress += [this](const KeyEvent& e) {
+    m_keyEventHandle = EventDispatcher::onKeyPress.subscribe([this](const KeyEvent& e) {
         handleKeys(e);
     };
 

@@ -29,7 +29,7 @@ class GUI {
         glm::mat4 m_orthoProjection;
         bool m_isOutdated = true;
 
-        std::vector<Layout*> m_rootLayouts;
+        std::stack<Layout*> m_rootLayouts;
 
     public:
         GUI();

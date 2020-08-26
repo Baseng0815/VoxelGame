@@ -16,9 +16,9 @@ class RenderQuad {
     public:
         // area in screen space
         RenderQuad();
-        RenderQuad(const Rectangle& area, bool flipY = false);
+        RenderQuad(const Rectangle &area, bool flipY = false);
         ~RenderQuad();
 
         void render() const;
-        void resize(const Rectangle& area, bool flipY = false) const;
+        void resize(const Rectangle &area, bool flipY = false) const;
 };

@@ -10,10 +10,10 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-bool GUI::coordinatesInWidget(const Widget& widget, int x, int y) {
-    Rectangle widgetArea = widget.getArea();
-    if (x > widgetArea.position.x && x < widgetArea.position.x + widgetArea.size.x &&
-            y > widgetArea.position.y && y < widgetArea.position.y + widgetArea.size.y)
+bool GUI::coordinatesInWidget(const Widget &widget, int x, int y) {
+    const Rectangle &innerArea = widget.getInnerArea();
+    if (x > innerArea.position.x && x < innerArea.position.x + innerArea.size.x &&
+            y > innerArea.position.y && y < innerArea.position.y + innerArea.size.y)
         return true;
     else return false;
 }
@@ -21,17 +21,17 @@ bool GUI::coordinatesInWidget(const Widget& widget, int x, int y) {
 void GUI::handleFramebufferSize(const FramebufferSizeEvent& e) {
     m_orthoProjection = glm::ortho(0.f, e.width, 0.f, e.height);
 
-    m_widgets["root_layout"]->updateArea(Rectangle(0, 0, e.width, e.height));
-    m_widgets["root_layout"]->updateScreenElements();
+    m_rootLayouts.top()->updateArea(Rectangle(0, 0, e.width, e.height));
+    m_rootLayouts.top()->updateScreenElements();
 }
 
-void GUI::handleCursorMove(const CursorEvent& e) {
+void GUI::handleCursorMove(const CursorEvent &e) {
     for (auto widget = m_widgets.begin(); widget != m_widgets.end(); widget++) {
-        if (!widget->second->getProperties().receiveEvents) continue;
+        if (!widget->second->properties().receiveEvents) continue;
 
         // cursor y position is inverted in GUI space
         bool inArea = coordinatesInWidget(*(widget->second), e.x, EventDispatcher::getFramebufferSize().y - e.y);
-        if (widget->second->m_isHovering) {
+        if (widget->second->isHovering()) {
             if (!inArea) {
                 widget->second->onLeave.invoke(e);
                 widget->second->m_isHovering = false;

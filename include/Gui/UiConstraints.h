@@ -2,8 +2,8 @@
 
 #include "Rectangle.h"
 
-enum ConstraintType {
-    CONSTRAINT_RELATIVE, CONSTRAINT_CENTER, CONSTRAINT_PIXEL, CONSTRAINT_MATCH
+enum class ConstraintType {
+    CONSTRAINT_RELATIVE, CONSTRAINT_CENTER, CONSTRAINT_ABSOLUTE, CONSTRAINT_MATCH
 };
 
 class Constraint {
@@ -12,16 +12,16 @@ class Constraint {
         ConstraintType type;
 
     public:
-        Constraint(ConstraintType type = CONSTRAINT_RELATIVE, float value = 0);
+        Constraint(ConstraintType type = ConstraintType::CONSTRAINT_RELATIVE, float value = 0);
 
         float getValue(float parent) const;
         ConstraintType getType() const;
 };
 
-#define RelativeConstraint(value)   Constraint(CONSTRAINT_RELATIVE, value)
-#define CenterConstraint()          Constraint(CONSTRAINT_CENTER, 0)
-#define PixelConstraint(value)      Constraint(CONSTRAINT_PIXEL, value)
-#define MatchConstraint()           Constraint(CONSTRAINT_MATCH, 0)
+#define RelativeConstraint(value)   Constraint(ConstraintType::CONSTRAINT_RELATIVE, value)
+#define CenterConstraint()          Constraint(ConstraintType::CONSTRAINT_CENTER, 0)
+#define AbsoluteConstraint(value)   Constraint(ConstraintType::CONSTRAINT_ABSOLUTE, value)
+#define MatchConstraint()           Constraint(ConstraintType::CONSTRAINT_MATCH, 0)
 
 class UiProperties;
 

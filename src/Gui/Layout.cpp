@@ -17,68 +17,79 @@ void Layout::arrangeWidgets() {
 
     if (m_stackMode == STACK_VERTICAL) {
         if (m_invertStack) { // DOWN
-            int currentY = m_finalArea.position.y + m_finalArea.size.y - m_widgets[start]->getSize().y;
+            int currentY = m_outerArea.position.y + m_outerArea.size.y - m_widgets[start]->getSize().y;
             for (int i = start; i != end; i += direction) {
                 Widget& widget = *m_widgets[i];
                 widget.setPosition(glm::vec2(widget.getPosition().x, currentY));
                 if (i != end - direction) {
                     // margin from current element
-                    currentY -= widget.getProperties().margin.bottom;
+                    currentY -= widget.properties().margin.bottom;
                     // margin and size from next element
-                    currentY -= m_widgets[i + direction]->getProperties().margin.top
+                    currentY -= m_widgets[i + direction]->properties().margin.top
                         + m_widgets[i + direction]->getSize().y;
                 }
             }
         } else { // UP
-            int currentY = m_finalArea.position.y + m_widgets[0]->getProperties().margin.bottom;
+            int currentY = m_outerArea.position.y + m_widgets[0]->properties().margin.bottom;
             for (int i = start; i != end; i+= direction) {
                 Widget& widget = *m_widgets[i];
                 widget.setPosition(glm::vec2(widget.getPosition().x, currentY));
                 if (i != end - direction) {
                     // margin and size from current element
-                    currentY += widget.getSize().y + widget.getProperties().margin.top;
+                    currentY += widget.getSize().y + widget.properties().margin.top;
                     // margin from next element
-                    currentY += m_widgets[i + direction]->getProperties().margin.bottom;
+                    currentY += m_widgets[i + direction]->properties().margin.bottom;
                 }
             }
         }
     } else if (m_stackMode == STACK_HORIZONTAL) {
         if (m_invertStack) { // LEFT
-            int currentX = m_finalArea.position.x + m_finalArea.size.x - m_widgets[start]->getSize().x;
+            int currentX = m_outerArea.position.x + m_outerArea.size.x - m_widgets[start]->getSize().x;
             for (int i = start; i != end; i += direction) {
                 Widget& widget = *m_widgets[i];
                 widget.setPosition(glm::vec2(currentX, widget.getPosition().y));
                 if (i != end - direction) {
                     // margin from current element
-                    currentX -= widget.getProperties().margin.left;
+                    currentX -= widget.properties().margin.left;
                     // margin and size from next element
-                    currentX -= m_widgets[i + direction]->getProperties().margin.right
+                    currentX -= m_widgets[i + direction]->properties().margin.right
                         + m_widgets[i + direction]->getSize().x;
                 }
             }
         } else { // RIGHT
-            int currentX = m_finalArea.position.x;
+            int currentX = m_outerArea.position.x;
             for (int i = start; i != end; i+= direction) {
                 Widget& widget = *m_widgets[i];
                 widget.setPosition(glm::vec2(currentX, widget.getPosition().y));
                 if (i != end - direction) {
                     // margin and size from current element
-                    currentX += widget.getSize().x + widget.getProperties().margin.right;
+                    currentX += widget.getSize().x + widget.properties().margin.right;
                     // margin from next element
-                    currentX += m_widgets[i + direction]->getProperties().margin.left;
+                    currentX += m_widgets[i + direction]->properties().margin.left;
                 }
             }
         }
     }
 }
 
-void Layout::_draw(const glm::mat4& projection) const {
-    for (auto widget : m_widgets)
+void Layout::_draw(const glm::mat4 &projection) const
+{
+    for (auto widget : m_widgets) {
         widget->draw(projection);
+    }
 }
 
-Layout::Layout(const std::string& id, GUI* gui)
-    : Widget(id, gui) {
+void Layout::_updateArea() {
+    // update all child areas
+    for (auto widget : m_widgets)
+        widget->updateArea(m_outerArea);
+
+    // arrange all children
+    arrangeWidgets();
+}
+
+Layout::Layout(const std::string &id, GUI *gui)
+    : Widget(id), m_gui(gui) {
     m_gui->__registerWidget(this);
 }
 
@@ -88,14 +99,6 @@ void Layout::setStackMode(StackMode stackMode, bool invertStack, bool invertStac
     m_invertStackWidgets = invertStackWidgets;
 }
 
-void Layout::updateArea(const Rectangle& parent) {
-    m_widgetArea = m_properties.constraints.getRect(parent, m_properties, m_minWidth, m_minHeight);
-    applyPadding();
-
-    // update all child areas
-    for (auto widget : m_widgets)
-        widget->updateArea(m_finalArea);
-}
 
 void Layout::updateScreenElements() {
     arrangeWidgets();
@@ -103,7 +106,7 @@ void Layout::updateScreenElements() {
     for (auto widget : m_widgets)
         widget->updateScreenElements();
 
-    m_renderQuadBackground.resize(m_finalArea);
+    m_renderQuadBackground.resize(m_outerArea);
 }
 
 template<typename T>

@@ -16,6 +16,8 @@ enum StackMode {
     STACK_NONE = 0x00, STACK_VERTICAL = 0x01, STACK_HORIZONTAL = 0x02,
 };
 
+// layouts can't have a MATCH_CONSTRAINT
+// why? too lazy to implement
 class Layout : public Widget {
     protected:
         std::vector<Widget*> m_widgets;
@@ -24,14 +26,19 @@ class Layout : public Widget {
         bool m_invertStack = false;
         bool m_invertStackWidgets = false;
 
+        // used to register widgets
+        GUI *m_gui;
+
         virtual void arrangeWidgets();
 
         void _draw(const glm::mat4& projection) const override;
+        void _updateArea() override;
 
     public:
-        Layout(const std::string& id, GUI* gui);
+        Layout(const std::string &id, GUI *gui);
 
         void setStackMode(StackMode stackMode, bool invertStack, bool invertStackWidgets = false);
+
         void updateArea(const Rectangle& parent) override;
         void updateScreenElements() override;
 

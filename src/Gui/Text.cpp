@@ -8,8 +8,9 @@
 
 #include "../../include/ResourceManager.h"
 
-void Text::updateTextRenderQuads() {
-    float x = m_widgetArea.position.x;
+void Text::_updateScreenElements()
+{
+    float x = m_innerArea.position.x;
 
     // TODO find out why the hell just resizing the quads does NOT work (text becomes white)
     m_charRenderQuads.clear();
@@ -18,7 +19,7 @@ void Text::updateTextRenderQuads() {
     for (int i = 0; i < m_charRenderQuads.size(); i++) {
         const Character& ch = m_font->getCharacter(m_string[i]);
         float xpos = x + ch.bearing.x * m_textScale;
-        float ypos = m_widgetArea.position.y - (ch.size.y - ch.bearing.y) * m_textScale;
+        float ypos = m_innerArea.position.y - (ch.size.y - ch.bearing.y) * m_textScale;
 
         float w = ch.size.x * m_textScale;
         float h = ch.size.y * m_textScale;
@@ -32,18 +33,19 @@ void Text::updateTextRenderQuads() {
     }
 }
 
-void Text::updateTextDimensions() {
-    m_minWidth = 0;
+void Text::_updateMinimumSize()
+{
+    m_minSize.x = 0;
 
     for (char c : m_string) {
-        const Character& ch = m_font->getCharacter(c);
+        const Character &ch = m_font->getCharacter(c);
 
         float h = ch.size.y * m_textScale;
 
-        if (h > m_minHeight)
-            m_minHeight = h;
+        if (h > m_minSize.y)
+            m_minSize.y = h;
 
-        m_minWidth += (ch.advance >> 6) * m_textScale;
+        m_minSize.x += (ch.advance >> 6) * m_textScale;
     }
 }
 
@@ -66,18 +68,6 @@ void Text::_draw(const glm::mat4& projection) const {
 Text::Text(const std::string& id, GUI* gui, float textScale)
     : Widget(id, gui), m_textScale(textScale),
     m_textShader(ResourceManager::getResource<Shader>("shaderText")) {
-}
-
-void Text::updateArea(const Rectangle& parent) {
-    updateTextDimensions();
-
-    m_widgetArea = m_properties.constraints.getRect(parent, m_properties, m_minWidth, m_minHeight);
-    applyPadding();
-}
-
-void Text::updateScreenElements() {
-    m_renderQuadBackground.resize(m_finalArea);
-    updateTextRenderQuads();
 }
 
 void Text::setScale(float scale) {

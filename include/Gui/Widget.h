@@ -18,15 +18,15 @@ struct MouseButtonEvent;
 class Widget {
     protected:
         // everything is in screen space with (0|0) at the bottom left corner
-        Rectangle m_finalArea; // the final area the widget ends up taking, including padding
-        Rectangle m_widgetArea; // the area the widget ends up taking, excluding padding
+        Rectangle m_innerArea; // the area the widget takes up
+        Rectangle m_outerArea; // the area the widget takes up plus padding
 
-        friend GUI;
-        // used for registering widgets and invalidating the whole GUI
-        GUI* m_gui;
-
+        // calculates outerArea using padding and innerArea
         void applyPadding();
-        float m_minWidth = 0, m_minHeight = 0; // the minimal area the widget needs
+
+        // the minimal area the widget needs
+        // used for MATCH_CONSTRAINT
+        glm::vec2 m_minSize;
 
         UiProperties m_properties;
         std::string m_id;
@@ -41,7 +41,10 @@ class Widget {
         RenderQuad m_renderQuadBackground;
         const Shader* m_coloredQuadShader;
 
-        virtual void _draw(const glm::mat4& projection) const;
+        virtual void _draw(const glm::mat4 &projection) const;
+        virtual void _updateScreenElements();
+        virtual void _updateMinimumSize();
+        virtual void _updateArea();
 
     public:
         CallbackList<const CursorEvent&> onMove;
@@ -50,25 +53,31 @@ class Widget {
         CallbackList<const MouseButtonEvent&> onPress;
         CallbackList<const MouseButtonEvent&> onRelease;
 
-        Widget(const std::string &id, GUI *gui);
+        Widget(const std::string &id);
         virtual ~Widget() = default;
 
         void draw(const glm::mat4& projection) const;
 
         // update the area which the widget occupies
-        virtual void updateArea(const Rectangle& parent);
+        void updateArea(const Rectangle &parent);
 
-        // update on-screen elements based on the area, like
-        // the background color quad
-        virtual void updateScreenElements();
+        // update on-screen elements based on the area
+        void updateScreenElements();
 
-        UiProperties& getProperties();
+        UiProperties &properties();
 
-        glm::vec2 getPosition() const;
-        glm::vec2 getSize() const;
-        void setPosition(glm::vec2 position);
+        // used in the layout step
+        // always sets the outer area
+        const glm::vec2 &getPosition() const;
+        const glm::vec2 &getSize() const;
+        const Rectangle &getInnerArea() const;
+        const Rectangle &getOuterArea() const;
+        void setPosition(const glm::vec2 &position);
+        void setSize(const glm::vec2 &size);
+
+        bool isHovering() const;
+        bool isPressed() const;
 
         const std::string& getId() const;
         Layout *getParent() const;
-        Rectangle getArea() const;
 };

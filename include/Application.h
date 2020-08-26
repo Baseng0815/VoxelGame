@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Rendering/Window.h"
+#include "Events/CallbackHandle.h"
 
 struct KeyEvent;
 class GameLayer;
@@ -20,6 +21,7 @@ private:
     // frametime, in microseconds, only related to the rendering process
     int m_frameTime = 0;
 
+    CallbackHandle<KeyEvent> m_keyEventHandle;
     void handleKeys(const KeyEvent&);
 
 public:
