@@ -11,6 +11,5 @@ class DebugLayout : public Layout {
     public:
         DebugLayout(GUI &gui);
 
-        // TODO add a timer that raises an event each second
         void setValues(int fps, int rendertime, int chunkCount);
 };

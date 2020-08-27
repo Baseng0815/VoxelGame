@@ -69,9 +69,6 @@ void Application::run() {
             std::cout << m_frameCounter / (float)m_time * 1000 << "fps, "
                 << m_time / (float)m_frameCounter << "ms avg. frame render time" << std::endl;
 
-            // TODO make this right
-            (static_cast<IngameLayer*>(m_currentLayer))->setDebugInfo(m_frameCounter / (float) m_time * 1000, m_time / (float)m_frameCounter * 1000, 0);
-
             m_frameTime = 0;
             m_frameCounter = 0;
             m_time = 0;

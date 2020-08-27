@@ -24,10 +24,10 @@ IngameLayer::IngameLayer(Application* application)
         m_application->getWindow().disableCursor();
 
         // create all systems
-        m_systems.push_back(new ChunkCreateSystem(&m_registry));
-        m_systems.push_back(new PhysicsSystem(&m_registry));
-        m_systems.push_back(new InputSystem(&m_registry));
-        m_systems.push_back(new MeshRenderSystem(&m_registry));
+        m_systems.emplace_back(std::unique_ptr<System> {new ChunkCreateSystem(&m_registry)});
+        m_systems.emplace_back(std::unique_ptr<System> {new PhysicsSystem(&m_registry)});
+        m_systems.emplace_back(std::unique_ptr<System> {new InputSystem(&m_registry)});
+        m_systems.emplace_back(std::unique_ptr<System> {new MeshRenderSystem(&m_registry)});
 
         // world
         auto entity = m_registry.create();
@@ -43,24 +43,28 @@ IngameLayer::IngameLayer(Application* application)
 
 IngameLayer::~IngameLayer() {
     m_registry.view<CameraComponent, RigidBodyComponent>().each(
-            [&](CameraComponent& camera, RigidBodyComponent& rigidBody) {
+        [&](CameraComponent& camera, RigidBodyComponent& rigidBody) {
             delete rigidBody.collision;
             delete rigidBody.shape;
-            }
-            );
-
-    for (auto system : m_systems)
-        delete system;
+        }
+        );
 }
 
 void IngameLayer::update(int dt) {
-    for (auto system : m_systems)
+    for (auto &system : m_systems) {
         system->update(dt);
+    }
+
+    m_time += dt;
+    if (m_time > 1000) {
+        m_gui.getWidget<DebugLayout>("layout_debugpanel").setValues(m_frameCounter / (float)m_time * 1000.f,
+                                                                    m_time / (float)m_frameCounter * 1000.f, static_cast<const ChunkCreateSystem*>(m_systems[0].get())->getActiveChunkCount());
+        m_time = 0;
+        m_frameCounter = 0;
+    }
 
     m_gui.update();
     m_gui.draw();
-}
 
-void IngameLayer::setDebugInfo(int fps, int rendertime, int chunkCount) {
-    m_gui.getWidget<DebugLayout>("layout_debugpanel").setValues(fps, rendertime, chunkCount);
+    m_frameCounter++;
 }

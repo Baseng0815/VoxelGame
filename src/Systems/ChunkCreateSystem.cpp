@@ -25,9 +25,9 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e) {
     for (auto entity : view) {
         auto& chunk = view.get<ChunkComponent>(entity);
         if (std::abs(e.newX - chunk.chunkX) >
-                Configuration::CHUNK_PRELOAD_SIZE ||
-                std::abs(e.newZ - chunk.chunkZ) >
-                Configuration::CHUNK_PRELOAD_SIZE) {
+            Configuration::CHUNK_PRELOAD_SIZE ||
+            std::abs(e.newZ - chunk.chunkZ) >
+            Configuration::CHUNK_PRELOAD_SIZE) {
             if (!std::count(m_destructionQueue.begin(), m_destructionQueue.end(), entity)) {
                 m_destructionQueue.push_back(entity);
             }
@@ -38,15 +38,15 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e) {
     for (int x = e.newX + Configuration::CHUNK_PRELOAD_SIZE; x >= e.newX - (int)Configuration::CHUNK_PRELOAD_SIZE; x--) {
         for (int z = e.newZ + Configuration::CHUNK_PRELOAD_SIZE; z >= e.newZ - (int)Configuration::CHUNK_PRELOAD_SIZE; z--) {
             glm::vec2 pos(x, z);
-            if (std::count(loadedChunks.begin(), loadedChunks.end(), pos) == 0) {
+            if (std::count(m_loadedChunks.begin(), m_loadedChunks.end(), pos) == 0) {
                 auto entity = m_registry->create();
 
                 m_registry->emplace<TransformationComponent>(entity, TransformationComponent {glm::vec3(x * Configuration::CHUNK_SIZE,
-                            0, z * Configuration::CHUNK_SIZE)});
+                                                                                                        0, z * Configuration::CHUNK_SIZE)});
                 m_registry->emplace<MeshRenderComponent>(entity, MeshRenderComponent {ResourceManager::getResource<Material>("materialChunkBlocks")});
                 m_registry->emplace<ChunkComponent>(entity, ChunkComponent(new std::mutex(), x, z));
 
-                loadedChunks.push_back(pos);
+                m_loadedChunks.push_back(pos);
             }
         }
     }
@@ -230,7 +230,7 @@ void ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block*** blocks
 }
 
 void ChunkCreateSystem::updateChunkBuffers(Geometry& geometry,
-        const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices) {
+                                           const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices) {
 
     geometry.fillBuffers(vertices, indices);
 }
@@ -263,7 +263,7 @@ void ChunkCreateSystem::_update(int dt) {
             delete chunk.blockMutex;
 
             // remove from loaded chunks and registry
-            loadedChunks.erase(std::remove(loadedChunks.begin(), loadedChunks.end(), pos), loadedChunks.end());
+            m_loadedChunks.erase(std::remove(m_loadedChunks.begin(), m_loadedChunks.end(), pos), m_loadedChunks.end());
             m_registry->destroy(*it);
             it = m_destructionQueue.erase(it);
         }
@@ -283,7 +283,7 @@ void ChunkCreateSystem::_update(int dt) {
         chunk.threadActiveOnSelf = false;
         chunk.chunkBlocksCreated = true;
 
-        constructionCount--;
+        m_constructionCount--;
     }
     m_finishedBlocks.clear();
     blockMapLock.unlock();
@@ -305,7 +305,7 @@ void ChunkCreateSystem::_update(int dt) {
 
         updateChunkBuffers(meshRenderer.geometry, val.indices, val.vertices);
 
-        constructionCount--;
+        m_constructionCount--;
         chunk.verticesOutdated = false;
         chunk.threadActiveOnSelf = false;
     }
@@ -315,18 +315,18 @@ void ChunkCreateSystem::_update(int dt) {
 
     auto view = m_registry->view<ChunkComponent>();
     for (auto entity : view) {
-        if (constructionCount < Configuration::CHUNK_MAX_LOADING) {
+        if (m_constructionCount < Configuration::CHUNK_MAX_LOADING) {
             auto& chunk = view.get<ChunkComponent>(entity);
 
             if (!chunk.threadActiveOnSelf) {
                 // create blocks
                 if (chunk.blocks == nullptr) {
-                    constructionCount++;
+                    m_constructionCount++;
                     chunk.threadActiveOnSelf = true;
 
                     m_futures.push_back(std::async(std::launch::async, [=]() {
-                                updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ);
-                                }));
+                        updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ);
+                    }));
 
                     world.addChunk(entity, glm::vec2(chunk.chunkX, chunk.chunkZ));
                 }
@@ -334,10 +334,10 @@ void ChunkCreateSystem::_update(int dt) {
                 else if (chunk.verticesOutdated) {
                     chunk.threadActiveOnSelf = true;
                     m_registry->view<AtlasComponent>().each([&](auto& atlas) {
-                            m_futures.push_back(std::async(std::launch::async, [=]() {
-                                        updateChunkVertices(entity, chunk.blocks, atlas, chunk.blockMutex);
-                                        }));
-                            });
+                        m_futures.push_back(std::async(std::launch::async, [=]() {
+                            updateChunkVertices(entity, chunk.blocks, atlas, chunk.blockMutex);
+                        }));
+                    });
                 }
             }
         }
@@ -345,16 +345,20 @@ void ChunkCreateSystem::_update(int dt) {
 }
 
 ChunkCreateSystem::ChunkCreateSystem(entt::registry* registry)
-    : System(registry, 50), constructionCount(0) {
+    : System {registry, 50}, m_constructionCount {0}
+{
 
-        // event callbacks
-        m_enterChunkHandle = EventDispatcher::onEnterChunk.subscribe([&](const EnterChunkEvent& e) {
-            handleEnterChunk(e);
-        });
+    // event callbacks
+    m_enterChunkHandle = EventDispatcher::onEnterChunk.subscribe([&](const EnterChunkEvent& e) {
+        handleEnterChunk(e);
+    });
 
-        m_blockChangeHandle = EventDispatcher::onBlockChange.subscribe([&](const BlockChangedEvent& e) {
-            handleBlockChanged(e);
-        });
+    m_blockChangeHandle = EventDispatcher::onBlockChange.subscribe([&](const BlockChangedEvent& e) {
+        handleBlockChanged(e);
+    });
 
-        handleEnterChunk(EnterChunkEvent());
-    }
+    handleEnterChunk(EnterChunkEvent());
+}
+
+int ChunkCreateSystem::getActiveChunkCount() const
+{ return m_loadedChunks.size(); }

@@ -38,9 +38,9 @@ class ChunkCreateSystem : public System {
 
         WorldGenerator m_generator = WorldGenerator(WorldType::WORLD_NORMAL);
 
-        std::atomic_int constructionCount;
+        std::atomic_int m_constructionCount;
         std::vector<entt::entity> m_destructionQueue;
-        std::vector<glm::vec2> loadedChunks;
+        std::vector<glm::vec2> m_loadedChunks;
 
         CallbackHandle<const EnterChunkEvent&> m_enterChunkHandle;
         void handleEnterChunk(const EnterChunkEvent& e);
@@ -57,4 +57,6 @@ class ChunkCreateSystem : public System {
 
     public:
         ChunkCreateSystem(entt::registry* registry);
+
+        int getActiveChunkCount() const;
 };

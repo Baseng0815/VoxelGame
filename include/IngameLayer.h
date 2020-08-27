@@ -8,8 +8,11 @@
 
 class IngameLayer : public GameLayer {
     private:
-        std::vector<System*> m_systems;
+        std::vector<std::unique_ptr<System>> m_systems;
         entt::registry m_registry;
+
+        int m_time = 0;
+        int m_frameCounter = 0;
 
         GUI m_gui;
 
@@ -18,6 +21,4 @@ class IngameLayer : public GameLayer {
         ~IngameLayer();
 
         void update(int dt) override;
-
-        void setDebugInfo(int fps, int rendertime, int chunkCount);
 };
