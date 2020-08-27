@@ -53,12 +53,13 @@ Window::Window(Application* app, int width, int height) {
     glEnable(GL_CULL_FACE);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    EventDispatcher::onKeyPress += [this](const KeyEvent& e) {
+    m_keyEventHandle = EventDispatcher::onKeyPress.subscribe([&](const KeyEvent& e) {
         handleKeyPress(e);
-    };
-    EventDispatcher::onFramebufferSize += [this](const FramebufferSizeEvent& e) {
+    });
+
+    m_framebufferSizeHandle = EventDispatcher::onFramebufferSize.subscribe([&](const FramebufferSizeEvent& e) {
         handleFramebufferSize(e);
-    };
+    });
 }
 
 void Window::clear(glm::vec3 clearColor) {

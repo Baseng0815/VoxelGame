@@ -65,32 +65,32 @@ void Text::_draw(const glm::mat4& projection) const {
     }
 }
 
-Text::Text(const std::string& id, GUI* gui, float textScale)
-    : Widget(id, gui), m_textScale(textScale),
-    m_textShader(ResourceManager::getResource<Shader>("shaderText")) {
-}
+Text::Text(const std::string& id, float textScale)
+    : Widget {id}, m_textScale {textScale},
+    m_textShader {ResourceManager::getResource<Shader>("shaderText")}
+{}
 
 void Text::setScale(float scale) {
     m_textScale = scale;
 }
 
-float Text::getScale() const {
-    return m_textScale;
-}
+float Text::getScale() const
+{ return m_textScale; }
 
-const std::string& Text::getString() const {
-    return m_string;
-}
+const std::string& Text::getString() const
+{ return m_string; }
 
-void Text::setString(const std::string& string) {
+void Text::setString(const std::string& string)
+{
     m_string = string;
-    m_gui->__invalidate();
+    _invalidate();
 }
 
-const Font* Text::getFont() const {
-    return m_font;
-}
+const Font* Text::getFont() const
+{ return m_font; }
 
-void Text::setFont(const Font* font) {
+void Text::setFont(const Font* font)
+{
     m_font = font;
+    _invalidate();
 }

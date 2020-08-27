@@ -42,7 +42,9 @@ class ChunkCreateSystem : public System {
         std::vector<entt::entity> m_destructionQueue;
         std::vector<glm::vec2> loadedChunks;
 
+        CallbackHandle<const EnterChunkEvent&> m_enterChunkHandle;
         void handleEnterChunk(const EnterChunkEvent& e);
+        CallbackHandle<const BlockChangedEvent&> m_blockChangeHandle;
         void handleBlockChanged(const BlockChangedEvent& e);
 
         void updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ);

@@ -16,12 +16,11 @@ class Image : public Widget {
         // update minWidth and minHeight
         void updateImageDimensions();
         void _draw(const glm::mat4& projection) const override;
+        void _updateMinimumSize() override;
+        void _updateScreenElements() override;
 
     public:
-        Image(const std::string& id, GUI *gui, const Texture *texture = nullptr);
-
-        void updateArea(const Rectangle& parent) override;
-        void updateScreenElements() override;
+        Image(const std::string& id, const Texture *texture = nullptr);
 
         void setTexture(Texture* texture);
 };

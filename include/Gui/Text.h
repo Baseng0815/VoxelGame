@@ -26,7 +26,7 @@ class Text : public Widget {
         void _updateMinimumSize() override;
 
     public:
-        Text(const std::string &id, GUI *gui, float textScale = 1.0f);
+        Text(const std::string &id, float textScale = 1.0f);
 
         void setScale(float scale);
         float getScale() const;

@@ -33,6 +33,11 @@ class Widget {
 
         bool m_isHovering = false, m_isPressed = false;
 
+        // when a widget is invalidated the parent layout needs to be invalidated too
+        // (in case a widget is resized and the layout needs to perform new arrangements)
+        bool m_isOutdated = true;
+        Layout *m_parent = nullptr;
+
         // get current background color based on hovering and pressed
         Color getBackgroundColor() const;
         // get current foreground color based on hovering and pressed
@@ -41,10 +46,16 @@ class Widget {
         RenderQuad m_renderQuadBackground;
         const Shader* m_coloredQuadShader;
 
+        bool coordinatesInWidget(int x, int y);
+        void handleCursorMove(const CursorEvent &e);
+        void handleButtonPress(const MouseButtonEvent &e);
+
         virtual void _draw(const glm::mat4 &projection) const;
         virtual void _updateScreenElements();
         virtual void _updateMinimumSize();
         virtual void _updateArea();
+
+        void _invalidateSelf();
 
     public:
         CallbackList<const CursorEvent&> onMove;
@@ -68,16 +79,20 @@ class Widget {
 
         // used in the layout step
         // always sets the outer area
-        const glm::vec2 &getPosition() const;
-        const glm::vec2 &getSize() const;
-        const Rectangle &getInnerArea() const;
-        const Rectangle &getOuterArea() const;
-        void setPosition(const glm::vec2 &position);
-        void setSize(const glm::vec2 &size);
+        const glm::vec2 &_getPosition() const;
+        const glm::vec2 &_getSize() const;
+        const Rectangle &_getInnerArea() const;
+        const Rectangle &_getOuterArea() const;
+        void _setPosition(const glm::vec2 &position);
+        void _setSize(const glm::vec2 &size);
 
         bool isHovering() const;
         bool isPressed() const;
 
-        const std::string& getId() const;
-        Layout *getParent() const;
+        const std::string &getId() const;
+
+        void _setParent(Layout *parent);
+
+        // propagate invalidation up to the root layout
+        void _invalidate();
 };

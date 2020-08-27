@@ -14,7 +14,7 @@ class CallbackList {
     public:
         CallbackHandle<Args...> subscribe(std::function<void(Args...)> func) {
             m_functions[m_idCounter] = func;
-            return CallbackHandle<Args...> { this, m_idCounter++ };
+            return CallbackHandle<Args...> {this, m_idCounter++};
         }
 
         void unsubscribe(CallbackId id) {

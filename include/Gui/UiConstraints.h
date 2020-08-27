@@ -30,5 +30,5 @@ struct UiConstraints {
                width = MatchConstraint(), height = MatchConstraint();
 
     // calculate the final area a widget occupies
-    Rectangle getRect(const Rectangle& parent, const UiProperties& widgetProperties, int minWidth, int minHeight) const;
+    Rectangle getRect(const Rectangle& parent, const UiProperties& widgetProperties, const glm::vec2 &minSize) const;
 };

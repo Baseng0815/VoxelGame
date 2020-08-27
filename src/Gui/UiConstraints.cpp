@@ -11,7 +11,7 @@ float Constraint::getValue(float parent) const {
             return parent * value;
         case ConstraintType::CONSTRAINT_CENTER:
             return parent / 2.f;
-        case ConstraintType::CONSTRAINT_PIXEL:
+        case ConstraintType::CONSTRAINT_ABSOLUTE:
             return value;
 
         default:
@@ -23,16 +23,16 @@ ConstraintType Constraint::getType() const {
     return type;
 }
 
-Rectangle UiConstraints::getRect(const Rectangle& parent, const UiProperties& properties, int minWidth, int minHeight) const {
+Rectangle UiConstraints::getRect(const Rectangle& parent, const UiProperties& properties, const glm::vec2 &minSize) const {
     float w, h;
     // handle match constraints
     if (width.getType() == ConstraintType::CONSTRAINT_MATCH)
-        w = minWidth;
+        w = minSize.x;
     else
         w = width.getValue(parent.size.x);
 
     if (height.getType() == ConstraintType::CONSTRAINT_MATCH)
-        h = minHeight;
+        h = minSize.y;
     else
         h = height.getValue(parent.size.y);
 

@@ -21,7 +21,7 @@ private:
     // frametime, in microseconds, only related to the rendering process
     int m_frameTime = 0;
 
-    CallbackHandle<KeyEvent> m_keyEventHandle;
+    CallbackHandle<const KeyEvent&> m_keyEventHandle;
     void handleKeys(const KeyEvent&);
 
 public:

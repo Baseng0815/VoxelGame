@@ -3,8 +3,18 @@
 
 #include "../../include/ResourceManager.h"
 #include "../../include/Resources/Shader.h"
+#include "../../include/Events/EventDispatcher.h"
 
 #include <algorithm>
+
+void Widget::applyPadding()
+{
+    m_outerArea = m_innerArea;
+    m_outerArea.position.x -= m_properties.padding.left;
+    m_outerArea.size.x += m_properties.padding.right + m_properties.padding.left;
+    m_outerArea.position.y -= m_properties.padding.bottom;
+    m_outerArea.size.y += m_properties.padding.top + m_properties.padding.bottom;
+}
 
 Color Widget::getBackgroundColor() const
 {
@@ -26,13 +36,52 @@ Color Widget::getForegroundColor() const
         return m_properties.foregroundColor;
 }
 
-void Widget::applyPadding()
+bool Widget::coordinatesInWidget(int x, int y)
 {
-    m_outerArea = m_innerArea;
-    m_outerArea.position.x -= m_properties.padding.left;
-    m_outerArea.size.x += m_properties.padding.right + m_properties.padding.left;
-    m_outerArea.position.y -= m_properties.padding.bottom;
-    m_outerArea.size.y += m_properties.padding.top + m_properties.padding.bottom;
+    if (x > m_innerArea.position.x && x < m_innerArea.position.x + m_innerArea.size.x &&
+            y > m_innerArea.position.y && y < m_innerArea.position.y + m_innerArea.size.y) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void Widget::handleCursorMove(const CursorEvent &e)
+{
+    if (!m_properties.receiveEvents) return;
+
+    // cursor y position is inverted in GUI space
+    bool inArea = coordinatesInWidget(e.x, EventDispatcher::getFramebufferSize().y - e.y);
+    if (m_isHovering) {
+        // cursor was on widget and now is not (leave)
+        if (!inArea) {
+            onLeave.invoke(e);
+            m_isHovering = false;
+        // cursor was on widget and is still (move)
+        } else {
+            onMove.invoke(e);
+        }
+    } else {
+        // cursor was not on widget and is now (enter)
+        if (inArea) {
+            onEnter.invoke(e);
+            m_isHovering = true;
+        }
+    }
+}
+
+void Widget::handleButtonPress(const MouseButtonEvent &e)
+{
+    if (!m_properties.receiveEvents) return;
+    if (!m_isHovering) return;
+
+    if (e.action == GLFW_PRESS) {
+        onPress.invoke(e);
+        m_isPressed = true;
+    } else if (e.action == GLFW_RELEASE) {
+        onRelease.invoke(e);
+        m_isPressed = false;
+    }
 }
 
 void Widget::_draw(const glm::mat4& projection) const
@@ -50,9 +99,16 @@ void Widget::_updateMinimumSize()
     // default widget does nothing special
 }
 
+void Widget::_updateArea()
+{
+    // default widget does nothing special
+}
+
 Widget::Widget(const std::string& id)
     : m_id {id}, m_coloredQuadShader {ResourceManager::getResource<Shader>("shaderColoredQuad")}
-{}
+{
+    _invalidate();
+}
 
 void Widget::draw(const glm::mat4& projection) const {
     if (m_properties.isVisible) {
@@ -69,57 +125,76 @@ void Widget::draw(const glm::mat4& projection) const {
 
 void Widget::updateArea(const Rectangle& parent)
 {
-    _updateMinimumSize();
+    if (m_isOutdated) {
+        _updateMinimumSize();
 
-    m_innerArea = m_properties.constraints.getRect(parent, m_properties, m_minWidth, m_minHeight);
-    applyPadding();
+        m_innerArea = m_properties.constraints.getRect(parent, m_properties, m_minSize);
+        applyPadding();
 
-    _updateArea();
+        _updateArea();
+    }
 }
 
 void Widget::updateScreenElements()
 {
-    m_renderQuadBackground.resize(m_outerArea);
-    _updateScreenElements();
+    if (m_isOutdated) {
+        m_renderQuadBackground.resize(m_outerArea);
+        _updateScreenElements();
+        m_isOutdated = false;
+    }
 }
 
 UiProperties &Widget::properties()
 { return m_properties; }
 
-const glm::vec2 &Widget::getPosition() const
+const glm::vec2 &Widget::_getPosition() const
 { return m_outerArea.position; }
 
-const glm::vec2 &Widget::getSize() const
+const glm::vec2 &Widget::_getSize() const
 { return m_outerArea.size; }
 
-const Rectangle &Widget::getInnerArea() const
+const Rectangle &Widget::_getInnerArea() const
 { return m_innerArea; }
-const Rectangle &Widget::getOuterArea() const
+const Rectangle &Widget::_getOuterArea() const
 { return m_outerArea; }
 
-void Widget::setPosition(const glm::vec2 &position)
+void Widget::_setPosition(const glm::vec2 &position)
 {
     m_outerArea.position = position;
 
     // readjust inner positions
     m_innerArea.position.x = m_outerArea.position.x + m_properties.padding.left;
     m_innerArea.position.y = m_outerArea.position.y + m_properties.padding.bottom;
+    _invalidate();
 }
 
-void Widget::setSize(const glm::vec2 &size)
+void Widget::_setSize(const glm::vec2 &size)
 {
     m_outerArea.size = size;
 
     // readjust inner sizes
     m_innerArea.size.x = m_outerArea.size.y - m_properties.padding.left - m_properties.padding.right;
     m_innerArea.size.y = m_outerArea.size.y - m_properties.padding.top - m_properties.padding.bottom;
+    _invalidate();
 }
 
 bool Widget::isHovering() const
-{ return m_isHovering };
+{ return m_isHovering; };
+
 bool Widget::isPressed() const
 { return m_isPressed; }
 
-const std::string& Widget::getId() const {
-    return m_id;
+const std::string& Widget::getId() const
+{ return m_id; }
+
+void Widget::_setParent(Layout *parent)
+{ m_parent = parent; }
+
+void Widget::_invalidate()
+{
+    m_isOutdated = true;
+    if (m_parent) {
+        m_parent->_invalidate();
+    }
 }
+

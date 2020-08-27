@@ -2,8 +2,6 @@
 
 #include "Layout.h"
 
-#include <stack>
-
 struct FramebufferSizeEvent;
 struct CursorEvent;
 struct MouseButtonEvent;
@@ -19,17 +17,12 @@ class GUI {
         // contains all widgets which are currently alive
         std::map<std::string, Widget*> m_widgets;
 
-        static bool coordinatesInWidget(const Widget& widget, int x, int y);
-
+        CallbackHandle<const FramebufferSizeEvent&> m_framebufferSizeHandle;
         void handleFramebufferSize(const FramebufferSizeEvent&);
-        void handleCursorMove(const CursorEvent&);
-        void handleButtonPress(const MouseButtonEvent&);
-        void handleKeyPress(const KeyEvent&);
 
         glm::mat4 m_orthoProjection;
-        bool m_isOutdated = true;
 
-        std::stack<Layout*> m_rootLayouts;
+        std::vector<Layout*> m_rootLayouts;
 
     public:
         GUI();
@@ -51,5 +44,4 @@ class GUI {
 
         // widgets register and unregister themselves
         void __registerWidget(Widget* widget);
-        void __invalidate();
 };

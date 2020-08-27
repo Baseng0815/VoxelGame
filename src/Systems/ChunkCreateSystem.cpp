@@ -348,12 +348,13 @@ ChunkCreateSystem::ChunkCreateSystem(entt::registry* registry)
     : System(registry, 50), constructionCount(0) {
 
         // event callbacks
-        EventDispatcher::onEnterChunk += [this](const EnterChunkEvent& e) {
+        m_enterChunkHandle = EventDispatcher::onEnterChunk.subscribe([&](const EnterChunkEvent& e) {
             handleEnterChunk(e);
-        };
-        EventDispatcher::onBlockChange += [this](const BlockChangedEvent& e) {
+        });
+
+        m_blockChangeHandle = EventDispatcher::onBlockChange.subscribe([&](const BlockChangedEvent& e) {
             handleBlockChanged(e);
-        };
+        });
 
         handleEnterChunk(EnterChunkEvent());
     }

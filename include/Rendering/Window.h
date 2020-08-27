@@ -5,6 +5,8 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 
+#include "../Events/CallbackHandle.h"
+
 struct KeyEvent;
 struct FramebufferSizeEvent;
 
@@ -20,7 +22,9 @@ private:
     int m_prevX, m_prevY;
     bool m_isFullscreen = false;
 
+    CallbackHandle<const KeyEvent&> m_keyEventHandle;
     void handleKeyPress(const KeyEvent&);
+    CallbackHandle<const FramebufferSizeEvent&> m_framebufferSizeHandle;
     void handleFramebufferSize(const FramebufferSizeEvent&);
 
 public:

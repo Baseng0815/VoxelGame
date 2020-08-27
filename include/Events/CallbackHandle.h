@@ -1,3 +1,5 @@
+#pragma once
+
 #include <algorithm>
 
 #include "../Typedefs.h"
@@ -11,14 +13,13 @@ class CallbackHandle {
     private:
         CallbackList<Args...> *m_list;
         CallbackId m_id;
-        bool m_isSubscribed = true;
+        bool m_isSubscribed = false;
 
     public:
-        CallbackHandle(CallbackList<Args...> *list, CallbackId id)
-            : m_list {list}, m_id {id}
-        {}
-
         CallbackHandle() = default;
+        CallbackHandle(CallbackList<Args...> *list, CallbackId id)
+            : m_list {list}, m_id {id}, m_isSubscribed {true}
+        {}
 
         void unsubscribe()
         {
@@ -37,8 +38,12 @@ class CallbackHandle {
         CallbackHandle& operator=(const CallbackHandle&) = delete;
 
         CallbackHandle(CallbackHandle &&other)
-            : m_list {other.m_list}, m_isSubscribed {other.m_isSubscribed}, m_id {other.m_id}
-        {}
+            : m_list {other.m_list}, m_id {other.m_id}, m_isSubscribed {other.m_isSubscribed}
+        {
+            other.m_list = nullptr;
+            other.m_id = 0;
+            other.m_isSubscribed = false;
+        }
 
         CallbackHandle& operator=(CallbackHandle &&other)
         {

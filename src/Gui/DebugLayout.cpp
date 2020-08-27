@@ -4,27 +4,27 @@
 #include "../../include/Gui/Text.h"
 #include "../../include/ResourceManager.h"
 
-DebugLayout::DebugLayout(GUI* gui)
-    : Layout("layout_debugpanel", gui),
-    m_textFps(new Text("text_fps", gui, 0.5f)),
-    m_textRenderTime(new Text("text_renderTime", gui, 0.5f)),
-    m_textChunkCount(new Text("text_chunkCount", gui, 0.5f))
+DebugLayout::DebugLayout(GUI &gui)
+    : Layout {"layout_debugpanel", gui},
+    m_textFps {new Text("text_fps", 0.5f)},
+    m_textRenderTime {new Text("text_renderTime", 0.5f)},
+    m_textChunkCount {new Text("text_chunkCount", 0.5f)}
 {
-    this->getProperties().constraints.height = RelativeConstraint(1);
+    m_properties.constraints.height = RelativeConstraint(1);
     setStackMode(STACK_VERTICAL, true, false);
 
-    m_textFps->getProperties().constraints.x = PixelConstraint(0);
-    m_textFps->getProperties().padding.top = 10;
+    m_textFps->properties().constraints.x = AbsoluteConstraint(0);
+    m_textFps->properties().padding.top = 10;
     m_textFps->setFont(ResourceManager::getResource<Font>("fontKoruri"));
     this->addWidget(m_textFps);
 
-    m_textRenderTime->getProperties().constraints.x = PixelConstraint(0);
-    m_textRenderTime->getProperties().padding.top = 10;
+    m_textRenderTime->properties().constraints.x = AbsoluteConstraint(0);
+    m_textRenderTime->properties().padding.top = 10;
     m_textRenderTime->setFont(ResourceManager::getResource<Font>("fontKoruri"));
     this->addWidget(m_textRenderTime);
 
-    m_textChunkCount->getProperties().constraints.x = PixelConstraint(0);
-    m_textChunkCount->getProperties().padding.top = 10;
+    m_textChunkCount->properties().constraints.x = AbsoluteConstraint(0);
+    m_textChunkCount->properties().padding.top = 10;
     m_textChunkCount->setFont(ResourceManager::getResource<Font>("fontKoruri"));
     this->addWidget(m_textChunkCount);
     /*

@@ -37,9 +37,10 @@ Application::Application()
     ResourceManager::loadResources();
 
     EventDispatcher::attachToWindow(m_window);
-    m_keyEventHandle = EventDispatcher::onKeyPress.subscribe([this](const KeyEvent& e) {
+
+    m_keyEventHandle = EventDispatcher::onKeyPress.subscribe([&](const KeyEvent& e) {
         handleKeys(e);
-    };
+    });
 
     m_currentLayer = new IngameLayer(this);
     //m_currentLayer = new MainMenuLayer(this);

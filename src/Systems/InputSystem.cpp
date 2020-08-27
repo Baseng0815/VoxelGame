@@ -21,67 +21,67 @@
 
 void InputSystem::handleKeyPressEvent(const KeyEvent& e) {
     m_registry->view<CameraComponent, VelocityComponent, TransformationComponent>().each(
-            [&](auto& camera, auto& velocity, auto& transformation) {
+        [&](auto& camera, auto& velocity, auto& transformation) {
             switch (e.key) {
-            case GLFW_KEY_W:
-            if (e.action == GLFW_PRESS)
-            camera.relVelocity.z += -1;
-            else if (e.action == GLFW_RELEASE)
-            camera.relVelocity.z -= -1;
-            break;
-            case GLFW_KEY_S:
-            if (e.action == GLFW_PRESS)
-            camera.relVelocity.z += 1;
-            else if (e.action == GLFW_RELEASE)
-            camera.relVelocity.z -= 1;
-            break;
-            case GLFW_KEY_A:
-            if (e.action == GLFW_PRESS)
-            camera.relVelocity.x += -1;
-            else if (e.action == GLFW_RELEASE)
-            camera.relVelocity.x -= -1;
-            break;
-            case GLFW_KEY_D:
-            if (e.action == GLFW_PRESS)
-                camera.relVelocity.x += 1;
-            else if (e.action == GLFW_RELEASE)
-                camera.relVelocity.x -= 1;
-            break;
-            case GLFW_KEY_LEFT_SHIFT:
-            if (e.action == GLFW_PRESS)
-                camera.relVelocity.y += -1;
-            else if (e.action == GLFW_RELEASE)
-                camera.relVelocity.y -= -1;
-            break;
-            case GLFW_KEY_SPACE:
-            if (e.action == GLFW_PRESS) {
-                int currTime = glfwGetTime();
-                int dt = currTime - lastSpacePress;
-                if (dt >= 0 && dt < 1) {
-                    camera.isFlying = !camera.isFlying;
-                    camera.relVelocity.y = 0;
-                }
+                case GLFW_KEY_W:
+                    if (e.action == GLFW_PRESS)
+                        camera.relVelocity.z += -1;
+                    else if (e.action == GLFW_RELEASE)
+                        camera.relVelocity.z -= -1;
+                    break;
+                case GLFW_KEY_S:
+                    if (e.action == GLFW_PRESS)
+                        camera.relVelocity.z += 1;
+                    else if (e.action == GLFW_RELEASE)
+                        camera.relVelocity.z -= 1;
+                    break;
+                case GLFW_KEY_A:
+                    if (e.action == GLFW_PRESS)
+                        camera.relVelocity.x += -1;
+                    else if (e.action == GLFW_RELEASE)
+                        camera.relVelocity.x -= -1;
+                    break;
+                case GLFW_KEY_D:
+                    if (e.action == GLFW_PRESS)
+                        camera.relVelocity.x += 1;
+                    else if (e.action == GLFW_RELEASE)
+                        camera.relVelocity.x -= 1;
+                    break;
+                case GLFW_KEY_LEFT_SHIFT:
+                    if (e.action == GLFW_PRESS)
+                        camera.relVelocity.y += -1;
+                    else if (e.action == GLFW_RELEASE)
+                        camera.relVelocity.y -= -1;
+                    break;
+                case GLFW_KEY_SPACE:
+                    if (e.action == GLFW_PRESS) {
+                        int currTime = glfwGetTime();
+                        int dt = currTime - lastSpacePress;
+                        if (dt >= 0 && dt < 1) {
+                            camera.isFlying = !camera.isFlying;
+                            camera.relVelocity.y = 0;
+                        }
 
-                lastSpacePress = currTime;
-                camera.relVelocity.y += 5;
-            }
-            else if (e.action == GLFW_RELEASE)
-                if (!camera.isFalling || camera.isFlying)
-                    camera.relVelocity.y -= 5;
-                else
-                    camera.relVelocity.y = 0;
-            break;
-            default:
-            break;
+                        lastSpacePress = currTime;
+                        camera.relVelocity.y += 5;
+                    }
+                    else if (e.action == GLFW_RELEASE)
+                        if (!camera.isFalling || camera.isFlying)
+                            camera.relVelocity.y -= 5;
+                        else
+                            camera.relVelocity.y = 0;
+                    break;
+                default:
+                    break;
             }
 
             updateSelectedBlock(camera, transformation);
-            });
+        });
 }
 
 void InputSystem::handleMouseButtonEvent(const MouseButtonEvent& e) {
     m_registry->view<CameraComponent, TransformationComponent>().each(
-            [&](CameraComponent& camera, TransformationComponent& transformation) {
+        [&](CameraComponent& camera, TransformationComponent& transformation) {
             // TODO reimplement this
             /*
                WorldComponent& world = m_systemManager->getCurrentWorld();
@@ -108,12 +108,12 @@ void InputSystem::handleMouseButtonEvent(const MouseButtonEvent& e) {
             break;
             }
             */
-            });
+        });
 }
 
 void InputSystem::handleMouseMoveEvent(const CursorEvent& e) {
     m_registry->view<CameraComponent, VelocityComponent, TransformationComponent>().each(
-            [&](auto& camera, auto& velocity, auto& transformation) {
+        [&](auto& camera, auto& velocity, auto& transformation) {
             camera.yaw += e.dx * Configuration::getFloatValue("MOUSE_SENSITIVITY");
             camera.pitch -= e.dy * Configuration::getFloatValue("MOUSE_SENSITIVITY");
 
@@ -122,12 +122,12 @@ void InputSystem::handleMouseMoveEvent(const CursorEvent& e) {
 
             updateVectors(camera);
             updateSelectedBlock(camera, transformation);
-            });
+        });
 }
 
 void InputSystem::handleScrollEvent(const ScrollEvent& e) {
     m_registry->view<CameraComponent>().each(
-            [&](auto& camera) {
+        [&](auto& camera) {
 
             camera.fov -= e.dy;
 
@@ -135,17 +135,17 @@ void InputSystem::handleScrollEvent(const ScrollEvent& e) {
             else if (camera.fov < 1) camera.fov = 1;
 
             updateProjectionMatrix(camera);
-            });
+        });
 }
 
 void InputSystem::handleFramebufferSizeEvent(const FramebufferSizeEvent& e) {
     m_registry->view<CameraComponent>().each(
         [&](auto& camera) {
 
-        camera.width = e.width;
-        camera.height = e.height;
-        updateProjectionMatrix(camera);
-    });
+            camera.width = e.width;
+            camera.height = e.height;
+            updateProjectionMatrix(camera);
+        });
 }
 
 void InputSystem::updateVectors(CameraComponent& camera) {
@@ -207,9 +207,9 @@ void InputSystem::updateSelectedBlock(CameraComponent& camera, TransformationCom
 void InputSystem::_update(int dt) {
     // TODO make event based
     m_registry->view<CameraComponent, TransformationComponent>().each(
-            [&](auto& camera, auto& transformation) {
+        [&](auto& camera, auto& transformation) {
             updateViewMatrix(camera, transformation);
-            });
+        });
 }
 
 InputSystem::InputSystem(entt::registry* registry)
@@ -218,29 +218,33 @@ InputSystem::InputSystem(entt::registry* registry)
         // TODO put into extra system
         entt::entity entity = m_registry->create();
         m_registry->emplace<CameraComponent>(entity, 90.f, Configuration::getFloatValue("WINDOW_WIDTH"), Configuration::getFloatValue("WINDOW_HEIGHT"));
-        m_registry->emplace<TransformationComponent>(entity, glm::vec3(0, 100, 0), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
+        m_registry->emplace<TransformationComponent>(entity, glm::vec3 {0.f, 100.f, 0.f}, glm::vec3 {0.f, 0.f, 0.f}, glm::vec3 {1, 1, 1});
         m_registry->emplace<VelocityComponent>(entity);
-        BoxCollision* cameraCollision = new BoxCollision(glm::vec3(-0.5f, -1.5f, -0.5f), 1, 2, 1);
-        m_registry->emplace<RigidBodyComponent>(entity, new Shape(std::vector<Triangle>()), 0, cameraCollision);
+        BoxCollision* cameraCollision = new BoxCollision(glm::vec3 {-0.5f, -1.5f, -0.5f}, 1, 2, 1);
+        m_registry->emplace<RigidBodyComponent>(entity, new Shape(std::vector<Triangle> {}), 0, cameraCollision);
 
         m_registry->view<CameraComponent>().each(
             [&](auto& camera) {
-            updateProjectionMatrix(camera);
+                updateProjectionMatrix(camera);
+            });
+
+        m_keyPressHandle = EventDispatcher::onKeyPress.subscribe([this](const KeyEvent &e) {
+            handleKeyPressEvent(e);
         });
 
-        EventDispatcher::onKeyPress += [this](const KeyEvent &e) {
-            handleKeyPressEvent(e);
-        };
-        EventDispatcher::onCursorMove += [this](const CursorEvent &e) {
-            handleMouseMoveEvent(e);
-        };
-        EventDispatcher::onMouseScroll += [this](const ScrollEvent &e) {
-            handleScrollEvent(e);
-        };
-        EventDispatcher::onFramebufferSize += [this](const FramebufferSizeEvent &e) {
-            handleFramebufferSizeEvent(e);
-        };
-        EventDispatcher::onMouseButtonPress += [this](const MouseButtonEvent&e) {
+        m_mouseButtonHandle = EventDispatcher::onMouseButtonPress.subscribe([this](const MouseButtonEvent&e) {
             handleMouseButtonEvent(e);
-        };
+        });
+
+        m_cursorHandle = EventDispatcher::onCursorMove.subscribe([this](const CursorEvent &e) {
+            handleMouseMoveEvent(e);
+        });
+
+        m_scrollHandle = EventDispatcher::onMouseScroll.subscribe([this](const ScrollEvent &e) {
+            handleScrollEvent(e);
+        });
+
+        m_framebufferHandle = EventDispatcher::onFramebufferSize.subscribe([this](const FramebufferSizeEvent &e) {
+            handleFramebufferSizeEvent(e);
+        });
     }
