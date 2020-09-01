@@ -14,7 +14,7 @@
 
 #include "../include/Application.h"
 #include "../include/Gui/DebugLayout.h"
-#include "../include/ResourceManager.h"
+#include "../include/Resources/ResourceManager.h"
 #include "../include/Resources/Texture.h"
 #include "../include/Events/EventDispatcher.h"
 
@@ -35,7 +35,7 @@ IngameLayer::IngameLayer(Application* application)
 
         // atlas
         entity = m_registry.create();
-        const Texture *atlasTexture = ResourceManager::getResource<Texture>("textureAtlas");
+        const Texture *atlasTexture = ResourceManager::getResource<Texture>(TEXTURE_ATLAS);
         m_registry.emplace<AtlasComponent>(entity, atlasTexture->getWidth(), atlasTexture->getHeight(), 16);
 
         m_gui.addPanel(new DebugLayout(m_gui));

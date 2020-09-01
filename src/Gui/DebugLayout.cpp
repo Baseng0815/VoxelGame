@@ -2,7 +2,7 @@
 #include "../../include/Gui/DebugLayout.h"
 
 #include "../../include/Gui/Text.h"
-#include "../../include/ResourceManager.h"
+#include "../../include/Resources/ResourceManager.h"
 
 DebugLayout::DebugLayout(GUI &gui)
     : Layout {"layout_debugpanel", gui},
@@ -15,17 +15,17 @@ DebugLayout::DebugLayout(GUI &gui)
 
     m_textFps->properties().constraints.x = AbsoluteConstraint(0);
     m_textFps->properties().padding.top = 10;
-    m_textFps->setFont(ResourceManager::getResource<Font>("fontKoruri"));
+    m_textFps->setFont(ResourceManager::getResource<Font>(FONT_KORURI));
     this->addWidget(m_textFps);
 
     m_textRenderTime->properties().constraints.x = AbsoluteConstraint(0);
     m_textRenderTime->properties().padding.top = 10;
-    m_textRenderTime->setFont(ResourceManager::getResource<Font>("fontKoruri"));
+    m_textRenderTime->setFont(ResourceManager::getResource<Font>(FONT_KORURI));
     this->addWidget(m_textRenderTime);
 
     m_textChunkCount->properties().constraints.x = AbsoluteConstraint(0);
     m_textChunkCount->properties().padding.top = 10;
-    m_textChunkCount->setFont(ResourceManager::getResource<Font>("fontKoruri"));
+    m_textChunkCount->setFont(ResourceManager::getResource<Font>(FONT_KORURI));
     this->addWidget(m_textChunkCount);
     /*
        t = this->addWidget<Text>("text_fps");

@@ -1,7 +1,7 @@
 #include "../../include/Gui/Widget.h"
 #include "../../include/Gui/Layout.h"
 
-#include "../../include/ResourceManager.h"
+#include "../../include/Resources/ResourceManager.h"
 #include "../../include/Resources/Shader.h"
 #include "../../include/Events/EventDispatcher.h"
 
@@ -105,7 +105,7 @@ void Widget::_updateArea()
 }
 
 Widget::Widget(const std::string& id)
-    : m_id {id}, m_coloredQuadShader {ResourceManager::getResource<Shader>("shaderColoredQuad")}
+    : m_id {id}, m_coloredQuadShader {ResourceManager::getResource<Shader>(SHADER_COLOR_QUAD)}
 {
     _invalidate();
 }

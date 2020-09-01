@@ -1,6 +1,6 @@
 #include "../../include/Gui/Image.h"
 
-#include "../../include/ResourceManager.h"
+#include "../../include/Resources/ResourceManager.h"
 #include "../../include/Resources/Shader.h"
 #include "../../include/Resources/Texture.h"
 
@@ -24,5 +24,5 @@ void Image::_updateScreenElements() {
 
 Image::Image(const std::string& id, const Texture *texture)
     : Widget {id}, m_texture {texture},
-    m_texturedQuadShader {ResourceManager::getResource<Shader>("shaderTexturedQuad")}
+    m_texturedQuadShader {ResourceManager::getResource<Shader>(SHADER_TEXTURE_QUAD)}
 {}

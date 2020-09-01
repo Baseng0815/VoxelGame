@@ -6,7 +6,7 @@
 #include "../../include/Resources/Shader.h"
 #include "../../include/Rendering/Window.h"
 
-#include "../../include/ResourceManager.h"
+#include "../../include/Resources/ResourceManager.h"
 
 void Text::_updateScreenElements()
 {
@@ -67,7 +67,7 @@ void Text::_draw(const glm::mat4& projection) const {
 
 Text::Text(const std::string& id, float textScale)
     : Widget {id}, m_textScale {textScale},
-    m_textShader {ResourceManager::getResource<Shader>("shaderText")}
+    m_textShader {ResourceManager::getResource<Shader>(SHADER_TEXT)}
 {}
 
 void Text::setScale(float scale) {

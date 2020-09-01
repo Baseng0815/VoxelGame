@@ -5,7 +5,7 @@
 
 #include "../../include/Utility.h"
 #include "../../include/Configuration.h"
-#include "../../include/ResourceManager.h"
+#include "../../include/Resources/ResourceManager.h"
 #include "../../include/Events/EventDispatcher.h"
 
 #include "../../include/Components/ChunkComponent.h"
@@ -42,7 +42,7 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e)
                 entt::entity entity = m_registry.create();
 
                 m_registry.emplace<TransformationComponent>(entity, TransformationComponent {glm::vec3(x * Configuration::CHUNK_SIZE, 0, z * Configuration::CHUNK_SIZE)});
-                m_registry.emplace<MeshRenderComponent>(entity, MeshRenderComponent {ResourceManager::getResource<Material>("materialChunkBlocks")});
+                m_registry.emplace<MeshRenderComponent>(entity, MeshRenderComponent {ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS)});
                 m_registry.emplace<ChunkComponent>(entity, ChunkComponent {new std::shared_mutex {}, x, z});
 
                 m_loadedChunks.push_back(pos);
@@ -80,11 +80,17 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
         for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
             generationData.blocks[x][y] = new Block[Configuration::CHUNK_SIZE];
 
+            for (int z = 0; z < Configuration::CHUNK_SIZE; z++)
+            {
+                generationData.blocks[x][y][z] = Block {BlockType::BLOCK_STONE};
+            }
+            /*
             if (y < 63) {
                 for (int z = 0; z < CHUNK_SIZE; z++) {
-                    generationData.blocks[x][y][z] = Block(BlockType::BLOCK_WATER);
+                    generationData.blocks[x][y][z] = Block {BlockType::BLOCK_WATER};
                 }
             }
+            */
         }
     }
 
@@ -95,7 +101,7 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
     }
 
     // TODO pass generationData into this function
-    m_generator.generate(glm::vec2 {chunkX, chunkZ}, generationData.biomes, generationData.blocks);
+    //m_generator.generate(glm::vec2 {chunkX, chunkZ}, generationData.biomes, generationData.blocks);
 
     return generationData;
 }
@@ -116,7 +122,7 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block *
                 if (blocks[x][y][z].type == BlockType::BLOCK_AIR) continue;
 
                 if (blocks[x][y][z].type == BlockType::BLOCK_WATER) {
-                    if (y < CHUNK_HEIGHT - 1 && blocks[x][y + 1][z].type == BlockType::BLOCK_AIR) {
+                    if (y < Configuration::CHUNK_HEIGHT - 1 && blocks[x][y + 1][z].type == BlockType::BLOCK_AIR) {
                         draw[3] = true;
                     }
                 } else {
@@ -287,7 +293,7 @@ void ChunkCreateSystem::_update(int dt) {
                     chunk.threadActiveOnSelf = true;
 
                     const AtlasComponent &atlas = m_registry.view<AtlasComponent>().raw()[0];
-                    m_geometryFutures.push_back(std::async(std::launch::async, [&]() {
+                    m_geometryFutures.push_back(std::async(std::launch::async, [=]() {
                         return updateChunkVertices(entity, chunk.blocks, chunk.blockMutex, atlas);
                     }));
                 }
@@ -313,9 +319,6 @@ void ChunkCreateSystem::_update(int dt) {
     for (auto &future : m_geometryFutures) {
         if (future.valid() && future.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
             GeometryData geometryData = future.get();
-            // for some reason entities become invalid (race conditions, but WHERE??)
-            std::cout << m_registry.valid(geometryData.entity) << std::endl;
-            // TODO fix crash on this line
             ChunkComponent &chunk = m_registry.get<ChunkComponent>(geometryData.entity);
             MeshRenderComponent &meshRenderer = m_registry.get<MeshRenderComponent>(geometryData.entity);
             updateChunkBuffers(meshRenderer.geometry, geometryData.indices, geometryData.vertices);

@@ -6,7 +6,7 @@
 
 #include "../../include/Configuration.h"
 #include "../../include/Events/EventDispatcher.h"
-#include "../../include/ResourceManager.h"
+#include "../../include/Resources/ResourceManager.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 

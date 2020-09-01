@@ -3,7 +3,7 @@
 #include "../include/Configuration.h"
 #include "../include/Events/Event.h"
 #include "../include/Events/EventDispatcher.h"
-#include "../include/ResourceManager.h"
+#include "../include/Resources/ResourceManager.h"
 
 #include "../include/MainMenuLayer.h"
 #include "../include/IngameLayer.h"

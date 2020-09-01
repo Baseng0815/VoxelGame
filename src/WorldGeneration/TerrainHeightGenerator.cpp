@@ -23,13 +23,13 @@ TerrainHeightGenerator::TerrainHeightGenerator() {
     m_flatTerrain.SetSourceModule(0, m_baseTerrain);
     m_flatTerrain.SetBias(70);
     m_flatTerrain.SetScale(5);
-    
+
     m_desertTerrain.SetSourceModule(0, m_baseTerrain);
     m_desertTerrain.SetBias(75);
     m_desertTerrain.SetScale(5);
 
     m_beachTerrain.SetSourceModule(0, m_baseTerrain);
-    m_beachTerrain.SetBias(67);    
+    m_beachTerrain.SetBias(67);
     m_beachTerrain.SetScale(4);
 
     m_oceanMoutainsBase.SetFrequency(0.01);
@@ -67,10 +67,10 @@ TerrainHeightGenerator::TerrainHeightGenerator() {
 }
 
 void TerrainHeightGenerator::generateChunkHeight(glm::vec2 chunkPos, int** heightMap, BiomeID** biomes) const {    
-    for(int cx = 0; cx < CHUNK_SIZE; cx++)
-        for(int cz = 0; cz < CHUNK_SIZE; cz++) {
-            float x = chunkPos.x * CHUNK_SIZE + cx;
-            float z = chunkPos.y * CHUNK_SIZE + cz;
+    for(int cx = 0; cx < Configuration::CHUNK_SIZE; cx++)
+        for(int cz = 0; cz < Configuration::CHUNK_SIZE; cz++) {
+            float x = chunkPos.x * Configuration::CHUNK_SIZE + cx;
+            float z = chunkPos.y * Configuration::CHUNK_SIZE + cz;
 
             int heightValue = m_terrainSelect.GetValue(x, 0, z);
             float baseNoiseValue = m_baseNoise.GetValue(x, 0, z);

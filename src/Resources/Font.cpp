@@ -5,7 +5,7 @@
 #include <freetype/freetype.h>
 
 #include "../../include/Configuration.h"
-#include "../../include/ResourceManager.h"
+#include "../../include/Resources/ResourceManager.h"
 
 void Font::release()
 {

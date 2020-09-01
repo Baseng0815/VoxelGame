@@ -53,6 +53,7 @@ Texture::Texture(Texture &&other) noexcept
 Texture &Texture::operator=(Texture &&other) noexcept
 {
     if (this != &other) {
+        release();
         std::swap(m_texture, other.m_texture);
         std::swap(m_width, other.m_width);
         std::swap(m_height, other.m_height);
