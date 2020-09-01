@@ -80,7 +80,6 @@ void Geometry::fillBuffers(const std::vector<Vertex>& vertices, const std::vecto
     glBindVertexArray(0);
 
     m_drawCount = indices.size();
-    m_isReady = true;
 }
 
 GLuint Geometry::getVao() const
@@ -101,9 +100,4 @@ GLuint Geometry::getEbo() const
 unsigned int Geometry::getDrawCount() const
 {
     return m_drawCount;
-}
-
-bool Geometry::isReady() const
-{
-    return m_isReady;
 }

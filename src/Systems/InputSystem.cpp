@@ -18,10 +18,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <iostream>
 
-
 void InputSystem::handleKeyPressEvent(const KeyEvent& e) {
-    m_registry.view<CameraComponent, VelocityComponent, TransformationComponent>().each(
-        [&](auto& camera, auto& velocity, auto& transformation) {
+    m_registry.view<CameraComponent, TransformationComponent>().each(
+        [&](CameraComponent &camera, TransformationComponent &transformation) {
             switch (e.key) {
                 case GLFW_KEY_W:
                     if (e.action == GLFW_PRESS)
@@ -65,11 +64,12 @@ void InputSystem::handleKeyPressEvent(const KeyEvent& e) {
                         lastSpacePress = currTime;
                         camera.relVelocity.y += 5;
                     }
-                    else if (e.action == GLFW_RELEASE)
+                    else if (e.action == GLFW_RELEASE) {
                         if (!camera.isFalling || camera.isFlying)
                             camera.relVelocity.y -= 5;
                         else
                             camera.relVelocity.y = 0;
+                    }
                     break;
                 default:
                     break;
@@ -112,9 +112,10 @@ void InputSystem::handleMouseButtonEvent(const MouseButtonEvent& e) {
 }
 
 void InputSystem::handleMouseMoveEvent(const CursorEvent& e) {
-    m_registry.view<CameraComponent, VelocityComponent, TransformationComponent>().each(
-        [&](auto& camera, auto& velocity, auto& transformation) {
+    m_registry.view<CameraComponent, TransformationComponent>().each(
+        [&](CameraComponent& camera, TransformationComponent& transformation) {
             camera.yaw += e.dx * Configuration::getFloatValue("MOUSE_SENSITIVITY");
+            camera.yaw = std::fmod(camera.yaw, 360.f);
             camera.pitch -= e.dy * Configuration::getFloatValue("MOUSE_SENSITIVITY");
 
             if (camera.pitch > 89.99) camera.pitch = 89.99;
@@ -165,7 +166,7 @@ void InputSystem::updateProjectionMatrix(CameraComponent& camera) {
     camera.perspectiveProjection = glm::perspective(glm::radians(camera.fov), camera.width / (float)camera.height, 0.1f, 1000.f);
 }
 
-void InputSystem::updateSelectedBlock(CameraComponent& camera, TransformationComponent& transformation) {
+void InputSystem::updateSelectedBlock(const CameraComponent &camera, const TransformationComponent &transformation) {
     // TODO reimplement this
     /*
        WorldComponent& world = m_systemManager->getCurrentWorld();

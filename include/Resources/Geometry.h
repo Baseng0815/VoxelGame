@@ -10,8 +10,7 @@
 class Geometry : public Resource {
     private:
         GLuint m_vao, m_vbo, m_ebo;
-        unsigned int m_drawCount;
-        bool m_isReady = false;
+        unsigned int m_drawCount = 0;
 
         void initBuffers();
         void release() override;

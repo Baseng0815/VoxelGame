@@ -20,7 +20,7 @@ class Configuration {
         static constexpr int CHUNK_SIZE = 16;
         static constexpr int CHUNK_HEIGHT = 256;
         // TODO finish errors when CHUNK_PRELOAD_SIZE is 0 or 1
-        static constexpr int CHUNK_PRELOAD_SIZE = 2;
+        static constexpr int CHUNK_PRELOAD_SIZE = 6;
         static constexpr int CHUNK_MAX_LOADING = 6;
         static constexpr int MAP_SEED_SIZE=256;
 

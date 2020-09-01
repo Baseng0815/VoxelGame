@@ -80,17 +80,11 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
         for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
             generationData.blocks[x][y] = new Block[Configuration::CHUNK_SIZE];
 
-            for (int z = 0; z < Configuration::CHUNK_SIZE; z++)
-            {
-                generationData.blocks[x][y][z] = Block {BlockType::BLOCK_STONE};
-            }
-            /*
             if (y < 63) {
-                for (int z = 0; z < CHUNK_SIZE; z++) {
+                for (int z = 0; z < Configuration::CHUNK_SIZE; z++) {
                     generationData.blocks[x][y][z] = Block {BlockType::BLOCK_WATER};
                 }
             }
-            */
         }
     }
 
@@ -101,7 +95,7 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
     }
 
     // TODO pass generationData into this function
-    //m_generator.generate(glm::vec2 {chunkX, chunkZ}, generationData.biomes, generationData.blocks);
+    m_generator.generate(glm::vec2 {chunkX, chunkZ}, generationData.biomes, generationData.blocks);
 
     return generationData;
 }
@@ -278,6 +272,7 @@ void ChunkCreateSystem::_update(int dt) {
             if (!chunk.threadActiveOnSelf) {
                 // create blocks
                 if (!chunk.blocks) {
+                    std::cout << "blocks " << chunk.chunkX << " " << chunk.chunkZ << std::endl;
                     m_constructionCount++;
                     chunk.threadActiveOnSelf = true;
 
@@ -289,6 +284,7 @@ void ChunkCreateSystem::_update(int dt) {
                 }
                 // update vertices
                 else if (chunk.verticesOutdated) {
+                    std::cout << "vertices " << chunk.chunkX << " " << chunk.chunkZ << std::endl;
                     m_constructionCount++;
                     chunk.threadActiveOnSelf = true;
 

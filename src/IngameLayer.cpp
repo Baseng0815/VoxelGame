@@ -57,8 +57,25 @@ void IngameLayer::update(int dt) {
 
     m_time += dt;
     if (m_time > 1000) {
-        m_gui.getWidget<DebugLayout>("layout_debugpanel").setValues(m_frameCounter / (float)m_time * 1000.f,
-                                                                    m_time / (float)m_frameCounter * 1000.f, static_cast<const ChunkCreateSystem*>(m_systems[0].get())->getActiveChunkCount());
+        entt::entity entity = m_registry.view<TransformationComponent, CameraComponent>().front();
+
+        const TransformationComponent &transform = m_registry.get<TransformationComponent>(entity);
+        const CameraComponent &camera = m_registry.get<CameraComponent>(entity);
+
+        DebugLayoutInfo info {
+            m_frameCounter * 1000 / m_time,
+            m_time * 1000 / m_frameCounter,
+            static_cast<const ChunkCreateSystem*>(m_systems[0].get())->getActiveChunkCount(),
+            transform.getPosition(),
+            camera.front,
+            camera.yaw,
+            camera.pitch,
+            camera.fov,
+            (int)(transform.getPosition().x / Configuration::CHUNK_SIZE),
+            (int)(transform.getPosition().z / Configuration::CHUNK_SIZE)
+        };
+
+        m_gui.getWidget<DebugLayout>("layout_debugpanel").setValues(info);
         m_time = 0;
         m_frameCounter = 0;
     }

@@ -46,8 +46,8 @@ void MeshRenderSystem::_update(int dt)
 
     // render
     m_registry.view<TransformationComponent, MeshRenderComponent>().each(
-        [&](auto& transformation, auto& meshRenderer) {
-            if (meshRenderer.geometry.getDrawCount() > 0 && meshRenderer.geometry.isReady()) {
+        [&](const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer) {
+            if (meshRenderer.geometry.getDrawCount() > 0) {
                 // render texture if diffuse map is specified
                 if (meshRenderer.material->diffuseMap) {
                     m_meshRenderShaderTexture->bind();

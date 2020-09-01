@@ -12,8 +12,6 @@ using ResourceHandle = std::unique_ptr<Resource>;
 
 class ResourceManager {
     private:
-
-        // TODO RAII this whole thing
         static std::map<ResourceID, ResourceHandle> resources;
 
     public:

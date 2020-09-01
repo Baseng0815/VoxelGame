@@ -12,25 +12,25 @@ std::map<ResourceID, ResourceHandle> ResourceManager::resources;
 
 void ResourceManager::loadResources() {
     // textures
-    resources.emplace(TEXTURE_ATLAS, std::unique_ptr<Resource> {new Texture("Textures/textureAtlas0.png")});
-    resources.emplace(TEXTURE_BACKGROUND_MAIN_MENU, std::unique_ptr<Resource> {new Texture("Textures/background_mainmenu.png")});
-    resources.emplace(TEXTURE_WHITE, std::unique_ptr<Resource> {new Texture("Textures/white.png")});
-    resources.emplace(TEXTURE_BLACK, std::unique_ptr<Resource> {new Texture("Textures/black.png")});
+    resources.emplace(TEXTURE_ATLAS, ResourceHandle {new Texture("Textures/textureAtlas0.png")});
+    resources.emplace(TEXTURE_BACKGROUND_MAIN_MENU, ResourceHandle {new Texture("Textures/background_mainmenu.png")});
+    resources.emplace(TEXTURE_WHITE, ResourceHandle {new Texture("Textures/white.png")});
+    resources.emplace(TEXTURE_BLACK, ResourceHandle {new Texture("Textures/black.png")});
 
     // shaders
-    resources.emplace(SHADER_MESH_RENDER_TEXTURE, std::unique_ptr<Resource> {new Shader("Shaders/meshRenderShader.vert", "Shaders/meshRenderShaderTexture.frag")});
-    resources.emplace(SHADER_MESH_RENDER_COLOR, std::unique_ptr<Resource> {new Shader("Shaders/meshRenderShader.vert", "Shaders/meshRenderShaderColor.frag")});
-    resources.emplace(SHADER_TEXTURE_QUAD, std::unique_ptr<Resource> {new Shader("Shaders/texturedQuadShader")});
-    resources.emplace(SHADER_COLOR_QUAD, std::unique_ptr<Resource> {new Shader("Shaders/coloredQuadShader")});
-    resources.emplace(SHADER_SKYBOX, std::unique_ptr<Resource> {new Shader("Shaders/skyboxShader")});
-    resources.emplace(SHADER_TEXT, std::unique_ptr<Resource> {new Shader("Shaders/textShader")});
+    resources.emplace(SHADER_MESH_RENDER_TEXTURE, ResourceHandle {new Shader("Shaders/meshRenderShader.vert", "Shaders/meshRenderShaderTexture.frag")});
+    resources.emplace(SHADER_MESH_RENDER_COLOR, ResourceHandle {new Shader("Shaders/meshRenderShader.vert", "Shaders/meshRenderShaderColor.frag")});
+    resources.emplace(SHADER_TEXTURE_QUAD, ResourceHandle {new Shader("Shaders/texturedQuadShader")});
+    resources.emplace(SHADER_COLOR_QUAD, ResourceHandle {new Shader("Shaders/coloredQuadShader")});
+    resources.emplace(SHADER_SKYBOX, ResourceHandle {new Shader("Shaders/skyboxShader")});
+    resources.emplace(SHADER_TEXT, ResourceHandle {new Shader("Shaders/textShader")});
 
     // materials
-    resources.emplace(MATERIAL_CHUNK_BLOCKS, std::unique_ptr<Resource> {new Material {ResourceManager::getResource<Texture>(TEXTURE_ATLAS),
+    resources.emplace(MATERIAL_CHUNK_BLOCKS, ResourceHandle {new Material {ResourceManager::getResource<Texture>(TEXTURE_ATLAS),
                 ResourceManager::getResource<Texture>(TEXTURE_BLACK), glm::vec3 {0.0f}, glm::vec3 {0.0f}, glm::vec3 {0.0f}, 32.0f}});
 
     // fonts
-    resources.emplace(FONT_KORURI, std::unique_ptr<Resource> {new Font("Fonts/Koruri-Regular.ttf")});
+    resources.emplace(FONT_KORURI, ResourceHandle {new Font("Fonts/Koruri-Regular.ttf")});
 
     // meshRenderShaderTexture
     const Shader *shader = getResource<Shader>(SHADER_MESH_RENDER_TEXTURE);
