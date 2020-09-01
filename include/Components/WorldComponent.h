@@ -5,15 +5,13 @@
 
 struct Block;
 
-
-
+// TODO remove logic from component and put the chunksLookup somewhere else,
+// maybe remove completely if deemed unnecessary
 class WorldComponent {
     private:
         std::unordered_map<glm::vec2, entt::entity, HashFunction> chunksLookup = std::unordered_map<glm::vec2, entt::entity, HashFunction>();;
 
     public:
-        WorldComponent() = default;
-
         unsigned int worldID = 0;
 
         entt::entity getChunk(glm::vec2 chunk) const;

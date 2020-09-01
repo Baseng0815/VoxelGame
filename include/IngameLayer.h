@@ -1,3 +1,5 @@
+#pragma once
+
 #include "GameLayer.h"
 
 #include <vector>
@@ -9,7 +11,7 @@
 class IngameLayer : public GameLayer {
     private:
         std::vector<std::unique_ptr<System>> m_systems;
-        entt::registry m_registry;
+        Registry_T m_registry;
 
         int m_time = 0;
         int m_frameCounter = 0;
@@ -17,7 +19,7 @@ class IngameLayer : public GameLayer {
         GUI m_gui;
 
     public:
-        IngameLayer(Application* application);
+        IngameLayer(Application *application);
         ~IngameLayer();
 
         void update(int dt) override;

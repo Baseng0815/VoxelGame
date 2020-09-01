@@ -23,7 +23,7 @@ class PhysicsSystem : public System {
         void checkAndHandleCollisions(const BoxCollision&, const BoxCollision&,
                 TransformationComponent&, glm::vec3&) const;
     public:
-        PhysicsSystem(entt::registry* registry);
+        PhysicsSystem(Registry_T &registry);
 
         ~PhysicsSystem();
 };

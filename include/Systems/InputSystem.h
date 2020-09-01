@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "System.h"
+#include "../Events/CallbackHandle.h"
 
 class Camera;
 class CameraComponent;
@@ -44,5 +45,5 @@ class InputSystem : public System {
         LookData selectedBlock;
 
     public:
-        InputSystem(entt::registry* registry);
+        InputSystem(Registry_T &registry);
 };

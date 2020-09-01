@@ -27,5 +27,5 @@ class MeshRenderSystem : public System {
         void _update(int dt) override;
 
     public:
-        MeshRenderSystem(entt::registry* registry);
+        MeshRenderSystem(Registry_T &registry);
 };

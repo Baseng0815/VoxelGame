@@ -87,6 +87,10 @@ else()
 
     add_executable(VoxelGame ${SOURCES})
 
+    # add include directories
+    target_include_directories(VoxelGame PUBLIC
+        /usr/include/entt)
+
     # add libraries
     target_link_libraries(VoxelGame
         ${OPENGL_LIBRARIES}

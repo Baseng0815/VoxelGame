@@ -34,13 +34,11 @@ Block WorldComponent::getBlock(entt::registry& registry, glm::vec3 position) con
 
     ChunkComponent& chunk = registry.get<ChunkComponent>(entity);
 
-    if(!chunk.chunkBlocksCreated) {
+    if (!chunk.blocks) {
         throw std::out_of_range("blocks not created");
     }
 
-    std::unique_lock blockLock(*chunk.blockMutex);
     Block block = chunk.blocks[(int)localPosition.x][(int)localPosition.y][(int)localPosition.z];
-    blockLock.unlock();
 
     return block;
 }
@@ -54,9 +52,7 @@ void WorldComponent::setBlock(entt::registry& registry, glm::vec3 position, Bloc
     auto entity = getChunk(chunkPosition);
     ChunkComponent& chunk = registry.get<ChunkComponent>(entity);
 
-    std::unique_lock blockLock(*chunk.blockMutex);
     chunk.blocks[(int)localPosition.x][(int)localPosition.y][(int)localPosition.z] = block;
-    blockLock.unlock();
 
     BlockChangedEvent blockChangedEvent;
     blockChangedEvent.position = position;

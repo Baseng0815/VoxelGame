@@ -2,8 +2,8 @@
 
 #include "../../include/Events/EventDispatcher.h"
 
-System::System(entt::registry* systemManager, int updateDelay)
-    : m_registry(systemManager), m_updateDelay(updateDelay) {}
+System::System(Registry_T &registry, int updateDelay)
+    : m_registry {registry}, m_updateDelay {updateDelay} {}
 
 void System::update(int dt) {
     m_currentTime += dt;

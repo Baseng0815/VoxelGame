@@ -24,10 +24,10 @@ IngameLayer::IngameLayer(Application* application)
         m_application->getWindow().disableCursor();
 
         // create all systems
-        m_systems.emplace_back(std::unique_ptr<System> {new ChunkCreateSystem(&m_registry)});
-        m_systems.emplace_back(std::unique_ptr<System> {new PhysicsSystem(&m_registry)});
-        m_systems.emplace_back(std::unique_ptr<System> {new InputSystem(&m_registry)});
-        m_systems.emplace_back(std::unique_ptr<System> {new MeshRenderSystem(&m_registry)});
+        m_systems.emplace_back(std::unique_ptr<System> {new ChunkCreateSystem {m_registry}});
+        m_systems.emplace_back(std::unique_ptr<System> {new PhysicsSystem {m_registry}});
+        m_systems.emplace_back(std::unique_ptr<System> {new InputSystem {m_registry}});
+        m_systems.emplace_back(std::unique_ptr<System> {new MeshRenderSystem {m_registry}});
 
         // world
         auto entity = m_registry.create();
