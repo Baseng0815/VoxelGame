@@ -8,6 +8,7 @@
 
 #include "../../include/Resources/ResourceManager.h"
 
+#include <iostream>
 void Text::_updateScreenElements()
 {
     float x = m_innerArea.position.x;
@@ -24,12 +25,25 @@ void Text::_updateScreenElements()
         float w = ch.size.x * m_textScale;
         float h = ch.size.y * m_textScale;
 
+        // adjustments for relatively sized text
+        if (m_properties.constraints.width.getType() != ConstraintType::CONSTRAINT_MATCH) {
+            float scale = m_innerArea.size.x / m_minSize.x;
+            w *= scale;
+            x += (ch.advance >> 6) * m_textScale * scale;
+        } else {
+            x += (ch.advance >> 6) * m_textScale;
+        }
+
+        if (m_properties.constraints.height.getType() != ConstraintType::CONSTRAINT_MATCH) {
+            float scale = m_innerArea.size.y / m_minSize.y;
+            h *= scale;
+        }
+
         m_charRenderQuads[i].resize(Rectangle(xpos, ypos, w, h));
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, ch.texture);
 
-        x += (ch.advance >> 6) * m_textScale;
     }
 }
 

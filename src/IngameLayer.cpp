@@ -18,28 +18,50 @@
 #include "../include/Resources/Texture.h"
 #include "../include/Events/EventDispatcher.h"
 
+void IngameLayer::handleKeys(const KeyEvent &e)
+{
+    if (e.action == GLFW_PRESS) {
+        // handle constexpr keys
+        switch (e.key) {
+
+            // handle dynamically bound keys
+            default:
+                if (e.key == Configuration::getAssociatedKey("KEYBIND_TOGGLE_DEBUGMENU")) {
+                    UiProperties &properties = m_gui.getWidget<DebugLayout>("layout_debugpanel").properties();
+                    properties.isVisible = !properties.isVisible;
+                }
+                break;
+        }
+    }
+}
 
 IngameLayer::IngameLayer(Application* application)
-    : GameLayer(application) {
-        m_application->getWindow().disableCursor();
+    : GameLayer {application}
+{
+    m_application->getWindow().disableCursor();
 
-        // create all systems
-        m_systems.emplace_back(std::unique_ptr<System> {new ChunkCreateSystem {m_registry}});
-        m_systems.emplace_back(std::unique_ptr<System> {new PhysicsSystem {m_registry}});
-        m_systems.emplace_back(std::unique_ptr<System> {new InputSystem {m_registry}});
-        m_systems.emplace_back(std::unique_ptr<System> {new MeshRenderSystem {m_registry}});
+    // create all systems
+    m_systems.emplace_back(std::unique_ptr<System> {new ChunkCreateSystem {m_registry}});
+    m_systems.emplace_back(std::unique_ptr<System> {new PhysicsSystem {m_registry}});
+    m_systems.emplace_back(std::unique_ptr<System> {new InputSystem {m_registry}});
+    m_systems.emplace_back(std::unique_ptr<System> {new MeshRenderSystem {m_registry}});
 
-        // world
-        auto entity = m_registry.create();
-        m_registry.emplace<WorldComponent>(entity);
+    // world
+    auto entity = m_registry.create();
+    m_registry.emplace<WorldComponent>(entity);
 
-        // atlas
-        entity = m_registry.create();
-        const Texture *atlasTexture = ResourceManager::getResource<Texture>(TEXTURE_ATLAS);
-        m_registry.emplace<AtlasComponent>(entity, atlasTexture->getWidth(), atlasTexture->getHeight(), 16);
+    // atlas
+    entity = m_registry.create();
+    const Texture *atlasTexture = ResourceManager::getResource<Texture>(TEXTURE_ATLAS);
+    m_registry.emplace<AtlasComponent>(entity, atlasTexture->getWidth(), atlasTexture->getHeight(), 16);
 
-        m_gui.addPanel(new DebugLayout(m_gui));
-    }
+    m_gui.addPanel(new DebugLayout(m_gui));
+
+    // callbacks
+    m_keyEventHandle = EventDispatcher::onKeyPress.subscribe([&](const KeyEvent &e) {
+        handleKeys(e);
+    });
+}
 
 IngameLayer::~IngameLayer() {
     m_registry.view<CameraComponent, RigidBodyComponent>().each(
@@ -64,15 +86,15 @@ void IngameLayer::update(int dt) {
 
         DebugLayoutInfo info {
             m_frameCounter * 1000 / m_time,
-            m_time * 1000 / m_frameCounter,
-            static_cast<const ChunkCreateSystem*>(m_systems[0].get())->getActiveChunkCount(),
-            transform.getPosition(),
-            camera.front,
-            camera.yaw,
-            camera.pitch,
-            camera.fov,
-            (int)(transform.getPosition().x / Configuration::CHUNK_SIZE),
-            (int)(transform.getPosition().z / Configuration::CHUNK_SIZE)
+                           m_time * 1000 / m_frameCounter,
+                           static_cast<const ChunkCreateSystem*>(m_systems[0].get())->getActiveChunkCount(),
+                           transform.getPosition(),
+                           camera.front,
+                           camera.yaw,
+                           camera.pitch,
+                           camera.fov,
+                           (int)(transform.getPosition().x / Configuration::CHUNK_SIZE),
+                           (int)(transform.getPosition().z / Configuration::CHUNK_SIZE)
         };
 
         m_gui.getWidget<DebugLayout>("layout_debugpanel").setValues(info);

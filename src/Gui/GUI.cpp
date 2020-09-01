@@ -10,12 +10,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-
 void GUI::handleFramebufferSize(const FramebufferSizeEvent& e) {
     m_orthoProjection = glm::ortho(0.f, e.width, 0.f, e.height);
-
-    m_rootLayouts.back()->updateArea(Rectangle(0, 0, e.width, e.height));
-    m_rootLayouts.back()->updateScreenElements();
 }
 
 GUI::GUI() {
@@ -25,7 +21,7 @@ GUI::GUI() {
 
     m_rootLayouts.push_back(m_rootLayout);
 
-    m_framebufferSizeHandle = EventDispatcher::onFramebufferSize.subscribe([this](const FramebufferSizeEvent& e) {
+    m_framebufferSizeHandle = EventDispatcher::onFramebufferSize.subscribe([&](const FramebufferSizeEvent &e) {
         handleFramebufferSize(e);
     });
 }
@@ -50,7 +46,7 @@ void GUI::draw() {
 
 void GUI::update() {
     for (auto &rootLayout : m_rootLayouts) {
-        rootLayout->updateArea(rootLayout->_getOuterArea());
+        rootLayout->updateArea(Rectangle { glm::vec2 {0.f, 0.f}, EventDispatcher::getFramebufferSize()});
         rootLayout->updateScreenElements();
     }
 }

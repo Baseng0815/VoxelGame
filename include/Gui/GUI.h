@@ -17,6 +17,7 @@ class GUI {
         // contains all widgets which are currently alive
         std::map<std::string, Widget*> m_widgets;
 
+        // TODO take ortho projection as reference from camera
         CallbackHandle<const FramebufferSizeEvent&> m_framebufferSizeHandle;
         void handleFramebufferSize(const FramebufferSizeEvent&);
 

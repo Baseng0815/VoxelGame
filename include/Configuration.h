@@ -13,6 +13,7 @@ class Configuration {
     private:
         static std::map<std::string, float> floatValues;
         static std::map<std::string, std::string> stringValues;
+        static std::map<std::string, int> keyBinds;
 
         static BlockDataMap blockDataMap;
 
@@ -24,13 +25,15 @@ class Configuration {
         static constexpr int CHUNK_MAX_LOADING = 6;
         static constexpr int MAP_SEED_SIZE=256;
 
-        // path contains settings.json, blockData.json and biomeInfo.json
+        // path contains Settings.json, Keybinds.json, blockData.json and biomeInfo.json
         static void loadConfiguration(const std::string& resourceBasePath);
 
         static float getFloatValue(const std::string& location);
         static const std::string& getStringValue(const std::string& location);
         static void setValue(const std::string& location, float value);
         static void setValue(const std::string& location, std::string value);
+
+        static int getAssociatedKey(const std::string &location);
 
         static const BlockData& getBlockData(BlockType block);
 };

@@ -272,7 +272,6 @@ void ChunkCreateSystem::_update(int dt) {
             if (!chunk.threadActiveOnSelf) {
                 // create blocks
                 if (!chunk.blocks) {
-                    std::cout << "blocks " << chunk.chunkX << " " << chunk.chunkZ << std::endl;
                     m_constructionCount++;
                     chunk.threadActiveOnSelf = true;
 
@@ -284,7 +283,6 @@ void ChunkCreateSystem::_update(int dt) {
                 }
                 // update vertices
                 else if (chunk.verticesOutdated) {
-                    std::cout << "vertices " << chunk.chunkX << " " << chunk.chunkZ << std::endl;
                     m_constructionCount++;
                     chunk.threadActiveOnSelf = true;
 
