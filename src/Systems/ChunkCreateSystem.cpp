@@ -4,7 +4,7 @@
 
 #include "../../include/Utility.h"
 #include "../../include/Configuration.h"
-#include "../../include/ResourceManager.h"
+#include "../../include/Resources/ResourceManager.h"
 #include "../../include/Events/EventDispatcher.h"
 
 #include "../../include/Components/ChunkComponent.h"
@@ -13,19 +13,19 @@
 #include "../../include/Components/MeshRenderComponent.h"
 #include "../../include/Components/TransformationComponent.h"
 
-#include <mutex>
 #include <iostream>
 
-void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e) {
+void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e)
+{
     // remove old chunks from ECS system and queue chunk data deletion
-    auto view = m_registry->view<ChunkComponent>();
+    auto view = m_registry.view<ChunkComponent>();
 
     for (auto entity : view) {
-        auto& chunk = view.get<ChunkComponent>(entity);
+        const auto &chunk = view.get<ChunkComponent>(entity);
         if (std::abs(e.newX - chunk.chunkX) >
-                Configuration::CHUNK_PRELOAD_SIZE ||
-                std::abs(e.newZ - chunk.chunkZ) >
-                Configuration::CHUNK_PRELOAD_SIZE) {
+            Configuration::CHUNK_PRELOAD_SIZE ||
+            std::abs(e.newZ - chunk.chunkZ) >
+            Configuration::CHUNK_PRELOAD_SIZE) {
             if (!std::count(m_destructionQueue.begin(), m_destructionQueue.end(), entity)) {
                 m_destructionQueue.push_back(entity);
             }
@@ -35,126 +35,120 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e) {
     // create new chunks which have come into range
     for (int x = e.newX + Configuration::CHUNK_PRELOAD_SIZE; x >= e.newX - (int)Configuration::CHUNK_PRELOAD_SIZE; x--) {
         for (int z = e.newZ + Configuration::CHUNK_PRELOAD_SIZE; z >= e.newZ - (int)Configuration::CHUNK_PRELOAD_SIZE; z--) {
-            glm::vec2 pos(x, z);
-            if (std::count(loadedChunks.begin(), loadedChunks.end(), pos) == 0) {
-                auto entity = m_registry->create();
+            glm::vec2 pos {x, z};
+            if (std::count(m_loadedChunks.begin(), m_loadedChunks.end(), pos) == 0) {
+                entt::entity entity = m_registry.create();
 
-                m_registry->emplace<TransformationComponent>(entity, TransformationComponent {glm::vec3(x * Configuration::CHUNK_SIZE,
-                            0, z * Configuration::CHUNK_SIZE)});
-                m_registry->emplace<MeshRenderComponent>(entity, MeshRenderComponent {ResourceManager::getResource<Material>("materialChunkBlocks")});
-                m_registry->emplace<ChunkComponent>(entity, ChunkComponent(new std::mutex(), x, z));
+                m_registry.emplace<TransformationComponent>(entity, TransformationComponent {glm::vec3(x * Configuration::CHUNK_SIZE, 0, z * Configuration::CHUNK_SIZE)});
+                m_registry.emplace<MeshRenderComponent>(entity, MeshRenderComponent {ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS)});
+                m_registry.emplace<ChunkComponent>(entity, ChunkComponent {new std::shared_mutex {}, x, z});
 
-                loadedChunks.push_back(pos);
+                m_loadedChunks.push_back(pos);
             }
         }
     }
 }
 
-void ChunkCreateSystem::handleBlockChanged(const BlockChangedEvent& e) {
-    auto worldView = m_registry->view<WorldComponent>();
-    WorldComponent& world = worldView.get<WorldComponent>(worldView.front());
+// TODO maybe set the verticesOutdated where the BlockChangedEvent was raised
+void ChunkCreateSystem::handleBlockChanged(const BlockChangedEvent& e)
+{
+    auto worldView = m_registry.view<WorldComponent>();
+    WorldComponent &world = worldView.raw()[0];
     for (auto worldEntity : worldView) {
-        auto& worldComponent = worldView.get<WorldComponent>(worldEntity);
+        auto &worldComponent = m_registry.get<WorldComponent>(worldEntity);
         if (worldComponent.worldID == 0)
             world = worldComponent;
     }
 
-
     glm::vec3 localPos;
     glm::vec2 chunkPos = GetChunk(e.position, localPos);
 
-    auto chunkEntity = world.getChunk(chunkPos);
-    m_outdatedChunks.push_back(chunkEntity);
+    ChunkComponent &chunkComponent = m_registry.get<ChunkComponent>(world.getChunk(chunkPos));
 }
 
-void ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ) {
-    Block*** blocks = new Block * *[Configuration::CHUNK_SIZE];
+GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ)
+{
+    GenerationData generationData;
+    generationData.entity = entity;
+
+    // allocate blocks
+    generationData.blocks = new Block**[Configuration::CHUNK_SIZE];
     for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
-        blocks[x] = new Block * [Configuration::CHUNK_HEIGHT];
+        generationData.blocks[x] = new Block*[Configuration::CHUNK_HEIGHT];
         for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
-            blocks[x][y] = new Block[Configuration::CHUNK_SIZE];
+            generationData.blocks[x][y] = new Block[Configuration::CHUNK_SIZE];
 
             if (y < 63) {
-                for (int z = 0; z < CHUNK_SIZE; z++) {
-                    blocks[x][y][z] = Block(BlockType::BLOCK_WATER);
+                for (int z = 0; z < Configuration::CHUNK_SIZE; z++) {
+                    generationData.blocks[x][y][z] = Block {BlockType::BLOCK_WATER};
                 }
             }
         }
     }
 
-    BiomeID** biomes = new BiomeID * [Configuration::CHUNK_SIZE];
-    for (int z = 0; z < Configuration::CHUNK_SIZE; z++)
-        biomes[z] = new BiomeID[Configuration::CHUNK_SIZE];
+    // allocate biomes
+    generationData.biomes = new BiomeID*[Configuration::CHUNK_SIZE];
+    for (int z = 0; z < Configuration::CHUNK_SIZE; z++) {
+        generationData.biomes[z] = new BiomeID[Configuration::CHUNK_SIZE];
+    }
 
-    m_generator.generate(glm::vec2(chunkX, chunkZ), biomes, blocks);
+    // TODO pass generationData into this function
+    m_generator.generate(glm::vec2 {chunkX, chunkZ}, generationData.biomes, generationData.blocks);
 
-    GenerationData data = GenerationData();
-    data.blocks = blocks;
-    data.biomes = biomes;
-
-    std::scoped_lock<std::mutex> blockMapLock(m_blockMapMutex);
-    m_finishedBlocks.insert(std::make_pair(entity, data));
+    return generationData;
 }
 
-void ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block*** blocks, const AtlasComponent& atlas, std::mutex* blockMutex) {
-    int faceCount = 0;
-
+GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block ***blocks, std::shared_mutex *blockMutex, const AtlasComponent &atlas)
+{
     GeometryData geometryData;
+    geometryData.entity = entity;
+    int faceCount = 0;
 
     for (int x = 0; x < Configuration::CHUNK_SIZE; x++)
         for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++)
             for (int z = 0; z < Configuration::CHUNK_SIZE; z++) {
                 bool draw[6] = { false };
 
-                std::unique_lock<std::mutex> blockLock(*blockMutex);
+                // use shared_lock for shared read access and unique_lock for unique write access
+                std::shared_lock<std::shared_mutex> blockLock(*blockMutex);
                 if (blocks[x][y][z].type == BlockType::BLOCK_AIR) continue;
 
                 if (blocks[x][y][z].type == BlockType::BLOCK_WATER) {
-                    if (y < CHUNK_HEIGHT - 1 && blocks[x][y + 1][z].type == BlockType::BLOCK_AIR) {
+                    if (y < Configuration::CHUNK_HEIGHT - 1 && blocks[x][y + 1][z].type == BlockType::BLOCK_AIR) {
                         draw[3] = true;
                     }
-                }
-                else {
-
+                } else {
                     // negative X
                     if (x > 0) {
                         if (blocks[x - 1][y][z].isTransparent()) draw[0] = true;
-                    }
-                    else draw[0] = true;
+                    } else draw[0] = true;
                     // positive X
                     if (x < Configuration::CHUNK_SIZE - 1) {
                         if (blocks[x + 1][y][z].isTransparent()) draw[1] = true;
-                    }
-                    else draw[1] = true;
+                    } else draw[1] = true;
                     // negative Y
                     if (y > 0) {
                         if (blocks[x][y - 1][z].isTransparent()) draw[2] = true;
-                    }
-                    else draw[2] = true;
+                    } else draw[2] = true;
                     // positive Y
                     if (y < Configuration::CHUNK_HEIGHT - 1) {
                         if (blocks[x][y + 1][z].isTransparent()) draw[3] = true;
-                    }
-                    else draw[3] = true;
+                    } else draw[3] = true;
                     // negative Z
                     if (z > 0) {
                         if (blocks[x][y][z - 1].isTransparent()) draw[4] = true;
-                    }
-                    else draw[4] = true;
+                    } else draw[4] = true;
                     // positive Z
                     if (z < Configuration::CHUNK_SIZE - 1) {
                         if (blocks[x][y][z + 1].isTransparent()) draw[5] = true;
-                    }
-                    else draw[5] = true;
+                    } else draw[5] = true;
                 }
                 blockLock.unlock();
 
-
-                glm::vec3 blockPosition = glm::vec3(x, y, z);
-                const BlockUVs& blockUVs = atlas.blockUVsArray[(int)blocks[x][y][z].type];
+                glm::vec3 blockPosition {x, y, z};
+                const BlockUVs &blockUVs = atlas.blockUVsArray[(int)blocks[x][y][z].type];
 
                 int faceCountPerPass = 0;
-
 
                 if (draw[0]) {
                     geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][0]});
@@ -223,29 +217,27 @@ void ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block*** blocks
                 }
             }
 
-    std::scoped_lock<std::mutex> geometryMapLock(m_geometryMapMutex);
-    m_finishedGeometries.insert(std::make_pair(entity, geometryData));
+    return geometryData;
 }
 
 void ChunkCreateSystem::updateChunkBuffers(Geometry& geometry,
-        const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices) {
+                                           const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices) {
 
     geometry.fillBuffers(vertices, indices);
 }
 
 void ChunkCreateSystem::_update(int dt) {
-    auto worldView = m_registry->view<WorldComponent>();
+    auto worldView = m_registry.view<WorldComponent>();
 
-    // TODO REWORK THIS WHOLE STUPID AND COMPLICATED CHUNK CREATE WORKFLOW
-    WorldComponent& world = worldView.get(worldView.front());
+    WorldComponent &world = worldView.get(worldView.front());
 
     // delete queued chunks if no thread is active on them
     auto it = m_destructionQueue.begin();
     while (it != m_destructionQueue.end()) {
-        auto& chunk = m_registry->get<ChunkComponent>(*it);
+        const ChunkComponent &chunk = m_registry.get<ChunkComponent>(*it);
 
         if (!chunk.threadActiveOnSelf && chunk.blocks) {
-            glm::vec2 pos(chunk.chunkX, chunk.chunkZ);
+            glm::vec2 pos {chunk.chunkX, chunk.chunkZ};
 
             world.removeChunk(*it);
 
@@ -258,11 +250,10 @@ void ChunkCreateSystem::_update(int dt) {
             }
 
             delete[] chunk.blocks;
-            delete chunk.blockMutex;
 
             // remove from loaded chunks and registry
-            loadedChunks.erase(std::remove(loadedChunks.begin(), loadedChunks.end(), pos), loadedChunks.end());
-            m_registry->destroy(*it);
+            m_loadedChunks.erase(std::remove(m_loadedChunks.begin(), m_loadedChunks.end(), pos), m_loadedChunks.end());
+            m_registry.destroy(*it);
             it = m_destructionQueue.erase(it);
         }
         else {
@@ -270,88 +261,82 @@ void ChunkCreateSystem::_update(int dt) {
         }
     }
 
-    // process finished blocks
-    std::unique_lock<std::mutex> blockMapLock(m_blockMapMutex);
-    for (auto const& [key, val] : m_finishedBlocks) {
-        auto& chunk = m_registry->get<ChunkComponent>(key);
-
-        chunk.blocks = val.blocks;
-        chunk.biomes = val.biomes;
-        chunk.verticesOutdated = true;
-        chunk.threadActiveOnSelf = false;
-        chunk.chunkBlocksCreated = true;
-
-        constructionCount--;
-    }
-    m_finishedBlocks.clear();
-    blockMapLock.unlock();
-
-    // process outdated chunks
-    for (auto e : m_outdatedChunks) {
-        auto& chunk = m_registry->get<ChunkComponent>(e);
-
-        chunk.verticesOutdated = true;
-        chunk.threadActiveOnSelf = false;
-    }
-    m_outdatedChunks.clear();
-
-    // process finished vertices
-    std::unique_lock<std::mutex> geometryMapLock(m_geometryMapMutex);
-    for (auto const& [key, val] : m_finishedGeometries) {
-        auto& chunk = m_registry->get<ChunkComponent>(key);
-        auto& meshRenderer = m_registry->get<MeshRenderComponent>(key);
-
-        updateChunkBuffers(meshRenderer.geometry, val.indices, val.vertices);
-
-        constructionCount--;
-        chunk.verticesOutdated = false;
-        chunk.threadActiveOnSelf = false;
-    }
-
-    m_finishedGeometries.clear();
-    geometryMapLock.unlock();
-
-    auto view = m_registry->view<ChunkComponent>();
+    // check if chunks need updating
+    auto view = m_registry.view<ChunkComponent>();
     for (auto entity : view) {
-        if (constructionCount < Configuration::CHUNK_MAX_LOADING) {
-            auto& chunk = view.get<ChunkComponent>(entity);
+        if (m_constructionCount < Configuration::CHUNK_MAX_LOADING) {
+            auto &chunk = view.get<ChunkComponent>(entity);
 
             if (!chunk.threadActiveOnSelf) {
                 // create blocks
-                if (chunk.blocks == nullptr) {
-                    constructionCount++;
+                if (!chunk.blocks) {
+                    m_constructionCount++;
                     chunk.threadActiveOnSelf = true;
 
-                    m_futures.push_back(std::async(std::launch::async, [=]() {
-                                updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ);
-                                }));
+                    m_generationFutures.push_back(std::async(std::launch::async, [=]() {
+                        return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ);
+                    }));
 
-                    world.addChunk(entity, glm::vec2(chunk.chunkX, chunk.chunkZ));
+                    world.addChunk(entity, glm::vec2 {chunk.chunkX, chunk.chunkZ});
                 }
                 // update vertices
                 else if (chunk.verticesOutdated) {
+                    m_constructionCount++;
                     chunk.threadActiveOnSelf = true;
-                    m_registry->view<AtlasComponent>().each([&](auto& atlas) {
-                            m_futures.push_back(std::async(std::launch::async, [=]() {
-                                        updateChunkVertices(entity, chunk.blocks, atlas, chunk.blockMutex);
-                                        }));
-                            });
+
+                    const AtlasComponent &atlas = m_registry.view<AtlasComponent>().raw()[0];
+                    m_geometryFutures.push_back(std::async(std::launch::async, [=]() {
+                        return updateChunkVertices(entity, chunk.blocks, chunk.blockMutex, atlas);
+                    }));
                 }
             }
         }
-    };
+    }
+
+    // process finished blocks
+    for (auto &future : m_generationFutures) {
+        if (future.valid() && future.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
+            GenerationData generationData = future.get();
+            ChunkComponent &chunk = m_registry.get<ChunkComponent>(generationData.entity);
+
+            chunk.blocks = generationData.blocks;
+            chunk.biomes = generationData.biomes;
+            chunk.verticesOutdated = true;
+            chunk.threadActiveOnSelf = false;
+            m_constructionCount--;
+        }
+    }
+
+    // process finished vertices
+    for (auto &future : m_geometryFutures) {
+        if (future.valid() && future.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
+            GeometryData geometryData = future.get();
+            ChunkComponent &chunk = m_registry.get<ChunkComponent>(geometryData.entity);
+            MeshRenderComponent &meshRenderer = m_registry.get<MeshRenderComponent>(geometryData.entity);
+            updateChunkBuffers(meshRenderer.geometry, geometryData.indices, geometryData.vertices);
+
+            chunk.verticesOutdated = false;
+            chunk.threadActiveOnSelf = false;
+            m_constructionCount--;
+        }
+    }
 }
 
-ChunkCreateSystem::ChunkCreateSystem(entt::registry* registry)
-    : System(registry, 50), constructionCount(0) {
+ChunkCreateSystem::ChunkCreateSystem(Registry_T &registry)
+    : System {registry, 50}, m_constructionCount {0}
+{
 
-        // event callbacks
-        EventDispatcher::onEnterChunk += [this](const EnterChunkEvent& e) {
-            handleEnterChunk(e);
-        };
-        EventDispatcher::onBlockChange += [this](const BlockChangedEvent& e) {
-            handleBlockChanged(e);
-        };
+    // event callbacks
+    m_enterChunkHandle = EventDispatcher::onEnterChunk.subscribe([&](const EnterChunkEvent& e) {
+        handleEnterChunk(e);
+    });
 
-        handleEnterChunk(EnterChunkEvent());
-    }
+    m_blockChangeHandle = EventDispatcher::onBlockChange.subscribe([&](const BlockChangedEvent& e) {
+        handleBlockChanged(e);
+    });
+
+    handleEnterChunk(EnterChunkEvent());
+}
+
+int ChunkCreateSystem::getActiveChunkCount() const
+{ return m_loadedChunks.size(); }

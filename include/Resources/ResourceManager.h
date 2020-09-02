@@ -5,19 +5,19 @@
 #include <memory>
 #include <string>
 
+#include "ResourceIDs.h"
+
 class Resource;
 using ResourceHandle = std::unique_ptr<Resource>;
 
 class ResourceManager {
     private:
-
-        // TODO RAII this whole thing
-        static std::map<std::string, ResourceHandle> resources;
+        static std::map<ResourceID, ResourceHandle> resources;
 
     public:
         static void loadResources();
 
-        static const Resource* getResourceBase(const std::string& id);
+        static const Resource* getResourceBase(const ResourceID &id);
         template <class T>
-        static const T* getResource(const std::string& id);
+        static const T* getResource(const ResourceID& id);
 };

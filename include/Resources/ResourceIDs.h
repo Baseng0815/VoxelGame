@@ -1,0 +1,23 @@
+#pragma once
+
+// give all resources an ID
+
+using ResourceID = unsigned long;
+
+enum RESOURCES {
+    TEXTURE_ATLAS,
+    TEXTURE_BACKGROUND_MAIN_MENU,
+    TEXTURE_WHITE,
+    TEXTURE_BLACK,
+
+    SHADER_MESH_RENDER_TEXTURE,
+    SHADER_MESH_RENDER_COLOR,
+    SHADER_TEXTURE_QUAD,
+    SHADER_COLOR_QUAD,
+    SHADER_SKYBOX,
+    SHADER_TEXT,
+
+    MATERIAL_CHUNK_BLOCKS,
+
+    FONT_KORURI
+};

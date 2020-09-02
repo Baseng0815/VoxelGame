@@ -3,7 +3,7 @@
 #include "../include/Configuration.h"
 #include "../include/Events/Event.h"
 #include "../include/Events/EventDispatcher.h"
-#include "../include/ResourceManager.h"
+#include "../include/Resources/ResourceManager.h"
 
 #include "../include/MainMenuLayer.h"
 #include "../include/IngameLayer.h"
@@ -37,9 +37,10 @@ Application::Application()
     ResourceManager::loadResources();
 
     EventDispatcher::attachToWindow(m_window);
-    EventDispatcher::onKeyPress += [this](const KeyEvent& e) {
+
+    m_keyEventHandle = EventDispatcher::onKeyPress.subscribe([&](const KeyEvent& e) {
         handleKeys(e);
-    };
+    });
 
     m_currentLayer = new IngameLayer(this);
     //m_currentLayer = new MainMenuLayer(this);
@@ -67,9 +68,6 @@ void Application::run() {
         if (m_time > 1000) {
             std::cout << m_frameCounter / (float)m_time * 1000 << "fps, "
                 << m_time / (float)m_frameCounter << "ms avg. frame render time" << std::endl;
-
-            // TODO make this right
-            (static_cast<IngameLayer*>(m_currentLayer))->setDebugInfo(m_frameCounter / (float) m_time * 1000, m_time / (float)m_frameCounter * 1000, 0);
 
             m_frameTime = 0;
             m_frameCounter = 0;

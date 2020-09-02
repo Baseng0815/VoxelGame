@@ -13,7 +13,5 @@ private:
 
     void updatePlayerSpeed(PlayerComponent& player, VelocityComponent& velocity, CameraComponent& camera) const;
 public:
-    PlayerMovementSystem(entt::registry* registry, int updateDelay);
-
-
+    PlayerMovementSystem(Registry_T& registry);
 };

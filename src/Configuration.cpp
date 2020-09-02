@@ -6,6 +6,8 @@
 
 std::map<std::string, float> Configuration::floatValues;
 std::map<std::string, std::string> Configuration::stringValues;
+std::map<std::string, int> Configuration::keyBinds;
+
 BlockDataMap Configuration::blockDataMap;
 
 using json = nlohmann::json;
@@ -15,8 +17,10 @@ void Configuration::loadConfiguration(const std::string& resourceBasePath) {
 
     // load blockData.json
     std::ifstream file(getStringValue("ResourceBasePath") + "/Misc/BlockData.json");
-    if (!file.good())
+    if (!file.good()) {
         std::cout << "Failed to open BlockData.json" << std::endl;
+        exit(1);
+    }
 
     json root;
     file >> root;
@@ -40,39 +44,63 @@ void Configuration::loadConfiguration(const std::string& resourceBasePath) {
 
     // load biomeInfo.json
     file.open(resourceBasePath + "Misc/BiomeInfo.json");
-    if (!file.good())
+    if (!file.good()) {
         std::cout << "Failed to open BiomeInfo.json" << std::endl;
+        exit(1);
+    }
 
     file >> root;
     file.close();
 
-    // load other configuration data
+    // load Settings.json
     file.open(resourceBasePath + "/Misc/Settings.json");
-    if (!file.good())
+    if (!file.good()) {
         std::cout << "Failed to open Settings.json" << std::endl;
+        exit(1);
+    }
 
     file >> root;
     file.close();
     floatValues = root.get<std::map<std::string, float>>();
+
+    // load Keybinds.json
+    file.open(resourceBasePath + "/Misc/Keybinds.json");
+    if (!file.good()) {
+        std::cout << "Failed to open Keybinds.json" << std::endl;
+        exit(1);
+    }
+
+    file >> root;
+    file.close();
+    keyBinds = root.get<std::map<std::string, int>>();
 }
 
-float Configuration::getFloatValue(const std::string& location) {
-    return floatValues[std::string(location)];
+float Configuration::getFloatValue(const std::string &location)
+{
+    return floatValues[location];
 }
 
-const std::string& Configuration::getStringValue(const std::string& location) {
-    return stringValues[std::string(location)];
+const std::string& Configuration::getStringValue(const std::string &location)
+{
+    return stringValues[location];
 }
 
-void Configuration::setValue(const std::string& location, float value) {
-    floatValues[std::string(location)] = value;
+void Configuration::setValue(const std::string& location, float value)
+{
+    floatValues[location] = value;
 }
 
-void Configuration::setValue(const std::string& location, std::string value) {
-    stringValues[std::string(location)] = value;
+void Configuration::setValue(const std::string& location, std::string value)
+{
+    stringValues[location] = value;
 }
 
-const BlockData& Configuration::getBlockData(BlockType block) {
+int Configuration::getAssociatedKey(const std::string &location)
+{
+    return keyBinds[location];
+}
+
+const BlockData& Configuration::getBlockData(BlockType block)
+{
     return blockDataMap[block];
 }
-

@@ -1,13 +1,8 @@
 #include "../../include/Gui/Image.h"
 
-#include "../../include/ResourceManager.h"
+#include "../../include/Resources/ResourceManager.h"
 #include "../../include/Resources/Shader.h"
 #include "../../include/Resources/Texture.h"
-
-void Image::updateImageDimensions() {
-    m_minWidth = m_texture->getWidth();
-    m_minHeight = m_texture->getHeight();
-}
 
 void Image::_draw(const glm::mat4& projection) const {
     if (m_texture) {
@@ -18,19 +13,16 @@ void Image::_draw(const glm::mat4& projection) const {
     }
 }
 
-Image::Image(const std::string& id, GUI *gui, const Texture *texture)
-    : Widget(id, gui), m_texture(texture) {
-    m_texturedQuadShader = ResourceManager::getResource<Shader>("shaderTexturedQuad");
+void Image::_updateMinimumSize() {
+    m_minSize.x = m_texture->getWidth();
+    m_minSize.y = m_texture->getHeight();
 }
 
-void Image::updateArea(const Rectangle& parent) {
-    updateImageDimensions();
-
-    m_widgetArea = m_properties.constraints.getRect(parent, m_properties, m_minWidth, m_minHeight);
-    applyPadding();
+void Image::_updateScreenElements() {
+    m_renderQuad.resize(m_innerArea);
 }
 
-void Image::updateScreenElements() {
-    m_renderQuadBackground.resize(m_finalArea);
-    m_renderQuad.resize(m_widgetArea);
-}
+Image::Image(const std::string& id, const Texture *texture)
+    : Widget {id}, m_texture {texture},
+    m_texturedQuadShader {ResourceManager::getResource<Shader>(SHADER_TEXTURE_QUAD)}
+{}

@@ -12,12 +12,12 @@ void PerlinWorm::generateWorm(noise::module::Perlin &wormNoise, glm::vec3 head, 
 
     std::cout << head << std::endl;
     float theta = 0, phi = 0;
-    
+
     for (int i = 0; i < segmentsCount; i++) {
         // spherical coords
         float segmentLength = maxSegmentLength;
 
-        glm::vec3 noisePointTheta = head + (float)i * noiseDirection;        
+        glm::vec3 noisePointTheta = head + (float)i * noiseDirection;
         glm::vec3 noisePointPhi = head + phiOffset + (float)i * noiseDirection;
 
         // calc segment angles
@@ -32,7 +32,7 @@ void PerlinWorm::generateWorm(noise::module::Perlin &wormNoise, glm::vec3 head, 
         segment.z = segmentLength * cos(theta);
 
         // stop worm generation if coords go outside world range
-        if(currPos.y + segment.y >= CHUNK_HEIGHT) {
+        if(currPos.y + segment.y >= Configuration::CHUNK_HEIGHT) {
             break;
         }
 
@@ -44,8 +44,8 @@ void PerlinWorm::generateWorm(noise::module::Perlin &wormNoise, glm::vec3 head, 
 
 PerlinWorm::PerlinWorm(noise::module::Perlin& wormNoise, glm::vec3 head, int segmentsCount, float maxLength) 
     : segmentsCount(segmentsCount), head(head) {
-    generateWorm(wormNoise, head, segmentsCount, maxLength);
-}
+        generateWorm(wormNoise, head, segmentsCount, maxLength);
+    }
 
 void DivideWorm(PerlinWorm worm, std::vector<WormPart>& parts) {
     int index = 0;
@@ -67,9 +67,9 @@ void DivideWorm(PerlinWorm worm, std::vector<WormPart>& parts) {
             pos += segment;
             chunkWorm.segments.push_back(segment);
         }
-        else {                 
-            float rx = (ceil(pos.x / CHUNK_SIZE) * CHUNK_SIZE - (1 + pos.x)) / segment.x;
-            float rz = (ceil(pos.z / CHUNK_SIZE) * CHUNK_SIZE - (1 + pos.z)) / segment.z;
+        else {
+            float rx = (ceil(pos.x / Configuration::CHUNK_SIZE) * Configuration::CHUNK_SIZE - (1 + pos.x)) / segment.x;
+            float rz = (ceil(pos.z / Configuration::CHUNK_SIZE) * Configuration::CHUNK_SIZE - (1 + pos.z)) / segment.z;
             float r_min = std::min(rx, rz);
 
             glm::vec3 end = localPos + r_min * segment;

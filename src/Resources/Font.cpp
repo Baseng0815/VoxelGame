@@ -5,7 +5,7 @@
 #include <freetype/freetype.h>
 
 #include "../../include/Configuration.h"
-#include "../../include/ResourceManager.h"
+#include "../../include/Resources/ResourceManager.h"
 
 void Font::release()
 {
@@ -26,7 +26,7 @@ Font::Font(const std::string& file) {
     if (FT_New_Face(ft, (Configuration::getStringValue("ResourceBasePath") + file).c_str(), 0, &face))
         std::cout << "Failed to load font file " << file << std::endl;
 
-    FT_Set_Pixel_Sizes(face, 0, 48);
+    FT_Set_Pixel_Sizes(face, 0, 24);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     // load ASCII character set

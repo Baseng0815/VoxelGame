@@ -14,7 +14,8 @@ void Shader::release()
     glDeleteProgram(m_program);
 }
 
-std::string Shader::loadShader(const std::string& fileName) {
+std::string Shader::loadShader(const std::string &fileName)
+{
     std::ifstream file;
     file.open((fileName).c_str());
 
@@ -34,7 +35,8 @@ std::string Shader::loadShader(const std::string& fileName) {
     return output;
 }
 
-void Shader::checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::string errorMessage) {
+void Shader::checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::string errorMessage)
+{
     GLint success = 0;
     GLchar error[1024] = { 0 };
 
@@ -53,7 +55,8 @@ void Shader::checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::s
     }
 }
 
-GLuint Shader::createShader(const std::string& text, GLenum type) {
+GLuint Shader::createShader(const std::string &text, GLenum type)
+{
     GLuint shader = glCreateShader(type);
 
     if (shader == 0)
@@ -72,7 +75,8 @@ GLuint Shader::createShader(const std::string& text, GLenum type) {
     return shader;
 }
 
-GLint Shader::getLocation(const std::string& location) const {
+GLint Shader::getLocation(const std::string &location) const
+{
     auto it = m_locations.find(location);
     if (it == m_locations.end()) {
         GLint locationId = glGetUniformLocation(m_program, location.c_str());
@@ -83,7 +87,7 @@ GLint Shader::getLocation(const std::string& location) const {
 }
 
 // Public functions
-Shader::Shader(const std::string& vertex, const std::string& fragment) {
+Shader::Shader(const std::string& vertex, const std::string &fragment) {
     std::cout << "loading vertex shader " << vertex << " and fragment shader " << fragment << std::endl;
     m_program = glCreateProgram();
     GLuint shaderVert = createShader(loadShader(Configuration::getStringValue("ResourceBasePath") + vertex), GL_VERTEX_SHADER);
@@ -101,7 +105,7 @@ Shader::Shader(const std::string& vertex, const std::string& fragment) {
     glDeleteShader(shaderFrag);
 }
 
-Shader::Shader(const std::string& file)
+Shader::Shader(const std::string &file)
     : Shader(file + ".vert", file + ".frag") {}
 
 Shader::~Shader()
@@ -126,7 +130,7 @@ Shader &Shader::operator=(Shader &&other) noexcept
     return *this;
 }
 
-void Shader::setAttributes(const std::vector<std::string>& attribs) const {
+void Shader::setAttributes(const std::vector<std::string> &attribs) const {
     bind();
     for (int i = 0; i < attribs.size(); i++) {
         glBindAttribLocation(m_program, i, attribs[i].c_str());
@@ -137,37 +141,37 @@ void Shader::bind() const {
     glUseProgram(m_program);
 }
 
-void Shader::upload(const std::string& location, const glm::mat4& value) const
+void Shader::upload(const std::string &location, const glm::mat4 &value) const
 {
     glUniformMatrix4fv(getLocation(location), 1, GL_FALSE, glm::value_ptr(value));
 }
 
-void Shader::upload(const std::string& location, const glm::vec3& value) const
+void Shader::upload(const std::string &location, const glm::vec3 &value) const
 {
     glUniform3f(getLocation(location), value.x, value.y, value.z);
 }
 
-void Shader::upload(const std::string& location, const glm::vec4& value) const
+void Shader::upload(const std::string &location, const glm::vec4 &value) const
 {
     glUniform4f(getLocation(location), value.x, value.y, value.z, value.w);
 }
 
-void Shader::upload(const std::string& location, float value) const
+void Shader::upload(const std::string &location, float value) const
 {
     glUniform1f(getLocation(location), value);
 }
 
-void Shader::upload(const std::string& location, int value) const
+void Shader::upload(const std::string &location, int value) const
 {
     glUniform1i(getLocation(location), value);
 }
 
-void Shader::upload(const std::string& location, const Color& color) const
+void Shader::upload(const std::string &location, const Color &color) const
 {
     glUniform4f(getLocation(location), color.r / 255.f, color.g / 255.f, color.b / 255.f, color.a / 255.f);
 }
 
-void Shader::upload(const std::string& location, const PointLight& pointLight) const
+void Shader::upload(const std::string &location, const PointLight &pointLight) const
 {
     upload(location + ".position", pointLight.position);
     upload(location + ".ambient", pointLight.ambient);
@@ -178,7 +182,7 @@ void Shader::upload(const std::string& location, const PointLight& pointLight) c
     upload(location + ".quadratic", pointLight.quadratic);
 }
 
-void Shader::upload(const std::string& location, const DirectionalLight& dirLight) const
+void Shader::upload(const std::string &location, const DirectionalLight &dirLight) const
 {
     upload(location + ".direction", dirLight.direction);
     upload(location + ".ambient", dirLight.ambient);
@@ -186,7 +190,7 @@ void Shader::upload(const std::string& location, const DirectionalLight& dirLigh
     upload(location + ".specular", dirLight.specular);
 }
 
-void Shader::upload(const std::string& location, const Material& material) const
+void Shader::upload(const std::string &location, const Material &material) const
 {
     upload(location + ".ambient", material.ambient);
     upload(location + ".diffuse", material.diffuse);

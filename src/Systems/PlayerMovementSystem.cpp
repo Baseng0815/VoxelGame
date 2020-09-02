@@ -7,20 +7,20 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-PlayerMovementSystem::PlayerMovementSystem(entt::registry* registry, int updateDelay)
-    : System(registry, updateDelay) {
+PlayerMovementSystem::PlayerMovementSystem(Registry_T& registry)
+    : System(registry, 10) {
 }
 
-void PlayerMovementSystem::_update(int dt) {
-    m_registry->view<PlayerComponent, VelocityComponent, CameraComponent>().each(
+void PlayerMovementSystem::_update(int dt) {    
+    m_registry.view<PlayerComponent, VelocityComponent, CameraComponent>().each(
         [&](PlayerComponent& player, VelocityComponent& vel, CameraComponent& camera) {
             updatePlayerSpeed(player, vel, camera);
         }
-    );
+    );    
 }
 
 void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent& player, VelocityComponent& velocity, CameraComponent& camera) const {
-    glm::vec3 playerMovementDir = player.xAxisInput * camera.front_noY + player.yAxisInput * camera.right;
+    glm::vec3 playerMovementDir = player.xAxisInput * camera.front_noY + player.yAxisInput * camera.right;    
 
     if(player.isFalling) {
         playerMovementDir.y = 0;

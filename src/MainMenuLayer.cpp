@@ -8,14 +8,15 @@ MainMenuLayer::MainMenuLayer(Application* application)
     : GameLayer(application) {
     application->getWindow().enableCursor();
 
-    m_mainMenu.addPanel(new MainMenuLayout(&m_mainMenu));
+    m_mainMenu.addPanel(new MainMenuLayout(m_mainMenu));
 
-    m_mainMenu.getWidget("button_start").onPress += [&](const MouseButtonEvent&) {
+    m_btnStartHandle = m_mainMenu.getWidget("button_start").onPress.subscribe([&](const MouseButtonEvent&) {
         m_application->setNewLayer(new IngameLayer(m_application));
-    };
-    m_mainMenu.getWidget("button_quit").onPress += [&](const MouseButtonEvent&) {
+    });
+
+    m_btnQuitHandle = m_mainMenu.getWidget("button_quit").onPress.subscribe([&](const MouseButtonEvent&) {
         m_application->stop();
-    };
+    });
 }
 
 void MainMenuLayer::update(int dt) {

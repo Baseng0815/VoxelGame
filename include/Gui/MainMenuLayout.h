@@ -6,5 +6,5 @@ class GUI;
 
 class MainMenuLayout : public Layout {
     public:
-        MainMenuLayout(GUI* gui);
+        MainMenuLayout(GUI &gui);
 };

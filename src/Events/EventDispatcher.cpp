@@ -8,14 +8,14 @@ double EventDispatcher::m_prevY = 0;
 
 glm::vec2 EventDispatcher::m_framebufferSize = {0, 0};
 
-CallbackList<KeyEvent> EventDispatcher::onKeyPress;
-CallbackList<MouseButtonEvent> EventDispatcher::onMouseButtonPress;
-CallbackList<CursorEvent> EventDispatcher::onCursorMove;
-CallbackList<ScrollEvent> EventDispatcher::onMouseScroll;
-CallbackList<FramebufferSizeEvent> EventDispatcher::onFramebufferSize;
+CallbackList<const KeyEvent&> EventDispatcher::onKeyPress;
+CallbackList<const MouseButtonEvent&> EventDispatcher::onMouseButtonPress;
+CallbackList<const CursorEvent&> EventDispatcher::onCursorMove;
+CallbackList<const ScrollEvent&> EventDispatcher::onMouseScroll;
+CallbackList<const FramebufferSizeEvent&> EventDispatcher::onFramebufferSize;
 
-CallbackList<EnterChunkEvent> EventDispatcher::onEnterChunk;
-CallbackList<BlockChangedEvent> EventDispatcher::onBlockChange;
+CallbackList<const EnterChunkEvent&> EventDispatcher::onEnterChunk;
+CallbackList<const BlockChangedEvent&> EventDispatcher::onBlockChange;
 
 glm::vec2 EventDispatcher::getFramebufferSize() {
     return m_framebufferSize;

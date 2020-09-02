@@ -27,14 +27,14 @@ public:
     static void attachToWindow(const Window& window);
 
     // TODO somehow do this using templates maybe?
-    static CallbackList<KeyEvent> onKeyPress;
-    static CallbackList<MouseButtonEvent> onMouseButtonPress;
-    static CallbackList<CursorEvent> onCursorMove;
-    static CallbackList<ScrollEvent> onMouseScroll;
-    static CallbackList<FramebufferSizeEvent> onFramebufferSize;
+    static CallbackList<const KeyEvent&> onKeyPress;
+    static CallbackList<const MouseButtonEvent&> onMouseButtonPress;
+    static CallbackList<const CursorEvent&> onCursorMove;
+    static CallbackList<const ScrollEvent&> onMouseScroll;
+    static CallbackList<const FramebufferSizeEvent&> onFramebufferSize;
 
-    static CallbackList<EnterChunkEvent> onEnterChunk;
-    static CallbackList<BlockChangedEvent> onBlockChange;
+    static CallbackList<const EnterChunkEvent&> onEnterChunk;
+    static CallbackList<const BlockChangedEvent&> onBlockChange;
 
     static void raiseEvent(const KeyEvent&);
     static void raiseEvent(const MouseButtonEvent&);

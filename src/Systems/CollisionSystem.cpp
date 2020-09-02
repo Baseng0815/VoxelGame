@@ -15,19 +15,20 @@
 #include <utility>
 #include <iostream>
 
-CollisionSystem::CollisionSystem(entt::registry *registry)
-    : System(registry, 0) {
-    EventDispatcher::onCursorMove += [this](const CursorEvent& e) {
-        this->m_registry->view<PlayerComponent, TransformationComponent, CameraComponent>().each(
+CollisionSystem::CollisionSystem(Registry_T &registry)
+    : System{registry, 0}
+{
+    m_cursorMoveHandle = EventDispatcher::onCursorMove.subscribe([this](const CursorEvent& e) {
+        this->m_registry.view<PlayerComponent, TransformationComponent, CameraComponent>().each(
             [&](PlayerComponent& player, TransformationComponent& transform, CameraComponent& camera) {
                 this->updatePlayerLookAtBlock(player, transform, camera);
             }
         );
-    };
+    });
 }
 
 void CollisionSystem::_update(int dt) {
-    auto view = m_registry->view<TransformationComponent, CollisionComponent>();    
+    auto view = m_registry.view<TransformationComponent, CollisionComponent>();    
     
     for(auto it = view.begin(); it != view.end(); it++) {
         for(auto jt = it; jt != view.end(); jt++) {
@@ -82,11 +83,11 @@ void CollisionSystem::updatePlayerLookAtBlock(PlayerComponent& player, Transform
         dist = minR;
     }
 
-    auto worldView = m_registry->view<WorldComponent>();
-    WorldComponent& world = m_registry->get<WorldComponent>(worldView.front());
+    auto worldView = m_registry.view<WorldComponent>();
+    WorldComponent& world = m_registry.get<WorldComponent>(worldView.front());
     
     for(std::vector<glm::vec3>::iterator it = lookAtPositions.begin(); it != lookAtPositions.end(); it++) {
-        Block block = world.getBlock(m_registry, *it);
+        Block block = world.getBlock(&m_registry, *it);
 
         if(block.isSolid()) {
             player.lookAt = *it;
@@ -97,11 +98,11 @@ void CollisionSystem::updatePlayerLookAtBlock(PlayerComponent& player, Transform
 }
 
 void CollisionSystem::checkCollisions(entt::entity first, entt::entity secnd) {
-    const TransformationComponent& firstTransform = m_registry->get<TransformationComponent>(first);
-    const CollisionComponent& firstCollision = m_registry->get<CollisionComponent>(first);
+    const TransformationComponent& firstTransform = m_registry.get<TransformationComponent>(first);
+    const CollisionComponent& firstCollision = m_registry.get<CollisionComponent>(first);
 
-    const TransformationComponent& secndTransform = m_registry->get<TransformationComponent>(secnd);
-    const CollisionComponent& secndCollision = m_registry->get<CollisionComponent>(secnd);
+    const TransformationComponent& secndTransform = m_registry.get<TransformationComponent>(secnd);
+    const CollisionComponent& secndCollision = m_registry.get<CollisionComponent>(secnd);
 
     Cuboid c1 = firstCollision.getCuboid(firstTransform);
     Cuboid c2 = secndCollision.getCuboid(secndTransform);

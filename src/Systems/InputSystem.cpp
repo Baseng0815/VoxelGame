@@ -53,7 +53,8 @@ void InputSystem::handleKeyPressEvent(const KeyEvent& e) {
     float yAxisInput = ((playerInputState & 4) >> 2) - ((playerInputState & 8) >> 3);
     float zAxisInput = ((playerInputState & 16) >> 4) - ((playerInputState & 32) >> 5);
     
-    m_registry->view<PlayerComponent>().each(
+
+    m_registry.view<PlayerComponent>().each(
         [&](PlayerComponent& player) {
             player.xAxisInput = -xAxisInput;
             player.yAxisInput = -yAxisInput;
@@ -64,52 +65,54 @@ void InputSystem::handleKeyPressEvent(const KeyEvent& e) {
 
 void InputSystem::handleMouseButtonEvent(const MouseButtonEvent& e) {
     if(e.button == GLFW_MOUSE_BUTTON_LEFT) {
-        m_registry->view<PlayerComponent>().each(
+        m_registry.view<PlayerComponent>().each(
             [&](PlayerComponent& player) {
                 glm::vec3 block = player.lookAt;
 
-                WorldComponent& world = m_registry->get<WorldComponent>(m_registry->view<WorldComponent>().front());
-                world.setBlock(m_registry, block, Block());
-            }
+                WorldComponent& world = m_registry.get<WorldComponent>(m_registry.view<WorldComponent>().front());
+                world.setBlock(&m_registry, block, Block());
+            }            
         );
     }
 }
 
 void InputSystem::handleMouseMoveEvent(const CursorEvent& e) {
-    m_registry->view<CameraComponent, VelocityComponent, TransformationComponent>().each(
-        [&](auto& camera, auto& velocity, auto& transformation) {
-        camera.yaw += e.dx * Configuration::getFloatValue("MOUSE_SENSITIVITY");
-        camera.pitch -= e.dy * Configuration::getFloatValue("MOUSE_SENSITIVITY");
+    m_registry.view<CameraComponent, TransformationComponent>().each(
+        [&](CameraComponent& camera, TransformationComponent& transformation) {
+            camera.yaw += e.dx * Configuration::getFloatValue("MOUSE_SENSITIVITY");
+            camera.yaw = std::fmod(camera.yaw, 360.f);
+            camera.pitch -= e.dy * Configuration::getFloatValue("MOUSE_SENSITIVITY");
 
-        if (camera.pitch > 89.99) camera.pitch = 89.99;
-        else if (camera.pitch < -89.99) camera.pitch = -89.99;
+            if (camera.pitch > 89.99) 
+                camera.pitch = 89.99;
+            else if (camera.pitch < -89.99) 
+                camera.pitch = -89.99;
 
-        updateVectors(camera);
-        updateSelectedBlock(camera, transformation);
-    });
+            updateVectors(camera);
+            updateSelectedBlock(camera, transformation);
+        });
 }
 
 void InputSystem::handleScrollEvent(const ScrollEvent& e) {
-    m_registry->view<CameraComponent>().each(
+    m_registry.view<CameraComponent>().each(
         [&](auto& camera) {
+            camera.fov -= e.dy;
 
-        camera.fov -= e.dy;
+            if (camera.fov > 179) camera.fov = 179;
+            else if (camera.fov < 1) camera.fov = 1;
 
-        if (camera.fov > 179) camera.fov = 179;
-        else if (camera.fov < 1) camera.fov = 1;
-
-        updateProjectionMatrix(camera);
-    });
+            updateProjectionMatrix(camera);
+        });
 }
 
 void InputSystem::handleFramebufferSizeEvent(const FramebufferSizeEvent& e) {
-    m_registry->view<CameraComponent>().each(
+    m_registry.view<CameraComponent>().each(
         [&](auto& camera) {
 
-        camera.width = e.width;
-        camera.height = e.height;
-        updateProjectionMatrix(camera);
-    });
+            camera.width = e.width;
+            camera.height = e.height;
+            updateProjectionMatrix(camera);
+        });
 }
 
 #include <iostream>
@@ -131,7 +134,7 @@ void InputSystem::updateProjectionMatrix(CameraComponent& camera) {
     camera.perspectiveProjection = glm::perspective(glm::radians(camera.fov), camera.width / (float)camera.height, 0.1f, 1000.f);
 }
 
-void InputSystem::updateSelectedBlock(CameraComponent& camera, TransformationComponent& transformation) {
+void InputSystem::updateSelectedBlock(const CameraComponent &camera, const TransformationComponent &transformation) {
     // TODO reimplement this
     /*
        WorldComponent& world = m_systemManager->getCurrentWorld();
@@ -172,42 +175,48 @@ void InputSystem::updateSelectedBlock(CameraComponent& camera, TransformationCom
 
 void InputSystem::_update(int dt) {
     // TODO make event based
-    m_registry->view<CameraComponent, TransformationComponent>().each(
+    m_registry.view<CameraComponent, TransformationComponent>().each(
         [&](auto& camera, auto& transformation) {
-            updateViewMatrix(camera, transformation);   
-    });
+            updateViewMatrix(camera, transformation);
+        });
 }
 
-InputSystem::InputSystem(entt::registry* registry)
-    : System(registry, 0) {
-        // create camera and update projection matrix
-        // TODO put into extra system
-        entt::entity entity = m_registry->create();
-        m_registry->emplace<CameraComponent>(entity, 90.f, Configuration::getFloatValue("WINDOW_WIDTH"), Configuration::getFloatValue("WINDOW_HEIGHT"));
-        m_registry->emplace<TransformationComponent>(entity, glm::vec3(0, 100, 0), glm::vec3(0, 0, 0), glm::vec3(1, 1, 1));
-        m_registry->emplace<VelocityComponent>(entity);
-        m_registry->emplace<PlayerComponent>(entity);
-        /*BoxCollision* cameraCollision = new BoxCollision(glm::vec3(-0.5f, -1.5f, -0.5f), 1, 2, 1);
-        m_registry->emplace<RigidBodyComponent>(entity, new Shape(std::vector<Triangle>()), 0, cameraCollision);*/
+InputSystem::InputSystem(Registry_T &registry)
+    : System {registry, 0}
+{
+    // create camera and update projection matrix
+    // TODO put into extra system
+    entt::entity entity = m_registry.create();
+    m_registry.emplace<CameraComponent>(entity, 90.f, Configuration::getFloatValue("WINDOW_WIDTH"), Configuration::getFloatValue("WINDOW_HEIGHT"));
+    m_registry.emplace<TransformationComponent>(entity, glm::vec3 {0.f, 100.f, 0.f}, glm::vec3 {0.f, 0.f, 0.f}, glm::vec3 {1, 1, 1});
+    m_registry.emplace<VelocityComponent>(entity);
+    m_registry.emplace<PlayerComponent>(entity);
 
-        m_registry->view<CameraComponent>().each(
-            [&](auto& camera) {
+    /*BoxCollision* cameraCollision = new BoxCollision(glm::vec3 {-0.5f, -1.5f, -0.5f}, 1, 2, 1);
+    m_registry.emplace<RigidBodyComponent>(entity, new Shape(std::vector<Triangle> {}), 0, cameraCollision);*/
+
+    m_registry.view<CameraComponent>().each(
+        [&](auto& camera) {
             updateProjectionMatrix(camera);
         });
 
-        EventDispatcher::onKeyPress += [this](const KeyEvent &e) {
-            handleKeyPressEvent(e);
-        };
-        EventDispatcher::onCursorMove += [this](const CursorEvent &e) {
-            handleMouseMoveEvent(e);
-        };
-        EventDispatcher::onMouseScroll += [this](const ScrollEvent &e) {
-            handleScrollEvent(e);
-        };
-        EventDispatcher::onFramebufferSize += [this](const FramebufferSizeEvent &e) {
-            handleFramebufferSizeEvent(e);
-        };
-        EventDispatcher::onMouseButtonPress += [this](const MouseButtonEvent&e) {
-            handleMouseButtonEvent(e);
-        };
-    }
+    m_keyPressHandle = EventDispatcher::onKeyPress.subscribe([this](const KeyEvent &e) {
+        handleKeyPressEvent(e);
+    });
+
+    m_mouseButtonHandle = EventDispatcher::onMouseButtonPress.subscribe([this](const MouseButtonEvent&e) {
+        handleMouseButtonEvent(e);
+    });
+
+    m_cursorHandle = EventDispatcher::onCursorMove.subscribe([this](const CursorEvent &e) {
+        handleMouseMoveEvent(e);
+    });
+
+    m_scrollHandle = EventDispatcher::onMouseScroll.subscribe([this](const ScrollEvent &e) {
+        handleScrollEvent(e);
+    });
+
+    m_framebufferHandle = EventDispatcher::onFramebufferSize.subscribe([this](const FramebufferSizeEvent &e) {
+        handleFramebufferSizeEvent(e);
+    });
+}
