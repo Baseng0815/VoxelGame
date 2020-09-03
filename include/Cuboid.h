@@ -1,13 +1,13 @@
 #include <glm/glm.hpp>
 #include <vector>
+#include <memory>
 
 struct Cuboid {
-    glm::vec3 position;
-    glm::vec3 x;
-    glm::vec3 y;
-    glm::vec3 z;
+    glm::vec3 min;
+    glm::vec3 max;
 
-    Cuboid(glm::vec3 position, glm::vec3 x, glm::vec3 y, glm::vec3 z);
+    Cuboid(glm::vec3 position, float sizeX, float sizeY, float sizeZ);
 
-    std::vector<glm::vec3> getCornerPoints() const;
+    std::unique_ptr<glm::vec3[]> getCornerPoints() const;    
+    bool intersects(const Cuboid& other) const;
 };
