@@ -5,17 +5,17 @@ in vec3 pass_fragPos;
 // in vec2 pass_uvCoords;
 
 struct Material {
-    vec3 diffuse;
-    vec3 ambient;
-    vec3 specular;
+    vec4 diffuse;
+    vec4 ambient;
+    vec4 specular;
     float shininess;
 };
 
 struct Light {
     vec3 position;
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
+    vec4 ambient;
+    vec4 diffuse;
+    vec4 specular;
 };
 
 uniform vec3 viewPos;
@@ -36,9 +36,9 @@ void main() {
     float spec = pow(max(dot(viewDir, reflectDir), 0.0f), 32.0f);
 
     // combine
-    vec3 ambient = light.ambient * material.ambient;
-    vec3 diffuse = light.diffuse * (diff * material.diffuse);
-    vec3 specular = light.specular * (spec * material.specular);
+    vec4 ambient = light.ambient * material.ambient;
+    vec4 diffuse = light.diffuse * (diff * material.diffuse);
+    vec4 specular = light.specular * (spec * material.specular);
 
-     out_Color = vec4(ambient + diffuse + specular, 1.0f);
+    out_Color = vec4(ambient + diffuse + specular);
 }

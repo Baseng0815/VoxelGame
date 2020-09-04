@@ -11,22 +11,24 @@ class Material : public Resource {
         void release() override;
 
     public:
-    // texture properties
-    const Texture *diffuseMap;
-    const Texture *specularMap;
+        // texture properties
+        const Texture *diffuseMap;
+        const Texture *specularMap;
 
-    // color properties
-    glm::vec3 ambient;
-    glm::vec3 diffuse;
-    glm::vec3 specular;
-    float shininess;
+        // color properties
+        glm::vec4 ambient;
+        glm::vec4 diffuse;
+        glm::vec4 specular;
+        float shininess;
 
-    Material(const Texture*, const Texture*, glm::vec3, glm::vec3, glm::vec3, float);
+        Material(const Texture*, const Texture*, glm::vec4, glm::vec4, glm::vec4, float);
 
-    // TODO kind of unnecessary, maybe handle material differently?
-    // material does not fit into RAII very well
-    ~Material() = default;
+        // TODO kind of unnecessary, maybe handle material differently?
+        // material does not fit into RAII very well
+        ~Material() = default;
 
-    Material(Material&&) noexcept;
-    Material &operator=(Material&&) noexcept;
+        Material(const Material&) = delete;
+        Material &operator=(const Material&) = delete;
+        Material(Material&&) noexcept;
+        Material &operator=(Material&&) noexcept;
 };

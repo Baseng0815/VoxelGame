@@ -31,7 +31,10 @@ void ResourceManager::loadResources() {
 
     // materials
     resources.emplace(MATERIAL_CHUNK_BLOCKS, ResourceHandle {new Material {ResourceManager::getResource<Texture>(TEXTURE_ATLAS),
-        ResourceManager::getResource<Texture>(TEXTURE_BLACK), glm::vec3 {0.0f}, glm::vec3 {0.0f}, glm::vec3 {0.0f}, 32.0f}});
+        ResourceManager::getResource<Texture>(TEXTURE_BLACK), glm::vec4 {0.0f}, glm::vec4 {0.0f}, glm::vec4 {0.0f}, 32.0f}});
+
+    resources.emplace(MATERIAL_CLOUDS, ResourceHandle {new Material {nullptr, nullptr, glm::vec4 {1.f, 1.f, 1.f, 1.f},
+        glm::vec4 {1.f, 1.f, 1.f, 1.f}, glm::vec4 {0.f}, 0.f}});
 
     // fonts
     resources.emplace(FONT_KORURI, ResourceHandle {new Font("Fonts/Koruri-Regular.ttf")});

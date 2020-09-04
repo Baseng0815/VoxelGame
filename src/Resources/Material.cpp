@@ -4,8 +4,8 @@
 void Material::release()
 {}
 
-Material::Material(const Texture *diffuseMap, const Texture *specularMap, glm::vec3 ambient,
-        glm::vec3 diffuse, glm::vec3 specular, float shininess)
+Material::Material(const Texture *diffuseMap, const Texture *specularMap, glm::vec4 ambient,
+        glm::vec4 diffuse, glm::vec4 specular, float shininess)
     : diffuseMap(diffuseMap), specularMap(specularMap), ambient(ambient),
     diffuse(diffuse), specular(specular), shininess (shininess)
 {}
@@ -17,9 +17,9 @@ Material::Material(Material &&other) noexcept
 {
     other.diffuseMap = nullptr;
     other.specularMap = nullptr;
-    other.ambient = glm::vec3 {0.f};
-    other.diffuse = glm::vec3 {0.f};
-    other.specular = glm::vec3 {0.f};
+    other.ambient = glm::vec4 {0.f};
+    other.diffuse = glm::vec4 {0.f};
+    other.specular = glm::vec4 {0.f};
     other.shininess = 0.f;
 }
 

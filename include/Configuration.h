@@ -20,11 +20,13 @@ class Configuration {
     public:
         static constexpr int CHUNK_SIZE = 16;
         static constexpr int CHUNK_HEIGHT = 256;
-        // TODO finish errors when CHUNK_PRELOAD_SIZE is 0 or 1
+        // TODO fix errors when CHUNK_PRELOAD_SIZE is 0 or 1
         static constexpr int CHUNK_PRELOAD_SIZE = 6;
         static constexpr int CHUNK_MAX_LOADING = 6;
         static constexpr int MAP_SEED_SIZE = 256;
         static constexpr int SKYBOX_SIZE = 4000;
+        // units per second
+        static constexpr float CLOUD_SPEED = 8;
 
         // path contains Settings.json, Keybinds.json, blockData.json and biomeInfo.json
         static void loadConfiguration(const std::string& resourceBasePath);
