@@ -41,13 +41,8 @@ std::vector<glm::vec3>& Cuboid::getCornerPoints() const {
 }
 
 bool Cuboid::intersects(const Cuboid& other) const {
-    if (max.x > other.min.x || max.y > other.min.y || max.z > other.min.z)
-        return false;
-
-    if (other.max.x > max.x || other.max.y > max.y || other.max.z > max.z)
-        return false;
-
-    return true;
+    return other.min.x < max.x && other.min.y < max.y && other.min.z < max.z &&
+           min.x < other.max.x && min.y < other.max.y && min.z < other.max.z;
 }
 
 glm::vec3 Cuboid::getPosition() const {

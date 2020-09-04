@@ -33,8 +33,6 @@ class InputSystem : public System {
         CallbackHandle<const FramebufferSizeEvent&> m_framebufferHandle;
         void handleFramebufferSizeEvent(const FramebufferSizeEvent&);
 
-        void updateSelectedBlock(const CameraComponent &camera, const TransformationComponent &transformation);
-
         void updateVectors(CameraComponent& camera);
         void updateViewMatrix(CameraComponent& camera, TransformationComponent& transform);
         void updateProjectionMatrix(CameraComponent& camera);

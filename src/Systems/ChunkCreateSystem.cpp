@@ -6,12 +6,13 @@
 #include "../../include/Events/EventDispatcher.h"
 #include "../../include/Resources/ResourceManager.h"
 #include "../../include/Utility.h"
+#include "../../include/Cuboid.h"
+#include "../../include/World.h"
 
 #include "../../include/Components/AtlasComponent.h"
 #include "../../include/Components/ChunkComponent.h"
 #include "../../include/Components/MeshRenderComponent.h"
 #include "../../include/Components/TransformationComponent.h"
-#include "../../include/Components/WorldComponent.h"
 
 #include <iostream>
 
@@ -52,19 +53,11 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e) {
 }
 
 // TODO maybe set the verticesOutdated where the BlockChangedEvent was raised
-void ChunkCreateSystem::handleBlockChanged(const BlockChangedEvent& e) {
-    auto worldView = m_registry.view<WorldComponent>();
-    WorldComponent& world = worldView.raw()[0];
-    for (auto worldEntity : worldView) {
-        auto& worldComponent = m_registry.get<WorldComponent>(worldEntity);
-        if (worldComponent.worldID == 0)
-            world = worldComponent;
-    }
-
+void ChunkCreateSystem::handleBlockChanged(const BlockChangedEvent& e) {    
     glm::vec3 localPos;
     glm::vec2 chunkPos = GetChunk(e.position, localPos);
 
-    ChunkComponent& chunkComponent = m_registry.get<ChunkComponent>(world.getChunk(chunkPos));
+    ChunkComponent& chunkComponent = m_registry.get<ChunkComponent>(World::getChunk(chunkPos));
 }
 
 GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ) {
@@ -93,8 +86,7 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
     }
 
     // TODO pass generationData into this function
-    m_generator.generate(glm::vec2{chunkX, chunkZ}, generationData.biomes, generationData.blocks);
-    m_collisionQueue.push_back(entity);
+    m_generator.generate(glm::vec2{chunkX, chunkZ}, generationData.biomes, generationData.blocks);    
 
     return generationData;
 }
@@ -271,50 +263,7 @@ void ChunkCreateSystem::updateChunkBuffers(Geometry& geometry, const std::vector
     geometry.fillBuffers(vertices, indices);
 }
 
-CollisionData ChunkCreateSystem::updateChunkCollision(entt::entity entity, Block*** blocks) {
-    std::vector<glm::vec3> collisions = std::vector<glm::vec3>();
-
-    for (int cx = 0; cx < Configuration::CHUNK_SIZE; cx++) {
-        for (int cy = 0; cy < Configuration::CHUNK_SIZE; cy++) {
-            for (int cz = 0; cz < Configuration::CHUNK_SIZE; cz++) {
-                bool isSolid = blocks[cx][cy][cz].isSolid();
-
-                if (isSolid) {
-                    bool hasCollision = false;
-                    if (cx > 0)
-                        hasCollision |= !(blocks[cx - 1][cy][cz].isSolid());
-
-                    if (cx < Configuration::CHUNK_SIZE - 1)
-                        hasCollision |= !(blocks[cx + 1][cy][cz].isSolid());
-
-                    if (cy > 0)
-                        hasCollision |= !(blocks[cx][cy - 1][cz].isSolid());
-
-                    if (cy < Configuration::CHUNK_HEIGHT - 1)
-                        hasCollision |= !(blocks[cx][cy + 1][cz].isSolid());
-
-                    if (cz > 0)
-                        hasCollision |= !(blocks[cx][cy][cz - 1].isSolid());
-
-                    if (cz < Configuration::CHUNK_SIZE - 1)
-                        hasCollision |= !(blocks[cx][cy][cz + 1].isSolid());
-
-                    if (hasCollision) {
-                        collisions.push_back(glm::vec3(cx, cy, cz));
-                    }
-                }
-            }
-        }
-    }
-
-    return CollisionData{entity, collisions};
-}
-
-void ChunkCreateSystem::_update(int dt) {
-    auto worldView = m_registry.view<WorldComponent>();
-
-    WorldComponent& world = worldView.get(worldView.front());
-
+void ChunkCreateSystem::_update(int dt) {        
     // delete queued chunks if no thread is active on them
     auto it = m_destructionQueue.begin();
     while (it != m_destructionQueue.end()) {
@@ -323,7 +272,7 @@ void ChunkCreateSystem::_update(int dt) {
         if (!chunk.threadActiveOnSelf && chunk.blocks) {
             glm::vec2 pos{chunk.chunkX, chunk.chunkZ};
 
-            world.removeChunk(*it);
+            World::removeChunk(*it);
 
             // cleanup memory
             for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
@@ -372,20 +321,7 @@ void ChunkCreateSystem::_update(int dt) {
                 }
             }
         }
-    }
-
-    for (auto entity : m_collisionQueue) {
-        if (m_constructionCount < Configuration::CHUNK_MAX_LOADING) {
-            auto& chunk = view.get<ChunkComponent>(entity);
-
-            if (!chunk.threadActiveOnSelf) {
-                chunk.threadActiveOnSelf = true;
-
-                m_collisionFutures.push_back(
-                    std::async(std::launch::async, [=]() { return updateChunkCollision(entity, chunk.blocks); }));
-            }
-        }
-    }
+    }    
 
     // process finished blocks
     for (auto& future : m_generationFutures) {
@@ -398,7 +334,7 @@ void ChunkCreateSystem::_update(int dt) {
             chunk.verticesOutdated = true;
             chunk.threadActiveOnSelf = false;
             m_constructionCount--;
-            world.addChunk(generationData.entity, glm::vec2{chunk.chunkX, chunk.chunkZ});
+            World::addChunk(generationData.entity, glm::vec2{chunk.chunkX, chunk.chunkZ});
         }
     }
 
@@ -414,17 +350,7 @@ void ChunkCreateSystem::_update(int dt) {
             chunk.threadActiveOnSelf = false;
             m_constructionCount--;
         }
-    }
-
-    for (auto& future : m_collisionFutures) {
-        if (future.valid() && future.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
-            CollisionData collisionData = future.get();
-            ChunkComponent& chunk = m_registry.get<ChunkComponent>(collisionData.entity);
-
-            chunk.blockCollisions = collisionData.blockCollisions;
-            chunk.threadActiveOnSelf = false;
-        }
-    }
+    }    
 }
 
 ChunkCreateSystem::ChunkCreateSystem(Registry_T& registry) : System{registry, 50}, m_constructionCount{0} {

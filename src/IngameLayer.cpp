@@ -48,12 +48,10 @@ IngameLayer::IngameLayer(Application* application)
     m_systems.emplace_back(std::unique_ptr<System> {new InputSystem {m_registry}});
     m_systems.emplace_back(std::unique_ptr<System> {new MeshRenderSystem {m_registry}});
     m_systems.emplace_back(std::unique_ptr<System> {new PlayerMovementSystem {m_registry }});
-    // world
-    auto entity = m_registry.create();
-    m_registry.emplace<WorldComponent>(entity);
+    m_systems.emplace_back(std::unique_ptr<System> {new CollisionSystem {m_registry}});
 
     // atlas
-    entity = m_registry.create();
+    entt::entity entity = m_registry.create();
     const Texture *atlasTexture = ResourceManager::getResource<Texture>(TEXTURE_ATLAS);
     m_registry.emplace<AtlasComponent>(entity, atlasTexture->getWidth(), atlasTexture->getHeight(), 16);
 
@@ -86,18 +84,16 @@ void IngameLayer::update(int dt) {
         const TransformationComponent &transform = m_registry.get<TransformationComponent>(entity);
         const CameraComponent &camera = m_registry.get<CameraComponent>(entity);
 
-        DebugLayoutInfo info {
-            m_frameCounter * 1000 / m_time,
-                           m_time * 1000 / m_frameCounter,
-                           static_cast<const ChunkCreateSystem*>(m_systems[0].get())->getActiveChunkCount(),
-                           transform.getPosition(),
-                           camera.front,
-                           camera.yaw,
-                           camera.pitch,
-                           camera.fov,
-                           (int)(transform.getPosition().x / Configuration::CHUNK_SIZE),
-                           (int)(transform.getPosition().z / Configuration::CHUNK_SIZE)
-        };
+        DebugLayoutInfo info{m_frameCounter * 1000 / m_time,
+            m_time * 1000 / m_frameCounter,
+            static_cast<const ChunkCreateSystem*>(m_systems[0].get())->getActiveChunkCount(),
+            transform.getPosition(),
+            camera.front,
+            camera.yaw,
+            camera.pitch,
+            camera.fov,
+            (int)floor(transform.getPosition().x / Configuration::CHUNK_SIZE),
+            (int)floor(transform.getPosition().z / Configuration::CHUNK_SIZE)};
 
         m_gui.getWidget<DebugLayout>("layout_debugpanel").setValues(info);
         m_time = 0;

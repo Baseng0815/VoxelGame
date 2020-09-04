@@ -5,10 +5,9 @@
 struct TransformationComponent;
 
 struct CollisionComponent {
-    float sizeX, sizeY, sizeZ;
-    glm::vec3 offset;
+    Cuboid localCuboid;
 
     CollisionComponent(glm::vec3 offset, float sizeX, float sizeY, float sizeZ);
 
-    Cuboid getCuboid(const TransformationComponent& transform) const;
+    Cuboid transform(const TransformationComponent& transform) const;
 };

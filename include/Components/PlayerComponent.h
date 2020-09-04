@@ -7,7 +7,7 @@ struct PlayerComponent {
 
     float xAxisInput, yAxisInput, zAxisInput;
 
-    bool isFalling = false;
+    bool isFalling = true;
 
     glm::vec3 lookAt;
 };

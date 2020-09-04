@@ -1,30 +1,33 @@
-#include "../../include/Components/WorldComponent.h"
+#include "../include/World.h"
 
-#include "../../include/Block.h"
-#include "../../include/Utility.h"
-#include "../../include/Events/Event.h"
-#include "../../include/Configuration.h"
-#include "../../include/Events/EventDispatcher.h"
+#include "../include/Block.h"
+#include "../include/Configuration.h"
+#include "../include/Events/Event.h"
+#include "../include/Events/EventDispatcher.h"
+#include "../include/Utility.h"
 
-#include "../../include/Components/ChunkComponent.h"
+#include "../include/Components/ChunkComponent.h"
 
 #include <iostream>
 
-entt::entity WorldComponent::getChunk(glm::vec2 chunk) const {
+std::unordered_map<glm::vec2, entt::entity, HashFunction> World::chunksLookup;
+
+entt::entity World::getChunk(glm::vec2 chunk) {
     return chunksLookup.at(chunk);
 }
 
-bool WorldComponent::chunkCreated(glm::vec2 chunk) const {
+bool World::chunkCreated(glm::vec2 chunk) {
     try {
         chunksLookup.at(chunk);
         return true;
-    } catch (std::out_of_range e) {
+    }
+    catch (std::out_of_range e) {
         std::cout << "Error in chunk creation: " << e.what() << std::endl;
         return false;
     }
 }
 
-Block WorldComponent::getBlock(const entt::registry* registry, glm::vec3 position) const {
+Block World::getBlock(const entt::registry* registry, glm::vec3 position) {
     glm::vec2 chunkPosition;
     glm::vec3 localPosition;
 
@@ -43,12 +46,12 @@ Block WorldComponent::getBlock(const entt::registry* registry, glm::vec3 positio
 
         return block;
     }
-    catch(std::out_of_range) {
+    catch (std::out_of_range) {
         return Block();
     }
 }
 
-void WorldComponent::setBlock(entt::registry* registry, glm::vec3 position, Block block) {
+void World::setBlock(entt::registry* registry, glm::vec3 position, Block block) {
     glm::vec2 chunkPosition;
     glm::vec3 localPosition;
 
@@ -65,11 +68,11 @@ void WorldComponent::setBlock(entt::registry* registry, glm::vec3 position, Bloc
     EventDispatcher::raiseEvent(blockChangedEvent);
 }
 
-void WorldComponent::addChunk(entt::entity entity, glm::vec2 position) {
+void World::addChunk(entt::entity entity, glm::vec2 position) {
     chunksLookup[position] = entity;
 }
 
-void WorldComponent::removeChunk(entt::entity entity) {
+void World::removeChunk(entt::entity entity) {
     auto it = chunksLookup.begin();
 
     while (it != chunksLookup.end() && (*it).second != entity) {

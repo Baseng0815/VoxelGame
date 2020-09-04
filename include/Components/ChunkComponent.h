@@ -12,6 +12,7 @@
 #include <iostream>
 
 struct Block;
+struct Cuboid;
 enum BiomeID : char;
 
 struct ChunkComponent {
@@ -19,7 +20,7 @@ struct ChunkComponent {
     int chunkX, chunkZ;
 
     Block*** blocks = nullptr;
-    std::vector<glm::vec3> blockCollisions;
+    
     // TODO fix this memory leak
     BiomeID** biomes = nullptr;
 

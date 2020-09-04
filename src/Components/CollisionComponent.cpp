@@ -2,10 +2,12 @@
 #include "../../include/Components/TransformationComponent.h"
 
 CollisionComponent::CollisionComponent(glm::vec3 offset, float sizeX, float sizeY, float sizeZ) 
-    : offset(offset), sizeX(sizeX), sizeY(sizeY), sizeZ(sizeZ) {}
+    : localCuboid(offset, sizeX, sizeY, sizeZ) {
 
-Cuboid CollisionComponent::getCuboid(const TransformationComponent& transform) const {        
-    glm::vec3 position = transform.getPosition() + offset;    
+    }
 
-    return Cuboid(position, sizeX, sizeY, sizeZ);
+Cuboid CollisionComponent::transform(const TransformationComponent& transform) const {
+    glm::vec3 position = transform.getPosition();
+
+    return Cuboid(localCuboid.min + position, localCuboid.max + position);
 }

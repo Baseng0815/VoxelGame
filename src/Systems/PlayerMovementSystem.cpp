@@ -31,8 +31,5 @@ void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent& player, VelocityCo
     
     if(glm::length(playerMovementDir) != 0) {
         velocity.velocity = player.maxMovementSpeed * glm::normalize(playerMovementDir);
-    }
-    else {
-        velocity.velocity = glm::vec3(0, 0, 0);
-    }
+    }    
 }

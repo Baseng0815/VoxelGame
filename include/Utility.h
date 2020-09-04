@@ -14,8 +14,6 @@
 #include <utility>
 #include <functional>
 
-struct WorldComponent;
-
 class HashFunction {
     public:
         inline long operator()(const glm::vec2& vec) const {
@@ -30,6 +28,9 @@ glm::vec3 GetWorldCoords(glm::vec2 chunk, glm::vec3 chunkCoords);
 glm::vec3 GetChunkCoords(glm::vec3 worldPos);
 
 glm::vec3 getBlockCoords(glm::vec3 coords);
+
+glm::vec3 getBlockNormal(glm::vec3 moveDir);
+glm::vec3 getHitboxNormal(glm::vec3 moveDir);
 
 template<typename T>
 void swap(std::vector<T>* vec, int pos1, int pos2);

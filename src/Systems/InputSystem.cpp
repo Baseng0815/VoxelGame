@@ -4,14 +4,15 @@
 #include "../../include/Utility.h"
 #include "../../include/Configuration.h"
 #include "../../include/Events/EventDispatcher.h"
+#include "../../include/World.h"
 
 #include "../../include/Components/ChunkComponent.h"
-#include "../../include/Components/WorldComponent.h"
 #include "../../include/Components/CameraComponent.h"
 #include "../../include/Components/VelocityComponent.h"
 #include "../../include/Components/RigidBodyComponent.h"
 #include "../../include/Components/TransformationComponent.h"
 #include "../../include/Components/PlayerComponent.h"
+#include "../../include/Components/CollisionComponent.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/transform.hpp>
@@ -68,9 +69,8 @@ void InputSystem::handleMouseButtonEvent(const MouseButtonEvent& e) {
         m_registry.view<PlayerComponent>().each(
             [&](PlayerComponent& player) {
                 glm::vec3 block = player.lookAt;
-
-                WorldComponent& world = m_registry.get<WorldComponent>(m_registry.view<WorldComponent>().front());
-                world.setBlock(&m_registry, block, Block());
+                
+                World::setBlock(&m_registry, block, Block());
             }            
         );
     }
@@ -88,8 +88,7 @@ void InputSystem::handleMouseMoveEvent(const CursorEvent& e) {
             else if (camera.pitch < -89.99) 
                 camera.pitch = -89.99;
 
-            updateVectors(camera);
-            updateSelectedBlock(camera, transformation);
+            updateVectors(camera);            
         });
 }
 
@@ -134,45 +133,6 @@ void InputSystem::updateProjectionMatrix(CameraComponent& camera) {
     camera.perspectiveProjection = glm::perspective(glm::radians(camera.fov), camera.width / (float)camera.height, 0.1f, 1000.f);
 }
 
-void InputSystem::updateSelectedBlock(const CameraComponent &camera, const TransformationComponent &transformation) {
-    // TODO reimplement this
-    /*
-       WorldComponent& world = m_systemManager->getCurrentWorld();
-       glm::vec3 pos = transformation.position;
-
-       Ray r = Ray(pos, camera.front);
-
-       std::vector<glm::vec3> blocks = r.getIntersectionBlocks(5);
-       glm::vec3 block;
-
-       float minLength = FLT_MAX;
-       for (auto b : blocks) {
-       try{
-       if (world.getBlock(*m_registry, b).type != BlockType::BLOCK_AIR) {
-       glm::vec3 diff = pos - (glm::vec3)b;
-       float length = glm::length(diff);
-
-       if (length < minLength) {
-       block = b;
-       minLength = length;
-       }
-       }
-       }
-       catch(std::out_of_range) {
-       continue;
-       }
-       }
-
-       if (minLength != FLT_MAX) {
-       glm::vec3 intersectionFace = r.getIntersectionFace(block);
-       selectedBlock = { block, intersectionFace, true };
-       }
-       else {
-       selectedBlock = { glm::vec3(), glm::vec3(), false };
-       }
-       */
-}
-
 void InputSystem::_update(int dt) {
     // TODO make event based
     m_registry.view<CameraComponent, TransformationComponent>().each(
@@ -191,9 +151,7 @@ InputSystem::InputSystem(Registry_T &registry)
     m_registry.emplace<TransformationComponent>(entity, glm::vec3 {0.f, 100.f, 0.f}, glm::vec3 {0.f, 0.f, 0.f}, glm::vec3 {1, 1, 1});
     m_registry.emplace<VelocityComponent>(entity);
     m_registry.emplace<PlayerComponent>(entity);
-
-    /*BoxCollision* cameraCollision = new BoxCollision(glm::vec3 {-0.5f, -1.5f, -0.5f}, 1, 2, 1);
-    m_registry.emplace<RigidBodyComponent>(entity, new Shape(std::vector<Triangle> {}), 0, cameraCollision);*/
+    m_registry.emplace<CollisionComponent>(entity, glm::vec3{-0.5, -1.5, -0.5}, 1, 2, 1);
 
     m_registry.view<CameraComponent>().each(
         [&](auto& camera) {
