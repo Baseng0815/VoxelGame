@@ -2,30 +2,27 @@
 
 #include "../../include/Block.h"
 
-#include "../../include/Utility.h"
 #include "../../include/Configuration.h"
-#include "../../include/Resources/ResourceManager.h"
 #include "../../include/Events/EventDispatcher.h"
+#include "../../include/Resources/ResourceManager.h"
+#include "../../include/Utility.h"
 
-#include "../../include/Components/ChunkComponent.h"
 #include "../../include/Components/AtlasComponent.h"
-#include "../../include/Components/WorldComponent.h"
+#include "../../include/Components/ChunkComponent.h"
 #include "../../include/Components/MeshRenderComponent.h"
 #include "../../include/Components/TransformationComponent.h"
+#include "../../include/Components/WorldComponent.h"
 
 #include <iostream>
 
-void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e)
-{
+void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e) {
     // remove old chunks from ECS system and queue chunk data deletion
     auto view = m_registry.view<ChunkComponent>();
 
     for (auto entity : view) {
-        const auto &chunk = view.get<ChunkComponent>(entity);
-        if (std::abs(e.newX - chunk.chunkX) >
-            Configuration::CHUNK_PRELOAD_SIZE ||
-            std::abs(e.newZ - chunk.chunkZ) >
-            Configuration::CHUNK_PRELOAD_SIZE) {
+        const auto& chunk = view.get<ChunkComponent>(entity);
+        if (std::abs(e.newX - chunk.chunkX) > Configuration::CHUNK_PRELOAD_SIZE ||
+            std::abs(e.newZ - chunk.chunkZ) > Configuration::CHUNK_PRELOAD_SIZE) {
             if (!std::count(m_destructionQueue.begin(), m_destructionQueue.end(), entity)) {
                 m_destructionQueue.push_back(entity);
             }
@@ -33,15 +30,20 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e)
     }
 
     // create new chunks which have come into range
-    for (int x = e.newX + Configuration::CHUNK_PRELOAD_SIZE; x >= e.newX - (int)Configuration::CHUNK_PRELOAD_SIZE; x--) {
-        for (int z = e.newZ + Configuration::CHUNK_PRELOAD_SIZE; z >= e.newZ - (int)Configuration::CHUNK_PRELOAD_SIZE; z--) {
-            glm::vec2 pos {x, z};
+    for (int x = e.newX + Configuration::CHUNK_PRELOAD_SIZE; x >= e.newX - (int)Configuration::CHUNK_PRELOAD_SIZE;
+         x--) {
+        for (int z = e.newZ + Configuration::CHUNK_PRELOAD_SIZE; z >= e.newZ - (int)Configuration::CHUNK_PRELOAD_SIZE;
+             z--) {
+            glm::vec2 pos{x, z};
             if (std::count(m_loadedChunks.begin(), m_loadedChunks.end(), pos) == 0) {
                 entt::entity entity = m_registry.create();
 
-                m_registry.emplace<TransformationComponent>(entity, TransformationComponent {glm::vec3(x * Configuration::CHUNK_SIZE, 0, z * Configuration::CHUNK_SIZE)});
-                m_registry.emplace<MeshRenderComponent>(entity, MeshRenderComponent {ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS)});
-                m_registry.emplace<ChunkComponent>(entity, ChunkComponent {new std::shared_mutex {}, x, z});
+                m_registry.emplace<TransformationComponent>(
+                    entity, TransformationComponent{
+                                glm::vec3(x * Configuration::CHUNK_SIZE, 0, z * Configuration::CHUNK_SIZE)});
+                m_registry.emplace<MeshRenderComponent>(
+                    entity, MeshRenderComponent{ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS)});
+                m_registry.emplace<ChunkComponent>(entity, ChunkComponent{new std::shared_mutex{}, x, z});
 
                 m_loadedChunks.push_back(pos);
             }
@@ -50,12 +52,11 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e)
 }
 
 // TODO maybe set the verticesOutdated where the BlockChangedEvent was raised
-void ChunkCreateSystem::handleBlockChanged(const BlockChangedEvent& e)
-{
+void ChunkCreateSystem::handleBlockChanged(const BlockChangedEvent& e) {
     auto worldView = m_registry.view<WorldComponent>();
-    WorldComponent &world = worldView.raw()[0];
+    WorldComponent& world = worldView.raw()[0];
     for (auto worldEntity : worldView) {
-        auto &worldComponent = m_registry.get<WorldComponent>(worldEntity);
+        auto& worldComponent = m_registry.get<WorldComponent>(worldEntity);
         if (worldComponent.worldID == 0)
             world = worldComponent;
     }
@@ -63,11 +64,10 @@ void ChunkCreateSystem::handleBlockChanged(const BlockChangedEvent& e)
     glm::vec3 localPos;
     glm::vec2 chunkPos = GetChunk(e.position, localPos);
 
-    ChunkComponent &chunkComponent = m_registry.get<ChunkComponent>(world.getChunk(chunkPos));
+    ChunkComponent& chunkComponent = m_registry.get<ChunkComponent>(world.getChunk(chunkPos));
 }
 
-GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ)
-{
+GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ) {
     GenerationData generationData;
     generationData.entity = entity;
 
@@ -80,7 +80,7 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
 
             if (y < 63) {
                 for (int z = 0; z < Configuration::CHUNK_SIZE; z++) {
-                    generationData.blocks[x][y][z] = Block {BlockType::BLOCK_WATER};
+                    generationData.blocks[x][y][z] = Block{BlockType::BLOCK_WATER};
                 }
             }
         }
@@ -93,13 +93,14 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
     }
 
     // TODO pass generationData into this function
-    m_generator.generate(glm::vec2 {chunkX, chunkZ}, generationData.biomes, generationData.blocks);
+    m_generator.generate(glm::vec2{chunkX, chunkZ}, generationData.biomes, generationData.blocks);
+    m_collisionQueue.push_back(entity);
 
     return generationData;
 }
 
-GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block ***blocks, std::shared_mutex *blockMutex, const AtlasComponent &atlas)
-{
+GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block*** blocks, std::shared_mutex* blockMutex,
+                                                    const AtlasComponent& atlas) {
     GeometryData geometryData;
     geometryData.entity = entity;
     int faceCount = 0;
@@ -107,99 +108,143 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block *
     for (int x = 0; x < Configuration::CHUNK_SIZE; x++)
         for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++)
             for (int z = 0; z < Configuration::CHUNK_SIZE; z++) {
-                bool draw[6] = { false };
+                bool draw[6] = {false};
 
                 // use shared_lock for shared read access and unique_lock for unique write access
                 std::shared_lock<std::shared_mutex> blockLock(*blockMutex);
-                if (blocks[x][y][z].type == BlockType::BLOCK_AIR) continue;
+                if (blocks[x][y][z].type == BlockType::BLOCK_AIR)
+                    continue;
 
                 if (blocks[x][y][z].type == BlockType::BLOCK_WATER) {
                     if (y < Configuration::CHUNK_HEIGHT - 1 && blocks[x][y + 1][z].type == BlockType::BLOCK_AIR) {
                         draw[3] = true;
                     }
-                } else {
+                }
+                else {
                     // negative X
                     if (x > 0) {
-                        if (blocks[x - 1][y][z].isTransparent()) draw[0] = true;
-                    } else draw[0] = true;
+                        if (blocks[x - 1][y][z].isTransparent())
+                            draw[0] = true;
+                    }
+                    else
+                        draw[0] = true;
                     // positive X
                     if (x < Configuration::CHUNK_SIZE - 1) {
-                        if (blocks[x + 1][y][z].isTransparent()) draw[1] = true;
-                    } else draw[1] = true;
+                        if (blocks[x + 1][y][z].isTransparent())
+                            draw[1] = true;
+                    }
+                    else
+                        draw[1] = true;
                     // negative Y
                     if (y > 0) {
-                        if (blocks[x][y - 1][z].isTransparent()) draw[2] = true;
-                    } else draw[2] = true;
+                        if (blocks[x][y - 1][z].isTransparent())
+                            draw[2] = true;
+                    }
+                    else
+                        draw[2] = true;
                     // positive Y
                     if (y < Configuration::CHUNK_HEIGHT - 1) {
-                        if (blocks[x][y + 1][z].isTransparent()) draw[3] = true;
-                    } else draw[3] = true;
+                        if (blocks[x][y + 1][z].isTransparent())
+                            draw[3] = true;
+                    }
+                    else
+                        draw[3] = true;
                     // negative Z
                     if (z > 0) {
-                        if (blocks[x][y][z - 1].isTransparent()) draw[4] = true;
-                    } else draw[4] = true;
+                        if (blocks[x][y][z - 1].isTransparent())
+                            draw[4] = true;
+                    }
+                    else
+                        draw[4] = true;
                     // positive Z
                     if (z < Configuration::CHUNK_SIZE - 1) {
-                        if (blocks[x][y][z + 1].isTransparent()) draw[5] = true;
-                    } else draw[5] = true;
+                        if (blocks[x][y][z + 1].isTransparent())
+                            draw[5] = true;
+                    }
+                    else
+                        draw[5] = true;
                 }
                 blockLock.unlock();
 
-                glm::vec3 blockPosition {x, y, z};
-                const BlockUVs &blockUVs = atlas.blockUVsArray[(int)blocks[x][y][z].type];
+                glm::vec3 blockPosition{x, y, z};
+                const BlockUVs& blockUVs = atlas.blockUVsArray[(int)blocks[x][y][z].type];
 
                 int faceCountPerPass = 0;
 
                 if (draw[0]) {
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][0]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][1]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][2]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][3]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][0]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][1]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][2]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][3]});
 
                     faceCountPerPass++;
                 }
 
                 if (draw[1]) {
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][0]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][1]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][2]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][3]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][0]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][1]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][2]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][3]});
 
                     faceCountPerPass++;
                 }
 
                 if (draw[2]) {
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][0]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][1]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][2]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][3]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][0]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][1]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][2]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][3]});
 
                     faceCountPerPass++;
                 }
 
                 if (draw[3]) {
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][0]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][1]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][2]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][3]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][0]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][1]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][2]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][3]});
 
                     faceCountPerPass++;
                 }
 
                 if (draw[4]) {
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][0]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][1]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][2]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][3]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][0]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][1]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][2]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][3]});
 
                     faceCountPerPass++;
                 }
 
                 if (draw[5]) {
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][0]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][1]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][2]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][3]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][0]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][1]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][2]});
+                    geometryData.vertices.push_back(
+                        Vertex{glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][3]});
 
                     faceCountPerPass++;
                 }
@@ -220,24 +265,63 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block *
     return geometryData;
 }
 
-void ChunkCreateSystem::updateChunkBuffers(Geometry& geometry,
-                                           const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices) {
+void ChunkCreateSystem::updateChunkBuffers(Geometry& geometry, const std::vector<unsigned int>& indices,
+                                           const std::vector<Vertex>& vertices) {
 
     geometry.fillBuffers(vertices, indices);
+}
+
+CollisionData ChunkCreateSystem::updateChunkCollision(entt::entity entity, Block*** blocks) {
+    std::vector<glm::vec3> collisions = std::vector<glm::vec3>();
+
+    for (int cx = 0; cx < Configuration::CHUNK_SIZE; cx++) {
+        for (int cy = 0; cy < Configuration::CHUNK_SIZE; cy++) {
+            for (int cz = 0; cz < Configuration::CHUNK_SIZE; cz++) {
+                bool isSolid = blocks[cx][cy][cz].isSolid();
+
+                if (isSolid) {
+                    bool hasCollision = false;
+                    if (cx > 0)
+                        hasCollision |= !(blocks[cx - 1][cy][cz].isSolid());
+
+                    if (cx < Configuration::CHUNK_SIZE - 1)
+                        hasCollision |= !(blocks[cx + 1][cy][cz].isSolid());
+
+                    if (cy > 0)
+                        hasCollision |= !(blocks[cx][cy - 1][cz].isSolid());
+
+                    if (cy < Configuration::CHUNK_HEIGHT - 1)
+                        hasCollision |= !(blocks[cx][cy + 1][cz].isSolid());
+
+                    if (cz > 0)
+                        hasCollision |= !(blocks[cx][cy][cz - 1].isSolid());
+
+                    if (cz < Configuration::CHUNK_SIZE - 1)
+                        hasCollision |= !(blocks[cx][cy][cz + 1].isSolid());
+
+                    if (hasCollision) {
+                        collisions.push_back(glm::vec3(cx, cy, cz));
+                    }
+                }
+            }
+        }
+    }
+
+    return CollisionData{entity, collisions};
 }
 
 void ChunkCreateSystem::_update(int dt) {
     auto worldView = m_registry.view<WorldComponent>();
 
-    WorldComponent &world = worldView.get(worldView.front());
+    WorldComponent& world = worldView.get(worldView.front());
 
     // delete queued chunks if no thread is active on them
     auto it = m_destructionQueue.begin();
     while (it != m_destructionQueue.end()) {
-        const ChunkComponent &chunk = m_registry.get<ChunkComponent>(*it);
+        const ChunkComponent& chunk = m_registry.get<ChunkComponent>(*it);
 
         if (!chunk.threadActiveOnSelf && chunk.blocks) {
-            glm::vec2 pos {chunk.chunkX, chunk.chunkZ};
+            glm::vec2 pos{chunk.chunkX, chunk.chunkZ};
 
             world.removeChunk(*it);
 
@@ -265,7 +349,7 @@ void ChunkCreateSystem::_update(int dt) {
     auto view = m_registry.view<ChunkComponent>();
     for (auto entity : view) {
         if (m_constructionCount < Configuration::CHUNK_MAX_LOADING) {
-            auto &chunk = view.get<ChunkComponent>(entity);
+            auto& chunk = view.get<ChunkComponent>(entity);
 
             if (!chunk.threadActiveOnSelf) {
                 // create blocks
@@ -273,18 +357,15 @@ void ChunkCreateSystem::_update(int dt) {
                     m_constructionCount++;
                     chunk.threadActiveOnSelf = true;
 
-                    m_generationFutures.push_back(std::async(std::launch::async, [=]() {
-                        return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ);
-                    }));
-
-                    world.addChunk(entity, glm::vec2 {chunk.chunkX, chunk.chunkZ});
+                    m_generationFutures.push_back(std::async(
+                        std::launch::async, [=]() { return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ); }));
                 }
                 // update vertices
                 else if (chunk.verticesOutdated) {
                     m_constructionCount++;
                     chunk.threadActiveOnSelf = true;
 
-                    const AtlasComponent &atlas = m_registry.view<AtlasComponent>().raw()[0];
+                    const AtlasComponent& atlas = m_registry.view<AtlasComponent>().raw()[0];
                     m_geometryFutures.push_back(std::async(std::launch::async, [=]() {
                         return updateChunkVertices(entity, chunk.blocks, chunk.blockMutex, atlas);
                     }));
@@ -293,26 +374,40 @@ void ChunkCreateSystem::_update(int dt) {
         }
     }
 
+    for (auto entity : m_collisionQueue) {
+        if (m_constructionCount < Configuration::CHUNK_MAX_LOADING) {
+            auto& chunk = view.get<ChunkComponent>(entity);
+
+            if (!chunk.threadActiveOnSelf) {
+                chunk.threadActiveOnSelf = true;
+
+                m_collisionFutures.push_back(
+                    std::async(std::launch::async, [=]() { return updateChunkCollision(entity, chunk.blocks); }));
+            }
+        }
+    }
+
     // process finished blocks
-    for (auto &future : m_generationFutures) {
+    for (auto& future : m_generationFutures) {
         if (future.valid() && future.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
             GenerationData generationData = future.get();
-            ChunkComponent &chunk = m_registry.get<ChunkComponent>(generationData.entity);
+            ChunkComponent& chunk = m_registry.get<ChunkComponent>(generationData.entity);
 
             chunk.blocks = generationData.blocks;
             chunk.biomes = generationData.biomes;
             chunk.verticesOutdated = true;
             chunk.threadActiveOnSelf = false;
             m_constructionCount--;
+            world.addChunk(generationData.entity, glm::vec2{chunk.chunkX, chunk.chunkZ});
         }
     }
 
     // process finished vertices
-    for (auto &future : m_geometryFutures) {
+    for (auto& future : m_geometryFutures) {
         if (future.valid() && future.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
             GeometryData geometryData = future.get();
-            ChunkComponent &chunk = m_registry.get<ChunkComponent>(geometryData.entity);
-            MeshRenderComponent &meshRenderer = m_registry.get<MeshRenderComponent>(geometryData.entity);
+            ChunkComponent& chunk = m_registry.get<ChunkComponent>(geometryData.entity);
+            MeshRenderComponent& meshRenderer = m_registry.get<MeshRenderComponent>(geometryData.entity);
             updateChunkBuffers(meshRenderer.geometry, geometryData.indices, geometryData.vertices);
 
             chunk.verticesOutdated = false;
@@ -320,23 +415,30 @@ void ChunkCreateSystem::_update(int dt) {
             m_constructionCount--;
         }
     }
+
+    for (auto& future : m_collisionFutures) {
+        if (future.valid() && future.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
+            CollisionData collisionData = future.get();
+            ChunkComponent& chunk = m_registry.get<ChunkComponent>(collisionData.entity);
+
+            chunk.blockCollisions = collisionData.blockCollisions;
+            chunk.threadActiveOnSelf = false;
+        }
+    }
 }
 
-ChunkCreateSystem::ChunkCreateSystem(Registry_T &registry)
-    : System {registry, 50}, m_constructionCount {0}
-{
+ChunkCreateSystem::ChunkCreateSystem(Registry_T& registry) : System{registry, 50}, m_constructionCount{0} {
 
     // event callbacks
-    m_enterChunkHandle = EventDispatcher::onEnterChunk.subscribe([&](const EnterChunkEvent& e) {
-        handleEnterChunk(e);
-    });
+    m_enterChunkHandle =
+        EventDispatcher::onEnterChunk.subscribe([&](const EnterChunkEvent& e) { handleEnterChunk(e); });
 
-    m_blockChangeHandle = EventDispatcher::onBlockChange.subscribe([&](const BlockChangedEvent& e) {
-        handleBlockChanged(e);
-    });
+    m_blockChangeHandle =
+        EventDispatcher::onBlockChange.subscribe([&](const BlockChangedEvent& e) { handleBlockChanged(e); });
 
     handleEnterChunk(EnterChunkEvent());
 }
 
-int ChunkCreateSystem::getActiveChunkCount() const
-{ return m_loadedChunks.size(); }
+int ChunkCreateSystem::getActiveChunkCount() const {
+    return m_loadedChunks.size();
+}

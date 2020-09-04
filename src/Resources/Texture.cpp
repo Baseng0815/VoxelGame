@@ -1,10 +1,6 @@
 #include "../../include/Resources/Texture.h"
 
-#if defined(WIN32)
-#include <SOIL.h>
-#else
 #include <SOIL/SOIL.h>
-#endif
 
 #include <iostream>
 

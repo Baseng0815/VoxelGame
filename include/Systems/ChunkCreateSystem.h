@@ -29,16 +29,23 @@ struct GeometryData {
     std::vector<unsigned int> indices;
 };
 
+struct CollisionData {
+    entt::entity entity;
+    std::vector<glm::vec3> blockCollisions;
+};
+
 class ChunkCreateSystem : public System {
     private:
         std::vector<std::future<GenerationData>> m_generationFutures;
         std::vector<std::future<GeometryData>> m_geometryFutures;
+        std::vector<std::future<CollisionData>> m_collisionFutures;        
 
         WorldGenerator m_generator = WorldGenerator(WorldType::WORLD_NORMAL);
 
         std::atomic_int m_constructionCount;
         std::vector<entt::entity> m_destructionQueue;
         std::vector<glm::vec2> m_loadedChunks;
+        std::vector<entt::entity> m_collisionQueue;
 
         CallbackHandle<const EnterChunkEvent&> m_enterChunkHandle;
         void handleEnterChunk(const EnterChunkEvent& e);
@@ -49,6 +56,8 @@ class ChunkCreateSystem : public System {
         GeometryData updateChunkVertices(entt::entity entity, Block ***blocks, std::shared_mutex *blockMutex, const AtlasComponent &atlas);
         void updateChunkBuffers(Geometry& geometryComponent,
                 const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices);
+
+        CollisionData updateChunkCollision(entt::entity entity, Block***blocks);
 
         void _update(int dt) override;
 
