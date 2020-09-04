@@ -30,5 +30,4 @@ class Geometry : public Resource {
         GLuint getVbo() const;
         GLuint getEbo() const;
         unsigned int getDrawCount() const;
-        bool isReady() const;
 };

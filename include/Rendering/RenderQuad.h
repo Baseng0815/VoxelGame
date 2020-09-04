@@ -7,6 +7,7 @@
 
 // used for rendering 2d textures directly on-screen
 // TODO add shape system and incorporate it into resource manager
+// TODO RAII this
 class RenderQuad {
     private:
         GLuint m_vao;

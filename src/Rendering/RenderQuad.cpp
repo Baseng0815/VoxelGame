@@ -2,7 +2,8 @@
 
 #include "../../include/Utility.h"
 
-RenderQuad::RenderQuad() {
+RenderQuad::RenderQuad()
+{
     glGenVertexArrays(1, &m_vao);
     glBindVertexArray(m_vao);
 
@@ -11,29 +12,31 @@ RenderQuad::RenderQuad() {
     glGenBuffers(1, &m_ebo);
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 16, NULL, GL_DYNAMIC_DRAW);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * 6, NULL, GL_DYNAMIC_DRAW);
+
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 4, BUFFER_OFFSET(0));
-    glBindVertexArray(0);
 }
 
 RenderQuad::RenderQuad(const Rectangle& area, bool flipY)
-    : RenderQuad() {
+    : RenderQuad()
+{
     resize(area, flipY);
 }
 
-RenderQuad::~RenderQuad() {
+RenderQuad::~RenderQuad()
+{
     glDeleteBuffers(1, &m_vbo);
     glDeleteVertexArrays(1, &m_vao);
 }
 
-void RenderQuad::render() const {
+void RenderQuad::render() const
+{
     glBindVertexArray(m_vao);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 }
 
-void RenderQuad::resize(const Rectangle& area, bool flipY) const {
+void RenderQuad::resize(const Rectangle& area, bool flipY) const
+{
     float x1 = area.position.x;
     float x2 = x1 + area.size.x;
     float y1 = area.position.y;
@@ -51,8 +54,6 @@ void RenderQuad::resize(const Rectangle& area, bool flipY) const {
         0, 2, 1, 0, 1, 3
     };
 
-    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ebo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), quadVertices, GL_DYNAMIC_DRAW);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_DYNAMIC_DRAW);
+    glNamedBufferData(m_vbo, sizeof(quadVertices), quadVertices, GL_DYNAMIC_DRAW);
+    glNamedBufferData(m_ebo, sizeof(indices), indices, GL_DYNAMIC_DRAW);
 }

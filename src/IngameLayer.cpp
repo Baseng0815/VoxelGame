@@ -95,8 +95,8 @@ void IngameLayer::update(int dt) {
                            camera.yaw,
                            camera.pitch,
                            camera.fov,
-                           (int)(transform.getPosition().x / Configuration::CHUNK_SIZE),
-                           (int)(transform.getPosition().z / Configuration::CHUNK_SIZE)
+                           (int)std::floor((transform.getPosition().x / Configuration::CHUNK_SIZE)),
+                           (int)std::floor((transform.getPosition().z / Configuration::CHUNK_SIZE))
         };
 
         m_gui.getWidget<DebugLayout>("layout_debugpanel").setValues(info);

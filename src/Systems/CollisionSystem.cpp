@@ -107,8 +107,8 @@ void CollisionSystem::checkCollisions(entt::entity first, entt::entity secnd) {
     Cuboid c1 = firstCollision.getCuboid(firstTransform);
     Cuboid c2 = secndCollision.getCuboid(secndTransform);
 
-    std::vector<glm::vec3>& firstCorners = c1.getCornerPoints();
-    std::vector<glm::vec3>& secndCorners = c2.getCornerPoints();
+    std::vector<glm::vec3> firstCorners = c1.getCornerPoints();
+    std::vector<glm::vec3> secndCorners = c2.getCornerPoints();
 
     bool intersection = false;
 

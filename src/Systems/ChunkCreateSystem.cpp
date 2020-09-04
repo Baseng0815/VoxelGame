@@ -150,68 +150,73 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block *
 
                 int faceCountPerPass = 0;
 
+                // add vertices
+                // reserve some space
+                geometryData.vertices.reserve(sizeof(geometryData.vertices[0]) * 1048576);
                 if (draw[0]) {
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][0]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][1]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][2]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][3]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][0]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][1]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][2]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][3]});
 
                     faceCountPerPass++;
                 }
 
                 if (draw[1]) {
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][0]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][1]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][2]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][3]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][0]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][1]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][2]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][3]});
 
                     faceCountPerPass++;
                 }
 
                 if (draw[2]) {
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][0]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][1]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][2]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][3]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][0]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][1]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][2]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][3]});
 
                     faceCountPerPass++;
                 }
 
                 if (draw[3]) {
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][0]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][1]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][2]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][3]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][0]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][1]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][2]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][3]});
 
                     faceCountPerPass++;
                 }
 
                 if (draw[4]) {
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][0]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][1]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][2]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][3]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][0]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][1]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][2]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][3]});
 
                     faceCountPerPass++;
                 }
 
                 if (draw[5]) {
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][0]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][1]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][2]});
-                    geometryData.vertices.push_back(Vertex{glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][3]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][0]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][1]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][2]});
+                    geometryData.vertices.emplace_back(Vertex{glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][3]});
 
                     faceCountPerPass++;
                 }
 
-                // add chunk.indices
+                // add indices
+                // reserve some space
+                geometryData.indices.reserve(sizeof(geometryData.indices[0]) * faceCountPerPass * 6);
                 for (int i = 0; i < faceCountPerPass; i++) {
-                    geometryData.indices.push_back(faceCount * 4 + 0);
-                    geometryData.indices.push_back(faceCount * 4 + 1);
-                    geometryData.indices.push_back(faceCount * 4 + 2);
-                    geometryData.indices.push_back(faceCount * 4 + 0);
-                    geometryData.indices.push_back(faceCount * 4 + 3);
-                    geometryData.indices.push_back(faceCount * 4 + 1);
+                    geometryData.indices.emplace_back(faceCount * 4 + 0);
+                    geometryData.indices.emplace_back(faceCount * 4 + 1);
+                    geometryData.indices.emplace_back(faceCount * 4 + 2);
+                    geometryData.indices.emplace_back(faceCount * 4 + 0);
+                    geometryData.indices.emplace_back(faceCount * 4 + 3);
+                    geometryData.indices.emplace_back(faceCount * 4 + 1);
 
                     faceCount++;
                 }
@@ -294,9 +299,10 @@ void ChunkCreateSystem::_update(int dt) {
     }
 
     // process finished blocks
-    for (auto &future : m_generationFutures) {
-        if (future.valid() && future.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
-            GenerationData generationData = future.get();
+    auto itGen = m_generationFutures.begin();
+    while (itGen != m_generationFutures.end()) {
+        if (itGen->valid() && itGen->wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
+            GenerationData generationData = itGen->get();
             ChunkComponent &chunk = m_registry.get<ChunkComponent>(generationData.entity);
 
             chunk.blocks = generationData.blocks;
@@ -304,13 +310,18 @@ void ChunkCreateSystem::_update(int dt) {
             chunk.verticesOutdated = true;
             chunk.threadActiveOnSelf = false;
             m_constructionCount--;
+
+            itGen = m_generationFutures.erase(itGen);
+        } else {
+            itGen++;
         }
     }
 
     // process finished vertices
-    for (auto &future : m_geometryFutures) {
-        if (future.valid() && future.wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
-            GeometryData geometryData = future.get();
+    auto itGeo = m_geometryFutures.begin();
+    while (itGeo != m_geometryFutures.end()) {
+        if (itGeo->valid() && itGeo->wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
+            GeometryData geometryData = itGeo->get();
             ChunkComponent &chunk = m_registry.get<ChunkComponent>(geometryData.entity);
             MeshRenderComponent &meshRenderer = m_registry.get<MeshRenderComponent>(geometryData.entity);
             updateChunkBuffers(meshRenderer.geometry, geometryData.indices, geometryData.vertices);
@@ -318,14 +329,17 @@ void ChunkCreateSystem::_update(int dt) {
             chunk.verticesOutdated = false;
             chunk.threadActiveOnSelf = false;
             m_constructionCount--;
+
+            itGeo = m_geometryFutures.erase(itGeo);
+        } else {
+            itGeo++;
         }
     }
 }
 
 ChunkCreateSystem::ChunkCreateSystem(Registry_T &registry)
-    : System {registry, 50}, m_constructionCount {0}
+    : System {registry, 10}, m_constructionCount {0}
 {
-
     // event callbacks
     m_enterChunkHandle = EventDispatcher::onEnterChunk.subscribe([&](const EnterChunkEvent& e) {
         handleEnterChunk(e);
