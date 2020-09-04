@@ -94,5 +94,5 @@ class Widget {
         void _setParent(Layout *parent);
 
         // propagate invalidation up to the root layout
-        void _invalidate();
+        void _invalidate(bool propagate = true);
 };

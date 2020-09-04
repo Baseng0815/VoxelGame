@@ -190,10 +190,10 @@ const std::string& Widget::getId() const
 void Widget::_setParent(Layout *parent)
 { m_parent = parent; }
 
-void Widget::_invalidate()
+void Widget::_invalidate(bool propagate)
 {
     m_isOutdated = true;
-    if (m_parent) {
+    if (propagate && m_parent) {
         m_parent->_invalidate();
     }
 }

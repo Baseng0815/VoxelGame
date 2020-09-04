@@ -10,8 +10,12 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+// on framebuffer resize, all widgets are invalidated
 void GUI::handleFramebufferSize(const FramebufferSizeEvent& e) {
     m_orthoProjection = glm::ortho(0.f, e.width, 0.f, e.height);
+    for (auto &widget : m_widgets) {
+        widget.second->_invalidate(false);
+    }
 }
 
 GUI::GUI()
