@@ -131,7 +131,8 @@ void InputSystem::updateViewMatrix(CameraComponent& camera, TransformationCompon
 }
 
 void InputSystem::updateProjectionMatrix(CameraComponent& camera) {
-    camera.perspectiveProjection = glm::perspective(glm::radians(camera.fov), camera.width / (float)camera.height, 0.1f, 1000.f);
+    // clip far = sqrt(3) * SKYBOX_SIZE
+    camera.perspectiveProjection = glm::perspective(glm::radians(camera.fov), camera.width / (float)camera.height, 0.1f, 7000.f);
 }
 
 void InputSystem::updateSelectedBlock(const CameraComponent &camera, const TransformationComponent &transformation) {

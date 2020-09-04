@@ -21,6 +21,8 @@ class Geometry : public Resource {
         Geometry();
         ~Geometry();
 
+        Geometry(const Geometry&) = delete;
+        Geometry &operator=(const Geometry&) = delete;
         Geometry(Geometry&&) noexcept;
         Geometry &operator=(Geometry&&);
 

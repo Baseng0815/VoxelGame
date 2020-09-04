@@ -99,9 +99,7 @@ void Layout::_updateScreenElements()
 
 Layout::Layout(const std::string &id, GUI &gui)
     : Widget {id}, m_gui {gui}
-{
-    m_gui.__registerWidget(this);
-}
+{ }
 
 void Layout::setStackMode(StackMode stackMode, bool invertStack, bool invertStackWidgets)
 {
@@ -111,7 +109,7 @@ void Layout::setStackMode(StackMode stackMode, bool invertStack, bool invertStac
 }
 
 template<typename T>
-T* Layout::addWidget(const std::string& id)
+T *Layout::addWidget(const std::string& id)
 {
     T* widget = new T {id};
     widget->_setParent(this);
@@ -121,7 +119,7 @@ T* Layout::addWidget(const std::string& id)
 }
 
 template<>
-Layout* Layout::addWidget(const std::string& id)
+Layout *Layout::addWidget(const std::string& id)
 {
     Layout* widget = new Layout {id, m_gui};
     widget->_setParent(this);
@@ -130,7 +128,7 @@ Layout* Layout::addWidget(const std::string& id)
     return widget;
 }
 
-Widget* Layout::addWidget(Widget* widget)
+Widget *Layout::addWidget(Widget* widget)
 {
     m_widgets.push_back(widget);
     widget->_setParent(this);

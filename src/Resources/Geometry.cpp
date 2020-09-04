@@ -51,7 +51,7 @@ Geometry::~Geometry()
 }
 
 Geometry::Geometry(Geometry &&other) noexcept
-    : m_vao(other.m_vao), m_vbo(other.m_vbo), m_ebo(other.m_ebo)
+    : m_vao(other.m_vao), m_vbo(other.m_vbo), m_ebo(other.m_ebo), m_drawCount(other.m_drawCount)
 {
     other.m_vao = 0;
     other.m_vbo = 0;

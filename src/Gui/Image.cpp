@@ -4,11 +4,12 @@
 #include "../../include/Resources/Shader.h"
 #include "../../include/Resources/Texture.h"
 
+#include <iostream>
 void Image::_draw(const glm::mat4& projection) const {
     if (m_texture) {
         m_texturedQuadShader->bind();
         m_texturedQuadShader->upload("projectionMatrix", projection);
-        m_texture->bind(0);
+        m_texture->bind(GL_TEXTURE0);
         m_renderQuad.render();
     }
 }

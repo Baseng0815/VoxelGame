@@ -16,14 +16,14 @@ class GUI {
     protected:
         // contains all widgets which are currently alive
         std::map<std::string, Widget*> m_widgets;
+        //std::vector<Layout*> m_rootLayouts;
+        Layout *m_rootLayout;
 
         // TODO take ortho projection as reference from camera
         CallbackHandle<const FramebufferSizeEvent&> m_framebufferSizeHandle;
         void handleFramebufferSize(const FramebufferSizeEvent&);
 
         glm::mat4 m_orthoProjection;
-
-        std::vector<Layout*> m_rootLayouts;
 
     public:
         GUI();

@@ -17,12 +17,14 @@ void Texture::release()
 
 Texture::Texture(const std::string& file) {
     std::cout << "loading texture " << file << std::endl;
-    glGenTextures(1, &m_texture);
 
-    unsigned char* data = SOIL_load_image((Configuration::getStringValue("ResourceBasePath") + file).c_str(), &m_width, &m_height, &m_channels, SOIL_LOAD_RGBA);
-    if (!data)
+    unsigned char *data = SOIL_load_image((Configuration::getStringValue("ResourceBasePath") + file).c_str(), &m_width, &m_height, &m_channels, SOIL_LOAD_RGBA);
+    if (!data) {
         std::cout << "failed to load texture" << file << std::endl;
+        exit(1);
+    }
 
+    glGenTextures(1, &m_texture);
     glBindTexture(GL_TEXTURE_2D, m_texture);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -33,6 +35,28 @@ Texture::Texture(const std::string& file) {
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
     SOIL_free_image_data(data);
+}
+
+Texture::Texture(const std::array<std::string, 6> &files)
+{
+    std::cout << "loading cube textures:" << std::endl;;
+    glGenTextures(1, &m_texture);
+    glBindTexture(GL_TEXTURE_2D, m_texture);
+
+    for (int i = 0; i < files.size(); i++) {
+        std::cout << "\t" << files[i] << std::endl;
+        int width, height, channels;
+        unsigned char *data = SOIL_load_image((Configuration::getStringValue("ResourceBasePath") + files[i]).c_str(), &width, &height, &channels, SOIL_LOAD_RGBA);
+        if (!data) {
+            std::cout << "failed to load texture" << files[i] << std::endl;
+            exit(1);
+        }
+        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        SOIL_free_image_data(data);
+    }
+
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 }
 
 Texture::~Texture()
@@ -63,9 +87,9 @@ Texture &Texture::operator=(Texture &&other) noexcept
     return *this;
 }
 
-void Texture::bind(int textureUnit) const {
+void Texture::bind(GLenum textureUnit, GLenum target) const {
     glActiveTexture(textureUnit);
-    glBindTexture(GL_TEXTURE_2D, m_texture);
+    glBindTexture(target, m_texture);
 }
 
 int Texture::getWidth() const {

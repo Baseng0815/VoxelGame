@@ -6,6 +6,7 @@
 #include "../include/Systems/ChunkCreateSystem.h"
 #include "../include/Systems/CollisionSystem.h"
 #include "../include/Systems/MeshRenderSystem.h"
+#include "../include/Systems/SkyboxSystem.h"
 
 #include "../include/Components/AtlasComponent.h"
 #include "../include/Components/WorldComponent.h"
@@ -48,6 +49,8 @@ IngameLayer::IngameLayer(Application* application)
     m_systems.emplace_back(std::unique_ptr<System> {new InputSystem {m_registry}});
     m_systems.emplace_back(std::unique_ptr<System> {new MeshRenderSystem {m_registry}});
     m_systems.emplace_back(std::unique_ptr<System> {new PlayerMovementSystem {m_registry }});
+    m_systems.emplace_back(std::unique_ptr<System> {new SkyboxSystem {m_registry }});
+
     // world
     auto entity = m_registry.create();
     m_registry.emplace<WorldComponent>(entity);
@@ -56,8 +59,6 @@ IngameLayer::IngameLayer(Application* application)
     entity = m_registry.create();
     const Texture *atlasTexture = ResourceManager::getResource<Texture>(TEXTURE_ATLAS);
     m_registry.emplace<AtlasComponent>(entity, atlasTexture->getWidth(), atlasTexture->getHeight(), 16);
-
-    m_gui.addPanel(new DebugLayout(m_gui));
 
     // callbacks
     m_keyEventHandle = EventDispatcher::onKeyPress.subscribe([&](const KeyEvent &e) {
@@ -88,7 +89,7 @@ void IngameLayer::update(int dt) {
 
         DebugLayoutInfo info {
             m_frameCounter * 1000 / m_time,
-                           m_time * 1000 / m_frameCounter,
+                           m_time * 1000 / std::max(m_frameCounter, 1),
                            static_cast<const ChunkCreateSystem*>(m_systems[0].get())->getActiveChunkCount(),
                            transform.getPosition(),
                            camera.front,
@@ -100,7 +101,7 @@ void IngameLayer::update(int dt) {
         };
 
         m_gui.getWidget<DebugLayout>("layout_debugpanel").setValues(info);
-        m_time = 0;
+        m_time = 1;
         m_frameCounter = 0;
     }
 

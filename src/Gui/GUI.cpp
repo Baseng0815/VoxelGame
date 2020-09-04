@@ -14,12 +14,11 @@ void GUI::handleFramebufferSize(const FramebufferSizeEvent& e) {
     m_orthoProjection = glm::ortho(0.f, e.width, 0.f, e.height);
 }
 
-GUI::GUI() {
-    Layout *m_rootLayout = new Layout("root_layout", *this);
+GUI::GUI()
+    : m_rootLayout {new Layout {"root_layout", *this}}
+{
     m_rootLayout->properties().constraints.width = RelativeConstraint(1);
     m_rootLayout->properties().constraints.height = RelativeConstraint(1);
-
-    m_rootLayouts.push_back(m_rootLayout);
 
     m_framebufferSizeHandle = EventDispatcher::onFramebufferSize.subscribe([&](const FramebufferSizeEvent &e) {
         handleFramebufferSize(e);
@@ -36,19 +35,15 @@ void GUI::draw() {
     glEnable(GL_BLEND);
 
     // a layout is responsible to draw its children
-    for (auto &rootLayout : m_rootLayouts) {
-        rootLayout->draw(m_orthoProjection);
-    }
+    m_rootLayout->draw(m_orthoProjection);
 
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_BLEND);
 }
 
 void GUI::update() {
-    for (auto &rootLayout : m_rootLayouts) {
-        rootLayout->updateArea(Rectangle { glm::vec2 {0.f, 0.f}, EventDispatcher::getFramebufferSize()});
-        rootLayout->updateScreenElements();
-    }
+    m_rootLayout->updateArea(Rectangle { glm::vec2 {0.f, 0.f}, EventDispatcher::getFramebufferSize()});
+    m_rootLayout->updateScreenElements();
 }
 
 Widget& GUI::getWidget(const std::string& id) {
@@ -61,7 +56,7 @@ Widget& GUI::getWidget(const std::string& id) {
 }
 
 void GUI::addPanel(Layout* panel) {
-    static_cast<Layout*>(m_widgets["root_layout"])->addWidget(panel);
+    m_rootLayout->addWidget(panel);
 }
 
 void GUI::__registerWidget(Widget* widget) {

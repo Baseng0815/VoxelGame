@@ -19,12 +19,11 @@ void MeshRenderSystem::_update(int dt)
     // upload per-frame values for both shaders
     // color shader
     m_meshRenderShaderColor->bind();
-    m_registry.view<CameraComponent>().each(
-        [&](auto& camera) {
-            m_meshRenderShaderColor->bind();
-            m_meshRenderShaderColor->upload("viewMatrix", camera.viewMatrix);
-            m_meshRenderShaderColor->upload("projectionMatrix", camera.perspectiveProjection);
-        });
+    const CameraComponent &camera = m_registry.view<CameraComponent>().raw()[0];
+    m_meshRenderShaderColor->bind();
+    m_meshRenderShaderColor->upload("viewMatrix", camera.viewMatrix);
+    m_meshRenderShaderColor->upload("projectionMatrix", camera.perspectiveProjection);
+
     for (int i = 0; i < MAX_LIGHTS; i++) {
         m_meshRenderShaderColor->upload("pointLights[" + std::to_string(i) + "]", m_pointLights[i]);
     }
@@ -32,12 +31,9 @@ void MeshRenderSystem::_update(int dt)
 
     // texture shader
     m_meshRenderShaderTexture->bind();
-    m_registry.view<CameraComponent>().each(
-        [&](auto& camera) {
-            m_meshRenderShaderTexture->bind();
-            m_meshRenderShaderTexture->upload("viewMatrix", camera.viewMatrix);
-            m_meshRenderShaderTexture->upload("projectionMatrix", camera.perspectiveProjection);
-        });
+    m_meshRenderShaderTexture->bind();
+    m_meshRenderShaderTexture->upload("viewMatrix", camera.viewMatrix);
+    m_meshRenderShaderTexture->upload("projectionMatrix", camera.perspectiveProjection);
 
     for (int i = 0; i < MAX_LIGHTS; i++) {
         m_meshRenderShaderTexture->upload("pointLights[" + std::to_string(i) + "]", m_pointLights[i]);

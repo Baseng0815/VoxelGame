@@ -16,6 +16,10 @@ void ResourceManager::loadResources() {
     resources.emplace(TEXTURE_BACKGROUND_MAIN_MENU, ResourceHandle {new Texture("Textures/background_mainmenu.png")});
     resources.emplace(TEXTURE_WHITE, ResourceHandle {new Texture("Textures/white.png")});
     resources.emplace(TEXTURE_BLACK, ResourceHandle {new Texture("Textures/black.png")});
+    resources.emplace(TEXTURE_CROSSHAIR, ResourceHandle {new Texture("Textures/crosshair.png")});
+    resources.emplace(TEXTURE_CUBE_SKYBOX, ResourceHandle {new Texture({
+        "Textures/Skybox/1_0.png", "Textures/Skybox/1_1.png", "Textures/Skybox/1_2.png", "Textures/Skybox/1_3.png", "Textures/Skybox/1_4.png", "Textures/Skybox/1_5.png",
+    })});
 
     // shaders
     resources.emplace(SHADER_MESH_RENDER_TEXTURE, ResourceHandle {new Shader("Shaders/meshRenderShader.vert", "Shaders/meshRenderShaderTexture.frag")});
@@ -27,7 +31,7 @@ void ResourceManager::loadResources() {
 
     // materials
     resources.emplace(MATERIAL_CHUNK_BLOCKS, ResourceHandle {new Material {ResourceManager::getResource<Texture>(TEXTURE_ATLAS),
-                ResourceManager::getResource<Texture>(TEXTURE_BLACK), glm::vec3 {0.0f}, glm::vec3 {0.0f}, glm::vec3 {0.0f}, 32.0f}});
+        ResourceManager::getResource<Texture>(TEXTURE_BLACK), glm::vec3 {0.0f}, glm::vec3 {0.0f}, glm::vec3 {0.0f}, 32.0f}});
 
     // fonts
     resources.emplace(FONT_KORURI, ResourceHandle {new Font("Fonts/Koruri-Regular.ttf")});
@@ -47,6 +51,10 @@ void ResourceManager::loadResources() {
     shader = getResource<Shader>(SHADER_TEXTURE_QUAD);
     shader->setAttributes({"vertex"});
     shader = getResource<Shader>(SHADER_COLOR_QUAD);
+    shader->setAttributes({"vertex"});
+
+    // skybox shader
+    shader = getResource<Shader>(SHADER_SKYBOX);
     shader->setAttributes({"vertex"});
 
     std::cout << "loaded " << resources.size() << " resources" << std::endl;

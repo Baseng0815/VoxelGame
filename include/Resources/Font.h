@@ -25,6 +25,8 @@ class Font : public Resource {
         Font(const std::string& file);
         ~Font();
 
+        Font(const Font&) = delete;
+        Font &operator=(const Font&) = delete;
         Font(Font&&) noexcept;
         Font &operator=(Font&&) noexcept;
 

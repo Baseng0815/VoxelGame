@@ -6,7 +6,7 @@
 #include <atomic>
 #include <entt/entt.hpp>
 
-#include "Gui/GUI.h"
+#include "Gui/IngameLayerGUI.h"
 
 #include "Events/CallbackHandle.h"
 
@@ -21,7 +21,7 @@ class IngameLayer : public GameLayer {
         int m_time = 0;
         int m_frameCounter = 0;
 
-        GUI m_gui;
+        IngameLayerGUI m_gui;
 
     public:
         IngameLayer(Application *application);

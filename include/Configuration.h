@@ -23,7 +23,8 @@ class Configuration {
         // TODO finish errors when CHUNK_PRELOAD_SIZE is 0 or 1
         static constexpr int CHUNK_PRELOAD_SIZE = 6;
         static constexpr int CHUNK_MAX_LOADING = 6;
-        static constexpr int MAP_SEED_SIZE=256;
+        static constexpr int MAP_SEED_SIZE = 256;
+        static constexpr int SKYBOX_SIZE = 4000;
 
         // path contains Settings.json, Keybinds.json, blockData.json and biomeInfo.json
         static void loadConfiguration(const std::string& resourceBasePath);
