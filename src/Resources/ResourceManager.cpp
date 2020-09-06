@@ -22,12 +22,20 @@ void ResourceManager::loadResources() {
     })});
 
     // shaders
+    // render 3d meshes with lighting and texturing
     resources.emplace(SHADER_MESH_RENDER_TEXTURE, ResourceHandle {new Shader("Shaders/meshRenderShader.vert", "Shaders/meshRenderShaderTexture.frag")});
+    // render 3d meshes with lighting and color
     resources.emplace(SHADER_MESH_RENDER_COLOR, ResourceHandle {new Shader("Shaders/meshRenderShader.vert", "Shaders/meshRenderShaderColor.frag")});
+    // render 2d quads using texture
     resources.emplace(SHADER_TEXTURE_QUAD, ResourceHandle {new Shader("Shaders/texturedQuadShader")});
+    // render 2d quads using color
     resources.emplace(SHADER_COLOR_QUAD, ResourceHandle {new Shader("Shaders/coloredQuadShader")});
+    // render 3d skybox
     resources.emplace(SHADER_SKYBOX, ResourceHandle {new Shader("Shaders/skyboxShader")});
+    // render 2d text
     resources.emplace(SHADER_TEXT, ResourceHandle {new Shader("Shaders/textShader")});
+    // render 3d color
+    resources.emplace(SHADER_MVP_COLOR, ResourceHandle {new Shader("Shaders/mvpColorShader")});
 
     // materials
     resources.emplace(MATERIAL_CHUNK_BLOCKS, ResourceHandle {new Material {ResourceManager::getResource<Texture>(TEXTURE_ATLAS),
@@ -58,6 +66,10 @@ void ResourceManager::loadResources() {
 
     // skybox shader
     shader = getResource<Shader>(SHADER_SKYBOX);
+    shader->setAttributes({"vertex"});
+
+    // mvp color shader
+    shader = getResource<Shader>(SHADER_MVP_COLOR);
     shader->setAttributes({"vertex"});
 
     std::cout << "loaded " << resources.size() << " resources" << std::endl;

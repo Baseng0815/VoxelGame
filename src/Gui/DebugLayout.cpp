@@ -25,6 +25,7 @@ DebugLayout::DebugLayout(GUI &gui)
 {
     m_properties.constraints.height = RelativeConstraint(1.0f);
     m_properties.constraints.width = RelativeConstraint(0.5f);
+    m_properties.isVisible = false;
     setStackMode(STACK_VERTICAL, true, false);
 
     m_textFps->properties().constraints.x = AbsoluteConstraint(0);

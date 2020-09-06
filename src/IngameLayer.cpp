@@ -5,8 +5,9 @@
 #include "../include/Systems/PlayerMovementSystem.h"
 #include "../include/Systems/ChunkCreateSystem.h"
 #include "../include/Systems/CollisionSystem.h"
-#include "../include/Systems/MeshRenderSystem.h"
 #include "../include/Systems/SkyboxSystem.h"
+#include "../include/Systems/MeshRenderSystem.h"
+#include "../include/Systems/CloudSystem.h"
 
 #include "../include/Components/AtlasComponent.h"
 #include "../include/Components/WorldComponent.h"
@@ -47,9 +48,10 @@ IngameLayer::IngameLayer(Application* application)
     m_systems.emplace_back(std::unique_ptr<System> {new ChunkCreateSystem {m_registry}});
     m_systems.emplace_back(std::unique_ptr<System> {new PhysicsSystem {m_registry}});
     m_systems.emplace_back(std::unique_ptr<System> {new InputSystem {m_registry}});
-    m_systems.emplace_back(std::unique_ptr<System> {new MeshRenderSystem {m_registry}});
     m_systems.emplace_back(std::unique_ptr<System> {new PlayerMovementSystem {m_registry }});
     m_systems.emplace_back(std::unique_ptr<System> {new SkyboxSystem {m_registry }});
+    m_systems.emplace_back(std::unique_ptr<System> {new CloudSystem {m_registry }});
+    m_systems.emplace_back(std::unique_ptr<System> {new MeshRenderSystem {m_registry}});
 
     // world
     auto entity = m_registry.create();

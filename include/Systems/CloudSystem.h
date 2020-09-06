@@ -16,7 +16,10 @@ class CloudModule : public module::Module {
 class CloudSystem : public System {
     private:
         // clouds move along the Z-Axis
-        int m_chunkOffset;
+        int m_chunkOffset = 0;
+        entt::entity m_cloudEntity;
+
+        void calculateCloudGeometry();
 
         void _update(int dt) override;
 

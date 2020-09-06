@@ -8,10 +8,6 @@ struct Material {
     sampler2D diffuseMap;
     sampler2D specularMap;
 
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
-
     float shininess;
 };
 
@@ -45,7 +41,8 @@ out vec4 out_Color;
 vec3 calcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir);
 vec3 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 fragPos);
 
-void main() {
+void main()
+{
     vec3 norm = normalize(pass_normal);
     vec3 viewDir = normalize(viewPos - pass_fragPos);
 
@@ -61,7 +58,8 @@ void main() {
 }
 
 // directional light
-vec3 calcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir) {
+vec3 calcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir)
+{
     // sampled colors
     vec3 diffuseColor = texture2D(material.diffuseMap, pass_uvCoords).xyz;
     vec3 specularColor = texture2D(material.specularMap, pass_uvCoords).xyz;
@@ -84,7 +82,8 @@ vec3 calcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir) {
 }
 
 // point light
-vec3 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 fragPos) {
+vec3 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 fragPos)
+{
     // sampled colors
     vec3 diffuseColor = texture2D(material.diffuseMap, pass_uvCoords).xyz;
     vec3 specularColor = texture2D(material.specularMap, pass_uvCoords).xyz;

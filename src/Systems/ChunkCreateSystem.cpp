@@ -151,7 +151,7 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block *
                 int faceCountPerPass = 0;
 
                 // add vertices
-                // reserve some space
+                // reserve some space to prevent reallocations
                 geometryData.vertices.reserve(sizeof(geometryData.vertices[0]) * 1048576);
                 if (draw[0]) {
                     geometryData.vertices.emplace_back(Vertex{glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][0]});
@@ -208,7 +208,7 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block *
                 }
 
                 // add indices
-                // reserve some space
+                // reserve some space to prevent reallocations
                 geometryData.indices.reserve(sizeof(geometryData.indices[0]) * faceCountPerPass * 6);
                 for (int i = 0; i < faceCountPerPass; i++) {
                     geometryData.indices.emplace_back(faceCount * 4 + 0);
