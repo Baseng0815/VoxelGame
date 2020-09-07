@@ -6,7 +6,7 @@
 #include "../../include/Events/EventDispatcher.h"
 #include "../../include/Resources/ResourceManager.h"
 #include "../../include/Utility.h"
-#include "../../include/Cuboid.h"
+#include "../../include/Math/Cuboid.h"
 #include "../../include/World.h"
 
 #include "../../include/Components/AtlasComponent.h"

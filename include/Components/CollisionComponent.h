@@ -1,6 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
-#include "../../include/Cuboid.h"
+#include "../../include/Math/Cuboid.h"
 
 struct TransformationComponent;
 

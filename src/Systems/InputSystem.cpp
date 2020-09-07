@@ -151,7 +151,7 @@ InputSystem::InputSystem(Registry_T &registry)
     m_registry.emplace<TransformationComponent>(entity, glm::vec3 {0.f, 100.f, 0.f}, glm::vec3 {0.f, 0.f, 0.f}, glm::vec3 {1, 1, 1});
     m_registry.emplace<VelocityComponent>(entity);
     m_registry.emplace<PlayerComponent>(entity);
-    m_registry.emplace<CollisionComponent>(entity, glm::vec3{-0.5, -1.5, -0.5}, 1, 2, 1);
+    m_registry.emplace<CollisionComponent>(entity, glm::vec3{-0.5, 0, -0.5}, 1, 2, 1);
 
     m_registry.view<CameraComponent>().each(
         [&](auto& camera) {

@@ -4,6 +4,8 @@
 #include "../../include/Components/VelocityComponent.h"
 #include "../../include/Components/CameraComponent.h"
 
+#include "../../include/Utility.h"
+
 #include <GLFW/glfw3.h>
 #include <iostream>
 
@@ -30,6 +32,13 @@ void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent& player, VelocityCo
     }    
     
     if(glm::length(playerMovementDir) != 0) {
-        velocity.velocity = player.maxMovementSpeed * glm::normalize(playerMovementDir);
+        velocity.velocity = player.maxMovementSpeed * glm::normalize(playerMovementDir);        
     }    
+    else {
+        velocity.velocity.x *= 0.6;
+        velocity.velocity.z *= 0.6;
+
+        if(!player.isFalling)
+            velocity.velocity.y *= 0.6;
+    }
 }

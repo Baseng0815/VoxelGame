@@ -39,6 +39,8 @@ void PhysicsSystem::updatePlayer(PlayerComponent& player, TransformationComponen
         velocity.velocity.y = glm::min(dt * g + velocity.velocity.y, 10.0f);    
     }
 
+    //std::cout << "velocity: " << velocity.velocity << std::endl;
+
     transform.move(dt * velocity.velocity);    
     glm::vec3 newPlayerPos = transform.getPosition();
     glm::ivec2 newChunk = glm::ivec2(

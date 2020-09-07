@@ -8,8 +8,10 @@
 
 #include "../../include/Events/Event.h"
 #include "../../include/Events/EventDispatcher.h"
-#include "../../include/Plane.h"
-#include "../../include/Ray.h"
+
+#include "../../include/Math/Plane.h"
+#include "../../include/Math/Ray.h"
+
 #include "../../include/Utility.h"
 #include "../../include/World.h"
 
@@ -17,12 +19,6 @@
 #include <utility>
 
 CollisionSystem::CollisionSystem(Registry_T& registry) : System{registry, 0} {
-    m_cursorMoveHandle = EventDispatcher::onCursorMove.subscribe([this](const CursorEvent& e) {
-        this->m_registry.view<PlayerComponent, TransformationComponent, CameraComponent>().each(
-            [&](PlayerComponent& player, TransformationComponent& transform, CameraComponent& camera) {
-                this->updatePlayerLookAtBlock(player, transform, camera);
-            });
-    });
 }
 
 void CollisionSystem::_update(int dt) {
@@ -40,61 +36,30 @@ void CollisionSystem::_update(int dt) {
     for (auto it = view.begin(); it != view.end(); it++) {
         checkBlockCollisions(*it);
     }
+
+    auto playerView = m_registry.view<PlayerComponent, TransformationComponent, CameraComponent>();
+
+    for (auto entity : playerView) {
+        PlayerComponent& player = m_registry.get<PlayerComponent>(entity);
+        TransformationComponent& transformation = m_registry.get<TransformationComponent>(entity);
+        CameraComponent& camera = m_registry.get<CameraComponent>(entity);
+
+        updatePlayerLookAtBlock(player, transformation, camera);
+    }
 }
 
 void CollisionSystem::updatePlayerLookAtBlock(PlayerComponent& player, TransformationComponent& transform,
                                               CameraComponent& camera) const {
     Ray lookDirection = Ray(transform.getPosition() + camera.playerOffset, camera.front);
 
-    glm::vec3 direction = lookDirection.getDirection();
-    int startX = (direction.x >= 0 ? floor(lookDirection.origin.x) : ceil(lookDirection.origin.x));
-    int startY = (direction.y >= 0 ? floor(lookDirection.origin.y) : ceil(lookDirection.origin.y));
-    int startZ = (direction.z >= 0 ? floor(lookDirection.origin.z) : ceil(lookDirection.origin.z));
+    glm::vec3 lookAt =
+        lookDirection.getFirstBlock(5, [&](glm::vec3 pos) { return World::getBlock(&m_registry, pos).isSolid(); });
 
-    int stepX = (int)(direction.x / abs(direction.x));
-    int stepY = (int)(direction.y / abs(direction.y));
-    int stepZ = (int)(direction.z / abs(direction.z));
-
-    std::vector<glm::vec3> lookAtPositions = std::vector<glm::vec3>();
-    int maxDist = 5;
-    float dist = 0;
-
-    int x = startX, y = startY, z = startZ;
-
-    while (dist < maxDist) {
-        float rx = direction.x == 0 ? INT_MAX : (x - lookDirection.origin.x) / direction.x;
-        float ry = direction.y == 0 ? INT_MAX : (y - lookDirection.origin.y) / direction.y;
-        float rz = direction.z == 0 ? INT_MAX : (z - lookDirection.origin.z) / direction.z;
-
-        float minR = std::min(rx, std::min(ry, rz));
-
-        glm::vec3 block = getBlockCoords(lookDirection.getPoint(minR));
-        if (glm::length(block - lookDirection.origin) < maxDist) {
-            lookAtPositions.push_back(block);
-        }
-
-        if (minR == rx) {
-            x += stepX;
-        }
-        else if (minR == ry) {
-            y += stepY;
-        }
-        else if (minR == rz) {
-            z += stepZ;
-        }
-
-        dist = minR;
+    if (player.lookAt != lookAt) {
+        std::cout << "look at: " << lookAt << std::endl;
     }
 
-    for (std::vector<glm::vec3>::iterator it = lookAtPositions.begin(); it != lookAtPositions.end(); it++) {
-        Block block = World::getBlock(&m_registry, *it);
-
-        if (block.isSolid()) {
-            player.lookAt = *it;
-
-            break;
-        }
-    }
+    player.lookAt = lookAt;
 }
 
 void CollisionSystem::checkCollisions(entt::entity first, entt::entity secnd) {
@@ -165,23 +130,22 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
                 glm::vec3 v = glm::max(d1, d2) * blockNormal;
 
                 if (glm::length(v) < glm::length(mtv)) {
-					mtv = v;
+                    mtv = v;
                 }
             }
         }
 
         transform.move(mtv);
 
-        // set velocity to 0
         velocity.velocity = glm::vec3();
+    }
 
-    }	
-	
-	if (m_registry.any<PlayerComponent>(entity)) {
-		PlayerComponent& player = m_registry.get<PlayerComponent>(entity);
-        Block b = World::getBlock(&m_registry, transform.getPosition() + glm::vec3(0, -2, 0));
+    // current entity is player
+    if (m_registry.any<PlayerComponent>(entity)) {
+        PlayerComponent& player = m_registry.get<PlayerComponent>(entity);
 
-        player.isFalling = !b.isSolid();
-        std::cout << player.isFalling << std::endl;
+        // update is falling
+        player.isFalling = false; //! World::getBlock(&m_registry, glm::floor(transform.getPosition() - glm::vec3(0, -1,
+                                  //! 0))).isSolid();
     }
 }
