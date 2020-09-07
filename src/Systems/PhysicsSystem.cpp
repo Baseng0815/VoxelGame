@@ -11,7 +11,7 @@
 
 PhysicsSystem::PhysicsSystem(entt::registry& registry)
     : System(registry, 0) {
-}
+    }
 
 void PhysicsSystem::_update(int millis) {
     float dt = millis / 1000.f;
@@ -20,26 +20,26 @@ void PhysicsSystem::_update(int millis) {
         [&](PlayerComponent& player, TransformationComponent& transform, VelocityComponent& velocity) {
             updatePlayer(player, transform, velocity, dt);
         }
-    );
+        );
 }
 
 void PhysicsSystem::updatePlayer(PlayerComponent& player, TransformationComponent& transform, VelocityComponent& velocity, float dt) {
     glm::vec3 oldPlayerPos = transform.getPosition();
     glm::ivec2 oldChunk = glm::ivec2(
-        (int)oldPlayerPos.x / Configuration::CHUNK_SIZE,
-        (int)oldPlayerPos.z / Configuration::CHUNK_SIZE);
+        (int)std::floor(oldPlayerPos.x / Configuration::CHUNK_SIZE),
+        (int)std::floor(oldPlayerPos.z / Configuration::CHUNK_SIZE));
 
-    transform.move(dt * velocity.velocity);    
+    transform.move(dt * velocity.velocity);
     glm::vec3 newPlayerPos = transform.getPosition();
     glm::ivec2 newChunk = glm::ivec2(
-        (int)newPlayerPos.x / Configuration::CHUNK_SIZE,
-        (int)newPlayerPos.z / Configuration::CHUNK_SIZE);
+        (int)std::floor(newPlayerPos.x / Configuration::CHUNK_SIZE),
+        (int)std::floor(newPlayerPos.z / Configuration::CHUNK_SIZE));
 
     if(newChunk != oldChunk)    {
         EnterChunkEvent e = EnterChunkEvent(nullptr, oldChunk.x, oldChunk.y, newChunk.x, newChunk.y);
         EventDispatcher::raiseEvent(e);
 
     }
-    
+
     //std::cout << "chunk x:" << newChunk.x << " y: " << newChunk.y << std::endl;
 }

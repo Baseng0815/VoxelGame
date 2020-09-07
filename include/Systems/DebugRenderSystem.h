@@ -4,14 +4,25 @@
 #include "../Resources/Geometry.h"
 
 class Shader;
+struct KeyEvent;
+struct EnterChunkEvent;
 
 // renders various debug info when in debug mode (F3) independently from other rendering systems
 class DebugRenderSystem : public System {
     private:
+        // TODO maybe don't make independent and use a mesh renderer?
         const Shader *m_mvpColorShader;
-        std::vector<Geometry> m_chunkBoundaries;
 
-        bool m_isEnabled = false;
+        // chunk boundaries
+        Geometry m_chunkBoundaries;
+        glm::mat4 m_chunkModelMatrix {1.f};
+
+        CallbackHandle<const KeyEvent&> m_keyEventHandle;
+        void handleKeys(const KeyEvent&);
+        CallbackHandle<const EnterChunkEvent&> m_enterChunkHandle;
+        void handleEnterChunk(const EnterChunkEvent&);
+
+        bool m_isEnabled {false};
 
         void _update(int dt) override;
 

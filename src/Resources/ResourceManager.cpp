@@ -70,7 +70,7 @@ void ResourceManager::loadResources() {
 
     // mvp color shader
     shader = getResource<Shader>(SHADER_MVP_COLOR);
-    shader->setAttributes({"vertex"});
+    shader->setAttributes({"position"});
 
     std::cout << "loaded " << resources.size() << " resources" << std::endl;
 }

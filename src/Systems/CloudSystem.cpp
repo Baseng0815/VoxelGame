@@ -25,11 +25,16 @@ double CloudModule::GetValue(double x, double y, double z) const
 
 void CloudSystem::calculateCloudGeometry()
 {
+    bool hasVolume = Configuration::getFloatValue("VOLUMINOUS_CLOUDS");
     // cloud geometry is generated on a per-chunk basis and then merged into a single mesh renderer
     std::vector<Vertex> vertices;
 
     // reserve some space to prevent reallocations
-    vertices.reserve(Configuration::CHUNK_PRELOAD_SIZE * Configuration::CHUNK_PRELOAD_SIZE * 4);
+    if (!hasVolume) {
+        vertices.reserve(Configuration::CHUNK_PRELOAD_SIZE * Configuration::CHUNK_PRELOAD_SIZE * 4);
+    } else {
+        vertices.reserve(Configuration::CHUNK_PRELOAD_SIZE * Configuration::CHUNK_PRELOAD_SIZE * 4);
+    }
 }
 
 void CloudSystem::_update(int dt)
