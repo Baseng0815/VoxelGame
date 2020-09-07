@@ -19,12 +19,18 @@ void PhysicsSystem::_update(int millis) {
 
     m_registry.view<PlayerComponent, TransformationComponent, VelocityComponent>().each(
         [&](PlayerComponent& player, TransformationComponent& transform, VelocityComponent& velocity) {
-            updatePlayer(player, transform, velocity, dt);
+            updatePlayer(dt, player, transform, velocity);
+        }
+    );
+
+    m_registry.view<TransformationComponent, VelocityComponent>(entt::exclude<PlayerComponent>).each(
+        [&](TransformationComponent& transform, VelocityComponent& velocity) {
+            updateEntity(dt, transform, velocity);
         }
     );
 }
 
-void PhysicsSystem::updatePlayer(PlayerComponent& player, TransformationComponent& transform, VelocityComponent& velocity, float dt) {    
+void PhysicsSystem::updatePlayer(float dt, PlayerComponent& player, TransformationComponent& transform, VelocityComponent& velocity) {    
     if (!World::chunkCreated(GetChunk(transform.getPosition(), glm::vec3())))
         return;
 
@@ -41,7 +47,7 @@ void PhysicsSystem::updatePlayer(PlayerComponent& player, TransformationComponen
 
     //std::cout << "velocity: " << velocity.velocity << std::endl;
 
-    transform.move(dt * velocity.velocity);    
+    transform.move(dt * velocity.velocity);        
     glm::vec3 newPlayerPos = transform.getPosition();
     glm::ivec2 newChunk = glm::ivec2(
         (int)newPlayerPos.x / Configuration::CHUNK_SIZE,
@@ -51,4 +57,18 @@ void PhysicsSystem::updatePlayer(PlayerComponent& player, TransformationComponen
         EnterChunkEvent e = EnterChunkEvent(nullptr, oldChunk.x, oldChunk.y, newChunk.x, newChunk.y);
         EventDispatcher::raiseEvent(e);
     }    
+}
+
+void PhysicsSystem::updateEntity(float dt, TransformationComponent& transform, VelocityComponent& velocity) {
+    // position
+    glm::vec3 ds = dt * velocity.velocity;
+
+    transform.move(ds);
+
+    // rotation
+    glm::vec3 axis = glm::normalize(velocity.angularVelocity);
+    float a = glm::length(dt * velocity.angularVelocity);
+
+    glm::vec3 dr = getEuler(axis, a);
+    transform.rotate(dr);
 }

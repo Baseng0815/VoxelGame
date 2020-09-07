@@ -10,8 +10,9 @@ class PhysicsSystem : public System {
 private:
     void _update(int dt) override;
 
-    static void updatePlayer(PlayerComponent& player, TransformationComponent& transform, VelocityComponent& velocity, float dt);
+    static void updatePlayer(float dt, PlayerComponent& player, TransformationComponent& transform, VelocityComponent& velocity);
+    static void updateEntity(float dt, TransformationComponent& transform, VelocityComponent& velocity);
 
-public:
+  public:
     PhysicsSystem(entt::registry& registry);
 };

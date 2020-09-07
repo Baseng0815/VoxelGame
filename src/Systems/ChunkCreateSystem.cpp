@@ -165,78 +165,78 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block**
 
                 if (draw[0]) {
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][0]});
+                        Vertex{glm::vec3(0, 1, 0) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][0]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][1]});
+                        Vertex{glm::vec3(0, 0, 1) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][1]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][2]});
+                        Vertex{glm::vec3(0, 1, 1) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][2]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][3]});
+                        Vertex{glm::vec3(0, 0, 0) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][3]});
 
                     faceCountPerPass++;
                 }
 
                 if (draw[1]) {
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][0]});
+                        Vertex{glm::vec3(1, 1, 1) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][0]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][1]});
+                        Vertex{glm::vec3(1, 0, 0) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][1]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][2]});
+                        Vertex{glm::vec3(1, 1, 0) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][2]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][3]});
+                        Vertex{glm::vec3(1, 0, 1) + blockPosition, glm::vec3(1, 0, 0), blockUVs[2][3]});
 
                     faceCountPerPass++;
                 }
 
                 if (draw[2]) {
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][0]});
+                        Vertex{glm::vec3(0, 0, 1) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][0]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][1]});
+                        Vertex{glm::vec3(1, 0, 0) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][1]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][2]});
+                        Vertex{glm::vec3(1, 0, 1) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][2]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][3]});
+                        Vertex{glm::vec3(0, 0, 0) + blockPosition, glm::vec3(0, -1, 0), blockUVs[5][3]});
 
                     faceCountPerPass++;
                 }
 
                 if (draw[3]) {
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][0]});
+                        Vertex{glm::vec3(0, 1, 0) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][0]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][1]});
+                        Vertex{glm::vec3(1, 1, 1) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][1]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][2]});
+                        Vertex{glm::vec3(1, 1, 0) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][2]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][3]});
+                        Vertex{glm::vec3(0, 1, 1) + blockPosition, glm::vec3(0, -1, 0), blockUVs[0][3]});
 
                     faceCountPerPass++;
                 }
 
                 if (draw[4]) {
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][0]});
+                        Vertex{glm::vec3(1, 1, 0) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][0]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(-0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][1]});
+                        Vertex{glm::vec3(0, 0, 0) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][1]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(-0.5, 0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][2]});
+                        Vertex{glm::vec3(0, 1, 0) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][2]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(0.5, -0.5, -0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][3]});
+                        Vertex{glm::vec3(1, 0, 0) + blockPosition, glm::vec3(0, 0, -1), blockUVs[3][3]});
 
                     faceCountPerPass++;
                 }
 
                 if (draw[5]) {
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(-0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][0]});
+                        Vertex{glm::vec3(0, 1, 1) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][0]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][1]});
+                        Vertex{glm::vec3(1, 0, 1) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][1]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(0.5, 0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][2]});
+                        Vertex{glm::vec3(1, 1, 1) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][2]});
                     geometryData.vertices.push_back(
-                        Vertex{glm::vec3(-0.5, -0.5, 0.5) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][3]});
+                        Vertex{glm::vec3(0, 0, 1) + blockPosition, glm::vec3(0, 0, -1), blockUVs[1][3]});
 
                     faceCountPerPass++;
                 }

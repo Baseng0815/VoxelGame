@@ -94,6 +94,27 @@ void FillSphere(glm::vec3 center, float radius, Block*** blocks, char fillType) 
     }
 }
 
+glm::vec3 getEuler(glm::vec3 v, float a) {
+    float sinA = sin(a);
+    float cosA = cos(a);
+
+    float alpha = atan2(v.z * v.x * (1 - cosA) + v.y * sinA, -v.y * v.z * (1 - cosA) + v.x * sinA);
+    float beta = acos(v.z * v.z * (1 - cosA) * cosA);
+    float gamma = atan2(v.z * v.x * (1 - cosA) - v.y * sinA, v.z * v.y * (1 - cosA) - v.x * sinA);
+
+    return glm::vec3(alpha, beta, gamma);
+}
+
+glm::vec3 getFacePosition(glm::vec3 blockPos, glm::vec3 faceNormal) {
+    glm::vec3 faceOffset = glm::vec3{
+        0.5f * faceNormal.x * faceNormal.x + 0.5f * faceNormal.x,
+        0.5f * faceNormal.y * faceNormal.y + 0.5f * faceNormal.y,
+        0.5f * faceNormal.z * faceNormal.z + 0.5f * faceNormal.z
+    };
+
+    return blockPos + faceOffset;
+}
+
 std::ostream& operator<<(std::ostream& os, const glm::vec2& vec) {
     os << "x: " << vec.x << " ";
     os << "y: " << vec.y;

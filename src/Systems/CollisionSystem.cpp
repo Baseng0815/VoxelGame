@@ -115,19 +115,19 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
         VelocityComponent& velocity = m_registry.get<VelocityComponent>(entity);
 
         for (int i = 0; i < 6; i++) {
-            glm::vec3 blockNormal = glm::vec3();
-            blockNormal[i / 2] = i % 2 ? -1 : 1;
+            glm::vec3 faceNormal = glm::vec3();
+            faceNormal[i / 2] = i % 2 ? -1 : 1;
 
-            if (!World::getBlock(&m_registry, block + blockNormal).isSolid()) {
-                glm::vec3 facePosition = block + 0.5f * blockNormal;
+            if (!World::getBlock(&m_registry, block + faceNormal).isSolid()) {
+                glm::vec3 facePosition = getFacePosition(block, faceNormal);
 
                 glm::vec3 v1 = facePosition - hitbox.min;
                 glm::vec3 v2 = facePosition - hitbox.max;
 
-                float d1 = glm::dot(v1, blockNormal);
-                float d2 = glm::dot(v2, blockNormal);
+                float d1 = glm::dot(v1, faceNormal);
+                float d2 = glm::dot(v2, faceNormal);
 
-                glm::vec3 v = glm::max(d1, d2) * blockNormal;
+                glm::vec3 v = glm::max(d1, d2) * faceNormal;
 
                 if (glm::length(v) < glm::length(mtv)) {
                     mtv = v;
@@ -145,7 +145,6 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
         PlayerComponent& player = m_registry.get<PlayerComponent>(entity);
 
         // update is falling
-        player.isFalling = false; //! World::getBlock(&m_registry, glm::floor(transform.getPosition() - glm::vec3(0, -1,
-                                  //! 0))).isSolid();
+        player.isFalling = !World::getBlock(&m_registry, glm::floor(transform.getPosition() + glm::vec3(0, -0.5, 0))).isSolid();
     }
 }

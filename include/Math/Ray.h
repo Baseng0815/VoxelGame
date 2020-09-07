@@ -51,10 +51,7 @@ struct Ray {
                 tz += stepZ;
             }
 
-            glm::vec3 tmp = getPoint(t);
-            position = glm::vec3(tmp.x < 0 ? glm::ceil(tmp.x) : glm::floor(tmp.x),
-                                 tmp.y < 0 ? glm::ceil(tmp.y) : glm::floor(tmp.y),
-                                 tmp.z < 0 ? glm::ceil(tmp.z) : glm::floor(tmp.z));
+            position = glm::floor(getPoint(t));
         } while (glm::abs(t) <= maxT && !predicate(position));
 
         if (t > maxT) {

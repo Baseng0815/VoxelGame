@@ -41,5 +41,9 @@ struct Block;
 
 void FillSphere(glm::vec3 center, float radius, Block*** blocks, char fillType = 0);
 
+glm::vec3 getEuler(glm::vec3 v, float a);
+
+glm::vec3 getFacePosition(glm::vec3 blockPos, glm::vec3 faceNormal);
+
 std::ostream &operator<<(std::ostream &os, const glm::vec2 &vec);
 std::ostream &operator<<(std::ostream &os, const glm::vec3 &vec);
