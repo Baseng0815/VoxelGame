@@ -4,97 +4,62 @@
 #include "../../include/Components/CollisionComponent.h"
 #include "../../include/Components/PlayerComponent.h"
 #include "../../include/Components/TransformationComponent.h"
-#include "../../include/Components/WorldComponent.h"
+#include "../../include/Components/VelocityComponent.h"
 
-#include "../../include/Ray.h"
-#include "../../include/Plane.h"
-#include "../../include/Utility.h"
 #include "../../include/Events/Event.h"
 #include "../../include/Events/EventDispatcher.h"
 
-#include <utility>
-#include <iostream>
+#include "../../include/Math/Plane.h"
+#include "../../include/Math/Ray.h"
 
-CollisionSystem::CollisionSystem(Registry_T &registry)
-    : System{registry, 0}
-{
-    m_cursorMoveHandle = EventDispatcher::onCursorMove.subscribe([this](const CursorEvent& e) {
-        this->m_registry.view<PlayerComponent, TransformationComponent, CameraComponent>().each(
-            [&](PlayerComponent& player, TransformationComponent& transform, CameraComponent& camera) {
-                this->updatePlayerLookAtBlock(player, transform, camera);
-            }
-        );
-    });
+#include "../../include/Utility.h"
+#include "../../include/World.h"
+
+#include <iostream>
+#include <utility>
+
+CollisionSystem::CollisionSystem(Registry_T& registry) : System{registry, 0} {
 }
 
 void CollisionSystem::_update(int dt) {
-    auto view = m_registry.view<TransformationComponent, CollisionComponent>();    
-    
-    for(auto it = view.begin(); it != view.end(); it++) {
-        for(auto jt = it; jt != view.end(); jt++) {
-            if(it == jt)
+    auto view = m_registry.view<TransformationComponent, CollisionComponent, VelocityComponent>();
+
+    for (auto it = view.begin(); it != view.end(); it++) {
+        for (auto jt = it; jt != view.end(); jt++) {
+            if (it == jt)
                 continue;
 
             checkCollisions(*it, *jt);
         }
     }
+
+    for (auto it = view.begin(); it != view.end(); it++) {
+        checkBlockCollisions(*it);
+    }
+
+    auto playerView = m_registry.view<PlayerComponent, TransformationComponent, CameraComponent>();
+
+    for (auto entity : playerView) {
+        PlayerComponent& player = m_registry.get<PlayerComponent>(entity);
+        TransformationComponent& transformation = m_registry.get<TransformationComponent>(entity);
+        CameraComponent& camera = m_registry.get<CameraComponent>(entity);
+
+        updatePlayerLookAtBlock(player, transformation, camera);
+    }
 }
 
-void CollisionSystem::updatePlayerLookAtBlock(PlayerComponent& player, TransformationComponent& transform, CameraComponent& camera) const {
+void CollisionSystem::updatePlayerLookAtBlock(PlayerComponent& player, TransformationComponent& transform,
+                                              CameraComponent& camera) const {
     Ray lookDirection = Ray(transform.getPosition() + camera.playerOffset, camera.front);
 
-    glm::vec3 direction = lookDirection.getDirection();
-    int startX = (direction.x >= 0 ? floor(lookDirection.origin.x) : ceil(lookDirection.origin.x));
-    int startY = (direction.y >= 0 ? floor(lookDirection.origin.y) : ceil(lookDirection.origin.y));
-    int startZ = (direction.z >= 0 ? floor(lookDirection.origin.z) : ceil(lookDirection.origin.z));
+    glm::vec3 lookAt =
+        lookDirection.getFirstBlock(5, [&](glm::vec3 pos) { return World::getBlock(&m_registry, pos).isSolid(); });
 
-    int stepX = (int)(direction.x / abs(direction.x));
-    int stepY = (int)(direction.y / abs(direction.y));
-    int stepZ = (int)(direction.z / abs(direction.z));
-
-    std::vector<glm::vec3> lookAtPositions = std::vector<glm::vec3>();
-    int maxDist = 5;
-    float dist = 0;
-    
-    int x = startX, y = startY, z = startZ;
-
-    while(dist < maxDist) {
-        float rx = direction.x == 0 ? INT_MAX : (x - lookDirection.origin.x) / direction.x;
-        float ry = direction.y == 0 ? INT_MAX : (y - lookDirection.origin.y) / direction.y;
-        float rz = direction.z == 0 ? INT_MAX : (z - lookDirection.origin.z) / direction.z;
-
-        float minR = std::min(rx, std::min(ry, rz));
-
-        glm::vec3 block = getBlockCoords(lookDirection.getPoint(minR));        
-        if(glm::length(block - lookDirection.origin) < maxDist) {
-            lookAtPositions.push_back(block);
-        }
-
-        if(minR == rx) {
-            x += stepX;
-        }
-        else if(minR == ry) {
-            y += stepY;
-        }
-        else if(minR == rz) {
-            z += stepZ;
-        }
-
-        dist = minR;
+    if (player.lookAt != lookAt) {
+        std::cout << "look at: " << lookAt << std::endl;
     }
 
-    auto worldView = m_registry.view<WorldComponent>();
-    WorldComponent& world = m_registry.get<WorldComponent>(worldView.front());
-    
-    for(std::vector<glm::vec3>::iterator it = lookAtPositions.begin(); it != lookAtPositions.end(); it++) {
-        Block block = world.getBlock(&m_registry, *it);
-
-        if(block.isSolid()) {
-            player.lookAt = *it;
-                        
-            break;
-        }
-    }
+    player.lookAt = lookAt;
 }
 
 void CollisionSystem::checkCollisions(entt::entity first, entt::entity secnd) {
@@ -104,48 +69,84 @@ void CollisionSystem::checkCollisions(entt::entity first, entt::entity secnd) {
     const TransformationComponent& secndTransform = m_registry.get<TransformationComponent>(secnd);
     const CollisionComponent& secndCollision = m_registry.get<CollisionComponent>(secnd);
 
-    Cuboid c1 = firstCollision.getCuboid(firstTransform);
-    Cuboid c2 = secndCollision.getCuboid(secndTransform);
+    Cuboid c1 = firstCollision.transform(firstTransform);
+    Cuboid c2 = secndCollision.transform(secndTransform);
 
+<<<<<<< HEAD
     std::vector<glm::vec3> firstCorners = c1.getCornerPoints();
     std::vector<glm::vec3> secndCorners = c2.getCornerPoints();
+=======
+    bool intersection = c1.intersects(c2);
 
-    bool intersection = false;
+    if (intersection) {
+        // TODO: handle collision
 
-    for(auto corner : firstCorners) {
-        glm::vec3 p = corner - c2.position;
-
-        float a1 = glm::dot(p, c2.x) / glm::dot(c2.x, c2.x);
-        float a2 = glm::dot(p, c2.y) / glm::dot(c2.y, c2.y);
-        float a3 = glm::dot(p, c2.z) / glm::dot(c2.z, c2.z);
-
-        intersection = a1 >= 0 && a1 <= 1
-            && a2 >= 0 && a2 <= 1
-            && a3 >= 0 && a3 <= 1;
-
-        if(intersection) {
-            // TODO: handle collision
-            
-            return;
-        }
-    }
-
-    for(auto corner : secndCorners) {
-        glm::vec3 p = corner - c1.position;
-
-        float a1 = glm::dot(p, c1.x) / glm::dot(c1.x, c1.x);
-        float a2 = glm::dot(p, c1.y) / glm::dot(c1.y, c1.y);
-        float a3 = glm::dot(p, c1.z) / glm::dot(c1.z, c1.z);
-
-        intersection = a1 >= 0 && a1 <= 1 
-            && a2 >= 0 && a2 <= 1 
-            && a3 >= 0 && a3 <= 1;
-
-        if (intersection)
-        {
-            // TODO: handle collision
-
-            return;
-        }
+        return;
     }
 }
+>>>>>>> PhysicsRework
+
+void CollisionSystem::checkBlockCollisions(entt::entity entity) {
+    CollisionComponent& collision = m_registry.get<CollisionComponent>(entity);
+    TransformationComponent& transform = m_registry.get<TransformationComponent>(entity);
+
+    Cuboid hitbox = collision.transform(transform);
+    glm::vec3 minBlock = glm::floor(hitbox.min);
+    glm::vec3 maxBlock = glm::floor(hitbox.max);
+
+    bool hasCollision = false;
+    glm::vec3 block;
+    glm::vec3 offset = glm::vec3(-0.5, -0.5, -0.5);
+
+    for (int x = minBlock.x; x <= maxBlock.x; x++) {
+        for (int y = minBlock.y; y <= maxBlock.y; y++) {
+            for (int z = minBlock.z; z <= maxBlock.z; z++) {
+                glm::vec3 position = glm::vec3(x, y, z);
+
+                if (World::getBlock(&m_registry, position).isSolid()) {
+                    Cuboid blockHitbox = Cuboid(position + offset, 1, 1, 1);
+
+                    hasCollision = hitbox.intersects(blockHitbox);
+                    if (hasCollision) {
+                        block = position;
+                    }
+                }
+            }
+        }
+    }
+
+    if (hasCollision) {
+        glm::vec3 mtv = glm::vec3(FLT_MAX, FLT_MAX, FLT_MAX);
+        VelocityComponent& velocity = m_registry.get<VelocityComponent>(entity);
+
+        for (int i = 0; i < 6; i++) {
+            glm::vec3 faceNormal = glm::vec3();
+            faceNormal[i / 2] = i % 2 ? -1 : 1;
+
+            if (!World::getBlock(&m_registry, block + faceNormal).isSolid()) {
+                glm::vec3 facePosition = getFacePosition(block, faceNormal);
+
+                glm::vec3 v1 = facePosition - hitbox.min;
+                glm::vec3 v2 = facePosition - hitbox.max;
+
+                float d1 = glm::dot(v1, faceNormal);
+                float d2 = glm::dot(v2, faceNormal);
+
+                glm::vec3 v = glm::max(d1, d2) * faceNormal;
+
+                if (glm::length(v) != 0 && glm::length(v) < glm::length(mtv)) {
+                    mtv = v;
+                }
+            }
+        }
+
+        transform.move(mtv);
+
+        velocity.velocity = glm::vec3();            
+    }
+<<<<<<< HEAD
+}
+=======
+
+}
+>>>>>>> PhysicsRework

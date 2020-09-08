@@ -1,4 +1,3 @@
-#pragma once
 #include "System.h"
 
 struct CameraComponent;
@@ -15,6 +14,9 @@ private:
 
     void updatePlayerLookAtBlock(PlayerComponent& player, TransformationComponent& transform, CameraComponent& camera) const;
     void checkCollisions(entt::entity first, entt::entity secnd);
-public:
+
+    void checkBlockCollisions(entt::entity entity);
+
+  public:
     CollisionSystem(Registry_T& registry);
 };

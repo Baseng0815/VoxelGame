@@ -1,6 +1,6 @@
-#include "../include/Plane.h"
+#include "../../include/Math/Plane.h"
 
-#include "../include/Ray.h"
+#include "../../include/Math/Ray.h"
 
 Plane::Plane() : Plane(glm::vec3(), glm::vec3()) {}
 

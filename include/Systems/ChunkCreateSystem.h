@@ -32,13 +32,13 @@ struct GeometryData {
 class ChunkCreateSystem : public System {
     private:
         std::vector<std::future<GenerationData>> m_generationFutures;
-        std::vector<std::future<GeometryData>> m_geometryFutures;
+        std::vector<std::future<GeometryData>> m_geometryFutures;        
 
         WorldGenerator m_generator = WorldGenerator(WorldType::WORLD_NORMAL);
 
         int m_constructionCount;
         std::vector<entt::entity> m_destructionQueue;
-        std::vector<glm::vec2> m_loadedChunks;
+        std::vector<glm::vec2> m_loadedChunks;        
 
         CallbackHandle<const EnterChunkEvent&> m_enterChunkHandle;
         void handleEnterChunk(const EnterChunkEvent& e);
@@ -48,7 +48,7 @@ class ChunkCreateSystem : public System {
         GenerationData updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ);
         GeometryData updateChunkVertices(entt::entity entity, Block ***blocks, std::shared_mutex *blockMutex, const AtlasComponent &atlas);
         void updateChunkBuffers(Geometry& geometryComponent,
-                const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices);
+                const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices);        
 
         void _update(int dt) override;
 

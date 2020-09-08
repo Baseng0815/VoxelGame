@@ -9,18 +9,23 @@
 class Block;
 using namespace noise::module;
 
+typedef std::vector<glm::vec3> Region;
+
 class CaveGenerator {
 private:
-    Perlin cavePerlin;
+  Perlin noise;
+  int cache[3 * Configuration::CHUNK_SIZE][Configuration::CHUNK_HEIGHT][3 * Configuration::CHUNK_SIZE];
 
-    std::vector<PerlinWorm> m_worms;
-    std::unordered_map<glm::vec2, std::vector<WormPart>, HashFunction> m_cache;
+  void smoothMap();
+  std::vector<Region> getRegions(int type);
 
-    void createWorm(glm::vec2 chunk);
+  int getValue(int x, int y, int z) const;
 
 public:
-    CaveGenerator();        
+  float density = 0.2f;
 
-    void generate(glm::vec2 position, Block*** blocks);
+  CaveGenerator();
+
+  void generate(glm::vec2 position, Block*** blocks);
 };
 
