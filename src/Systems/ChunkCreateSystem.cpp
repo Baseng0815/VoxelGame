@@ -52,12 +52,12 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e) {
     }
 }
 
-// TODO maybe set the verticesOutdated where the BlockChangedEvent was raised
 void ChunkCreateSystem::handleBlockChanged(const BlockChangedEvent& e) {    
     glm::vec3 localPos;
     glm::vec2 chunkPos = GetChunk(e.position, localPos);
 
     ChunkComponent& chunkComponent = m_registry.get<ChunkComponent>(World::getChunk(chunkPos));
+    chunkComponent.verticesOutdated = true;
 }
 
 GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ) {

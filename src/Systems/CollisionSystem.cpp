@@ -129,7 +129,7 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
 
                 glm::vec3 v = glm::max(d1, d2) * faceNormal;
 
-                if (glm::length(v) < glm::length(mtv)) {
+                if (glm::length(v) != 0 && glm::length(v) < glm::length(mtv)) {
                     mtv = v;
                 }
             }
@@ -137,14 +137,7 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
 
         transform.move(mtv);
 
-        velocity.velocity = glm::vec3();
+        velocity.velocity = glm::vec3();            
     }
 
-    // current entity is player
-    if (m_registry.any<PlayerComponent>(entity)) {
-        PlayerComponent& player = m_registry.get<PlayerComponent>(entity);
-
-        // update is falling
-        player.isFalling = !World::getBlock(&m_registry, glm::floor(transform.getPosition() + glm::vec3(0, -0.5, 0))).isSolid();
-    }
 }

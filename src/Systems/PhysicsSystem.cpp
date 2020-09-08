@@ -30,7 +30,7 @@ void PhysicsSystem::_update(int millis) {
     );
 }
 
-void PhysicsSystem::updatePlayer(float dt, PlayerComponent& player, TransformationComponent& transform, VelocityComponent& velocity) {    
+void PhysicsSystem::updatePlayer(float dt, PlayerComponent& player, TransformationComponent& transform, VelocityComponent& velocity) const {    
     if (!World::chunkCreated(GetChunk(transform.getPosition(), glm::vec3())))
         return;
 
@@ -47,7 +47,8 @@ void PhysicsSystem::updatePlayer(float dt, PlayerComponent& player, Transformati
 
     //std::cout << "velocity: " << velocity.velocity << std::endl;
 
-    transform.move(dt * velocity.velocity);        
+    transform.move(dt * velocity.velocity);
+
     glm::vec3 newPlayerPos = transform.getPosition();
     glm::ivec2 newChunk = glm::ivec2(
         (int)newPlayerPos.x / Configuration::CHUNK_SIZE,
@@ -57,6 +58,9 @@ void PhysicsSystem::updatePlayer(float dt, PlayerComponent& player, Transformati
         EnterChunkEvent e = EnterChunkEvent(nullptr, oldChunk.x, oldChunk.y, newChunk.x, newChunk.y);
         EventDispatcher::raiseEvent(e);
     }    
+        
+    // update is falling
+    player.isFalling =  !World::getBlock(&m_registry, glm::floor(newPlayerPos + glm::vec3(0, -1, 0))).isSolid();    
 }
 
 void PhysicsSystem::updateEntity(float dt, TransformationComponent& transform, VelocityComponent& velocity) {
