@@ -72,10 +72,6 @@ void CollisionSystem::checkCollisions(entt::entity first, entt::entity secnd) {
     Cuboid c1 = firstCollision.transform(firstTransform);
     Cuboid c2 = secndCollision.transform(secndTransform);
 
-<<<<<<< HEAD
-    std::vector<glm::vec3> firstCorners = c1.getCornerPoints();
-    std::vector<glm::vec3> secndCorners = c2.getCornerPoints();
-=======
     bool intersection = c1.intersects(c2);
 
     if (intersection) {
@@ -84,7 +80,6 @@ void CollisionSystem::checkCollisions(entt::entity first, entt::entity secnd) {
         return;
     }
 }
->>>>>>> PhysicsRework
 
 void CollisionSystem::checkBlockCollisions(entt::entity entity) {
     CollisionComponent& collision = m_registry.get<CollisionComponent>(entity);
@@ -132,7 +127,13 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
                 float d1 = glm::dot(v1, faceNormal);
                 float d2 = glm::dot(v2, faceNormal);
 
-                glm::vec3 v = glm::max(d1, d2) * faceNormal;
+                glm::vec3 v;
+                if (glm::abs(d1) < glm::abs(d2)) {
+                    v = d2 * faceNormal;
+                }
+                else {
+                    v = d1 * faceNormal;
+                }                 
 
                 if (glm::length(v) != 0 && glm::length(v) < glm::length(mtv)) {
                     mtv = v;
@@ -144,9 +145,5 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
 
         velocity.velocity = glm::vec3();            
     }
-<<<<<<< HEAD
-}
-=======
 
 }
->>>>>>> PhysicsRework

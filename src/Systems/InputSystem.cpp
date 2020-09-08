@@ -70,7 +70,8 @@ void InputSystem::handleMouseButtonEvent(const MouseButtonEvent& e) {
             [&](PlayerComponent& player) {
                 glm::vec3 block = player.lookAt;
                 
-                World::setBlock(&m_registry, block, Block());
+                if(block.y > 0)
+                    World::setBlock(&m_registry, block, Block());
             }            
         );
     }

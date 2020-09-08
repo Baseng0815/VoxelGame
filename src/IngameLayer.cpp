@@ -84,22 +84,8 @@ void IngameLayer::update(int dt) {
         const TransformationComponent &transform = m_registry.get<TransformationComponent>(entity);
         const CameraComponent &camera = m_registry.get<CameraComponent>(entity);
 
-<<<<<<< HEAD
-        DebugLayoutInfo info {
-            m_frameCounter * 1000 / m_time,
-                           m_time * 1000 / std::max(m_frameCounter, 1),
-                           static_cast<const ChunkCreateSystem*>(m_systems[0].get())->getActiveChunkCount(),
-                           transform.getPosition(),
-                           camera.front,
-                           camera.yaw,
-                           camera.pitch,
-                           camera.fov,
-                           (int)std::floor((transform.getPosition().x / Configuration::CHUNK_SIZE)),
-                           (int)std::floor((transform.getPosition().z / Configuration::CHUNK_SIZE))
-        };
-=======
         DebugLayoutInfo info{m_frameCounter * 1000 / m_time,
-            m_time * 1000 / m_frameCounter,
+            m_time * 1000 / std::max(m_frameCounter, 1),
             static_cast<const ChunkCreateSystem*>(m_systems[0].get())->getActiveChunkCount(),
             transform.getPosition(),
             camera.front,
@@ -108,7 +94,6 @@ void IngameLayer::update(int dt) {
             camera.fov,
             (int)floor(transform.getPosition().x / Configuration::CHUNK_SIZE),
             (int)floor(transform.getPosition().z / Configuration::CHUNK_SIZE)};
->>>>>>> PhysicsRework
 
         m_gui.getWidget<DebugLayout>("layout_debugpanel").setValues(info);
         m_time = 1;

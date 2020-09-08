@@ -26,7 +26,7 @@ private:
 	WorldType m_type = WorldType::WORLD_FLAT;	
 
 	//BiomeGenerator m_biomeGenerator;
-	CaveGenerator m_caveGenerator;
+	//CaveGenerator m_caveGenerator;
 	TerrainHeightGenerator m_heightGenerator;
 	TerrainGenerator m_terrainGenerator;
 			
