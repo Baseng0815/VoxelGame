@@ -102,8 +102,12 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block *
 {
     GeometryData geometryData;
     geometryData.entity = entity;
-    int faceCount = 0;
 
+    // reserve some space to prevent reallocations
+    geometryData.vertices.reserve(1048576);
+    geometryData.indices.reserve(1048576);
+
+    int faceCount = 0;
     for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
         for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
             for (int z = 0; z < Configuration::CHUNK_SIZE; z++) {
@@ -151,9 +155,7 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block *
                 int faceCountPerPass = 0;
 
                 // add vertices
-                // reserve some space to prevent reallocations
                 // TODO maybe move the values out and use loops
-                geometryData.vertices.reserve(sizeof(geometryData.vertices[0]) * 1048576);
                 if (draw[0]) {
                     geometryData.vertices.emplace_back(Vertex{glm::vec3(0, 1, 0) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][0]});
                     geometryData.vertices.emplace_back(Vertex{glm::vec3(0, 0, 1) + blockPosition, glm::vec3(-1, 0, 0), blockUVs[4][1]});
@@ -209,8 +211,6 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block *
                 }
 
                 // add indices
-                // reserve some space to prevent reallocations
-                geometryData.indices.reserve(sizeof(geometryData.indices[0]) * faceCountPerPass * 6);
                 for (int i = 0; i < faceCountPerPass; i++) {
                     constexpr int offsets[] = { 0, 1, 2, 0, 3, 1 };
 
