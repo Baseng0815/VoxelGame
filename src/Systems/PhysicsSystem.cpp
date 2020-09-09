@@ -43,9 +43,7 @@ void PhysicsSystem::updatePlayer(float dt, PlayerComponent& player, Transformati
         float g = -9.8f;
 
         velocity.velocity.y = glm::min(dt * g + velocity.velocity.y, 10.0f);    
-    }
-
-    //std::cout << "velocity: " << velocity.velocity << std::endl;
+    }    
 
     transform.move(dt * velocity.velocity);
 

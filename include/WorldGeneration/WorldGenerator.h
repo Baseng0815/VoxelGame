@@ -11,10 +11,9 @@
 using namespace noise;
 using namespace noise::module;
 
-// Forward-Deklaration ist m�glich, weil ein Zeiger immer 4 byte beansprucht und
-// der compiler die Klasse daher nicht kennen muss
-class Block;
-class ChunkComponent;
+struct Block;
+struct ChunkComponent;
+struct GenerationData;
 
 enum class WorldType : char {
 	WORLD_FLAT,
@@ -26,7 +25,7 @@ private:
 	WorldType m_type = WorldType::WORLD_FLAT;	
 
 	//BiomeGenerator m_biomeGenerator;
-	//CaveGenerator m_caveGenerator;
+	CaveGenerator m_caveGenerator;
 	TerrainHeightGenerator m_heightGenerator;
 	TerrainGenerator m_terrainGenerator;
 			
@@ -38,6 +37,6 @@ public:
 
 	void init(WorldType worldType);
 
-	void generate(glm::vec2 position, BiomeID** biomes, Block*** blocks);
+	void generate(glm::vec2 position, GenerationData* data) const;
 };
 

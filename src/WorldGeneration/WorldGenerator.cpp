@@ -6,6 +6,9 @@
 #include "../../include/BlockData.h"
 #include "../../include/Configuration.h"
 #include "../../include/Utility.h"
+#include "../../include/Systems/ChunkCreateSystem.h"
+
+#include <iostream>
 
 using namespace noise::utils;
 using namespace noise::model;
@@ -56,13 +59,14 @@ void WorldGenerator::generateOres(BiomeID** biomes, Block*** blocks) const {
     }
 }
 
-void WorldGenerator::generate(glm::vec2 position, BiomeID** biomes, Block*** blocks) {
+void WorldGenerator::generate(glm::vec2 position, GenerationData* data) const {
     int** heightMap = new int*[Configuration::CHUNK_SIZE];
     for(int i = 0; i < Configuration::CHUNK_SIZE; i++) heightMap[i] = new int[Configuration::CHUNK_SIZE];
 
-    m_heightGenerator.generateChunkHeight(position, heightMap, biomes);
-    m_terrainGenerator.createBlocks(blocks, heightMap, biomes);
-    generateOres(biomes, blocks);
+    m_heightGenerator.generateChunkHeight(position, heightMap, data->biomes);
+    m_terrainGenerator.createBlocks(data->blocks, heightMap, data->biomes);    
 
-    //m_caveGenerator.generate(position, blocks);
+    std::cout << position << std::endl;
+
+    m_caveGenerator.generateChunk(position, data->blocks);
 }

@@ -42,11 +42,10 @@ void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent& player, VelocityCo
 
         velocity.velocity += player.maxMovementSpeed * glm::normalize(playerMovementDir);
 
-        float speed = sqrt(velocity.velocity.x * velocity.velocity.x + velocity.velocity.z * velocity.velocity.z);
-       
+        float speed = glm::length(velocity.velocity);
+
         if (speed > player.maxMovementSpeed) {
-            velocity.velocity.x *= player.maxMovementSpeed / speed;
-            velocity.velocity.z *= player.maxMovementSpeed / speed;
+            velocity.velocity *= player.maxMovementSpeed / speed;             
         }
     }
     else {
@@ -54,6 +53,6 @@ void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent& player, VelocityCo
             velocity.velocity *= 0.2f;
     }
 
-    std::cout << player.isFalling << std::endl;    
-    std::cout << velocity.velocity << std::endl;
+    //std::cout << player.isFalling << std::endl;    
+    //std::cout << velocity.velocity << std::endl;
 }

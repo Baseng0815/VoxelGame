@@ -1,23 +1,24 @@
 #include "../../include/WorldGeneration/CaveGenerator.h"
 
 #include "../../include/Block.h"
-#include "../../include/Components/WorldComponent.h"
 #include "../../include/Configuration.h"
-#include "../../include/WorldGeneration/PerlinWorm.h"
 
-#include <iostream>
-
-int CaveGenerator::getValue(int x, int y, int z) const {
-    float noiseValue = noise.GetValue(x, y, z);
-
-    return (noiseValue < density) ? 1 : 0;
+CaveGenerator::CaveGenerator() {
+    caveNoise.SetFrequency(0.02f);
+    caveNoise.SetOctaveCount(2);
+    caveNoise.SetLacunarity(1.25f);
 }
 
-void CaveGenerator::generate(glm::vec2 chunk, Block*** blocks) {
-    for (int x = 0; x < 3 * Configuration::CHUNK_SIZE; x++) {
+void CaveGenerator::generateChunk(glm::vec2 chunkPos, Block*** blocks) const {
+    for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
         for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
-            for (int z = 0; z < 3 * Configuration::CHUNK_SIZE; z++) {
-                cache[x][y][z] = getValue(x, y, z);
+            for (int z = 0; z < Configuration::CHUNK_SIZE; z++) {
+                if (blocks[x][y][z].type != BlockType::BLOCK_BRICKS && blocks[x][y][z].type != BlockType::BLOCK_WATER) {
+                    if (caveNoise.GetValue(x + chunkPos.x * Configuration::CHUNK_SIZE, y,
+                                            z + chunkPos.y * Configuration::CHUNK_SIZE) > threshold) {
+                        blocks[x][y][z] = Block(BlockType::BLOCK_AIR);
+                    }
+                }
             }
         }
     }
