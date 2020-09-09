@@ -86,7 +86,7 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
     }
 
     // TODO pass generationData into this function
-    m_generator.generate(glm::vec2{chunkX, chunkZ}, generationData.biomes, generationData.blocks);
+    m_generator.generate(glm::vec2{chunkX, chunkZ}, &generationData);
 
     return generationData;
 }

@@ -64,9 +64,7 @@ void WorldGenerator::generate(glm::vec2 position, GenerationData* data) const {
     for(int i = 0; i < Configuration::CHUNK_SIZE; i++) heightMap[i] = new int[Configuration::CHUNK_SIZE];
 
     m_heightGenerator.generateChunkHeight(position, heightMap, data->biomes);
-    m_terrainGenerator.createBlocks(data->blocks, heightMap, data->biomes);    
-
-    std::cout << position << std::endl;
+    m_terrainGenerator.createBlocks(data->blocks, heightMap, data->biomes);        
 
     m_caveGenerator.generateChunk(position, data->blocks);
 }
