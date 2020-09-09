@@ -102,10 +102,8 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block *
 {
     GeometryData geometryData;
     geometryData.entity = entity;
-
     // reserve some space to prevent reallocations
-    geometryData.vertices.reserve(1048576);
-    geometryData.indices.reserve(1048576);
+    geometryData.vertices.reserve(sizeof(geometryData.vertices[0]) * 1048576);
 
     int faceCount = 0;
     for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
@@ -121,6 +119,7 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block *
                     if (y < Configuration::CHUNK_HEIGHT - 1 && blocks[x][y + 1][z].type == BlockType::BLOCK_AIR) {
                         draw[3] = true;
                     }
+                // TODO also take nearby chunks into consideration
                 } else {
                     // negative X
                     if (x > 0) {
@@ -211,6 +210,8 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block *
                 }
 
                 // add indices
+                // reserve some space to prevent reallocations
+                geometryData.indices.reserve(sizeof(geometryData.indices[0]) * faceCountPerPass * 6);
                 for (int i = 0; i < faceCountPerPass; i++) {
                     constexpr int offsets[] = { 0, 1, 2, 0, 3, 1 };
 

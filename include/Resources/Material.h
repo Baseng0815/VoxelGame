@@ -5,6 +5,7 @@
 #include "Resource.h"
 
 class Texture;
+class Shader;
 
 class Material : public Resource {
     protected:
@@ -16,12 +17,13 @@ class Material : public Resource {
         const Texture *specularMap;
 
         // color properties
+        float shininess;
         glm::vec4 ambient;
         glm::vec4 diffuse;
         glm::vec4 specular;
-        float shininess;
+        const Shader *customShader;
 
-        Material(const Texture*, const Texture*, glm::vec4, glm::vec4, glm::vec4, float);
+        Material(const Texture* diffuseMap = nullptr, const Texture* specularMap = nullptr, float shininess = 32.f, glm::vec4 ambient = glm::vec4 {0.f}, glm::vec4 diffuse = glm::vec4{0.f}, glm::vec4 specular = glm::vec4 {0.f}, const Shader *customShader = nullptr);
 
         // TODO kind of unnecessary, maybe handle material differently?
         // material does not fit into RAII very well

@@ -3,6 +3,7 @@
 #include "System.h"
 
 #include <noise/noise.h>
+#include "../WorldGeneration/noiseutils.h"
 
 using namespace noise;
 
@@ -19,7 +20,12 @@ class CloudSystem : public System {
         int m_chunkOffset = 0;
         entt::entity m_cloudEntity;
 
-        void calculateCloudGeometry();
+        // perlin cloud generation
+        module::Perlin m_perlinModule;
+        CloudModule m_cloudModule;
+
+        // recalculate cloud geometry and change mesh renderer buffer data
+        void recalculateCloudGeometry();
 
         void _update(int dt) override;
 

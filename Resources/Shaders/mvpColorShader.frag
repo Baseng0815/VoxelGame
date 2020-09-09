@@ -2,9 +2,13 @@
 
 out vec4 out_Color;
 
-uniform vec4 color;
+struct Material {
+    vec4 ambient;
+};
+
+uniform Material material;
 
 void main()
 {
-    out_Color = color;
+    out_Color = material.ambient;
 }

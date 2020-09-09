@@ -50,8 +50,8 @@ IngameLayer::IngameLayer(Application* application)
     m_systems.emplace_back(std::unique_ptr<System> {new PhysicsSystem {m_registry}});
     m_systems.emplace_back(std::unique_ptr<System> {new InputSystem {m_registry}});
     m_systems.emplace_back(std::unique_ptr<System> {new PlayerMovementSystem {m_registry }});
-    m_systems.emplace_back(std::unique_ptr<System> {new SkyboxSystem {m_registry }});
     m_systems.emplace_back(std::unique_ptr<System> {new CloudSystem {m_registry }});
+    m_systems.emplace_back(std::unique_ptr<System> {new SkyboxSystem {m_registry }});
     m_systems.emplace_back(std::unique_ptr<System> {new MeshRenderSystem {m_registry}});
     m_systems.emplace_back(std::unique_ptr<System> {new DebugRenderSystem {m_registry}});
 
@@ -80,6 +80,11 @@ IngameLayer::~IngameLayer() {
 }
 
 void IngameLayer::update(int dt) {
+    // reset shared uniform state of all shaders
+    for (int resId = SHADER_MIN + 1; resId < SHADER_MAX; resId++) {
+        ResourceManager::getResource<Shader>(resId)->setUniformState(false);
+    }
+
     for (auto &system : m_systems) {
         system->update(dt);
     }

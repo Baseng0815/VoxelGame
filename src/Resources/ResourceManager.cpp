@@ -38,11 +38,17 @@ void ResourceManager::loadResources() {
     resources.emplace(SHADER_MVP_COLOR, ResourceHandle {new Shader("Shaders/mvpColorShader")});
 
     // materials
-    resources.emplace(MATERIAL_CHUNK_BLOCKS, ResourceHandle {new Material {ResourceManager::getResource<Texture>(TEXTURE_ATLAS),
-        ResourceManager::getResource<Texture>(TEXTURE_BLACK), glm::vec4 {0.0f}, glm::vec4 {0.0f}, glm::vec4 {0.0f}, 32.0f}});
+    Material *material = new Material {};
+    material->diffuseMap = ResourceManager::getResource<Texture>(TEXTURE_ATLAS);
+    material->specularMap = ResourceManager::getResource<Texture>(TEXTURE_BLACK);
+    material->shininess = 32.f;
+    resources.emplace(MATERIAL_CHUNK_BLOCKS, ResourceHandle {material} );
 
-    resources.emplace(MATERIAL_CLOUDS, ResourceHandle {new Material {nullptr, nullptr, glm::vec4 {1.f, 1.f, 1.f, 1.f},
-        glm::vec4 {1.f, 1.f, 1.f, 1.f}, glm::vec4 {0.f}, 0.f}});
+    material = new Material {};
+    material->ambient = glm::vec4 {1.f};
+    material->diffuse = glm::vec4 {1.f};
+    material->customShader = ResourceManager::getResource<Shader>(SHADER_MVP_COLOR);
+    resources.emplace(MATERIAL_CLOUDS, ResourceHandle {material});
 
     // fonts
     resources.emplace(FONT_KORURI, ResourceHandle {new Font("Fonts/Koruri-Regular.ttf")});

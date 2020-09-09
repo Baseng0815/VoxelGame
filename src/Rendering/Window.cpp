@@ -10,7 +10,8 @@
 
 // TODO prevent camera from receiving events when ALT is pressed
 // also move this into the corresponding layer for finer control
-void Window::handleKeyPress(const KeyEvent& e) {
+void Window::handleKeyPress(const KeyEvent& e)
+{
     /*
     if (e.key == GLFW_KEY_LEFT_ALT) {
         if (e.action == GLFW_PRESS) {
@@ -22,13 +23,15 @@ void Window::handleKeyPress(const KeyEvent& e) {
     */
 }
 
-void Window::handleFramebufferSize(const FramebufferSizeEvent& e) {
+void Window::handleFramebufferSize(const FramebufferSizeEvent& e)
+{
     glViewport(0, 0, e.width, e.height);
     Configuration::setValue("WINDOW_WIDTH", e.width);
     Configuration::setValue("WINDOW_HEIGHT", e.height);
 }
 
-Window::Window(Application* app, int width, int height) {
+Window::Window(Application *app, int width, int height)
+{
     Configuration::loadConfiguration("Resources/");
     Configuration::setValue("WINDOW_WIDTH", width);
     Configuration::setValue("WINDOW_HEIGHT", height);
@@ -67,11 +70,13 @@ void Window::clear(glm::vec3 clearColor) {
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 }
 
-void Window::display() {
+void Window::display()
+{
     glfwSwapBuffers(m_window);
 }
 
-void Window::toggleFullscreen() {
+void Window::toggleFullscreen()
+{
     if (m_isFullscreen) {
         glfwSetWindowPos(m_window, m_prevX, m_prevY);
         glfwSetWindowSize(m_window, m_prevWidth, m_prevHeight);
@@ -84,7 +89,7 @@ void Window::toggleFullscreen() {
         glfwGetWindowSize(m_window, &m_prevWidth, &m_prevHeight);
         glfwGetWindowPos(m_window, &m_prevX, &m_prevY);
 
-        const GLFWvidmode* vidMode = glfwGetVideoMode(m_primaryMonitor);
+        const GLFWvidmode *vidMode = glfwGetVideoMode(m_primaryMonitor);
         glfwSetWindowPos(m_window, 0, 0);
         glfwSetWindowSize(m_window, vidMode->width, vidMode->height);
 
@@ -94,23 +99,23 @@ void Window::toggleFullscreen() {
     }
 }
 
-void Window::enableCursor() {
+void Window::enableCursor()
+{
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
 
-void Window::disableCursor() {
+void Window::disableCursor()
+{
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
 }
 
-bool Window::getKey(int key) const {
-    return glfwGetKey(m_window, key);
-}
+bool Window::getKey(int key) const
+{ return glfwGetKey(m_window, key); }
 
-GLFWwindow* Window::getHandle() const {
-    return m_window;
-}
+GLFWwindow *Window::getHandle() const
+{ return m_window; }
 
-void Window::close() {
+void Window::close()
+{
     glfwDestroyWindow(m_window);
 }

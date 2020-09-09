@@ -12,56 +12,66 @@
 
 void MeshRenderSystem::_update(int dt)
 {
-    // clear screen framebuffer
-    glClearColor(0, 0, 0, 1);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     // upload per-frame values for both shaders
     // color shader
     m_meshRenderShaderColor->bind();
     const CameraComponent &camera = m_registry.view<CameraComponent>().raw()[0];
-    m_meshRenderShaderColor->bind();
-    m_meshRenderShaderColor->upload("viewMatrix", camera.viewMatrix);
-    m_meshRenderShaderColor->upload("projectionMatrix", camera.perspectiveProjection);
 
-    for (int i = 0; i < MAX_LIGHTS; i++) {
-        m_meshRenderShaderColor->upload("pointLights[" + std::to_string(i) + "]", m_pointLights[i]);
-    }
-    m_meshRenderShaderColor->upload("dirLight", m_sun);
+    auto uploadToShader = [&](const Shader *shader) {
+        shader->upload("viewMatrix", camera.viewMatrix);
+        shader->upload("projectionMatrix", camera.perspectiveProjection);
+
+        for (int i = 0; i < MAX_LIGHTS; i++) {
+            shader->upload("pointLights[" + std::to_string(i) + "]", m_pointLights[i]);
+        }
+
+        shader->upload("dirLight", m_sun);
+        shader->setUniformState(true);
+    };
 
     // texture shader
     m_meshRenderShaderTexture->bind();
-    m_meshRenderShaderTexture->bind();
-    m_meshRenderShaderTexture->upload("viewMatrix", camera.viewMatrix);
-    m_meshRenderShaderTexture->upload("projectionMatrix", camera.perspectiveProjection);
+    uploadToShader(m_meshRenderShaderTexture);
 
-    for (int i = 0; i < MAX_LIGHTS; i++) {
-        m_meshRenderShaderTexture->upload("pointLights[" + std::to_string(i) + "]", m_pointLights[i]);
-    }
-    m_meshRenderShaderTexture->upload("dirLight", m_sun);
+    // color shader
+    m_meshRenderShaderColor->bind();
+    uploadToShader(m_meshRenderShaderColor);
 
     // render
     m_registry.view<TransformationComponent, MeshRenderComponent>().each(
         [&](const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer) {
             if (meshRenderer.geometry.getDrawCount() > 0) {
-                // render texture if diffuse map is specified
-                if (meshRenderer.material->diffuseMap) {
-                    m_meshRenderShaderTexture->bind();
-                    m_meshRenderShaderTexture->upload("modelMatrix", transformation.getModelMatrix());
-                    m_meshRenderShaderTexture->upload("material", *meshRenderer.material);
-                    meshRenderer.material->diffuseMap->bind(GL_TEXTURE0);
-                    if (meshRenderer.material->specularMap)
-                        meshRenderer.material->specularMap->bind(GL_TEXTURE1);
-                    else
+                const Shader *shader = meshRenderer.material->customShader;
+                // no custom shader is used
+                if (!shader) {
+                    shader = meshRenderer.material->diffuseMap ? m_meshRenderShaderTexture : m_meshRenderShaderColor;
+                    shader->bind();
+                    shader->upload("modelMatrix", transformation.getModelMatrix());
+                    shader->upload("material", *meshRenderer.material);
+
+                    // bind texture if diffuse map is specified
+                    if (meshRenderer.material->diffuseMap) {
+                        meshRenderer.material->diffuseMap->bind(GL_TEXTURE0);
+                        // use given specular map
+                        if (meshRenderer.material->specularMap) {
+                            meshRenderer.material->specularMap->bind(GL_TEXTURE1);
                         // no specular map given, use full-white texture
-                        ResourceManager::getResource<Texture>(TEXTURE_WHITE)->bind(GL_TEXTURE1);
-                    // render color if no texture is specified
+                        } else {
+                            ResourceManager::getResource<Texture>(TEXTURE_WHITE)->bind(GL_TEXTURE1);
+                        }
+                    }
+                // use custom shader
                 } else {
-                    m_meshRenderShaderColor->bind();
-                    m_meshRenderShaderColor->upload("modelMatrix", transformation.getModelMatrix());
-                    m_meshRenderShaderColor->upload("material", *meshRenderer.material);
+                    shader->bind();
+                    if (!shader->uniformsSet()) {
+                        uploadToShader(shader);
+                        shader->setUniformState(true);
+                    }
+                    shader->upload("modelMatrix", transformation.getModelMatrix());
+                    shader->upload("material", *meshRenderer.material);
                 }
-                // else render color
+
+                // final draw call
                 glBindVertexArray(meshRenderer.geometry.getVao());
                 glDrawElements(GL_TRIANGLES, meshRenderer.geometry.getDrawCount(), GL_UNSIGNED_INT, nullptr);
             }

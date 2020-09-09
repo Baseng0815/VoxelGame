@@ -8,7 +8,10 @@
 void Image::_draw(const glm::mat4& projection) const {
     if (m_texture) {
         m_texturedQuadShader->bind();
-        m_texturedQuadShader->upload("projectionMatrix", projection);
+        if (!m_texturedQuadShader->uniformsSet()) {
+            m_texturedQuadShader->upload("projectionMatrix", projection);
+            m_texturedQuadShader->setUniformState(true);
+        }
         m_texture->bind(GL_TEXTURE0);
         m_renderQuad.render();
     }

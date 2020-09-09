@@ -35,19 +35,11 @@ void DebugRenderSystem::_update(int dt)
         m_mvpColorShader->upload("projectionMatrix", camera.perspectiveProjection);
 
         m_mvpColorShader->upload("modelMatrix", m_chunkModelMatrix);
-        m_mvpColorShader->upload("color", Color {255, 0, 0, 255});
+        m_mvpColorShader->upload("material.ambient", Color {255, 0, 0, 255});
 
         // draw chunk boundaries
-        glDisable(GL_BLEND);
-        glDisable(GL_CULL_FACE);
-        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
         glBindVertexArray(m_chunkBoundaries.getVao());
         glDrawElements(GL_LINES, m_chunkBoundaries.getDrawCount(), GL_UNSIGNED_INT, nullptr);
-
-        //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-        glEnable(GL_CULL_FACE);
-        glDisable(GL_BLEND);
     }
 }
 

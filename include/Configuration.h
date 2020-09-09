@@ -27,7 +27,9 @@ class Configuration {
         static constexpr int SKYBOX_SIZE = 4000;
         // units per second
         static constexpr float CLOUD_SPEED = 16;
-        static constexpr int CLOUD_HEIGHT = 100;
+        // the higher the bias, the more clouds there will be
+        static constexpr double CLOUD_BIAS = 0.0;
+        static constexpr int CLOUD_HEIGHT = 120;
 
         // path contains Settings.json, Keybinds.json, blockData.json and biomeInfo.json
         static void loadConfiguration(const std::string& resourceBasePath);

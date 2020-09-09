@@ -18,6 +18,9 @@ class Shader : public Resource {
     protected:
         GLuint m_program;
 
+        // used so that the mesh renderer doesn't set uniforms multiple times on the same custom shader
+        mutable bool m_uniformsSet = false;
+
         static std::string loadShader(const std::string& fileName);
         static void checkShaderError(GLuint shader, GLuint flag, bool isProgram, std::string errorMessage);
         static GLuint createShader(const std::string& text, GLenum type);
@@ -36,9 +39,16 @@ class Shader : public Resource {
         Shader(Shader&&) noexcept;
         Shader &operator=(Shader&&) noexcept;
 
+        // bind attribute arrays to shader locations
         void setAttributes(const std::vector<std::string>& attribs) const;
+
         void bind() const;
 
+        // check if uniforms are already set
+        bool uniformsSet() const;
+        void setUniformState(bool set) const;
+
+        // upload stuff
         void upload(const std::string &location, const glm::mat4 &value) const;
         void upload(const std::string &location, const glm::vec3 &value) const;
         void upload(const std::string &location, const glm::vec4 &value) const;

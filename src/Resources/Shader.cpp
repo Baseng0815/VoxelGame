@@ -114,7 +114,7 @@ Shader::~Shader()
 }
 
 Shader::Shader(Shader &&other) noexcept
-    : m_program(other.m_program), m_locations(std::move(other.m_locations))
+: m_program(other.m_program), m_locations(std::move(other.m_locations))
 {
     other.m_program = 0;
 }
@@ -140,6 +140,12 @@ void Shader::setAttributes(const std::vector<std::string> &attribs) const {
 void Shader::bind() const {
     glUseProgram(m_program);
 }
+
+bool Shader::uniformsSet() const
+{ return m_uniformsSet; }
+
+void Shader::setUniformState(bool set) const
+{ m_uniformsSet = set; }
 
 void Shader::upload(const std::string &location, const glm::mat4 &value) const
 {

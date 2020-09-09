@@ -11,6 +11,7 @@ struct EnterChunkEvent;
 class DebugRenderSystem : public System {
     private:
         // TODO maybe don't make independent and use a mesh renderer?
+        // if so, somehow remove the entity temporarily or add an active switch to the mesh renderer?
         const Shader *m_mvpColorShader;
 
         // chunk boundaries
