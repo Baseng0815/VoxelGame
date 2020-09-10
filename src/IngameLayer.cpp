@@ -5,8 +5,10 @@
 #include "../include/Systems/PlayerMovementSystem.h"
 #include "../include/Systems/ChunkCreateSystem.h"
 #include "../include/Systems/CollisionSystem.h"
-#include "../include/Systems/MeshRenderSystem.h"
 #include "../include/Systems/SkyboxSystem.h"
+#include "../include/Systems/CloudSystem.h"
+#include "../include/Systems/MeshRenderSystem.h"
+#include "../include/Systems/DebugRenderSystem.h"
 
 #include "../include/Components/AtlasComponent.h"
 #include "../include/Components/WorldComponent.h"
@@ -29,7 +31,7 @@ void IngameLayer::handleKeys(const KeyEvent &e)
 
             // handle dynamically bound keys
             default:
-                if (e.key == Configuration::getAssociatedKey("KEYBIND_TOGGLE_DEBUGMENU")) {
+                if (e.key == Configuration::getAssociatedKey("KEYBIND_TOGGLE_DEBUG")) {
                     UiProperties &properties = m_gui.getWidget<DebugLayout>("layout_debugpanel").properties();
                     properties.isVisible = !properties.isVisible;
                 }
@@ -47,10 +49,16 @@ IngameLayer::IngameLayer(Application* application)
     m_systems.emplace_back(std::unique_ptr<System> {new ChunkCreateSystem {m_registry}});
     m_systems.emplace_back(std::unique_ptr<System> {new PhysicsSystem {m_registry}});
     m_systems.emplace_back(std::unique_ptr<System> {new InputSystem {m_registry}});
-    m_systems.emplace_back(std::unique_ptr<System> {new MeshRenderSystem {m_registry}});
     m_systems.emplace_back(std::unique_ptr<System> {new PlayerMovementSystem {m_registry }});
+    m_systems.emplace_back(std::unique_ptr<System> {new CloudSystem {m_registry }});
     m_systems.emplace_back(std::unique_ptr<System> {new SkyboxSystem {m_registry }});
     m_systems.emplace_back(std::unique_ptr<System> {new CollisionSystem {m_registry}});    
+    m_systems.emplace_back(std::unique_ptr<System> {new MeshRenderSystem {m_registry}});
+    m_systems.emplace_back(std::unique_ptr<System> {new DebugRenderSystem {m_registry}});
+
+    // world
+    auto entity = m_registry.create();
+    m_registry.emplace<WorldComponent>(entity);
 
     // atlas
     entt::entity entity = m_registry.create();
@@ -61,18 +69,25 @@ IngameLayer::IngameLayer(Application* application)
     m_keyEventHandle = EventDispatcher::onKeyPress.subscribe([&](const KeyEvent &e) {
         handleKeys(e);
     });
+
+    EventDispatcher::raiseEvent(EnterChunkEvent {nullptr, 0, 0, 0, 0});
 }
 
 IngameLayer::~IngameLayer() {
     /*m_registry.view<CameraComponent, RigidBodyComponent>().each(
-        [&](CameraComponent& camera, RigidBodyComponent& rigidBody) {
-            delete rigidBody.collision;
-            delete rigidBody.shape;
-        }
-        );*/
+      [&](CameraComponent& camera, RigidBodyComponent& rigidBody) {
+      delete rigidBody.collision;
+      delete rigidBody.shape;
+      }
+      );*/
 }
 
 void IngameLayer::update(int dt) {
+    // reset shared uniform state of all shaders
+    for (int resId = SHADER_MIN + 1; resId < SHADER_MAX; resId++) {
+        ResourceManager::getResource<Shader>(resId)->setUniformState(false);
+    }
+
     for (auto &system : m_systems) {
         system->update(dt);
     }

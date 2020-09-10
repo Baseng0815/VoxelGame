@@ -34,14 +34,14 @@ void EventDispatcher::attachToWindow(const Window& window) {
 void EventDispatcher::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     Application* application = (Application*)glfwGetWindowUserPointer(window);
 
-    KeyEvent e(application, key, scancode, action, mods);
+    KeyEvent e {application, key, scancode, action, mods};
     raiseEvent(e);
 }
 
 void EventDispatcher::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
     Application* application = (Application*)glfwGetWindowUserPointer(window);
 
-    MouseButtonEvent e(application, button, action, mods);
+    MouseButtonEvent e {application, button, action, mods};
     raiseEvent(e);
 }
 
@@ -58,7 +58,7 @@ void EventDispatcher::cursorPosCallback(GLFWwindow* window, double xpos, double 
 
     Application* application = (Application*)glfwGetWindowUserPointer(window);
 
-    CursorEvent e(application, xpos, ypos, dx, dy);
+    CursorEvent e {application, xpos, ypos, dx, dy};
     raiseEvent(e);
 
     m_prevX = xpos;
@@ -68,14 +68,14 @@ void EventDispatcher::cursorPosCallback(GLFWwindow* window, double xpos, double 
 void EventDispatcher::scrollCallback(GLFWwindow* window, double xoffset, double yoffset) {
     Application* application = (Application*)glfwGetWindowUserPointer(window);
 
-    ScrollEvent e(application, xoffset, yoffset);
+    ScrollEvent e {application, xoffset, yoffset};
     raiseEvent(e);
 }
 
 void EventDispatcher::framebufferSizeCallback(GLFWwindow* window, int width, int height) {
     Application* application = (Application*)glfwGetWindowUserPointer(window);
 
-    FramebufferSizeEvent e(application, width, height);
+    FramebufferSizeEvent e {application, (float)width, (float)height};
     m_framebufferSize = {width, height};
     raiseEvent(e);
 }

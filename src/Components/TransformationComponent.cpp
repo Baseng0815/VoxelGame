@@ -16,44 +16,44 @@ TransformationComponent::TransformationComponent(glm::vec3 position, glm::vec3 r
         recalculateModelMatrix();
     }
 
-const glm::vec3& TransformationComponent::getPosition() const {
+const glm::vec3 &TransformationComponent::getPosition() const {
     return m_position;
 }
 
-const glm::vec3& TransformationComponent::getRotation() const {
+const glm::vec3 &TransformationComponent::getRotation() const {
     return m_rotation;
 }
 
-const glm::vec3& TransformationComponent::getScale() const {
+const glm::vec3 &TransformationComponent::getScale() const {
     return m_scale;
 }
 
-void TransformationComponent::setPosition(glm::vec3 position) {
+void TransformationComponent::setPosition(const glm::vec3 &position) {
     recalculateModelMatrix();
     m_position = position;
 }
 
-void TransformationComponent::setRotation(glm::vec3 rotation) {
+void TransformationComponent::setRotation(const glm::vec3 &rotation) {
     recalculateModelMatrix();
     m_rotation = rotation;
 }
 
-void TransformationComponent::setScale(glm::vec3 scale) {
+void TransformationComponent::setScale(const glm::vec3 &scale) {
     recalculateModelMatrix();
     m_scale = scale;
 }
 
-void TransformationComponent::move(glm::vec3 pdelta) {
-    recalculateModelMatrix();
+void TransformationComponent::move(const glm::vec3 &pdelta) {
     m_position += pdelta;
-}
-
-void TransformationComponent::rotate(glm::vec3 protation) {
     recalculateModelMatrix();
-    m_rotation += protation;
 }
 
-void TransformationComponent::scale(glm::vec3 pscale) {
+void TransformationComponent::rotate(const glm::vec3 &protation) {
+    m_rotation += protation;
+    recalculateModelMatrix();
+}
+
+void TransformationComponent::scale(const glm::vec3 &pscale) {
     m_scale += pscale;
     recalculateModelMatrix();
 }

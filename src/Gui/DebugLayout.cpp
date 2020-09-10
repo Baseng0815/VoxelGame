@@ -25,6 +25,7 @@ DebugLayout::DebugLayout(GUI &gui)
 {
     m_properties.constraints.height = RelativeConstraint(1.0f);
     m_properties.constraints.width = RelativeConstraint(0.5f);
+    m_properties.isVisible = false;
     setStackMode(STACK_VERTICAL, true, false);
 
     m_textFps->properties().constraints.x = AbsoluteConstraint(0);
@@ -62,8 +63,8 @@ void DebugLayout::setValues(const DebugLayoutInfo &info) {
     m_textFps->setString(toStr(info.fps) + " FPS");
     m_textRenderTime->setString(toStr(info.rendertime) + "us avg. frametime");
     m_textChunkCount->setString(toStr(info.chunkCount) + " active chunks");
-    m_textCameraVectors->setString("Position, Facing: [" + toStr(info.playerPosition.x) + ", " + toStr(info.playerPosition.y) + ", " + toStr(info.playerPosition.z) + "], [ " +
+    m_textCameraVectors->setString("Position: [" + toStr(info.playerPosition.x) + ", " + toStr(info.playerPosition.y) + ", " + toStr(info.playerPosition.z) + "], Facing [ " +
                                    toStr(info.playerFront.x) + ", " + toStr(info.playerFront.y) + ", " + toStr(info.playerFront.z) + "]");
-    m_textCameraScalars->setString("Yaw, Pitch, FOV: [" + toStr(info.yaw) + ", " + toStr(info.pitch) + ", " + toStr(info.fov) + "]");
+    m_textCameraScalars->setString("Yaw: [" + toStr(info.yaw) + "], Pitch: [ " + toStr(info.pitch) + "], FOV [" + toStr(info.fov) + "]");
     m_textChunkPosition->setString("Chunk: [" + toStr(info.chunkX) + ", " + toStr(info.chunkZ) + "]");
 }

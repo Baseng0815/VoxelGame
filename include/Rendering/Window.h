@@ -14,8 +14,8 @@ class Application;
 
 class Window {
 private:
-    GLFWwindow* m_window = nullptr;
-    GLFWmonitor* m_primaryMonitor = nullptr;
+    GLFWwindow *m_window = nullptr;
+    GLFWmonitor *m_primaryMonitor = nullptr;
 
     // fullscreen toggle
     int m_prevWidth, m_prevHeight;
@@ -39,7 +39,7 @@ public:
 
     // return true if the key is pressed
     bool getKey(int key) const;
-    GLFWwindow* getHandle() const;
+    GLFWwindow *getHandle() const;
 
     int getWidth() const;
     int getHeight() const;

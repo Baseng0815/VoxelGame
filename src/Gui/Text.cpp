@@ -68,7 +68,10 @@ void Text::_draw(const glm::mat4& projection) const {
         return;
 
     m_textShader->bind();
-    m_textShader->upload("projectionMatrix", projection);
+    if (!m_textShader->uniformsSet()) {
+        m_textShader->upload("projectionMatrix", projection);
+        m_textShader->setUniformState(true);
+    }
     m_textShader->upload("textColor", getForegroundColor());
     for (int i = 0; i < m_string.size(); i++) {
         const Character& ch = m_font->getCharacter(m_string[i]);

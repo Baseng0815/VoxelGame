@@ -43,6 +43,15 @@ void CollisionSystem::_update(int dt) {
         PlayerComponent& player = m_registry.get<PlayerComponent>(entity);
         TransformationComponent& transformation = m_registry.get<TransformationComponent>(entity);
         CameraComponent& camera = m_registry.get<CameraComponent>(entity);
+    int stepX = (int)(direction.x / std::fabs(direction.x));
+    int stepY = (int)(direction.y / std::fabs(direction.y));
+    int stepZ = (int)(direction.z / std::fabs(direction.z));
+
+    std::vector<glm::vec3> lookAtPositions = std::vector<glm::vec3>();
+    int maxDist = 5;
+    float dist = 0;
+
+    int x = startX, y = startY, z = startZ;
 
         updatePlayerLookAtBlock(player, transformation, camera);
     }
@@ -54,12 +63,28 @@ void CollisionSystem::updatePlayerLookAtBlock(PlayerComponent& player, Transform
 
     glm::vec3 lookAt =
         lookDirection.getFirstBlock(5, [&](glm::vec3 pos) { return World::getBlock(&m_registry, pos).isSolid(); });
+        glm::vec3 block = Utility::GetBlockCoords(lookDirection.getPoint(minR));
+        if(glm::length(block - lookDirection.origin) < maxDist) {
+            lookAtPositions.push_back(block);
+        }
 
     if (player.lookAt != lookAt) {
         std::cout << "look at: " << lookAt << std::endl;
     }
 
     player.lookAt = lookAt;
+    auto worldView = m_registry.view<WorldComponent>();
+    WorldComponent& world = m_registry.get<WorldComponent>(worldView.front());
+
+    for (std::vector<glm::vec3>::iterator it = lookAtPositions.begin(); it != lookAtPositions.end(); it++) {
+        Block block = world.getBlock(&m_registry, *it);
+
+        if(block.isSolid()) {
+            player.lookAt = *it;
+
+            break;
+        }
+    }
 }
 
 void CollisionSystem::checkCollisions(entt::entity first, entt::entity secnd) {
@@ -107,6 +132,10 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
                     }
                 }
             }
+        if(intersection) {
+            // TODO: handle collision
+
+            return;
         }
     }
 

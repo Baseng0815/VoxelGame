@@ -13,8 +13,11 @@ void SkyboxSystem::_update(int dt)
     const CameraComponent &camera = m_registry.view<CameraComponent>().raw()[0];
 
     m_skyboxShader->bind();
-    m_skyboxShader->upload("viewMatrix", camera.viewMatrix);
-    m_skyboxShader->upload("projectionMatrix", camera.perspectiveProjection);
+    if (!m_skyboxShader->uniformsSet()) {
+        m_skyboxShader->upload("viewMatrix", camera.viewMatrix);
+        m_skyboxShader->upload("projectionMatrix", camera.perspectiveProjection);
+        m_skyboxShader->setUniformState(true);
+    }
 
     skybox.texture->bind(GL_TEXTURE0, GL_TEXTURE_CUBE_MAP);
 

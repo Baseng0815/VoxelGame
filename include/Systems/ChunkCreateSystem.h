@@ -1,13 +1,14 @@
 #pragma once
 
 #include "System.h"
-#include "../WorldGeneration/WorldGenerator.h"
+
 #include "../Resources/Geometry.h"
+#include "../WorldGeneration/WorldGenerator.h"
 
 #include <map>
 #include <atomic>
-#include <shared_mutex>
 #include <future>
+#include <shared_mutex>
 #include <entt/entt.hpp>
 
 struct EnterChunkEvent;

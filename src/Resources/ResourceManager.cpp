@@ -22,16 +22,33 @@ void ResourceManager::loadResources() {
     })});
 
     // shaders
+    // render 3d meshes with lighting and texturing
     resources.emplace(SHADER_MESH_RENDER_TEXTURE, ResourceHandle {new Shader("Shaders/meshRenderShader.vert", "Shaders/meshRenderShaderTexture.frag")});
+    // render 3d meshes with lighting and color
     resources.emplace(SHADER_MESH_RENDER_COLOR, ResourceHandle {new Shader("Shaders/meshRenderShader.vert", "Shaders/meshRenderShaderColor.frag")});
+    // render 2d quads using texture
     resources.emplace(SHADER_TEXTURE_QUAD, ResourceHandle {new Shader("Shaders/texturedQuadShader")});
+    // render 2d quads using color
     resources.emplace(SHADER_COLOR_QUAD, ResourceHandle {new Shader("Shaders/coloredQuadShader")});
+    // render 3d skybox
     resources.emplace(SHADER_SKYBOX, ResourceHandle {new Shader("Shaders/skyboxShader")});
+    // render 2d text
     resources.emplace(SHADER_TEXT, ResourceHandle {new Shader("Shaders/textShader")});
+    // render 3d color
+    resources.emplace(SHADER_MVP_COLOR, ResourceHandle {new Shader("Shaders/mvpColorShader")});
 
     // materials
-    resources.emplace(MATERIAL_CHUNK_BLOCKS, ResourceHandle {new Material {ResourceManager::getResource<Texture>(TEXTURE_ATLAS),
-        ResourceManager::getResource<Texture>(TEXTURE_BLACK), glm::vec3 {0.0f}, glm::vec3 {0.0f}, glm::vec3 {0.0f}, 32.0f}});
+    Material *material = new Material {};
+    material->diffuseMap = ResourceManager::getResource<Texture>(TEXTURE_ATLAS);
+    material->specularMap = ResourceManager::getResource<Texture>(TEXTURE_BLACK);
+    material->shininess = 32.f;
+    resources.emplace(MATERIAL_CHUNK_BLOCKS, ResourceHandle {material} );
+
+    material = new Material {};
+    material->ambient = glm::vec4 {1.f, 1.f, 1.f, 0.7f};
+    material->customShader = ResourceManager::getResource<Shader>(SHADER_MVP_COLOR);
+    material->useCulling = false;
+    resources.emplace(MATERIAL_CLOUDS, ResourceHandle {material});
 
     // fonts
     resources.emplace(FONT_KORURI, ResourceHandle {new Font("Fonts/Koruri-Regular.ttf")});
@@ -56,6 +73,10 @@ void ResourceManager::loadResources() {
     // skybox shader
     shader = getResource<Shader>(SHADER_SKYBOX);
     shader->setAttributes({"vertex"});
+
+    // mvp color shader
+    shader = getResource<Shader>(SHADER_MVP_COLOR);
+    shader->setAttributes({"position"});
 
     std::cout << "loaded " << resources.size() << " resources" << std::endl;
 }

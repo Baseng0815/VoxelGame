@@ -1,7 +1,3 @@
-#include "../include/World.h"
-
-#include "../include/Block.h"
-#include "../include/Configuration.h"
 #include "../include/Events/Event.h"
 #include "../include/Events/EventDispatcher.h"
 #include "../include/Utility.h"
@@ -10,6 +6,7 @@
 
 #include <iostream>
 
+<<<<<<< HEAD:src/World.cpp
 std::unordered_map<glm::vec2, entt::entity, HashFunction> World::chunksLookup;
 
 entt::entity World::getChunk(glm::vec2 chunk) {
@@ -17,6 +14,11 @@ entt::entity World::getChunk(glm::vec2 chunk) {
 }
 
 bool World::chunkCreated(glm::vec2 chunk) {
+entt::entity WorldComponent::getChunk(const glm::vec2 &chunk) const {
+    return chunksLookup.at(chunk);
+}
+
+bool WorldComponent::chunkCreated(const glm::vec2 &chunk) const {
     try {
         chunksLookup.at(chunk);
         return true;
@@ -27,11 +29,14 @@ bool World::chunkCreated(glm::vec2 chunk) {
     }
 }
 
+<<<<<<< HEAD:src/World.cpp
 Block World::getBlock(const entt::registry* registry, glm::vec3 position) {
     glm::vec2 chunkPosition;
     glm::vec3 localPosition;
 
     chunkPosition = GetChunk(position, localPosition);
+Block WorldComponent::getBlock(const entt::registry* registry, const glm::vec3 &position) const {
+    auto [chunkPosition, localPosition] = Utility::GetChunkAndLocal(position);
 
     try {
         auto entity = getChunk(chunkPosition);
@@ -51,11 +56,14 @@ Block World::getBlock(const entt::registry* registry, glm::vec3 position) {
     }
 }
 
+<<<<<<< HEAD:src/World.cpp
 void World::setBlock(entt::registry* registry, glm::vec3 position, Block block) {
     glm::vec2 chunkPosition;
     glm::vec3 localPosition;
 
     chunkPosition = GetChunk(position, localPosition);
+void WorldComponent::setBlock(entt::registry* registry, const glm::vec3 &position, Block block) {
+    auto [chunkPosition, localPosition] = Utility::GetChunkAndLocal(position);
 
     auto entity = getChunk(chunkPosition);
     ChunkComponent& chunk = registry->get<ChunkComponent>(entity);
@@ -68,7 +76,9 @@ void World::setBlock(entt::registry* registry, glm::vec3 position, Block block) 
     EventDispatcher::raiseEvent(blockChangedEvent);
 }
 
+<<<<<<< HEAD:src/World.cpp
 void World::addChunk(entt::entity entity, glm::vec2 position) {
+void WorldComponent::addChunk(entt::entity entity, const glm::vec2 &position) {
     chunksLookup[position] = entity;
 }
 

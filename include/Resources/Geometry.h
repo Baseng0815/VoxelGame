@@ -16,8 +16,8 @@ class Geometry : public Resource {
         void release() override;
 
     public:
-        Geometry(const std::string& file);
-        Geometry(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
+        Geometry(const std::string &file);
+        Geometry(const std::vector<Vertex>&, const std::vector<unsigned int>&);
         Geometry();
         ~Geometry();
 
@@ -26,7 +26,7 @@ class Geometry : public Resource {
         Geometry(Geometry&&) noexcept;
         Geometry &operator=(Geometry&&);
 
-        void fillBuffers(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices);
+        void fillBuffers(const std::vector<Vertex>&, const std::vector<unsigned int>& indices);
 
         GLuint getVao() const;
         GLuint getVbo() const;
