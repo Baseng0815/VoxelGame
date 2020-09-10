@@ -68,6 +68,8 @@ IngameLayer::IngameLayer(Application* application)
     m_keyEventHandle = EventDispatcher::onKeyPress.subscribe([&](const KeyEvent &e) {
         handleKeys(e);
     });
+
+    EventDispatcher::raiseEvent(EnterChunkEvent {nullptr, 0, 0, 0, 0});
 }
 
 IngameLayer::~IngameLayer() {

@@ -29,7 +29,8 @@ class Configuration {
         static constexpr float CLOUD_SPEED = 16;
         // the higher the bias, the more clouds there will be
         static constexpr double CLOUD_BIAS = 0.0;
-        static constexpr int CLOUD_HEIGHT = 120;
+        static constexpr float CLOUD_HEIGHT = 120;
+        static constexpr float CLOUD_VOLUMETRIC_HEIGHT = 8;
 
         // path contains Settings.json, Keybinds.json, blockData.json and biomeInfo.json
         static void loadConfiguration(const std::string& resourceBasePath);

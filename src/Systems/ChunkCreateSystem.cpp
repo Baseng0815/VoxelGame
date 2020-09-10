@@ -60,8 +60,7 @@ void ChunkCreateSystem::handleBlockChanged(const BlockChangedEvent& e)
             world = worldComponent;
     }
 
-    glm::vec3 localPos;
-    glm::vec2 chunkPos = GetChunk(e.position, localPos);
+    auto [localPos, chunkPos] = Utility::GetChunkAndLocal(e.position);
 
     ChunkComponent &chunkComponent = m_registry.get<ChunkComponent>(world.getChunk(chunkPos));
 }
@@ -103,7 +102,12 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block *
     GeometryData geometryData;
     geometryData.entity = entity;
     // reserve some space to prevent reallocations
+    try {
     geometryData.vertices.reserve(sizeof(geometryData.vertices[0]) * 1048576);
+    geometryData.indices.reserve(sizeof(geometryData.indices[0]) * 1048576);
+    } catch (std::length_error e) {
+        std::cout << "WARNING: chunk buffer preallocation failed; " << e.what() << std::endl;
+    }
 
     int faceCount = 0;
     for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
@@ -211,7 +215,6 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block *
 
                 // add indices
                 // reserve some space to prevent reallocations
-                geometryData.indices.reserve(sizeof(geometryData.indices[0]) * faceCountPerPass * 6);
                 for (int i = 0; i < faceCountPerPass; i++) {
                     constexpr int offsets[] = { 0, 1, 2, 0, 3, 1 };
 

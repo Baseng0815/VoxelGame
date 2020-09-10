@@ -71,6 +71,19 @@ void MeshRenderSystem::_update(int dt)
                     shader->upload("material", *meshRenderer.material);
                 }
 
+                // some more opengl states
+                if (meshRenderer.material->useBlending) {
+                    glEnable(GL_BLEND);
+                } else {
+                    glDisable(GL_BLEND);
+                }
+
+                if (meshRenderer.material->useCulling) {
+                    glEnable(GL_CULL_FACE);
+                } else {
+                    glDisable(GL_CULL_FACE);
+                }
+
                 // final draw call
                 glBindVertexArray(meshRenderer.geometry.getVao());
                 glDrawElements(GL_TRIANGLES, meshRenderer.geometry.getDrawCount(), GL_UNSIGNED_INT, nullptr);

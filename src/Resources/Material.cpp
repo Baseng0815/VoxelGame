@@ -4,12 +4,6 @@
 void Material::release()
 {}
 
-Material::Material(const Texture *diffuseMap, const Texture *specularMap, float shininess, glm::vec4 ambient,
-        glm::vec4 diffuse, glm::vec4 specular, const Shader *customShader)
-    : diffuseMap {diffuseMap}, specularMap {specularMap}, shininess {shininess}, ambient {ambient},
-    diffuse {diffuse}, specular {specular}, customShader {customShader}
-{}
-
 Material::Material(Material &&other) noexcept
 : diffuseMap {other.diffuseMap}, specularMap {other.specularMap},
     ambient {other.ambient}, diffuse {other.diffuse}, specular {other.specular},

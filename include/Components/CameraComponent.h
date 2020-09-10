@@ -10,9 +10,9 @@ struct CameraComponent {
     float height;
 
     /* glm::vec3 playerOffset = glm::vec3(0, 0, 1.5f); */
-    glm::vec3 playerOffset = glm::vec3(0.f, 1.5f, 0.f);
+    glm::vec3 playerOffset = glm::vec3 {0.f, 1.5f, 0.f};
 
-    float yaw = 0, pitch = 0, fov;
+    float yaw = -90.f, pitch = 0.f, fov;
 
     CameraComponent(float fov, float width, float height);
 };

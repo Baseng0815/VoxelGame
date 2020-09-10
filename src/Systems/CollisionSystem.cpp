@@ -7,6 +7,7 @@
 #include "../../include/Components/WorldComponent.h"
 
 #include "../../include/Ray.h"
+#include "../../include/Block.h"
 #include "../../include/Plane.h"
 #include "../../include/Utility.h"
 #include "../../include/Events/Event.h"
@@ -23,13 +24,13 @@ CollisionSystem::CollisionSystem(Registry_T &registry)
             [&](PlayerComponent& player, TransformationComponent& transform, CameraComponent& camera) {
                 this->updatePlayerLookAtBlock(player, transform, camera);
             }
-        );
+            );
     });
 }
 
 void CollisionSystem::_update(int dt) {
-    auto view = m_registry.view<TransformationComponent, CollisionComponent>();    
-    
+    auto view = m_registry.view<TransformationComponent, CollisionComponent>();
+
     for(auto it = view.begin(); it != view.end(); it++) {
         for(auto jt = it; jt != view.end(); jt++) {
             if(it == jt)
@@ -48,14 +49,14 @@ void CollisionSystem::updatePlayerLookAtBlock(PlayerComponent& player, Transform
     int startY = (direction.y >= 0 ? floor(lookDirection.origin.y) : ceil(lookDirection.origin.y));
     int startZ = (direction.z >= 0 ? floor(lookDirection.origin.z) : ceil(lookDirection.origin.z));
 
-    int stepX = (int)(direction.x / abs(direction.x));
-    int stepY = (int)(direction.y / abs(direction.y));
-    int stepZ = (int)(direction.z / abs(direction.z));
+    int stepX = (int)(direction.x / std::fabs(direction.x));
+    int stepY = (int)(direction.y / std::fabs(direction.y));
+    int stepZ = (int)(direction.z / std::fabs(direction.z));
 
     std::vector<glm::vec3> lookAtPositions = std::vector<glm::vec3>();
     int maxDist = 5;
     float dist = 0;
-    
+
     int x = startX, y = startY, z = startZ;
 
     while(dist < maxDist) {
@@ -65,7 +66,7 @@ void CollisionSystem::updatePlayerLookAtBlock(PlayerComponent& player, Transform
 
         float minR = std::min(rx, std::min(ry, rz));
 
-        glm::vec3 block = getBlockCoords(lookDirection.getPoint(minR));        
+        glm::vec3 block = Utility::GetBlockCoords(lookDirection.getPoint(minR));
         if(glm::length(block - lookDirection.origin) < maxDist) {
             lookAtPositions.push_back(block);
         }
@@ -85,13 +86,13 @@ void CollisionSystem::updatePlayerLookAtBlock(PlayerComponent& player, Transform
 
     auto worldView = m_registry.view<WorldComponent>();
     WorldComponent& world = m_registry.get<WorldComponent>(worldView.front());
-    
-    for(std::vector<glm::vec3>::iterator it = lookAtPositions.begin(); it != lookAtPositions.end(); it++) {
+
+    for (std::vector<glm::vec3>::iterator it = lookAtPositions.begin(); it != lookAtPositions.end(); it++) {
         Block block = world.getBlock(&m_registry, *it);
 
         if(block.isSolid()) {
             player.lookAt = *it;
-                        
+
             break;
         }
     }
@@ -125,7 +126,7 @@ void CollisionSystem::checkCollisions(entt::entity first, entt::entity secnd) {
 
         if(intersection) {
             // TODO: handle collision
-            
+
             return;
         }
     }

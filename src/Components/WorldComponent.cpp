@@ -10,11 +10,11 @@
 
 #include <iostream>
 
-entt::entity WorldComponent::getChunk(glm::vec2 chunk) const {
+entt::entity WorldComponent::getChunk(const glm::vec2 &chunk) const {
     return chunksLookup.at(chunk);
 }
 
-bool WorldComponent::chunkCreated(glm::vec2 chunk) const {
+bool WorldComponent::chunkCreated(const glm::vec2 &chunk) const {
     try {
         chunksLookup.at(chunk);
         return true;
@@ -24,11 +24,8 @@ bool WorldComponent::chunkCreated(glm::vec2 chunk) const {
     }
 }
 
-Block WorldComponent::getBlock(const entt::registry* registry, glm::vec3 position) const {
-    glm::vec2 chunkPosition;
-    glm::vec3 localPosition;
-
-    chunkPosition = GetChunk(position, localPosition);
+Block WorldComponent::getBlock(const entt::registry* registry, const glm::vec3 &position) const {
+    auto [chunkPosition, localPosition] = Utility::GetChunkAndLocal(position);
 
     try {
         auto entity = getChunk(chunkPosition);
@@ -48,11 +45,8 @@ Block WorldComponent::getBlock(const entt::registry* registry, glm::vec3 positio
     }
 }
 
-void WorldComponent::setBlock(entt::registry* registry, glm::vec3 position, Block block) {
-    glm::vec2 chunkPosition;
-    glm::vec3 localPosition;
-
-    chunkPosition = GetChunk(position, localPosition);
+void WorldComponent::setBlock(entt::registry* registry, const glm::vec3 &position, Block block) {
+    auto [chunkPosition, localPosition] = Utility::GetChunkAndLocal(position);
 
     auto entity = getChunk(chunkPosition);
     ChunkComponent& chunk = registry->get<ChunkComponent>(entity);
@@ -65,7 +59,7 @@ void WorldComponent::setBlock(entt::registry* registry, glm::vec3 position, Bloc
     EventDispatcher::raiseEvent(blockChangedEvent);
 }
 
-void WorldComponent::addChunk(entt::entity entity, glm::vec2 position) {
+void WorldComponent::addChunk(entt::entity entity, const glm::vec2 &position) {
     chunksLookup[position] = entity;
 }
 

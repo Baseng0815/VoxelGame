@@ -49,8 +49,7 @@ PerlinWorm::PerlinWorm(noise::module::Perlin& wormNoise, glm::vec3 head, int seg
 
 void DivideWorm(PerlinWorm worm, std::vector<WormPart>& parts) {
     int index = 0;
-    glm::vec2 chunk; glm::vec3 localCoords;
-    chunk = GetChunk(worm.head, localCoords);
+    auto [chunk, localCoords] = Utility::GetChunkAndLocal(worm.head);
 
     glm::vec3 pos = worm.head;
 
@@ -61,9 +60,9 @@ void DivideWorm(PerlinWorm worm, std::vector<WormPart>& parts) {
 
     for (int i = 0; i < worm.segmentsCount; i++) {
         glm::vec3 segment = worm.segments[i];
-        glm::vec3 localPos = GetChunkCoords(pos);
+        glm::vec3 localPos = Utility::GetChunkCoords(pos);
 
-        if(InChunk(localPos + segment)) {
+        if (Utility::InChunk(localPos + segment)) {
             pos += segment;
             chunkWorm.segments.push_back(segment);
         }
@@ -86,7 +85,7 @@ void DivideWorm(PerlinWorm worm, std::vector<WormPart>& parts) {
             float t_min = std::min(tx, tz);
 
             glm::vec3 newHead = pos + t_min * segment;
-            chunkWorm.chunk = GetChunk(newHead, chunkWorm.head);
+            std::tie(chunkWorm.chunk, chunkWorm.head) = Utility::GetChunkAndLocal(newHead);
             chunkWorm.segments.push_back((1 - t_min) * segment);
             pos += segment;
         }

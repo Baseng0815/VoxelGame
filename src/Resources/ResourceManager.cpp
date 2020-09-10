@@ -45,9 +45,9 @@ void ResourceManager::loadResources() {
     resources.emplace(MATERIAL_CHUNK_BLOCKS, ResourceHandle {material} );
 
     material = new Material {};
-    material->ambient = glm::vec4 {1.f};
-    material->diffuse = glm::vec4 {1.f};
+    material->ambient = glm::vec4 {1.f, 1.f, 1.f, 0.7f};
     material->customShader = ResourceManager::getResource<Shader>(SHADER_MVP_COLOR);
+    material->useCulling = false;
     resources.emplace(MATERIAL_CLOUDS, ResourceHandle {material});
 
     // fonts
