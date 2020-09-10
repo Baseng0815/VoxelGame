@@ -16,7 +16,8 @@
 
 #include <iostream>
 
-void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e) {
+void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e)
+{
     // remove old chunks from ECS system and queue chunk data deletion
     auto view = m_registry.view<ChunkComponent>();
 
@@ -41,7 +42,7 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e) {
 
                 m_registry.emplace<TransformationComponent>(
                     entity, TransformationComponent{
-                                glm::vec3(x * Configuration::CHUNK_SIZE, 0, z * Configuration::CHUNK_SIZE)});
+                        glm::vec3(x * Configuration::CHUNK_SIZE, 0, z * Configuration::CHUNK_SIZE)});
                 m_registry.emplace<MeshRenderComponent>(
                     entity, MeshRenderComponent{ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS)});
                 m_registry.emplace<ChunkComponent>(entity, ChunkComponent{new std::shared_mutex{}, x, z});
@@ -52,15 +53,16 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e) {
     }
 }
 
-void ChunkCreateSystem::handleBlockChanged(const BlockChangedEvent& e) {
-    glm::vec3 localPos;
-    glm::vec2 chunkPos = GetChunk(e.position, localPos);
+void ChunkCreateSystem::handleBlockChanged(const BlockChangedEvent& e)
+{
+    auto [localPos, chunkPos] = Utility::GetChunkAndLocal(e.position);
 
     ChunkComponent& chunkComponent = m_registry.get<ChunkComponent>(World::getChunk(chunkPos));
     chunkComponent.verticesOutdated = true;
 }
 
-GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ) {
+GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ)
+{
     GenerationData generationData;
     generationData.entity = entity;
 
@@ -92,13 +94,14 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
 }
 
 GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block*** blocks, std::shared_mutex* blockMutex,
-                                                    const AtlasComponent& atlas) {
+                                                    const AtlasComponent& atlas)
+{
     GeometryData geometryData;
     geometryData.entity = entity;
     // reserve some space to prevent reallocations
     try {
-    geometryData.vertices.reserve(sizeof(geometryData.vertices[0]) * 1048576);
-    geometryData.indices.reserve(sizeof(geometryData.indices[0]) * 1048576);
+        geometryData.vertices.reserve(sizeof(geometryData.vertices[0]) * 1048576);
+        geometryData.indices.reserve(sizeof(geometryData.indices[0]) * 1048576);
     } catch (std::length_error e) {
         std::cout << "WARNING: chunk buffer preallocation failed; " << e.what() << std::endl;
     }
@@ -111,21 +114,21 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block**
 
                 // use shared_lock for shared read access and unique_lock for unique write access
                 std::shared_lock<std::shared_mutex> blockLock(*blockMutex);
-                if (blocks[x][y][z].type == BlockType::BLOCK_AIR)
+                if (blocks[x][y][z].type == BlockType::BLOCK_AIR) {
                     continue;
+                }
 
                 if (blocks[x][y][z].type == BlockType::BLOCK_WATER) {
                     if (y < Configuration::CHUNK_HEIGHT - 1 && blocks[x][y + 1][z].type == BlockType::BLOCK_AIR) {
                         draw[3] = true;
                     }
-                // TODO also take nearby chunks into consideration
-                } else {
+                }
+                else {
                     // negative X
                     if (x > 0) {
                         if (blocks[x - 1][y][z].isTransparent())
                             draw[0] = true;
-                    }
-                    else
+                    } else
                         draw[0] = true;
                     // positive X
                     if (x < Configuration::CHUNK_SIZE - 1) {
@@ -165,7 +168,7 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block**
                 }
                 blockLock.unlock();
 
-                glm::vec3 blockPosition{x, y, z};
+                glm::vec3 blockPosition {x, y, z};
                 const BlockUVs& blockUVs = atlas.blockUVsArray[(int)blocks[x][y][z].type];
 
                 int faceCountPerPass = 0;
@@ -294,7 +297,7 @@ void ChunkCreateSystem::_update(int dt) {
                     chunk.threadActiveOnSelf = true;
 
                     m_generationFutures.push_back(std::async(
-                        std::launch::async, [=]() { return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ); }));
+                            std::launch::async, [=]() { return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ); }));
                 }
                 // update vertices
                 else if (chunk.verticesOutdated) {
@@ -344,7 +347,7 @@ void ChunkCreateSystem::_update(int dt) {
             chunk.verticesOutdated = false;
             chunk.threadActiveOnSelf = false;
             m_constructionCount--;
-            
+
             itGeo = m_geometryFutures.erase(itGeo);
         }
         else {

@@ -27,7 +27,7 @@ Cuboid::Cuboid(glm::vec3 position, float sizeX, float sizeY, float sizeZ) {
         max.z += sizeZ;
 }
 
-std::vector<glm::vec3>& Cuboid::getCornerPoints() const {
+std::vector<glm::vec3> Cuboid::getCornerPoints() const {
     glm::vec3 x = glm::vec3(max.x - min.x, 0, 0);
     glm::vec3 y = glm::vec3(0, max.y - min.y, 0);
     glm::vec3 z = glm::vec3(0, 0, max.z - min.z);
@@ -36,16 +36,17 @@ std::vector<glm::vec3>& Cuboid::getCornerPoints() const {
                                   min + x + y, min + x + z, min + y + z, min + x + y + z};
 }
 
-std::vector<Plane>& Cuboid::getFacePlanes() const {
+std::vector<Plane> Cuboid::getFacePlanes() const {
     std::vector<Plane> planes = std::vector<Plane>();
 
-    planes.push_back(Plane(glm::vec3(-1, 0, 0), min));
-    planes.push_back(Plane(glm::vec3(0, -1, 0), min));
-    planes.push_back(Plane(glm::vec3(0, 0, -1), min));
+    // push_back kopiert die Elemente; wenn das unnoetig ist, ist emplace_back besser
+    planes.emplace_back(Plane {glm::vec3 {-1, 0, 0}, min});
+    planes.emplace_back(Plane {glm::vec3 {0, -1, 0}, min});
+    planes.emplace_back(Plane {glm::vec3 {0, 0, -1}, min});
 
-    planes.push_back(Plane(glm::vec3(1, 0, 0), max));
-    planes.push_back(Plane(glm::vec3(0, 1, 0), max));
-    planes.push_back(Plane(glm::vec3(0, 0, 1), max));
+    planes.emplace_back(Plane {glm::vec3 {1, 0, 0}, max});
+    planes.emplace_back(Plane {glm::vec3 {0, 1, 0}, max});
+    planes.emplace_back(Plane {glm::vec3 {0, 0, 1}, max});
 
     return planes;
 }

@@ -32,15 +32,14 @@ namespace Utility {
     glm::vec3 GetChunkCoords(const glm::vec3 &worldPos);
     glm::vec3 GetBlockCoords(const glm::vec3 &coords);
 
+    glm::vec3 getEuler(const glm::vec3 &v, float a);
+    glm::vec3 getFacePosition(const glm::vec3 &blockPos, const glm::vec3 &faceNormal);
+
     template<typename T>
     void swap(std::vector<T> &vec, int pos1, int pos2);
 
     void FillSphere(glm::vec3 center, float radius, Block*** blocks, BlockType fillType = BlockType::BLOCK_AIR);
 }
-
-glm::vec3 getEuler(glm::vec3 v, float a);
-
-glm::vec3 getFacePosition(glm::vec3 blockPos, glm::vec3 faceNormal);
 
 std::ostream &operator<<(std::ostream &os, const glm::vec2 &vec);
 std::ostream &operator<<(std::ostream &os, const glm::vec3 &vec);

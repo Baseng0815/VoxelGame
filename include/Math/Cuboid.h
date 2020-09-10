@@ -12,8 +12,9 @@ struct Cuboid {
     Cuboid(glm::vec3 min, glm::vec3 max);
     Cuboid(glm::vec3 position, float sizeX, float sizeY, float sizeZ);
 
-    std::vector<glm::vec3>& getCornerPoints() const;
-    std::vector<Plane>& getFacePlanes() const;
+    // Referenzen auf lokale Variablen nicht gut
+    std::vector<glm::vec3> getCornerPoints() const;
+    std::vector<Plane> getFacePlanes() const;
 
     bool intersects(const Cuboid& other) const;
     bool intersects(const Ray& ray, float* t) const;

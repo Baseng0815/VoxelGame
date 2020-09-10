@@ -10,9 +10,9 @@
 
 #include <iostream>
 
-PhysicsSystem::PhysicsSystem(entt::registry& registry)
-    : System(registry, 0) {
-    }
+PhysicsSystem::PhysicsSystem(Registry_T &registry)
+    : System {registry, 0}
+{ }
 
 void PhysicsSystem::_update(int millis) {    
     float dt = millis / 1000.f;
@@ -21,7 +21,7 @@ void PhysicsSystem::_update(int millis) {
         [&](PlayerComponent& player, TransformationComponent& transform, VelocityComponent& velocity) {
             updatePlayer(dt, player, transform, velocity);
         }
-    );
+        );
 
     m_registry.view<TransformationComponent, VelocityComponent>(entt::exclude<PlayerComponent>).each(
         [&](TransformationComponent& transform, VelocityComponent& velocity) {
@@ -31,7 +31,7 @@ void PhysicsSystem::_update(int millis) {
 }
 
 void PhysicsSystem::updatePlayer(float dt, PlayerComponent& player, TransformationComponent& transform, VelocityComponent& velocity) const {    
-    if (!World::chunkCreated(GetChunk(transform.getPosition(), glm::vec3())))
+    if (!World::chunkCreated(Utility::GetChunk(transform.getPosition())))
         return;
 
     glm::vec3 oldPlayerPos = transform.getPosition();
@@ -56,7 +56,7 @@ void PhysicsSystem::updatePlayer(float dt, PlayerComponent& player, Transformati
         EnterChunkEvent e {nullptr, oldChunk.x, oldChunk.y, newChunk.x, newChunk.y};
         EventDispatcher::raiseEvent(e);
     }    
-        
+
     // update is falling
     player.isFalling =  !World::getBlock(&m_registry, glm::floor(newPlayerPos + glm::vec3(0, -1, 0))).isSolid();    
 }
@@ -71,5 +71,6 @@ void PhysicsSystem::updateEntity(float dt, TransformationComponent& transform, V
     glm::vec3 axis = glm::normalize(velocity.angularVelocity);
     float a = glm::length(dt * velocity.angularVelocity);
 
-    glm::vec3 dr = getEuler(axis, a);
+    glm::vec3 dr = Utility::getEuler(axis, a);
     transform.rotate(dr);
+}
