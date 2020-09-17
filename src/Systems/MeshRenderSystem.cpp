@@ -7,7 +7,6 @@
 #include "../../include/Components/MeshRenderComponent.h"
 #include "../../include/Components/TransformationComponent.h"
 
-#include "../../include/Resources/Shader.h"
 #include "../../include/Resources/Texture.h"
 
 void MeshRenderSystem::_update(int dt)

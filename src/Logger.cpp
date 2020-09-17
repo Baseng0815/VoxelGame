@@ -1,7 +1,6 @@
 #include "../include/Logger.h"
 
 #include <ctime>
-#include <fstream>
 #include <iomanip>
 #include <sstream>
 #include <iostream>

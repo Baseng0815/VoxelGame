@@ -1,5 +1,4 @@
 #include "../../include/WorldGeneration/TerrainHeightGenerator.h"
-#include "../../include/WorldGeneration/Biome.h"
 #include "../../include/Configuration.h"
 
 TerrainHeightGenerator::TerrainHeightGenerator() {

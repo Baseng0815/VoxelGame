@@ -1,9 +1,6 @@
 // in der .cpp kann man einbinden, was man will, da entsteht kein Problem
-#include "../../include/WorldGeneration/WorldGenerator.h"
+//#include "../../include/WorldGeneration/WorldGenerator.h"
 #include "../../include/WorldGeneration/noiseutils.h"
-#include "../../include/WorldGeneration/Biome.h"
-#include "../../include/Block.h"
-#include "../../include/BlockData.h"
 #include "../../include/Configuration.h"
 #include "../../include/Utility.h"
 #include "../../include/Systems/ChunkCreateSystem.h"

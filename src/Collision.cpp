@@ -3,7 +3,6 @@
 #include "../include/Components/CollisionComponent.h"
 #include "../include/Components/TransformationComponent.h"
 
-#include "../include/Math/Cuboid.h"
 #include "../include/Math/Plane.h"
 #include "../include/Math/Ray.h"
 

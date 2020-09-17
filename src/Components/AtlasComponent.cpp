@@ -1,4 +1,3 @@
-#include "../../include/Configuration.h"
 #include "../../include/Components/AtlasComponent.h"
 
 #include <iostream>

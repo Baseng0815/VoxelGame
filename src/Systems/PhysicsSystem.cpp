@@ -10,10 +10,6 @@
 #include "../../include/Events/EventDispatcher.h"
 #include "../../include/World.h"
 
-#include <glm/gtc/quaternion.hpp>
-#include <glm/gtx/quaternion.hpp>
-#include <iostream>
-
 PhysicsSystem::PhysicsSystem(Registry_T& registry) : System{registry, 0} {
     m_blockCollisionHandle = EventDispatcher::onBlockCollision.subscribe(
         [&](const BlockCollisionEvent& e) { handleBlockCollision(e.entity, e.blockPos); });

@@ -1,7 +1,7 @@
 #include "../include/Application.h"
 
-#include "../include/Configuration.h"
-#include "../include/Events/Event.h"
+//#include "../include/Configuration.h"
+//#include "../include/Events/Event.h"
 #include "../include/Events/EventDispatcher.h"
 #include "../include/Resources/ResourceManager.h"
 
@@ -11,7 +11,7 @@
 #include "../include/Components/CameraComponent.h"
 
 #include <chrono>
-#include <iostream>
+//#include <iostream>
 
 void Application::handleKeys(const KeyEvent& e) {
     switch (e.key) {

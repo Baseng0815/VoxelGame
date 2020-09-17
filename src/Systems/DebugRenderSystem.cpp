@@ -1,9 +1,7 @@
 #include "../../include/Systems/DebugRenderSystem.h"
 
 #include "../../include/Color.h"
-#include "../../include/Configuration.h"
 #include "../../include/Resources/Shader.h"
-#include "../../include/Resources/Geometry.h"
 #include "../../include/Events/EventDispatcher.h"
 #include "../../include/Resources/ResourceManager.h"
 

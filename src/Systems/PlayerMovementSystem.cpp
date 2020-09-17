@@ -6,7 +6,6 @@
 
 #include "../../include/Utility.h"
 
-#include <GLFW/glfw3.h>
 #include <iostream>
 
 PlayerMovementSystem::PlayerMovementSystem(Registry_T& registry) : System(registry, 10) {

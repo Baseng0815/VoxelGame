@@ -1,4 +1,4 @@
-#include "../../include/Rendering/Window.h"
+//#include "../../include/Rendering/Window.h"
 #include "../../include/Configuration.h"
 #include "../../include/Events/EventDispatcher.h"
 

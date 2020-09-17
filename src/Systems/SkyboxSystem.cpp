@@ -1,7 +1,6 @@
 #include "../../include/Systems/SkyboxSystem.h"
 
 #include "../../include/Resources/ResourceManager.h"
-#include "../../include/Configuration.h"
 #include "../../include/Resources/Shader.h"
 
 #include "../../include/Components/SkyboxComponent.h"

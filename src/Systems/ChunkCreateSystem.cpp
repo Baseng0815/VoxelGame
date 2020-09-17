@@ -1,20 +1,14 @@
 #include "../../include/Systems/ChunkCreateSystem.h"
 
-#include "../../include/Block.h"
-
-#include "../../include/Configuration.h"
 #include "../../include/Events/EventDispatcher.h"
 #include "../../include/Math/Cuboid.h"
 #include "../../include/Resources/ResourceManager.h"
-#include "../../include/Utility.h"
 #include "../../include/World.h"
 
 #include "../../include/Components/AtlasComponent.h"
 #include "../../include/Components/ChunkComponent.h"
 #include "../../include/Components/MeshRenderComponent.h"
 #include "../../include/Components/TransformationComponent.h"
-
-#include <iostream>
 
 void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent& e)
 {

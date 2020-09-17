@@ -6,17 +6,12 @@
 #include "../../include/Components/TransformationComponent.h"
 #include "../../include/Components/VelocityComponent.h"
 
-#include "../../include/Events/Event.h"
 #include "../../include/Events/EventDispatcher.h"
 
 #include "../../include/Math/Plane.h"
 #include "../../include/Math/Ray.h"
 
-#include "../../include/Utility.h"
 #include "../../include/World.h"
-
-#include <iostream>
-#include <utility>
 
 CollisionSystem::CollisionSystem(Registry_T& registry) : System{registry, 0} {
 }

@@ -1,6 +1,5 @@
 #include "../../include/Gui/GUI.h"
 #include "../../include/Gui/Text.h"
-#include "../../include/Gui/Layout.h"
 
 #include "../../include/Resources/Font.h"
 #include "../../include/Resources/Shader.h"
@@ -9,6 +8,7 @@
 #include "../../include/Resources/ResourceManager.h"
 
 #include <iostream>
+
 void Text::_updateScreenElements()
 {
     float x = m_innerArea.position.x;

@@ -1,6 +1,4 @@
 #include "../../include/WorldGeneration/TerrainGenerator.h"
-#include "../../include/WorldGeneration/Biome.h"
-#include "../../include/Block.h"
 #include "../../include/Configuration.h"
 #include "../../include/Utility.h"
 

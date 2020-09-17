@@ -1,8 +1,6 @@
 #include "../../include/Components/CollisionComponent.h"
 #include "../../include/Components/TransformationComponent.h"
 
-#include "../../include/Math/Cuboid.h"
-
 CollisionComponent::CollisionComponent(glm::vec3 offset, float sizeX, float sizeY, float sizeZ) {
     localCuboid = Math::Cuboid{offset, sizeX, sizeY, sizeZ};
 }

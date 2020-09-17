@@ -1,8 +1,5 @@
 #include "../../include/Systems/InputSystem.h"
 
-#include "../../include/Block.h"
-#include "../../include/Utility.h"
-#include "../../include/Configuration.h"
 #include "../../include/Events/EventDispatcher.h"
 #include "../../include/World.h"
 
@@ -15,9 +12,7 @@
 #include "../../include/Components/CollisionComponent.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <iostream>
 
 
 void InputSystem::handleKeyPressEvent(const KeyEvent& e) {          

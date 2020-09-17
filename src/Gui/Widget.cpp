@@ -1,11 +1,9 @@
-#include "../../include/Gui/Widget.h"
+//#include "../../include/Gui/Widget.h"
 #include "../../include/Gui/Layout.h"
 
 #include "../../include/Resources/ResourceManager.h"
 #include "../../include/Resources/Shader.h"
 #include "../../include/Events/EventDispatcher.h"
-
-#include <algorithm>
 
 void Widget::applyPadding()
 {
