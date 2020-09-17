@@ -7,6 +7,8 @@
 #include "../../include/Components/MeshRenderComponent.h"
 #include "../../include/Components/TransformationComponent.h"
 
+#include <ctime>
+
 CloudModule::CloudModule()
     : module::Module { GetSourceModuleCount() }
 { }
@@ -148,7 +150,7 @@ CloudSystem::CloudSystem(Registry_T &registry)
 
     m_perlinModule.SetFrequency(8.5);
     m_perlinModule.SetOctaveCount(1);
-    m_perlinModule.SetSeed(time(NULL));
+    m_perlinModule.SetSeed(std::time(NULL));
     m_cloudModule.SetSourceModule(0, m_perlinModule);
 
     recalculateCloudGeometry();

@@ -100,8 +100,8 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block**
     geometryData.entity = entity;
     // reserve some space to prevent reallocations
     try {
-        geometryData.vertices.reserve(sizeof(geometryData.vertices[0]) * 1048576);
-        geometryData.indices.reserve(sizeof(geometryData.indices[0]) * 1048576);
+        geometryData.vertices.reserve(1048576);
+        geometryData.indices.reserve(1048576);
     } catch (std::length_error e) {
         std::cout << "WARNING: chunk buffer preallocation failed; " << e.what() << std::endl;
     }

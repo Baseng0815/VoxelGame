@@ -35,6 +35,7 @@ public:
 
     static CallbackList<const EnterChunkEvent&> onEnterChunk;
     static CallbackList<const BlockChangedEvent&> onBlockChange;
+    static CallbackList<const BlockCollisionEvent&> onBlockCollision;
 
     static void raiseEvent(const KeyEvent&);
     static void raiseEvent(const MouseButtonEvent&);
@@ -43,6 +44,7 @@ public:
     static void raiseEvent(const FramebufferSizeEvent&);
     static void raiseEvent(const EnterChunkEvent&);
     static void raiseEvent(const BlockChangedEvent&);
+    static void raiseEvent(const BlockCollisionEvent&);
 
     // sets mouse state to firstMouse so the first input event is ignored
     static void resetMouseState();

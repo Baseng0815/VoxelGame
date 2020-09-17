@@ -10,44 +10,39 @@
 
 std::unordered_map<glm::vec2, entt::entity, Utility::HashFunctionVec2> World::chunksLookup;
 
-entt::entity World::getChunk(const glm::vec2 &chunk) {
+entt::entity World::getChunk(const glm::vec2& chunk) {
     // .at() macht bounds-checking, was man nicht braucht; einfach nichts Falsches eingeben
     return chunksLookup[chunk];
 }
 
-bool World::chunkCreated(const glm::vec2 &chunk) {
+bool World::chunkCreated(const glm::vec2& chunk) {
     try {
         chunksLookup.at(chunk);
         return true;
     }
     catch (std::out_of_range e) {
-        std::cout << "Error in chunk creation: " << e.what() << std::endl;
+        // std::cout << "Error in chunk creation: " << e.what() << std::endl;
         return false;
     }
 }
 
-Block World::getBlock(const entt::registry* registry, const glm::vec3 &position) {
+Block World::getBlock(const entt::registry* registry, const glm::vec3& position) {
     auto [chunkPosition, localPosition] = Utility::GetChunkAndLocal(position);
 
-    try {
-        auto entity = getChunk(chunkPosition);
-
-        const ChunkComponent& chunk = registry->get<ChunkComponent>(entity);
-
-        if (!chunk.blocks) {
-            throw std::out_of_range("blocks not created");
-        }
-
-        Block block = chunk.blocks[(int)localPosition.x][(int)localPosition.y][(int)localPosition.z];
-
-        return block;
-    }
-    catch (std::out_of_range) {
+    if (!chunkCreated(chunkPosition)) {
         return Block();
     }
+
+    auto entity = getChunk(chunkPosition);
+
+    const ChunkComponent& chunk = registry->get<ChunkComponent>(entity);
+
+    Block block = chunk.blocks[(int)localPosition.x][(int)localPosition.y][(int)localPosition.z];
+
+    return block;
 }
 
-void World::setBlock(entt::registry *registry, const glm::vec3 &position, Block block) {
+void World::setBlock(entt::registry* registry, const glm::vec3& position, Block block) {
     auto [chunkPosition, localPosition] = Utility::GetChunkAndLocal(position);
 
     auto entity = getChunk(chunkPosition);
@@ -61,7 +56,7 @@ void World::setBlock(entt::registry *registry, const glm::vec3 &position, Block 
     EventDispatcher::raiseEvent(blockChangedEvent);
 }
 
-void World::addChunk(entt::entity entity, const glm::vec2 &position) {
+void World::addChunk(entt::entity entity, const glm::vec2& position) {
     chunksLookup[position] = entity;
 }
 

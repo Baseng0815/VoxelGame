@@ -50,7 +50,7 @@ void CollisionSystem::_update(int dt) {
 
 void CollisionSystem::updatePlayerLookAtBlock(PlayerComponent& player, TransformationComponent& transform,
                                               CameraComponent& camera) const {
-    Ray lookDirection = Ray(transform.getPosition() + camera.playerOffset, camera.front);
+    Math::Ray lookDirection = Math::Ray(transform.getPosition() + camera.playerOffset, camera.front);
 
     glm::vec3 lookAt =
         lookDirection.getFirstBlock(5, [&](glm::vec3 pos) { return World::getBlock(&m_registry, pos).isSolid(); });
@@ -69,8 +69,8 @@ void CollisionSystem::checkCollisions(entt::entity first, entt::entity secnd) {
     const TransformationComponent& secndTransform = m_registry.get<TransformationComponent>(secnd);
     const CollisionComponent& secndCollision = m_registry.get<CollisionComponent>(secnd);
 
-    Cuboid c1 = firstCollision.transform(firstTransform);
-    Cuboid c2 = secndCollision.transform(secndTransform);
+    Math::Cuboid c1 = firstCollision.transform(firstTransform);
+    Math::Cuboid c2 = secndCollision.transform(secndTransform);
 
     bool intersection = c1.intersects(c2);
 
@@ -85,13 +85,13 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
     CollisionComponent& collision = m_registry.get<CollisionComponent>(entity);
     TransformationComponent& transform = m_registry.get<TransformationComponent>(entity);
 
-    Cuboid hitbox = collision.transform(transform);
+    Math::Cuboid hitbox = collision.transform(transform);
     glm::vec3 minBlock = glm::floor(hitbox.min);
     glm::vec3 maxBlock = glm::floor(hitbox.max);
 
     bool hasCollision = false;
     glm::vec3 block;
-    glm::vec3 offset = glm::vec3 {-0.5f, -0.5f, -0.5f};
+    glm::vec3 offset = glm::vec3{-0.5f, -0.5f, -0.5f};
 
     for (int x = minBlock.x; x <= maxBlock.x; x++) {
         for (int y = minBlock.y; y <= maxBlock.y; y++) {
@@ -99,7 +99,7 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
                 glm::vec3 position = glm::vec3(x, y, z);
 
                 if (World::getBlock(&m_registry, position).isSolid()) {
-                    Cuboid blockHitbox = Cuboid(position + offset, 1, 1, 1);
+                    Math::Cuboid blockHitbox = Math::Cuboid(position + offset, 1, 1, 1);
 
                     hasCollision = hitbox.intersects(blockHitbox);
                     if (hasCollision) {
@@ -111,38 +111,7 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
     }
 
     if (hasCollision) {
-        glm::vec3 mtv = glm::vec3 {FLT_MAX, FLT_MAX, FLT_MAX};
-        VelocityComponent& velocity = m_registry.get<VelocityComponent>(entity);
-
-        for (int i = 0; i < 6; i++) {
-            glm::vec3 faceNormal = glm::vec3();
-            faceNormal[i / 2] = i % 2 ? -1 : 1;
-
-            if (!World::getBlock(&m_registry, block + faceNormal).isSolid()) {
-                glm::vec3 facePosition = Utility::getFacePosition(block, faceNormal);
-
-                glm::vec3 v1 = facePosition - hitbox.min;
-                glm::vec3 v2 = facePosition - hitbox.max;
-
-                float d1 = glm::dot(v1, faceNormal);
-                float d2 = glm::dot(v2, faceNormal);
-
-                glm::vec3 v;
-                if (glm::abs(d1) < glm::abs(d2)) {
-                    v = d2 * faceNormal;
-                }
-                else {
-                    v = d1 * faceNormal;
-                }                 
-
-                if (glm::length(v) != 0 && glm::length(v) < glm::length(mtv)) {
-                    mtv = v;
-                }
-            }
-        }
-
-        transform.move(mtv);
-
-        velocity.velocity = glm::vec3();            
+        BlockCollisionEvent e{nullptr, entity, block};
+        EventDispatcher::raiseEvent(e);
     }
 }

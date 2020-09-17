@@ -15,7 +15,6 @@
 
 #include "../include/Block.h"
 
-struct Block;
 struct WorldComponent;
 
 namespace Utility {
@@ -31,14 +30,13 @@ namespace Utility {
     glm::vec3 GetWorldCoords(const glm::vec2 &chunk, const glm::vec3 &chunkCoords);
     glm::vec3 GetChunkCoords(const glm::vec3 &worldPos);
     glm::vec3 GetBlockCoords(const glm::vec3 &coords);
-
-    glm::vec3 getEuler(const glm::vec3 &v, float a);
+    
     glm::vec3 getFacePosition(const glm::vec3 &blockPos, const glm::vec3 &faceNormal);
 
     template<typename T>
     void swap(std::vector<T> &vec, int pos1, int pos2);
 
-    void FillSphere(glm::vec3 center, float radius, Block*** blocks, BlockType fillType = BlockType::BLOCK_AIR);
+    float radToDeg(float rad);
 }
 
 std::ostream &operator<<(std::ostream &os, const glm::vec2 &vec);

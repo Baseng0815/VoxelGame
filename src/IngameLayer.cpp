@@ -52,7 +52,7 @@ IngameLayer::IngameLayer(Application* application)
     m_systems.emplace_back(std::unique_ptr<System> {new PlayerMovementSystem {m_registry }});
     m_systems.emplace_back(std::unique_ptr<System> {new CloudSystem {m_registry }});
     m_systems.emplace_back(std::unique_ptr<System> {new SkyboxSystem {m_registry }});
-    //m_systems.emplace_back(std::unique_ptr<System> {new CollisionSystem {m_registry}});
+    m_systems.emplace_back(std::unique_ptr<System> {new CollisionSystem {m_registry}});
     m_systems.emplace_back(std::unique_ptr<System> {new MeshRenderSystem {m_registry}});
     m_systems.emplace_back(std::unique_ptr<System> {new DebugRenderSystem {m_registry}});
 

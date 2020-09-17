@@ -1,17 +1,14 @@
 #include "../../include/Components/TransformationComponent.h"
 
 void TransformationComponent::recalculateModelMatrix() const {
-    glm::mat4 rotationMatrix =
-        glm::rotate(m_rotation.z, glm::vec3(0, 0, 1)) *
-        glm::rotate(m_rotation.y, glm::vec3(0, 1, 0)) *
-        glm::rotate(m_rotation.x, glm::vec3(1, 0, 0));
+    glm::mat4 rotationMatrix = glm::toMat4(m_rotation);
 
     // order of operations
     // - translate - scale - rotate -
     m_modelMatrix = glm::translate(m_position) * glm::scale(m_scale) * rotationMatrix;
 }
 
-TransformationComponent::TransformationComponent(glm::vec3 position, glm::vec3 rotation, glm::vec3 scale)
+TransformationComponent::TransformationComponent(glm::vec3 position, glm::quat rotation, glm::vec3 scale)
     : m_position(position), m_rotation(rotation), m_scale(scale) {
         recalculateModelMatrix();
     }
@@ -20,7 +17,7 @@ const glm::vec3 &TransformationComponent::getPosition() const {
     return m_position;
 }
 
-const glm::vec3 &TransformationComponent::getRotation() const {
+const glm::quat &TransformationComponent::getRotation() const {
     return m_rotation;
 }
 
@@ -33,7 +30,7 @@ void TransformationComponent::setPosition(const glm::vec3 &position) {
     m_position = position;
 }
 
-void TransformationComponent::setRotation(const glm::vec3 &rotation) {
+void TransformationComponent::setRotation(const glm::quat &rotation) {
     recalculateModelMatrix();
     m_rotation = rotation;
 }
@@ -48,8 +45,8 @@ void TransformationComponent::move(const glm::vec3 &pdelta) {
     recalculateModelMatrix();
 }
 
-void TransformationComponent::rotate(const glm::vec3 &protation) {
-    m_rotation += protation;
+void TransformationComponent::rotate(const glm::quat &protation) {
+    m_rotation *= protation;
     recalculateModelMatrix();
 }
 

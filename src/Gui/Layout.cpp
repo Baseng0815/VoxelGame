@@ -3,7 +3,7 @@
 #include "../../include/Gui/GUI.h"
 #include "../../include/Gui/Layout.h"
 
-#include "../../include/Resources//Shader.h"
+#include "../../include/Resources/Shader.h"
 #include "../../include/Configuration.h"
 
 #include <algorithm>
