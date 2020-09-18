@@ -10,9 +10,9 @@
 #include "../../include/Events/EventDispatcher.h"
 #include "../../include/World.h"
 
-PhysicsSystem::PhysicsSystem(Registry_T& registry) : System{registry, 0} {
+PhysicsSystem::PhysicsSystem(Registry_T& registry) : System{registry, 10} {
     m_blockCollisionHandle = EventDispatcher::onBlockCollision.subscribe(
-        [&](const BlockCollisionEvent& e) { handleBlockCollision(e.entity, e.blockPos); });
+        [&](const BlockCollisionEvent& e) { handleBlockCollision(e.entity, e.block); });
 }
 
 void PhysicsSystem::_update(int millis) {
@@ -56,7 +56,9 @@ void PhysicsSystem::updatePlayer(float dt, PlayerComponent& player, Transformati
     }
 
     // update is falling
-    // player.isFalling = true;
+    if(!World::getBlock(&m_registry, transform.getPosition() - glm::vec3{0, 1, 0}).isSolid()) {
+        player.isFalling = true;
+    }
 }
 
 void PhysicsSystem::applyVelocities(float dt, TransformationComponent& transform, VelocityComponent& velocity) {
@@ -65,7 +67,7 @@ void PhysicsSystem::applyVelocities(float dt, TransformationComponent& transform
     float phi = dt * glm::length(velocity.angularVelocity);
     glm::quat pRot = glm::quat(Utility::radToDeg(phi), glm::normalize(velocity.angularVelocity));
 
-    transform.rotate(pRot);
+    transform.rotate(pRot);    
 }
 
 void PhysicsSystem::handleBlockCollision(entt::entity entity, glm::vec3 block) const {
@@ -74,22 +76,40 @@ void PhysicsSystem::handleBlockCollision(entt::entity entity, glm::vec3 block) c
     CollisionComponent& collision = m_registry.get<CollisionComponent>(entity);
 
     Math::Cuboid entityCol = collision.transform(transform);
-    Math::Cuboid blockCol = Collision::getBlockCollision(block);
 
-    std::vector<glm::vec3> tvs = Collision::getTVs(blockCol, entityCol);
+    std::vector<glm::vec3> tvs = Collision::getBlockTVs(block, entityCol);
+
+    if(tvs.size() == 0)
+        return;
 
     glm::vec3 mtv;
-
     auto it = tvs.begin();
-    while (it != tvs.end()) {
-        glm::vec3 tmp = glm::normalize(*it);
+    do {
+        glm::vec3 normal = glm::normalize(*it);
 
-        if (!World::getBlock(&m_registry, block + tmp).isSolid()) {
+        if (!World::getBlock(&m_registry, block + normal).isSolid()) {
             mtv = *it;
-            transform.move(1.01f * mtv);
-            velocity.velocity -= glm::dot(velocity.velocity, mtv) * mtv;
+
+            std::cout << "old pos: " << transform.getPosition() << std::endl;
+            std::cout << "mtv: " << mtv << std::endl;
+
+            transform.move(mtv);
+            std::cout << "new pos: " << transform.getPosition() << std::endl;
+            std::cout << "velocity: " << velocity.velocity << std::endl;
+
+            velocity.velocity -= glm::dot(velocity.velocity, normal) * normal;
+
+
             break;
         }
-        it++;
+
+    } while (++it != tvs.end());
+
+    if (m_registry.any<PlayerComponent>(entity)) {
+        PlayerComponent& player = m_registry.get<PlayerComponent>(entity);
+
+        if (velocity.velocity.y == 0) {
+            player.isFalling = false;
+        }        
     }
 }

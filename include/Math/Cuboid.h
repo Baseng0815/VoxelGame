@@ -24,6 +24,11 @@ namespace Math {
 		glm::vec3 getPosition() const;
 		void getSize(float* sizeX, float* sizeY, float* sizeZ) const;
 
-		static Cuboid merge(const Cuboid c1, const Cuboid c2);
+        void move(const glm::vec3 ds);
+
+        const glm::vec3 getMin() const;
+        const glm::vec3 getMax() const;
+
+        static Cuboid merge(const Cuboid c1, const Cuboid c2);
 	};
 }

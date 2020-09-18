@@ -85,6 +85,19 @@ namespace Math {
         *sizeZ = size.z;
     }
 
+    void Cuboid::move(glm::vec3 ds) {
+        min += ds;
+        max += ds;
+    }
+
+    const glm::vec3 Cuboid::getMin() const {
+        return min;
+    }
+
+    const glm::vec3 Cuboid::getMax() const {
+        return max;
+    }
+
     Cuboid Cuboid::merge(const Cuboid c1, const Cuboid c2) {
         float minX, minY, minZ, maxX, maxY, maxZ;
 

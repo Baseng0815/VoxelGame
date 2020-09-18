@@ -86,7 +86,6 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
 
     bool hasCollision = false;
     glm::vec3 block;
-    glm::vec3 offset = glm::vec3{-0.5f, -0.5f, -0.5f};
 
     for (int x = minBlock.x; x <= maxBlock.x; x++) {
         for (int y = minBlock.y; y <= maxBlock.y; y++) {
@@ -94,11 +93,12 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
                 glm::vec3 position = glm::vec3(x, y, z);
 
                 if (World::getBlock(&m_registry, position).isSolid()) {
-                    Math::Cuboid blockHitbox = Math::Cuboid(position + offset, 1, 1, 1);
+                    Math::Cuboid blockHitbox = Math::Cuboid(position, 1, 1, 1);
 
                     hasCollision = hitbox.intersects(blockHitbox);
                     if (hasCollision) {
                         block = position;
+                        break;
                     }
                 }
             }

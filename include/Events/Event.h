@@ -85,8 +85,8 @@ struct EntityMovedEvent {
 struct BlockCollisionEvent {
     Application* app;
     entt::entity entity;
-    
-    glm::vec3 blockPos;
+
+    glm::vec3 block;
 
     std::string toString() const;
 };

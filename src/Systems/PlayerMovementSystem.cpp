@@ -50,8 +50,5 @@ void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent& player, VelocityCo
     else {
         if(!player.isFalling)
             velocity.velocity *= 0.2f;
-    }
-
-    //std::cout << player.isFalling << std::endl;    
-    //std::cout << velocity.velocity << std::endl;
+    }    
 }

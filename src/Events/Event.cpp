@@ -1,4 +1,7 @@
 #include "../../include/Events/Event.h"
+#include "../../include/Math/Cuboid.h"
+
+#include "../../include/Utility.h"
 
 std::string KeyEvent::toString() const {
     std::stringstream ss;
@@ -44,14 +47,14 @@ std::string BlockChangedEvent::toString() const {
 
 std::string EntityMovedEvent::toString() const {
     std::stringstream ss;
-    ss << "x: " << oldPos.x << " y: " << oldPos.y << " z: " << oldPos.z << " -> ";
-    ss << "x: " << newPos.x << " y: " << newPos.y << " z: " << newPos.z;
+    ss << oldPos << " -> ";
+    ss << newPos;
     return ss.str();
 }
 
 std::string BlockCollisionEvent::toString() const {
     std::stringstream ss;
-    ss << "entity: " << entt::to_integral(entity) << " block: "
-       << "x: " << blockPos.x << " y: " << blockPos.y << " z: " << blockPos.z;
+    ss << "entity: " << entt::to_integral(entity);
+    ss << "block: " << block;
     return ss.str();
 }

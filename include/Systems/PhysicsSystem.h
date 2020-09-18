@@ -3,6 +3,8 @@
 #include "System.h"
 #include <glm/glm.hpp>
 
+#include "../Math/Cuboid.h"
+
 struct PlayerComponent;
 struct TransformationComponent;
 struct VelocityComponent;

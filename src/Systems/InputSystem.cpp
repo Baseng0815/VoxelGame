@@ -64,9 +64,10 @@ void InputSystem::handleMouseButtonEvent(const MouseButtonEvent& e) {
         m_registry.view<PlayerComponent>().each(
             [&](PlayerComponent& player) {
                 glm::vec3 block = player.lookAt;
-                
-                if(block.y > 0)
-                    World::setBlock(&m_registry, block, Block());
+
+                // TODO: Fix this
+                // if(block.y > 0)
+                    // World::setBlock(&m_registry, block, Block());
             }            
         );
     }
@@ -148,7 +149,7 @@ InputSystem::InputSystem(Registry_T &registry)
     m_registry.emplace<TransformationComponent>(entity, glm::vec3 {0.f, 100.f, 0.f}, glm::vec3 {0.f, 0.f, 0.f}, glm::vec3 {1, 1, 1});
     m_registry.emplace<VelocityComponent>(entity);
     m_registry.emplace<PlayerComponent>(entity);
-    m_registry.emplace<CollisionComponent>(entity, glm::vec3{-0.5, 0, -0.5}, 1, 2, 1);
+    m_registry.emplace<CollisionComponent>(entity, glm::vec3{-0.5, 0, -0.5}, 1.0f, 2.0f, 1.0f);
 
     m_registry.view<CameraComponent>().each(
         [&](auto& camera) {
