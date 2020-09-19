@@ -15,6 +15,10 @@ namespace Utility {
             pos.z >= 0 && pos.z < Configuration::CHUNK_SIZE;
     }
 
+    bool InChunk(const int x, const int y, const int z) {
+        return x >= 0 && x < Configuration::CHUNK_SIZE&& y >= 0 && y < Configuration::CHUNK_HEIGHT&& z >= 0 && z < Configuration::CHUNK_SIZE;
+    }
+
     std::tuple<glm::vec2, glm::vec3> GetChunkAndLocal(const glm::vec3& worldCoords) {
         glm::vec2 chunkPos{std::floor(worldCoords.x / Configuration::CHUNK_SIZE),
                         std::floor(worldCoords.z / Configuration::CHUNK_SIZE)};

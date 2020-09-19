@@ -24,6 +24,7 @@ namespace Utility {
     };
 
     bool InChunk(const glm::vec3 &position);
+    bool InChunk(const int x, const int y, const int z);
 
     std::tuple<glm::vec2, glm::vec3> GetChunkAndLocal(const glm::vec3 &worldCoords);
     glm::vec2 GetChunk(const glm::vec3 &worldCoords);

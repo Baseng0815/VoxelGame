@@ -90,12 +90,7 @@ void PhysicsSystem::handleBlockCollision(entt::entity entity, glm::vec3 block) c
         if (!World::getBlock(&m_registry, block + normal).isSolid()) {
             mtv = *it;
 
-            std::cout << "old pos: " << transform.getPosition() << std::endl;
-            std::cout << "mtv: " << mtv << std::endl;
-
-            transform.move(mtv);
-            std::cout << "new pos: " << transform.getPosition() << std::endl;
-            std::cout << "velocity: " << velocity.velocity << std::endl;
+            transform.move(mtv);            
 
             velocity.velocity -= glm::dot(velocity.velocity, normal) * normal;
 

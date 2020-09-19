@@ -12,14 +12,7 @@ entt::entity World::getChunk(const glm::vec2& chunk) {
 }
 
 bool World::chunkCreated(const glm::vec2& chunk) {
-    try {
-        chunksLookup.at(chunk);
-        return true;
-    }
-    catch (std::out_of_range e) {
-        // std::cout << "Error in chunk creation: " << e.what() << std::endl;
-        return false;
-    }
+    return chunksLookup.contains(chunk);
 }
 
 Block World::getBlock(const entt::registry* registry, const glm::vec3& position) {
