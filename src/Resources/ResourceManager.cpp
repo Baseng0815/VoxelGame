@@ -11,6 +11,9 @@
 std::map<ResourceID, ResourceHandle> ResourceManager::resources;
 
 void ResourceManager::loadResources() {
+    // using a temporary because if allocation fails, the raw pointer would dangle
+    // with a temporary, if allocation fails, memory is automatically cleaned up
+
     // textures
     resources.emplace(TEXTURE_ATLAS, ResourceHandle {new Texture("Textures/textureAtlas0.png")});
     resources.emplace(TEXTURE_BACKGROUND_MAIN_MENU, ResourceHandle {new Texture("Textures/background_mainmenu.png")});
