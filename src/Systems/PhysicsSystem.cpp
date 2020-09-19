@@ -99,7 +99,6 @@ void PhysicsSystem::handleBlockCollision(entt::entity entity, glm::vec3 block) c
 
             velocity.velocity -= glm::dot(velocity.velocity, normal) * normal;
 
-
             break;
         }
 

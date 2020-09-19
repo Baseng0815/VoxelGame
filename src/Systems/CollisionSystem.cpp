@@ -95,8 +95,8 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
                 if (World::getBlock(&m_registry, position).isSolid()) {
                     Math::Cuboid blockHitbox = Math::Cuboid(position, 1, 1, 1);
 
-                    hasCollision = hitbox.intersects(blockHitbox);
-                    if (hasCollision) {
+                    if (hitbox.intersects(blockHitbox)) {
+                        hasCollision = true;
                         block = position;
                         break;
                     }
@@ -106,6 +106,8 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
     }
 
     if (hasCollision) {
+        std::cout << "collision detected!" << std::endl;
+
         BlockCollisionEvent e{nullptr, entity, block};
         EventDispatcher::raiseEvent(e);
     }
