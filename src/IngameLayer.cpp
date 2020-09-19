@@ -46,15 +46,15 @@ IngameLayer::IngameLayer(Application* application)
     m_application->getWindow().disableCursor();
 
     // create all systems
-    m_systems.emplace_back(std::unique_ptr<System> {new ChunkCreateSystem {m_registry}});
-    m_systems.emplace_back(std::unique_ptr<System> {new PhysicsSystem {m_registry}});
-    m_systems.emplace_back(std::unique_ptr<System> {new InputSystem {m_registry}});
-    m_systems.emplace_back(std::unique_ptr<System> {new PlayerMovementSystem {m_registry }});
-    m_systems.emplace_back(std::unique_ptr<System> {new CloudSystem {m_registry }});
-    m_systems.emplace_back(std::unique_ptr<System> {new SkyboxSystem {m_registry }});
-    m_systems.emplace_back(std::unique_ptr<System> {new CollisionSystem {m_registry}});
-    m_systems.emplace_back(std::unique_ptr<System> {new MeshRenderSystem {m_registry}});
-    m_systems.emplace_back(std::unique_ptr<System> {new DebugRenderSystem {m_registry}});
+    m_systems.emplace_back(new ChunkCreateSystem {m_registry});
+    m_systems.emplace_back(new PhysicsSystem {m_registry});
+    m_systems.emplace_back(new InputSystem {m_registry});
+    m_systems.emplace_back(new PlayerMovementSystem {m_registry });
+    m_systems.emplace_back(new CloudSystem {m_registry });
+    m_systems.emplace_back(new SkyboxSystem {m_registry });
+    m_systems.emplace_back(new CollisionSystem {m_registry});
+    m_systems.emplace_back(new MeshRenderSystem {m_registry});
+    m_systems.emplace_back(new DebugRenderSystem {m_registry});
 
     // atlas
     entt::entity entity = m_registry.create();

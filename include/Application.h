@@ -6,6 +6,8 @@
 struct KeyEvent;
 class GameLayer;
 
+// TODO
+// remove temporary construction on all emplace_back calls
 class Application {
 private:
     Window m_window;
