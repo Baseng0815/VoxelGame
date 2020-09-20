@@ -1,21 +1,13 @@
 #pragma once
-#include "../Block.h"
 
-enum BiomeID : char {
-	BIOME_FLAT,
-	BIOME_FLAT_TERRAIN,
-	BIOME_RIVER,
-	BIOME_DESERT,
-	BIOME_OCEAN,
-	BIOME_BEACH,	
-	NUM_BIOMES
-};
+#include "../GameData/BiomeIds.h"
+#include "../GameData/BlockIds.h"
 
 struct Biome {
-	BiomeID id;	
-	BlockType surfaceBlocks;
-	BlockType subsurfaceBlocks;
+    BiomeId id;
+    BlockId surfaceBlocks;
+    BlockId subsurfaceBlocks;
 
-	int surfaceHeight;
-	int subsorfaceHeight;	
+    int surfaceHeight;
+    int subsorfaceHeight;
 };

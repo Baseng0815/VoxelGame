@@ -3,10 +3,6 @@
 #include <map>
 #include <string>
 
-#include "BlockData.h"
-
-typedef std::map<BlockType, BlockData> BlockDataMap;
-
 struct Event;
 
 class Configuration {
@@ -14,8 +10,6 @@ class Configuration {
         static std::map<std::string, float> floatValues;
         static std::map<std::string, std::string> stringValues;
         static std::map<std::string, int> keyBinds;
-
-        static BlockDataMap blockDataMap;
 
     public:
         static constexpr int CHUNK_SIZE = 16;
@@ -32,15 +26,13 @@ class Configuration {
         static constexpr float CLOUD_HEIGHT = 120;
         static constexpr float CLOUD_VOLUMETRIC_HEIGHT = 8;
 
-        // path contains Settings.json, Keybinds.json, blockData.json and biomeInfo.json
-        static void loadConfiguration(const std::string& resourceBasePath);
+        // resourceBasePath contains all resources and static data
+        static void loadConfiguration(const std::string &resourceBasePath);
 
-        static float getFloatValue(const std::string& location);
-        static const std::string& getStringValue(const std::string& location);
-        static void setValue(const std::string& location, float value);
-        static void setValue(const std::string& location, std::string value);
+        static float getFloatValue(const std::string &location);
+        static const std::string& getStringValue(const std::string &location);
+        static void setValue(const std::string &location, float value);
+        static void setValue(const std::string &location, std::string value);
 
         static int getAssociatedKey(const std::string &location);
-
-        static const BlockData& getBlockData(BlockType block);
 };

@@ -1,194 +1,242 @@
 {
-  "0": {
-    "tid_up": 0,
-    "tid_px": 0,
-    "tid_nx": 0,
-    "tid_pz": 0,
-    "tid_nz": 0,
-    "tid_bt": 0
-  },
-  "1": {
-    "tid_up": 0,
-    "tid_px": 3,
-    "tid_nx": 3,
-    "tid_pz": 3,
-    "tid_nz": 3,
-    "tid_bt": 2
-  },
-  "2": {
-    "tid_up": 1,
-    "tid_px": 1,
-    "tid_nx": 1,
-    "tid_pz": 1,
-    "tid_nz": 1,
-    "tid_bt": 1
-  },
-  "3": {
-    "tid_up": 21,
-    "tid_px": 20,
-    "tid_nx": 20,
-    "tid_pz": 20,
-    "tid_nz": 20,
-    "tid_bt": 21
-  },
-  "4": {
-    "tid_up": 5,
-    "tid_px": 5,
-    "tid_nx": 5,
-    "tid_pz": 5,
-    "tid_nz": 5,
-    "tid_bt": 5
-  },
-  "5": {
-    "tid_up": 6,
-    "tid_px": 6,
-    "tid_nx": 6,
-    "tid_pz": 6,
-    "tid_nz": 6,
-    "tid_bt": 6
-  },
-  "6": {
-    "tid_up": 7,
-    "tid_px": 7,
-    "tid_nx": 7,
-    "tid_pz": 7,
-    "tid_nz": 7,
-    "tid_bt": 7
-  },
-  "7": {
-    "tid_up": 9,
-    "tid_px": 8,
-    "tid_nx": 8,
-    "tid_pz": 8,
-    "tid_nz": 8,
-    "tid_bt": 10
-  },
-  "8": {
-    "tid_up": 16,
-    "tid_px": 16,
-    "tid_nx": 16,
-    "tid_pz": 16,
-    "tid_nz": 16,
-    "tid_bt": 16
-  },
-  "9": {
-    "tid_up": 17,
-    "tid_px": 17,
-    "tid_nx": 17,
-    "tid_pz": 17,
-    "tid_nz": 17,
-    "tid_bt": 17
-  },
-  "10": {
-    "tid_up": 18,
-    "tid_px": 18,
-    "tid_nx": 18,
-    "tid_pz": 18,
-    "tid_nz": 18,
-    "tid_bt": 18
-  },
-  "11": {
-    "tid_up": 19,
-    "tid_px": 19,
-    "tid_nx": 19,
-    "tid_pz": 19,
-    "tid_nz": 19,
-    "tid_bt": 19
-  },
-  "12": {
-    "tid_up": 22,
-    "tid_px": 22,
-    "tid_nx": 22,
-    "tid_pz": 22,
-    "tid_nz": 22,
-    "tid_bt": 22
-  },
-  "13": {
-    "tid_up": 23,
-    "tid_px": 23,
-    "tid_nx": 23,
-    "tid_pz": 23,
-    "tid_nz": 23,
-    "tid_bt": 23
-  },
-  "14": {
-    "tid_up": 24,
-    "tid_px": 24,
-    "tid_nx": 24,
-    "tid_pz": 24,
-    "tid_nz": 24,
-    "tid_bt": 24
-  },
-  "15": {
-    "tid_up": 25,
-    "tid_px": 25,
-    "tid_nx": 25,
-    "tid_pz": 25,
-    "tid_nz": 25,
-    "tid_bt": 25
-  },
-  "16": {
-    "tid_up": 32,
-    "tid_px": 32,
-    "tid_nx": 32,
-    "tid_pz": 32,
-    "tid_nz": 32,
-    "tid_bt": 32
-  },
-  "17": {
-    "tid_up": 33,
-    "tid_px": 33,
-    "tid_nx": 33,
-    "tid_pz": 33,
-    "tid_nz": 33,
-    "tid_bt": 33
-  },
-  "18": {
-    "tid_up": 34,
-    "tid_px": 34,
-    "tid_nx": 34,
-    "tid_pz": 34,
-    "tid_nz": 34,
-    "tid_bt": 34
-  },
-  "19": {
-    "tid_up": 35,
-    "tid_px": 35,
-    "tid_nx": 35,
-    "tid_pz": 35,
-    "tid_nz": 35,
-    "tid_bt": 35
-  },
-  "20": {
-    "tid_up": 36,
-    "tid_px": 36,
-    "tid_nx": 36,
-    "tid_pz": 36,
-    "tid_nz": 36,
-    "tid_bt": 36
-  },
-  "21": {
-    "tid_up": 2,
-    "tid_px": 2,
-    "tid_nx": 2,
-    "tid_pz": 2,
-    "tid_nz": 2,
-    "tid_bt": 2
-  },
-  "22" : {
-    "tid_up": 53,
-    "tid_px": 53,
-    "tid_nx": 53,
-    "tid_pz": 53,
-    "tid_nz": 53,
-    "tid_bt": 53
-  },
-  "23" : {
-    "tid_up": 222,
-    "tid_px": 222,
-    "tid_nx": 222,
-    "tid_pz": 222,
-    "tid_nz": 222,
-    "tid_bt": 222
-  }
+    "0": {
+        "name": "BLOCK_AIR",
+        "is_solid": false,
+        "tid_py": 0,
+        "tid_px": 0,
+        "tid_nx": 0,
+        "tid_pz": 0,
+        "tid_nz": 0,
+        "tid_ny": 0
+    },
+    "1": {
+        "name": "BLOCK_GRASS",
+        "is_solid": true,
+        "tid_py": 0,
+        "tid_px": 3,
+        "tid_nx": 3,
+        "tid_pz": 3,
+        "tid_nz": 3,
+        "tid_ny": 2
+    },
+    "2": {
+        "name": "BLOCK_STONE",
+        "is_solid": true,
+        "tid_py": 1,
+        "tid_px": 1,
+        "tid_nx": 1,
+        "tid_pz": 1,
+        "tid_nz": 1,
+        "tid_ny": 1
+    },
+    "3": {
+        "name": "BLOCK_WOOD",
+        "is_solid": true,
+        "tid_py": 21,
+        "tid_px": 20,
+        "tid_nx": 20,
+        "tid_pz": 20,
+        "tid_nz": 20,
+        "tid_ny": 21
+    },
+    "4": {
+        "name": "BLOCK_STONE_BRICKS",
+        "is_solid": true,
+        "tid_py": 5,
+        "tid_px": 5,
+        "tid_nx": 5,
+        "tid_pz": 5,
+        "tid_nz": 5,
+        "tid_ny": 5
+    },
+    "5": {
+        "name": "BLOCK_STONE_FRAMED",
+        "is_solid": true,
+        "tid_py": 6,
+        "tid_px": 6,
+        "tid_nx": 6,
+        "tid_pz": 6,
+        "tid_nz": 6,
+        "tid_ny": 6
+    },
+    "6": {
+        "name": "BLOCK_BRICKS",
+        "is_solid": true,
+        "tid_py": 7,
+        "tid_px": 7,
+        "tid_nx": 7,
+        "tid_pz": 7,
+        "tid_nz": 7,
+        "tid_ny": 7
+    },
+    "7": {
+        "name": "BLOCK_TNT",
+        "is_solid": true,
+        "tid_py": 9,
+        "tid_px": 8,
+        "tid_nx": 8,
+        "tid_pz": 8,
+        "tid_nz": 8,
+        "tid_ny": 10
+    },
+    "8": {
+        "name": "BLOCK_STONE_CRACKED",
+        "is_solid": true,
+        "tid_py": 16,
+        "tid_px": 16,
+        "tid_nx": 16,
+        "tid_pz": 16,
+        "tid_nz": 16,
+        "tid_ny": 16
+    },
+    "9": {
+        "name": "BLOCK_STONE_COBBLE",
+        "is_solid": true,
+        "tid_py": 17,
+        "tid_px": 17,
+        "tid_nx": 17,
+        "tid_pz": 17,
+        "tid_nz": 17,
+        "tid_ny": 17
+    },
+    "10": {
+        "name": "BLOCK_SAND",
+        "is_solid": true,
+        "tid_py": 18,
+        "tid_px": 18,
+        "tid_nx": 18,
+        "tid_pz": 18,
+        "tid_nz": 18,
+        "tid_ny": 18
+    },
+    "11": {
+        "name": "BLOCK_GRAVEL",
+        "is_solid": true,
+        "tid_py": 19,
+        "tid_px": 19,
+        "tid_nx": 19,
+        "tid_pz": 19,
+        "tid_nz": 19,
+        "tid_ny": 19
+    },
+    "12": {
+        "name": "BLOCK_IRON",
+        "is_solid": true,
+        "tid_py": 22,
+        "tid_px": 22,
+        "tid_nx": 22,
+        "tid_pz": 22,
+        "tid_nz": 22,
+        "tid_ny": 22
+    },
+    "13": {
+        "name": "BLOCK_GOLD",
+        "is_solid": true,
+        "tid_py": 23,
+        "tid_px": 23,
+        "tid_nx": 23,
+        "tid_pz": 23,
+        "tid_nz": 23,
+        "tid_ny": 23
+    },
+    "14": {
+        "name": "BLOCK_DIAMOND",
+        "is_solid": true,
+        "tid_py": 24,
+        "tid_px": 24,
+        "tid_nx": 24,
+        "tid_pz": 24,
+        "tid_nz": 24,
+        "tid_ny": 24
+    },
+    "15": {
+        "name": "BLOCK_EMERALD",
+        "is_solid": true,
+        "tid_py": 25,
+        "tid_px": 25,
+        "tid_nx": 25,
+        "tid_pz": 25,
+        "tid_nz": 25,
+        "tid_ny": 25
+    },
+    "16": {
+        "name": "BLOCK_ORE_GOLD",
+        "is_solid": true,
+        "tid_py": 32,
+        "tid_px": 32,
+        "tid_nx": 32,
+        "tid_pz": 32,
+        "tid_nz": 32,
+        "tid_ny": 32
+    },
+    "17": {
+        "name": "BLOCK_ORE_IRON",
+        "is_solid": true,
+        "tid_py": 33,
+        "tid_px": 33,
+        "tid_nx": 33,
+        "tid_pz": 33,
+        "tid_nz": 33,
+        "tid_ny": 33
+    },
+    "18": {
+        "name": "BLOCK_ORE_COAL",
+        "is_solid": true,
+        "tid_py": 34,
+        "tid_px": 34,
+        "tid_nx": 34,
+        "tid_pz": 34,
+        "tid_nz": 34,
+        "tid_ny": 34
+    },
+    "19": {
+        "name": "BLOCK_BOOKSHELF",
+        "is_solid": true,
+        "tid_py": 35,
+        "tid_px": 35,
+        "tid_nx": 35,
+        "tid_pz": 35,
+        "tid_nz": 35,
+        "tid_ny": 35
+    },
+    "20": {
+        "name": "BLOCK_STONE_MOSSY",
+        "is_solid": true,
+        "tid_py": 36,
+        "tid_px": 36,
+        "tid_nx": 36,
+        "tid_pz": 36,
+        "tid_nz": 36,
+        "tid_ny": 36
+    },
+    "21": {
+        "name": "BLOCK_DIRT",
+        "is_solid": true,
+        "tid_py": 2,
+        "tid_px": 2,
+        "tid_nx": 2,
+        "tid_pz": 2,
+        "tid_nz": 2,
+        "tid_ny": 2
+    },
+    "22" : {
+        "name": "BLOCK_LEAVES",
+        "is_solid": true,
+        "tid_py": 53,
+        "tid_px": 53,
+        "tid_nx": 53,
+        "tid_pz": 53,
+        "tid_nz": 53,
+        "tid_ny": 53
+    },
+    "23" : {
+        "name": "BLOCK_WATER",
+        "is_solid": false,
+        "tid_py": 222,
+        "tid_px": 222,
+        "tid_nx": 222,
+        "tid_pz": 222,
+        "tid_nz": 222,
+        "tid_ny": 222
+    }
 }

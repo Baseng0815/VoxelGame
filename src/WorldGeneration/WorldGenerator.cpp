@@ -5,6 +5,8 @@
 #include "../../include/Utility.h"
 #include "../../include/Systems/ChunkCreateSystem.h"
 
+#include "../../include/GameData/GameData.h"
+
 #include <iostream>
 
 using namespace noise::utils;
@@ -14,17 +16,17 @@ WorldGenerator::WorldGenerator(WorldType worldType) {
 	m_type = worldType;
 }
 
-void WorldGenerator::generateOres(BiomeID** biomes, Block*** blocks) const {
-	for (BlockType block = BlockType::BLOCK_ORE_GOLD; block <= BlockType::BLOCK_ORE_COAL; ) {
-		BlockData blockData = Configuration::getBlockData(block);
+void WorldGenerator::generateOres(BiomeId** biomes, Block*** blocks) const {
+	for (BlockId block = BlockId::BLOCK_ORE_GOLD; block <= BlockId::BLOCK_ORE_COAL; ) {
+		BlockTemplate blockTemplate = GameData::getBlockTemplate(block);
 
-		for (int c = 0; c < blockData.oreData.generationCounts; c++) {
+		for (int c = 0; c < blockTemplate.oreData.generationCounts; c++) {
 			int x = rand() % Configuration::CHUNK_SIZE;
-			int y = rand() % (blockData.oreData.maxHeight - blockData.oreData.minHeight) + blockData.oreData.minHeight;
+			int y = rand() % (blockTemplate.oreData.maxHeight - blockTemplate.oreData.minHeight) + blockTemplate.oreData.minHeight;
 			int z = rand() % Configuration::CHUNK_SIZE;
 			glm::vec3 orePos = glm::vec3(x, y, z);
 
-			double a = pow(3 * blockData.oreData.size / (16 * PI), 1 / 3.0);
+			double a = pow(3 * blockTemplate.oreData.size / (16 * PI), 1 / 3.0);
 
 			//		x^2		y^2		z^2
 			// 1 = ----- + ----- + -----
@@ -44,15 +46,15 @@ void WorldGenerator::generateOres(BiomeID** biomes, Block*** blocks) const {
 							if (pos.x < 0 || pos.x >= Configuration::CHUNK_SIZE || pos.y < 0 || pos.y >= Configuration::CHUNK_HEIGHT || pos.z < 0 || pos.z >= Configuration::CHUNK_SIZE)
 								continue;
 
-							if (blocks[(int)pos.x][(int)pos.y][(int)pos.z].type == BlockType::BLOCK_STONE) {
-								blocks[(int)pos.x][(int)pos.y][(int)pos.z] = Block(block);
+							if (blocks[(int)pos.x][(int)pos.y][(int)pos.z].type == BlockId::BLOCK_STONE) {
+								blocks[(int)pos.x][(int)pos.y][(int)pos.z] = Block {block};
 							}
 						}
 					}
 				}
 		}
 
-		block = (BlockType)((int)block + 1);
+		block = (BlockId)((int)block + 1);
 	}
 }
 

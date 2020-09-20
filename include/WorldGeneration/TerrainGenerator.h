@@ -8,9 +8,9 @@ class TerrainGenerator {
 private:
     std::vector<Biome> m_biomes;
 
-    Biome getBiome(BiomeID id) const;
+    Biome getBiome(BiomeId id) const;
 public:
     TerrainGenerator();
 
-    void createBlocks(Block*** blocks, int** heightMap, BiomeID** biomes) const;
+    void createBlocks(Block*** blocks, int** heightMap, BiomeId** biomes) const;
 };

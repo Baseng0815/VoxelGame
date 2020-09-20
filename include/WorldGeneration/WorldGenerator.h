@@ -1,44 +1,45 @@
 #pragma once
+
 #include "CaveGenerator.h"
 #include "TerrainHeightGenerator.h"
 #include "TerrainGenerator.h"
 #include "ForrestGenerator.h"
 
+#include "../GameData/Block.h"
+
 #include <glm/glm.hpp>
 #include <unordered_map>
 #include <noise/noise.h>
-#include "../Block.h"
 
 using namespace noise;
 using namespace noise::module;
 
-struct Block;
 struct ChunkComponent;
 struct GenerationData;
 
 enum class WorldType : char {
-	WORLD_FLAT,
-	WORLD_NORMAL
+    WORLD_FLAT,
+    WORLD_NORMAL
 };
 
 class WorldGenerator {
-private:
-	WorldType m_type = WorldType::WORLD_FLAT;	
+    private:
+        WorldType m_type = WorldType::WORLD_FLAT;	
 
-	//BiomeGenerator m_biomeGenerator;
-	CaveGenerator m_caveGenerator;
-	TerrainHeightGenerator m_heightGenerator;
-	TerrainGenerator m_terrainGenerator;
-	ForrestGenerator m_forrestGenerator;
-			
-	void generateOres(BiomeID** biomes, Block*** blocks) const;	
+        //BiomeGenerator m_biomeGenerator;
+        CaveGenerator m_caveGenerator;
+        TerrainHeightGenerator m_heightGenerator;
+        TerrainGenerator m_terrainGenerator;
+        ForrestGenerator m_forrestGenerator;
 
-public:
-	WorldGenerator(WorldType type);
-	WorldGenerator(const WorldGenerator&);	
+        void generateOres(BiomeId** biomes, Block*** blocks) const;	
 
-	void init(WorldType worldType);
+    public:
+        WorldGenerator(WorldType type);
+        WorldGenerator(const WorldGenerator&);	
 
-	void generate(glm::vec2 position, GenerationData* data);
+        void init(WorldType worldType);
+
+        void generate(glm::vec2 position, GenerationData* data);
 };
 

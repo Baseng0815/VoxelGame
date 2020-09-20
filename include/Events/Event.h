@@ -16,7 +16,6 @@ enum EventType {
 };
 
 class Application;
-struct Block;
 
 struct KeyEvent {
     Application* app;

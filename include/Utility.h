@@ -13,7 +13,7 @@
 #include <ostream>
 #include <functional>
 
-#include "../include/Block.h"
+#include "GameData/Block.h"
 
 struct WorldComponent;
 
@@ -31,7 +31,7 @@ namespace Utility {
     glm::vec3 GetWorldCoords(const glm::vec2 &chunk, const glm::vec3 &chunkCoords);
     glm::vec3 GetChunkCoords(const glm::vec3 &worldPos);
     glm::vec3 GetBlockCoords(const glm::vec3 &coords);
-    
+
     glm::vec3 getFacePosition(const glm::vec3 &blockPos, const glm::vec3 &faceNormal);
 
     template<typename T>

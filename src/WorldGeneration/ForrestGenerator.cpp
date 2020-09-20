@@ -2,9 +2,9 @@
 
 #include "../../include/Configuration.h"
 
-void ForrestGenerator::setBlock(glm::vec2 chunk, int cx, int cy, int cz, Block*** blocks, BlockType type) {
+void ForrestGenerator::setBlock(glm::vec2 chunk, int cx, int cy, int cz, Block*** blocks, BlockId type) {
     if (Utility::InChunk(cx, cy, cz)) {
-        blocks[cx][cy][cz] = Block(type);
+        blocks[cx][cy][cz] = Block {type};
     }
     else {
         glm::vec3 worldCoords = (float)Configuration::CHUNK_SIZE * glm::vec3{chunk.x, 0, chunk.y} + glm::vec3{cx, cy, cz};
@@ -12,14 +12,14 @@ void ForrestGenerator::setBlock(glm::vec2 chunk, int cx, int cy, int cz, Block**
         auto [realChunk, chunkCoords] = Utility::GetChunkAndLocal(worldCoords);
 
         if (!generationData.contains(realChunk)) {
-            generationData.emplace(chunk, std::vector<std::tuple<glm::vec3, BlockType>>());
+            generationData.emplace(chunk, std::vector<std::tuple<glm::vec3, BlockId>>());
         }
 
         generationData[realChunk].emplace_back(chunkCoords, type);
     }
 }
 
-void ForrestGenerator::generateTrees(glm::vec2 chunk, Block*** blocks, BiomeID** biomes) {
+void ForrestGenerator::generateTrees(glm::vec2 chunk, Block*** blocks, BiomeId** biomes) {
     if (generationData.contains(chunk)) {
         for (auto [position, type] : generationData[chunk]) {
             blocks[(int)position.x][(int)position.y][(int)position.z] = Block(type);
@@ -30,17 +30,17 @@ void ForrestGenerator::generateTrees(glm::vec2 chunk, Block*** blocks, BiomeID**
 
     for (int cx = 0; cx < Configuration::CHUNK_SIZE; cx++) {
         for (int cz = 0; cz < Configuration::CHUNK_SIZE; cz++) {
-            if (biomes[cx][cz] != BiomeID::BIOME_FLAT_TERRAIN)
+            if (biomes[cx][cz] != BiomeId::BIOME_FLAT_TERRAIN)
                 continue;
 
             int terrainHeight = 0;
 
             for (int y = Configuration::CHUNK_HEIGHT - 1; y >= 0; y--) {
-                if (blocks[cx][y][cz].type == BlockType::BLOCK_GRASS) {
+                if (blocks[cx][y][cz].type == BlockId::BLOCK_GRASS) {
                     terrainHeight = y;
                     break;
                 }
-                else if (blocks[cx][y][cz].type != BlockType::BLOCK_AIR) {
+                else if (blocks[cx][y][cz].type != BlockId::BLOCK_AIR) {
                     terrainHeight = -1;
                     break;
                 }
@@ -64,7 +64,7 @@ void ForrestGenerator::generateTrees(glm::vec2 chunk, Block*** blocks, BiomeID**
                                 int y = y1 + terrainHeight + 1;
                                 int z = z1 + cz;
                                 if (Utility::InChunk(x, y, z)) {
-                                    if (blocks[x][y][z].type == BlockType::BLOCK_WOOD) {
+                                    if (blocks[x][y][z].type == BlockId::BLOCK_WOOD) {
                                         canCreate = false;
                                     }
                                 }
@@ -109,7 +109,7 @@ void ForrestGenerator::generateTrees(glm::vec2 chunk, Block*** blocks, BiomeID**
                     }
 
                     for (int y = 0; y < treeHeight; y++) {
-                        blocks[cx][y + terrainHeight + 1][cz] = Block(BlockType::BLOCK_WOOD);
+                        blocks[cx][y + terrainHeight + 1][cz] = Block {BlockId::BLOCK_WOOD};
                     }
                 }
             }

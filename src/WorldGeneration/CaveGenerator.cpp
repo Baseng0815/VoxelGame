@@ -1,6 +1,6 @@
 #include "../../include/WorldGeneration/CaveGenerator.h"
 
-#include "../../include/Block.h"
+#include "../../include/GameData/Block.h"
 #include "../../include/Configuration.h"
 
 CaveGenerator::CaveGenerator() {
@@ -13,10 +13,10 @@ void CaveGenerator::generateChunk(glm::vec2 chunkPos, Block*** blocks) const {
     for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
         for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
             for (int z = 0; z < Configuration::CHUNK_SIZE; z++) {
-                if (blocks[x][y][z].type != BlockType::BLOCK_BRICKS && blocks[x][y][z].type != BlockType::BLOCK_WATER) {
+                if (blocks[x][y][z].type != BlockId::BLOCK_BRICKS && blocks[x][y][z].type != BlockId::BLOCK_WATER) {
                     if (caveNoise.GetValue(x + chunkPos.x * Configuration::CHUNK_SIZE, y,
                                             z + chunkPos.y * Configuration::CHUNK_SIZE) > threshold) {
-                        blocks[x][y][z] = Block(BlockType::BLOCK_AIR);
+                        blocks[x][y][z] = Block {BlockId::BLOCK_AIR};
                     }
                 }
             }
