@@ -33,6 +33,7 @@ void GameData::loadGameData()
         blockTemplate.tid_pz    = (*it)["tid_pz"].get<int>();
         blockTemplate.tid_nz    = (*it)["tid_nz"].get<int>();
         blockTemplate.tid_ny    = (*it)["tid_ny"].get<int>();
+        std::cout << blockTemplate.name << std::endl;
 
         m_blockTemplates.emplace_back(std::move(blockTemplate));
     }

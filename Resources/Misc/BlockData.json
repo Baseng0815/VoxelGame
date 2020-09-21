@@ -1,5 +1,5 @@
-{
-    "0": {
+[
+    {
         "name": "BLOCK_AIR",
         "is_solid": false,
         "tid_py": 0,
@@ -9,7 +9,7 @@
         "tid_nz": 0,
         "tid_ny": 0
     },
-    "1": {
+    {
         "name": "BLOCK_GRASS",
         "is_solid": true,
         "tid_py": 0,
@@ -19,7 +19,7 @@
         "tid_nz": 3,
         "tid_ny": 2
     },
-    "2": {
+    {
         "name": "BLOCK_STONE",
         "is_solid": true,
         "tid_py": 1,
@@ -29,7 +29,7 @@
         "tid_nz": 1,
         "tid_ny": 1
     },
-    "3": {
+    {
         "name": "BLOCK_WOOD",
         "is_solid": true,
         "tid_py": 21,
@@ -39,7 +39,7 @@
         "tid_nz": 20,
         "tid_ny": 21
     },
-    "4": {
+    {
         "name": "BLOCK_STONE_BRICKS",
         "is_solid": true,
         "tid_py": 5,
@@ -49,7 +49,7 @@
         "tid_nz": 5,
         "tid_ny": 5
     },
-    "5": {
+    {
         "name": "BLOCK_STONE_FRAMED",
         "is_solid": true,
         "tid_py": 6,
@@ -59,7 +59,7 @@
         "tid_nz": 6,
         "tid_ny": 6
     },
-    "6": {
+    {
         "name": "BLOCK_BRICKS",
         "is_solid": true,
         "tid_py": 7,
@@ -69,7 +69,7 @@
         "tid_nz": 7,
         "tid_ny": 7
     },
-    "7": {
+    {
         "name": "BLOCK_TNT",
         "is_solid": true,
         "tid_py": 9,
@@ -79,7 +79,7 @@
         "tid_nz": 8,
         "tid_ny": 10
     },
-    "8": {
+    {
         "name": "BLOCK_STONE_CRACKED",
         "is_solid": true,
         "tid_py": 16,
@@ -89,7 +89,7 @@
         "tid_nz": 16,
         "tid_ny": 16
     },
-    "9": {
+    {
         "name": "BLOCK_STONE_COBBLE",
         "is_solid": true,
         "tid_py": 17,
@@ -99,7 +99,7 @@
         "tid_nz": 17,
         "tid_ny": 17
     },
-    "10": {
+    {
         "name": "BLOCK_SAND",
         "is_solid": true,
         "tid_py": 18,
@@ -109,7 +109,7 @@
         "tid_nz": 18,
         "tid_ny": 18
     },
-    "11": {
+    {
         "name": "BLOCK_GRAVEL",
         "is_solid": true,
         "tid_py": 19,
@@ -119,7 +119,7 @@
         "tid_nz": 19,
         "tid_ny": 19
     },
-    "12": {
+    {
         "name": "BLOCK_IRON",
         "is_solid": true,
         "tid_py": 22,
@@ -129,7 +129,7 @@
         "tid_nz": 22,
         "tid_ny": 22
     },
-    "13": {
+    {
         "name": "BLOCK_GOLD",
         "is_solid": true,
         "tid_py": 23,
@@ -139,7 +139,7 @@
         "tid_nz": 23,
         "tid_ny": 23
     },
-    "14": {
+    {
         "name": "BLOCK_DIAMOND",
         "is_solid": true,
         "tid_py": 24,
@@ -149,7 +149,7 @@
         "tid_nz": 24,
         "tid_ny": 24
     },
-    "15": {
+    {
         "name": "BLOCK_EMERALD",
         "is_solid": true,
         "tid_py": 25,
@@ -159,7 +159,7 @@
         "tid_nz": 25,
         "tid_ny": 25
     },
-    "16": {
+    {
         "name": "BLOCK_ORE_GOLD",
         "is_solid": true,
         "tid_py": 32,
@@ -169,7 +169,7 @@
         "tid_nz": 32,
         "tid_ny": 32
     },
-    "17": {
+    {
         "name": "BLOCK_ORE_IRON",
         "is_solid": true,
         "tid_py": 33,
@@ -179,7 +179,7 @@
         "tid_nz": 33,
         "tid_ny": 33
     },
-    "18": {
+    {
         "name": "BLOCK_ORE_COAL",
         "is_solid": true,
         "tid_py": 34,
@@ -189,7 +189,7 @@
         "tid_nz": 34,
         "tid_ny": 34
     },
-    "19": {
+    {
         "name": "BLOCK_BOOKSHELF",
         "is_solid": true,
         "tid_py": 35,
@@ -199,7 +199,7 @@
         "tid_nz": 35,
         "tid_ny": 35
     },
-    "20": {
+    {
         "name": "BLOCK_STONE_MOSSY",
         "is_solid": true,
         "tid_py": 36,
@@ -209,7 +209,7 @@
         "tid_nz": 36,
         "tid_ny": 36
     },
-    "21": {
+    {
         "name": "BLOCK_DIRT",
         "is_solid": true,
         "tid_py": 2,
@@ -219,7 +219,7 @@
         "tid_nz": 2,
         "tid_ny": 2
     },
-    "22" : {
+    {
         "name": "BLOCK_LEAVES",
         "is_solid": true,
         "tid_py": 53,
@@ -229,7 +229,7 @@
         "tid_nz": 53,
         "tid_ny": 53
     },
-    "23" : {
+    {
         "name": "BLOCK_WATER",
         "is_solid": false,
         "tid_py": 222,
@@ -239,4 +239,4 @@
         "tid_nz": 222,
         "tid_ny": 222
     }
-}
+]

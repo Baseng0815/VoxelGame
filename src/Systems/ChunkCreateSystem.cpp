@@ -17,7 +17,7 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent &e)
 {
     // remove old chunks from ECS system and queue chunk data deletion
     auto view = m_registry.view<ChunkComponent>();
-for (auto entity : view) {
+    for (auto entity : view) {
         const auto& chunk = view.get<ChunkComponent>(entity);
         if (std::abs(e.newX - chunk.chunkX) > Configuration::CHUNK_PRELOAD_SIZE ||
             std::abs(e.newZ - chunk.chunkZ) > Configuration::CHUNK_PRELOAD_SIZE) {
@@ -64,11 +64,11 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
     for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
         generationData.blocks[x] = new Block*[Configuration::CHUNK_HEIGHT];
         for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
-            generationData.blocks[x][y] = new Block[Configuration::CHUNK_SIZE];
+            generationData.blocks[x][y] = new Block[Configuration::CHUNK_SIZE] { Block {BlockId::BLOCK_AIR} };
 
-            if (true) {
+            if (y < 63) {
                 for (int z = 0; z < Configuration::CHUNK_SIZE; z++) {
-                    generationData.blocks[x][y][z] = Block {BlockId::BLOCK_AIR};
+                    generationData.blocks[x][y][z] = Block {BlockId::BLOCK_WATER};
                 }
             }
         }
@@ -288,14 +288,14 @@ void ChunkCreateSystem::_update(int dt) {
                     chunk.threadActiveOnSelf = true;
 
                     m_generationFutures.push_back(std::async(
-                            std::launch::async, [=]() { return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ); }));
+                            std::launch::async, [=, this]() { return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ); }));
                 }
                 // update vertices
                 else if (chunk.verticesOutdated) {
                     m_constructionCount++;
                     chunk.threadActiveOnSelf = true;
 
-                    m_geometryFutures.push_back(std::async(std::launch::async, [=]() {
+                    m_geometryFutures.push_back(std::async(std::launch::async, [=, this]() {
                         return updateChunkVertices(entity, chunk.blocks, chunk.blockMutex);
                     }));
                 }
@@ -370,7 +370,7 @@ ChunkCreateSystem::ChunkCreateSystem(Registry_T& registry)
     }
 
     // generate block uv arrays
-    for (int i = 0; i < m_atlas.blockUVsArray.size(); i++) {
+    for (size_t i = 0; i < m_atlas.blockUVsArray.size(); i++) {
         const BlockTemplate &blockTemplate = GameData::getBlockTemplate((BlockId)i);
         m_atlas.blockUVsArray[i][0] = faceUVs[blockTemplate.tid_py];
         m_atlas.blockUVsArray[i][1] = faceUVs[blockTemplate.tid_nx];
@@ -378,6 +378,7 @@ ChunkCreateSystem::ChunkCreateSystem(Registry_T& registry)
         m_atlas.blockUVsArray[i][3] = faceUVs[blockTemplate.tid_nz];
         m_atlas.blockUVsArray[i][4] = faceUVs[blockTemplate.tid_pz];
         m_atlas.blockUVsArray[i][5] = faceUVs[blockTemplate.tid_ny];
+
     }
 
     // event callbacks
