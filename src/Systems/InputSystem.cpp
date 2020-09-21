@@ -60,14 +60,14 @@ void InputSystem::handleKeyPressEvent(const KeyEvent& e) {
 }
 
 void InputSystem::handleMouseButtonEvent(const MouseButtonEvent& e) {
-    if(e.button == GLFW_MOUSE_BUTTON_LEFT) {
+    if(e.button == GLFW_MOUSE_BUTTON_LEFT && e.action == GLFW_RELEASE) {
         m_registry.view<PlayerComponent>().each(
             [&](PlayerComponent& player) {
                 glm::vec3 block = player.lookAt;
 
                 // TODO: Fix this
-                // if(block.y > 0)
-                    // World::setBlock(&m_registry, block, Block());
+                if(block.y > 0 && block.y < Configuration::CHUNK_HEIGHT)
+                    World::setBlock(&m_registry, block, Block());
             }            
         );
     }

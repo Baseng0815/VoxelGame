@@ -41,10 +41,15 @@ void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent& player, VelocityCo
 
         velocity.velocity += player.maxMovementSpeed * glm::normalize(playerMovementDir);
 
-        float speed = glm::length(velocity.velocity);
+        float speed = sqrt(velocity.velocity.x * velocity.velocity.x + velocity.velocity.z * velocity.velocity.z);
 
         if (speed > player.maxMovementSpeed) {
-            velocity.velocity *= player.maxMovementSpeed / speed;             
+            velocity.velocity.x *= player.maxMovementSpeed / speed;
+            velocity.velocity.z *= player.maxMovementSpeed / speed;            
+        }
+
+        if(velocity.velocity.y > player.maxMovementSpeed) {
+            velocity.velocity.y = player.maxMovementSpeed;
         }
     }
     else {

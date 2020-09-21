@@ -16,8 +16,9 @@ void StructureGenerator::generateStructure(glm::vec2 chunk, glm::vec3 position, 
         if (Utility::InChunk(pos)) {
             blocks[(int)pos.x][(int)pos.y][(int)pos.z] = blockType;
         }
-        else {
-            glm::vec3 worldPos = Utility::GetWorldCoords(chunk, pos);
+        else {            
+            glm::vec3 worldPos = Utility::GetWorldCoords(chunk, pos);            
+
             auto [newChunk, chunkCoords] = Utility::GetChunkAndLocal(worldPos);
             if (!chunkOverflow.contains(chunk)) {
                 chunkOverflow.emplace(newChunk, BlockCollection());
