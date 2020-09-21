@@ -56,7 +56,7 @@ void WorldGenerator::generateOres(BiomeID** biomes, Block*** blocks) const {
 	}
 }
 
-void WorldGenerator::generate(entt::registry* registry, glm::vec2 position, GenerationData* data) {
+void WorldGenerator::generate(glm::vec2 position, GenerationData* data) {
 	int** heightMap = new int* [Configuration::CHUNK_SIZE];
 	for (int i = 0; i < Configuration::CHUNK_SIZE; i++) heightMap[i] = new int[Configuration::CHUNK_SIZE];
 
@@ -65,4 +65,8 @@ void WorldGenerator::generate(entt::registry* registry, glm::vec2 position, Gene
 	generateOres(data->biomes, data->blocks);
 
 	m_caveGenerator.generateChunk(position, data->blocks);	
+}
+
+int WorldGenerator::getSurfaceHeight(glm::vec2 chunk, int x, int z) const {
+	return m_heightGenerator.getHeight(chunk, x, z);
 }

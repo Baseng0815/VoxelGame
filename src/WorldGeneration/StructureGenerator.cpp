@@ -1,57 +1,73 @@
 #include "../../include/WorldGeneration/StructureGenerator.h"
+#include "../../include/WorldGeneration/WorldGenerator.h"
 
-#include "../../include/Systems/ChunkCreateSystem.h"
 #include "../../include/Configuration.h"
-#include "../../include/Utility.h"
 #include "../../include/Events/EventDispatcher.h"
+#include "../../include/Systems/ChunkCreateSystem.h"
+#include "../../include/Utility.h"
 
 void StructureGenerator::generateStructure(glm::vec2 chunk, glm::vec3 position, const BlockCollection& structure,
-	Block*** blocks) const {
-	std::unordered_map<glm::vec2, BlockCollection, Utility::HashFunctionVec2> chunkOverflow = std::unordered_map<glm::vec2, BlockCollection, Utility::HashFunctionVec2>{};
+                                           Block*** blocks) const {
+    std::unordered_map<glm::vec2, BlockCollection, Utility::HashFunctionVec2> chunkOverflow =
+        std::unordered_map<glm::vec2, BlockCollection, Utility::HashFunctionVec2>{};
 
-	for (auto [localPos, blockType] : structure) {
-		glm::vec3 pos = localPos + position;
-		if (Utility::InChunk(pos)) {
-			blocks[(int)pos.x][(int)pos.y][(int)pos.z] = blockType;
-		}
-		else {
-			glm::vec3 worldPos = Utility::GetWorldCoords(chunk, pos);
-			auto [newChunk, chunkCoords] = Utility::GetChunkAndLocal(worldPos);
-			if (chunkOverflow.contains(chunk)) {
-				chunkOverflow[newChunk].emplace_back(chunkCoords, blockType);
-			}
-		}
-	}
+    for (auto [localPos, blockType] : structure) {
+        glm::vec3 pos = localPos + position;
+        if (Utility::InChunk(pos)) {
+            blocks[(int)pos.x][(int)pos.y][(int)pos.z] = blockType;
+        }
+        else {
+            glm::vec3 worldPos = Utility::GetWorldCoords(chunk, pos);
+            auto [newChunk, chunkCoords] = Utility::GetChunkAndLocal(worldPos);
+            if (!chunkOverflow.contains(chunk)) {
+                chunkOverflow.emplace(newChunk, BlockCollection());
+            }
+            chunkOverflow[newChunk].emplace_back(chunkCoords, blockType);
+        }
+    }
 
-	if (!chunkOverflow.empty()) {
-		StructureCreatedEvent e{ nullptr, chunkOverflow };
-		EventDispatcher::raiseEvent(e);
-	}
+    if (!chunkOverflow.empty()) {
+        StructureCreatedEvent e{nullptr, chunkOverflow};
+        EventDispatcher::raiseEvent(e);
+    }
 }
 
-StructureGenerator::StructureGenerator() {
-	Structures::init();
+void StructureGenerator::generateTrees(glm::vec2 chunk, GenerationData* data) const {
+    for (int cx = 0; cx < Configuration::CHUNK_SIZE; cx++) {
+        for (int cz = 0; cz < Configuration::CHUNK_SIZE; cz++) {
+            float random = rand() / (float)RAND_MAX;
+            if (random < 0.025 && data->biomes[cx][cz] == BiomeID::BIOME_FLAT_TERRAIN) {
+                bool canCreate = true;
+                int surfaceHeight = m_worldGenerator->getSurfaceHeight(chunk, cx, cz);
+
+                for (int x1 = -4; x1 <= 4; x1++) {
+                    for (int y1 = -4; y1 <= 4; y1++) {
+                        for (int z1 = -4; z1 <= 4; z1++) {
+                            int x = cx + x1;
+                            int y = surfaceHeight + 1 + y1;
+                            int z = cz + z1;
+
+                            if (Utility::InChunk(x, y, z)) {
+                                if (data->blocks[x][y][z].type == BlockType::BLOCK_WOOD) {
+                                    canCreate = false;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (canCreate && data->blocks[cx][surfaceHeight - 1][cz].type == BlockType::BLOCK_GRASS) {
+                    generateStructure(chunk, glm::vec3{cx, surfaceHeight, cz}, Structures::getStructure(StructureType::STRUCTURE_TREE, rand() % 3), data->blocks);
+                }
+            }
+        }
+    }
+}
+
+StructureGenerator::StructureGenerator(WorldGenerator* worldGenerator) : m_worldGenerator(worldGenerator) {
+    Structures::init();
 }
 
 void StructureGenerator::generateStructures(glm::vec2 chunk, GenerationData* data) const {
-	int x = 1;
-	int z = 1;
-
-	if (data->biomes[x][z] == BiomeID::BIOME_FLAT_TERRAIN) {
-		int y = Configuration::CHUNK_HEIGHT;
-
-		for (int i = y - 1; i >= 0; i--) {
-			if (data->blocks[x][i][z].type == BlockType::BLOCK_GRASS) {
-				y = i;
-				break;
-			}
-		}
-
-		if (y > 0 && y < Configuration::CHUNK_HEIGHT) {
-			int variation = rand() % 3;
-			auto structure = Structures::getStructure(StructureType::STRUCTURE_TREE, variation);
-
-			generateStructure(chunk, glm::vec3{ x, y, z }, structure, data->blocks);
-		}
-	}
+    generateTrees(chunk, data);
 }

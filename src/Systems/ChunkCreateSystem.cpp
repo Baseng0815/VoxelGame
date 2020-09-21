@@ -53,6 +53,8 @@ void ChunkCreateSystem::handleBlockChanged(const BlockChangedEvent& e) {
 }
 
 void ChunkCreateSystem::handleStructureCreated(const StructureCreatedEvent& e) {
+    std::cout << "Structure created Event" << std::endl;
+
     for (auto [chunk, blocks] : e.data) {
         if (m_structureQueue.contains(chunk)) {
             for (auto block : blocks) {
@@ -96,7 +98,7 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
     }
 
     glm::vec2 chunk = glm::vec2{chunkX, chunkZ};
-    m_generator.generate(&m_registry, chunk, &generationData);
+    m_worldGenerator.generate(chunk, &generationData);
     m_structureGenerator.generateStructures(chunk, &generationData);
 
     if (m_structureQueue.contains(chunk)) {
@@ -347,9 +349,14 @@ void ChunkCreateSystem::_update(int dt) {
 
                     m_generationFutures.push_back(std::async(
                         std::launch::async, [=]() { return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ); }));
+
+                    chunk.verticesOutdated = true;
                 }
                 else if (chunk.structuresOutdated) {
                     updateChunkStructures(glm::vec2{chunk.chunkX, chunk.chunkZ}, chunk.blocks);
+
+                    chunk.structuresOutdated = false;
+                    chunk.verticesOutdated = true;
                 }
                 // update vertices
                 else if (chunk.verticesOutdated) {
@@ -408,7 +415,7 @@ void ChunkCreateSystem::_update(int dt) {
     }
 }
 
-ChunkCreateSystem::ChunkCreateSystem(Registry_T& registry) : System{registry, 10}, m_constructionCount{0} {
+ChunkCreateSystem::ChunkCreateSystem(Registry_T& registry) : System{registry, 10}, m_constructionCount{0}, m_structureGenerator(&m_worldGenerator) {
     // event callbacks
     m_enterChunkHandle =
         EventDispatcher::onEnterChunk.subscribe([&](const EnterChunkEvent& e) { handleEnterChunk(e); });
@@ -417,7 +424,7 @@ ChunkCreateSystem::ChunkCreateSystem(Registry_T& registry) : System{registry, 10
         EventDispatcher::onBlockChange.subscribe([&](const BlockChangedEvent& e) { handleBlockChanged(e); });
 
     m_structureCreatedHandle = EventDispatcher::onStructureCreated.subscribe(
-        [&](const StructureCreatedEvent& e) { handleStructureCreated(e); });
+        [&](const StructureCreatedEvent& e) { handleStructureCreated(e); });    
 
     handleEnterChunk(EnterChunkEvent());
 }

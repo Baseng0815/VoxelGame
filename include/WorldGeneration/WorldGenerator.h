@@ -37,6 +37,8 @@ public:
 
 	void init(WorldType worldType);
 
-	void generate(entt::registry* registry, glm::vec2 position, GenerationData* data);        
+	void generate(glm::vec2 position, GenerationData* data);
+
+	int getSurfaceHeight(glm::vec2 chunk, int x, int z) const;
 };
 

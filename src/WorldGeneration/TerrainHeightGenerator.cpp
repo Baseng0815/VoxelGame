@@ -94,3 +94,10 @@ void TerrainHeightGenerator::generateChunkHeight(glm::vec2 chunkPos, int** heigh
 			heightMap[cx][cz] = heightValue;
 		}
 }
+
+int TerrainHeightGenerator::getHeight(glm::vec2 chunk, int cx, int cz) const {
+	float x = chunk.x * Configuration::CHUNK_SIZE + cx;
+	float z = chunk.y * Configuration::CHUNK_SIZE + cz;
+
+	return (int)m_terrainSelect.GetValue(x, 0, z);
+}

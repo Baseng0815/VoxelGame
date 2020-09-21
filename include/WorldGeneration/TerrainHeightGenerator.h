@@ -32,4 +32,6 @@ public:
     TerrainHeightGenerator();
 
     void generateChunkHeight(glm::vec2 chunkPos, int** heightMap, BiomeID** biomes) const;
+
+    int getHeight(glm::vec2 chunk, int x, int z) const;
 };

@@ -39,7 +39,7 @@ class ChunkCreateSystem : public System {
         std::vector<std::future<GenerationData>> m_generationFutures;
         std::vector<std::future<GeometryData>> m_geometryFutures;
 
-        WorldGenerator m_generator = WorldGenerator{WorldType::WORLD_NORMAL};
+        WorldGenerator m_worldGenerator = WorldGenerator{WorldType::WORLD_NORMAL};
         StructureGenerator m_structureGenerator;
         std::unordered_map<glm::vec2, BlockCollection, Utility::HashFunctionVec2> m_structureQueue;
 
