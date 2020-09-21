@@ -10,8 +10,8 @@
 using namespace noise::utils;
 using namespace noise::model;
 
-WorldGenerator::WorldGenerator(WorldType worldType) {
-	m_type = worldType;
+WorldGenerator::WorldGenerator(WorldType type) {
+    m_type = type;
 }
 
 void WorldGenerator::generateOres(BiomeID** biomes, Block*** blocks) const {
@@ -56,7 +56,7 @@ void WorldGenerator::generateOres(BiomeID** biomes, Block*** blocks) const {
 	}
 }
 
-void WorldGenerator::generate(glm::vec2 position, GenerationData* data) {
+void WorldGenerator::generate(entt::registry* registry, glm::vec2 position, GenerationData* data) {
 	int** heightMap = new int* [Configuration::CHUNK_SIZE];
 	for (int i = 0; i < Configuration::CHUNK_SIZE; i++) heightMap[i] = new int[Configuration::CHUNK_SIZE];
 
@@ -64,7 +64,5 @@ void WorldGenerator::generate(glm::vec2 position, GenerationData* data) {
 	m_terrainGenerator.createBlocks(data->blocks, heightMap, data->biomes);
 	generateOres(data->biomes, data->blocks);
 
-	m_caveGenerator.generateChunk(position, data->blocks);
-	m_forrestGenerator.generateTrees(position, data->blocks, data->biomes);
-	
+	m_caveGenerator.generateChunk(position, data->blocks);	
 }

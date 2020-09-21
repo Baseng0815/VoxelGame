@@ -55,4 +55,5 @@ out/*
 
 .vscode/*
 vc140.pdb
-copyDlls.cmd
+copyDlls_vs.cmd
+copyDlls_vsCode.cmd

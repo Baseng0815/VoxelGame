@@ -2,7 +2,6 @@
 #include "CaveGenerator.h"
 #include "TerrainHeightGenerator.h"
 #include "TerrainGenerator.h"
-#include "ForrestGenerator.h"
 
 #include <glm/glm.hpp>
 #include <unordered_map>
@@ -28,8 +27,7 @@ private:
 	//BiomeGenerator m_biomeGenerator;
 	CaveGenerator m_caveGenerator;
 	TerrainHeightGenerator m_heightGenerator;
-	TerrainGenerator m_terrainGenerator;
-	ForrestGenerator m_forrestGenerator;
+	TerrainGenerator m_terrainGenerator;	
 			
 	void generateOres(BiomeID** biomes, Block*** blocks) const;	
 
@@ -39,6 +37,6 @@ public:
 
 	void init(WorldType worldType);
 
-	void generate(glm::vec2 position, GenerationData* data);
+	void generate(entt::registry* registry, glm::vec2 position, GenerationData* data);        
 };
 

@@ -2,10 +2,13 @@
 
 #include "System.h"
 
+#include "../Utility.h"
 #include "../Resources/Geometry.h"
 #include "../WorldGeneration/WorldGenerator.h"
+#include "../WorldGeneration/StructureGenerator.h"
 
-#include <map>
+#include <queue>
+#include <unordered_map>
 #include <atomic>
 #include <future>
 #include <shared_mutex>
@@ -13,10 +16,11 @@
 
 struct EnterChunkEvent;
 struct BlockChangedEvent;
+struct StructureCreatedEvent;
 
-class Vertex;
-class AtlasComponent;
-class ChunkComponent;
+struct Vertex;
+struct AtlasComponent;
+struct ChunkComponent;
 
 struct GenerationData {
     entt::entity entity;
@@ -33,9 +37,11 @@ struct GeometryData {
 class ChunkCreateSystem : public System {
     private:
         std::vector<std::future<GenerationData>> m_generationFutures;
-        std::vector<std::future<GeometryData>> m_geometryFutures;        
+        std::vector<std::future<GeometryData>> m_geometryFutures;
 
-        WorldGenerator m_generator = WorldGenerator(WorldType::WORLD_NORMAL);
+        WorldGenerator m_generator = WorldGenerator{WorldType::WORLD_NORMAL};
+        StructureGenerator m_structureGenerator;
+        std::unordered_map<glm::vec2, BlockCollection, Utility::HashFunctionVec2> m_structureQueue;
 
         int m_constructionCount;
         std::vector<entt::entity> m_destructionQueue;
@@ -45,11 +51,14 @@ class ChunkCreateSystem : public System {
         void handleEnterChunk(const EnterChunkEvent& e);
         CallbackHandle<const BlockChangedEvent&> m_blockChangeHandle;
         void handleBlockChanged(const BlockChangedEvent& e);
+        CallbackHandle<const StructureCreatedEvent&> m_structureCreatedHandle;        
+        void handleStructureCreated(const StructureCreatedEvent& e);
 
         GenerationData updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ);
+        void updateChunkStructures(glm::vec2 chunkPos, Block*** blocks);
         GeometryData updateChunkVertices(entt::entity entity, Block ***blocks, std::shared_mutex *blockMutex, const AtlasComponent &atlas);
-        void updateChunkBuffers(Geometry& geometryComponent,
-                const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices);        
+        void updateChunkBuffers(Geometry& geometryComponent, const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices);        
+
 
         void _update(int dt) override;
 

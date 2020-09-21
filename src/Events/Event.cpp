@@ -2,6 +2,7 @@
 #include "../../include/Math/Cuboid.h"
 
 #include "../../include/Utility.h"
+#include "../../include/WorldGeneration/Structures.h"
 
 std::string KeyEvent::toString() const {
     std::stringstream ss;
@@ -58,3 +59,4 @@ std::string BlockCollisionEvent::toString() const {
     ss << "block: " << block;
     return ss.str();
 }
+

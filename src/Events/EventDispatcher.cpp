@@ -18,6 +18,8 @@ CallbackList<const EnterChunkEvent&> EventDispatcher::onEnterChunk;
 CallbackList<const BlockChangedEvent&> EventDispatcher::onBlockChange;
 CallbackList<const BlockCollisionEvent&> EventDispatcher::onBlockCollision;
 
+CallbackList<const StructureCreatedEvent&> EventDispatcher::onStructureCreated;
+
 glm::vec2 EventDispatcher::getFramebufferSize() {
     return m_framebufferSize;
 }
@@ -115,4 +117,8 @@ void EventDispatcher::raiseEvent(const BlockChangedEvent& e) {
 
 void EventDispatcher::raiseEvent(const BlockCollisionEvent& e) {
     onBlockCollision.invoke(e);
+}
+
+void EventDispatcher::raiseEvent(const StructureCreatedEvent& e) {
+    onStructureCreated.invoke(e);
 }

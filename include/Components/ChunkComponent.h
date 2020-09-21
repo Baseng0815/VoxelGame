@@ -26,4 +26,5 @@ struct ChunkComponent {
 
     bool verticesOutdated   = false;
     bool threadActiveOnSelf = false;
+    bool structuresOutdated = false;
 };

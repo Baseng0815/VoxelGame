@@ -7,6 +7,10 @@
 #include <glm/glm.hpp>
 #include <entt/entt.hpp>
 
+#include "../Block.h"
+#include "../Utility.h"
+#include "../WorldGeneration/Structures.h"
+
 enum EventType {
     // basic events
     KEY_EVENT, MOUSE_BUTTON_EVENT, CURSOR_EVENT, SCROLL_EVENT, FRAMEBUFFER_SIZE_EVENT,
@@ -17,6 +21,7 @@ enum EventType {
 
 class Application;
 struct Block;
+struct StructureId;
 
 struct KeyEvent {
     Application* app;
@@ -89,4 +94,10 @@ struct BlockCollisionEvent {
     glm::vec3 block;
 
     std::string toString() const;
+};
+
+struct StructureCreatedEvent {
+    Application* app;
+
+    std::unordered_map<glm::vec2, BlockCollection, Utility::HashFunctionVec2> data;
 };
