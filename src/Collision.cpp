@@ -8,6 +8,8 @@
 
 #include "../include/World.h"
 
+#include "../include/GameData/GameData.h"
+
 #include <iostream>
 
 Math::Cuboid Collision::getCollision(entt::registry& registry, entt::entity entity) {
@@ -154,7 +156,7 @@ std::vector<Math::Cuboid> Collision::getBlockCollisions(const entt::registry* re
         for (int y = minY; y <= maxY; y++) {
             for (int z = minZ; z <= maxZ; z++) {
                 glm::vec3 block = glm::vec3{x, y, z};
-                if (World::getBlock(registry, block).isSolid()) {
+                if (GameData::getBlockTemplate(World::getBlock(registry, block).type).isSolid) {
                     collisions.emplace_back(getBlockCollision(block));
                 }
             }

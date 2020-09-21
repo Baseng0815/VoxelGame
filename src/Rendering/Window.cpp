@@ -38,13 +38,16 @@ Window::Window(Application *app, int width, int height)
 
     glfwInit();
 
-    m_window = glfwCreateWindow(width, height, "GLFW window", nullptr, nullptr);
+    m_window = glfwCreateWindow(width, height, "VoxelGame", nullptr, nullptr);
     if (!m_window)
         throw std::runtime_error("Failed to create GLFW window.");
 
     m_primaryMonitor = glfwGetPrimaryMonitor();
 
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    if (glfwRawMouseMotionSupported())
+        glfwSetInputMode(m_window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+
     glfwSetWindowUserPointer(m_window, app);
 
     glfwMakeContextCurrent(m_window);

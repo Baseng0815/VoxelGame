@@ -54,7 +54,7 @@ if(WIN32)
         ${SOIL_LIBRARIES})
 
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -lm -pthread -ggdb")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -lm -pthread -ggdb")
 
     find_package(glfw3 3.3 REQUIRED)
     if (GLFW_FOUND)

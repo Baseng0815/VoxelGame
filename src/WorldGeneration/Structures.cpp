@@ -16,7 +16,7 @@ BlockCollection Structures::getTreeBlocks(int height) {
     BlockCollection blocks = BlockCollection{};
 
     for (int i = 0; i < height; i++) {
-        blocks.emplace_back(glm::vec3{0, i, 0}, BlockType::BLOCK_WOOD);
+        blocks.emplace_back(glm::vec3{0, i, 0}, BlockId::BLOCK_WOOD);
     }
 
     int heightOffset = height - 2;
@@ -25,17 +25,17 @@ BlockCollection Structures::getTreeBlocks(int height) {
             for (int x = -2; x <= 2; x++) {
                 for (int z = -2; z <= 2; z++) {
                     if(x != 0 || z != 0)
-                        blocks.emplace_back(glm::vec3{x, y, z}, BlockType::BLOCK_LEAVES);
+                        blocks.emplace_back(glm::vec3{x, y, z}, BlockId::BLOCK_LEAVES);
                 }
             }
         }
         else {
-            blocks.emplace_back(glm::vec3{0, y, -1}, BlockType::BLOCK_LEAVES);
-            blocks.emplace_back(glm::vec3{-1, y, 0}, BlockType::BLOCK_LEAVES);
+            blocks.emplace_back(glm::vec3{0, y, -1}, BlockId::BLOCK_LEAVES);
+            blocks.emplace_back(glm::vec3{-1, y, 0}, BlockId::BLOCK_LEAVES);
             if (y >= height)
-                blocks.emplace_back(glm::vec3{0, y, 0}, BlockType::BLOCK_LEAVES);
-            blocks.emplace_back(glm::vec3{1, y, 0}, BlockType::BLOCK_LEAVES);
-            blocks.emplace_back(glm::vec3{0, y, 1}, BlockType::BLOCK_LEAVES);
+                blocks.emplace_back(glm::vec3{0, y, 0}, BlockId::BLOCK_LEAVES);
+            blocks.emplace_back(glm::vec3{1, y, 0}, BlockId::BLOCK_LEAVES);
+            blocks.emplace_back(glm::vec3{0, y, 1}, BlockId::BLOCK_LEAVES);
         }
     }
 

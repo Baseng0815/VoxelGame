@@ -5,7 +5,6 @@
 
 #include "../Rendering/Window.h"
 
-#include <map>
 #include <vector>
 
 class EventDispatcher {

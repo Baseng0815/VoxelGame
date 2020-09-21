@@ -9,11 +9,11 @@ class StructureGenerator {
 private:
     WorldGenerator* m_worldGenerator;
 
-    void generateStructure(glm::vec2 chunk, glm::vec3 position, const BlockCollection& structure, Block*** blocks) const;
+    void generateStructure(const glm::vec2 &chunk, glm::vec3 position, const BlockCollection& structure, Block*** blocks) const;
 
-    void generateTrees(glm::vec2 chunk, GenerationData *data) const;
+    void generateTrees(const glm::vec2 &chunk, GenerationData *data) const;
 public:
-    StructureGenerator(WorldGenerator* worldGenerator);
+    StructureGenerator(WorldGenerator *worldGenerator);
 
-    void generateStructures(glm::vec2 chunk, GenerationData* data) const;
+    void generateStructures(const glm::vec2 &chunk, GenerationData* data) const;
 };

@@ -7,7 +7,7 @@
 #include <glm/glm.hpp>
 #include <entt/entt.hpp>
 
-#include "../Block.h"
+#include "../GameData/Block.h"
 #include "../Utility.h"
 #include "../WorldGeneration/Structures.h"
 

@@ -10,7 +10,6 @@
 #include "../include/Systems/MeshRenderSystem.h"
 #include "../include/Systems/DebugRenderSystem.h"
 
-#include "../include/Components/AtlasComponent.h"
 #include "../include/Components/WorldComponent.h"
 #include "../include/Components/CameraComponent.h"
 #include "../include/Components/VelocityComponent.h"
@@ -46,6 +45,7 @@ IngameLayer::IngameLayer(Application* application)
     m_application->getWindow().disableCursor();
 
     // create all systems
+    // updating and physics
     m_systems.emplace_back(new ChunkCreateSystem {m_registry});
     m_systems.emplace_back(new PhysicsSystem {m_registry});
     m_systems.emplace_back(new InputSystem {m_registry});
@@ -53,13 +53,11 @@ IngameLayer::IngameLayer(Application* application)
     m_systems.emplace_back(new CloudSystem {m_registry });
     m_systems.emplace_back(new SkyboxSystem {m_registry });
     m_systems.emplace_back(new CollisionSystem {m_registry});
+
+    // rendering
     m_systems.emplace_back(new MeshRenderSystem {m_registry});
     m_systems.emplace_back(new DebugRenderSystem {m_registry});
 
-    // atlas
-    entt::entity entity = m_registry.create();
-    const Texture *atlasTexture = ResourceManager::getResource<Texture>(TEXTURE_ATLAS);
-    m_registry.emplace<AtlasComponent>(entity, atlasTexture->getWidth(), atlasTexture->getHeight(), 16);
 
     // callbacks
     m_keyEventHandle = EventDispatcher::onKeyPress.subscribe([&](const KeyEvent &e) {

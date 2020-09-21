@@ -65,7 +65,7 @@ TerrainHeightGenerator::TerrainHeightGenerator() {
 	m_terrainSelect.SetEdgeFalloff(5);
 }
 
-void TerrainHeightGenerator::generateChunkHeight(glm::vec2 chunkPos, int** heightMap, BiomeID** biomes) const {
+void TerrainHeightGenerator::generateChunkHeight(glm::vec2 chunkPos, int** heightMap, BiomeId** biomes) const {
 	for (int cx = 0; cx < Configuration::CHUNK_SIZE; cx++)
 		for (int cz = 0; cz < Configuration::CHUNK_SIZE; cz++) {
 			float x = chunkPos.x * Configuration::CHUNK_SIZE + cx;
@@ -78,17 +78,17 @@ void TerrainHeightGenerator::generateChunkHeight(glm::vec2 chunkPos, int** heigh
 				// land
 				float landNoiseValue = m_baseLandNoise.GetValue(x, 0, z);
 				if (landNoiseValue < 0) {
-					biomes[cx][cz] = BiomeID::BIOME_FLAT_TERRAIN;
+					biomes[cx][cz] = BiomeId::BIOME_FLAT_TERRAIN;
 				}
 				else {
-					biomes[cx][cz] = BiomeID::BIOME_DESERT;
+					biomes[cx][cz] = BiomeId::BIOME_DESERT;
 				}
 			}
 			else if (baseNoiseValue < 0.1) {
-				biomes[cx][cz] = BiomeID::BIOME_BEACH;
+				biomes[cx][cz] = BiomeId::BIOME_BEACH;
 			}
 			else {
-				biomes[cx][cz] = BiomeID::BIOME_OCEAN;
+				biomes[cx][cz] = BiomeId::BIOME_OCEAN;
 			}
 
 			heightMap[cx][cz] = heightValue;

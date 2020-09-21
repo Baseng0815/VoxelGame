@@ -3,10 +3,14 @@
 //#include "../include/Configuration.h"
 //#include "../include/Events/Event.h"
 #include "../include/Events/EventDispatcher.h"
+
 #include "../include/Resources/ResourceManager.h"
 
-#include "../include/MainMenuLayer.h"
+// TODO put layers into own folder
 #include "../include/IngameLayer.h"
+#include "../include/MainMenuLayer.h"
+
+#include "../include/GameData/GameData.h"
 
 #include "../include/Components/CameraComponent.h"
 
@@ -35,6 +39,7 @@ Application::Application()
     srand(time(NULL));
 
     ResourceManager::loadResources();
+    GameData::loadGameData();
 
     EventDispatcher::attachToWindow(m_window);
 

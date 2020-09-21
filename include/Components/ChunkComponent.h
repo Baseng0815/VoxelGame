@@ -11,18 +11,19 @@
 #include <memory>
 #include <iostream>
 
+#include "../GameData/BiomeIds.h"
+
 struct Block;
 struct Cuboid;
-enum BiomeID : char;
 
 struct ChunkComponent {
     std::shared_mutex *blockMutex;
     int chunkX, chunkZ;
 
     Block*** blocks = nullptr;
-    
+
     // TODO fix this memory leak
-    BiomeID** biomes = nullptr;
+    BiomeId** biomes = nullptr;
 
     bool verticesOutdated   = false;
     bool threadActiveOnSelf = false;
