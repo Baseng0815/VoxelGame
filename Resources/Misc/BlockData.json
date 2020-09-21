@@ -232,11 +232,21 @@
     {
         "name": "BLOCK_WATER",
         "is_solid": false,
-        "tid_py": 222,
-        "tid_px": 222,
-        "tid_nx": 222,
-        "tid_pz": 222,
-        "tid_nz": 222,
-        "tid_ny": 222
+        "tid_py": 205,
+        "tid_px": 205,
+        "tid_nx": 205,
+        "tid_pz": 205,
+        "tid_nz": 205,
+        "tid_ny": 205
+    },
+    {
+        "name": "BLOCK_LAVA",
+        "is_solid": false,
+        "tid_py": 237,
+        "tid_px": 237,
+        "tid_nx": 237,
+        "tid_pz": 237,
+        "tid_nz": 237,
+        "tid_ny": 237
     }
 ]

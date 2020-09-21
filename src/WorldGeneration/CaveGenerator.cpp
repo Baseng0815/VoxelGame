@@ -16,7 +16,12 @@ void CaveGenerator::generateChunk(glm::vec2 chunkPos, Block*** blocks) const {
                 if (blocks[x][y][z].type != BlockId::BLOCK_BRICKS && blocks[x][y][z].type != BlockId::BLOCK_WATER) {
                     if (caveNoise.GetValue(x + chunkPos.x * Configuration::CHUNK_SIZE, y,
                                             z + chunkPos.y * Configuration::CHUNK_SIZE) > threshold) {
-                        blocks[x][y][z] = Block {BlockId::BLOCK_AIR};
+                        if(y > 10) {
+                            blocks[x][y][z] = Block {BlockId::BLOCK_AIR};
+                        }
+                        else {
+                            blocks[x][y][z] = Block{BlockId::BLOCK_LAVA};
+                        }
                     }
                 }
             }
