@@ -39,7 +39,7 @@ void MeshRenderSystem::_update(int dt)
     // render
     m_registry.view<TransformationComponent, MeshRenderComponent>().each(
         [&](const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer) {
-            if (meshRenderer.geometry.getDrawCount() > 0) {
+            if (meshRenderer.geometry->getDrawCount() > 0) {
                 const Shader *shader = meshRenderer.material->customShader;
                 // no custom shader is used
                 if (!shader) {
@@ -84,8 +84,8 @@ void MeshRenderSystem::_update(int dt)
                 }
 
                 // final draw call
-                glBindVertexArray(meshRenderer.geometry.getVao());
-                glDrawElements(GL_TRIANGLES, meshRenderer.geometry.getDrawCount(), GL_UNSIGNED_INT, nullptr);
+                glBindVertexArray(meshRenderer.geometry->getVao());
+                glDrawElements(GL_TRIANGLES, meshRenderer.geometry->getDrawCount(), GL_UNSIGNED_INT, nullptr);
             }
         });
 }

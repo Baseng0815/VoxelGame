@@ -16,13 +16,20 @@
 struct Block;
 struct Cuboid;
 
+class Geometry;
+
 struct ChunkComponent {
     std::shared_mutex *blockMutex;
     int chunkX, chunkZ;
 
+    // raw pointer because ChunkComponent needs to be copyable
+    // TODO find out if it works using move semantics only
+    Geometry *geometry;
+
+    // TODO make this more efficient (maybe use octrees?)
     Block*** blocks = nullptr;
 
-    // TODO fix this memory leak
+    // TODO maybe use chunk-wise biomes and interpolate
     BiomeId** biomes = nullptr;
 
     bool verticesOutdated   = false;
