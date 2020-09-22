@@ -36,11 +36,16 @@ Window::Window(Application *app, int width, int height)
     Configuration::setValue("WINDOW_WIDTH", width);
     Configuration::setValue("WINDOW_HEIGHT", height);
 
-    glfwInit();
+    if (!glfwInit()) {
+        std::cerr << "failed to initialize GLFW" << std::endl;
+        exit(1);
+    }
 
     m_window = glfwCreateWindow(width, height, "VoxelGame", nullptr, nullptr);
-    if (!m_window)
-        throw std::runtime_error("Failed to create GLFW window.");
+    if (!m_window) {
+        std::cerr << "failed to create GLFW window" << std::endl;;
+        exit(1);
+    }
 
     m_primaryMonitor = glfwGetPrimaryMonitor();
 

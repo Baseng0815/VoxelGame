@@ -119,7 +119,7 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block**
         geometryData.indices.reserve(1048576);
     }
     catch (std::length_error e) {
-        std::cout << "WARNING: chunk buffer preallocation failed; " << e.what() << std::endl;
+        std::cerr << "WARNING: chunk buffer preallocation failed; " << e.what() << std::endl;
     }
 
     int faceCount = 0;
@@ -346,7 +346,7 @@ void ChunkCreateSystem::_update(int dt) {
                     chunk.threadActiveOnSelf = true;
 
                     m_generationFutures.push_back(std::async(
-                            std::launch::async, [=]() { return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ); }));
+                            std::launch::async, [=, this]() { return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ); }));
 
                     chunk.verticesOutdated = true;
                 }
