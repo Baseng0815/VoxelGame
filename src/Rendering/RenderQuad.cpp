@@ -1,6 +1,6 @@
-#include "../../include/Rendering/RenderQuad.h"
+#include "../../include/Rendering/RenderQuad.hpp"
 
-#include "../../include/Utility.h"
+#include "../../include/Utility.hpp"
 
 RenderQuad::RenderQuad()
 {

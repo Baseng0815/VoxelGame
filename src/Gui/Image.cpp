@@ -1,8 +1,8 @@
-#include "../../include/Gui/Image.h"
+#include "../../include/Gui/Image.hpp"
 
-#include "../../include/Resources/ResourceManager.h"
-#include "../../include/Resources/Shader.h"
-#include "../../include/Resources/Texture.h"
+#include "../../include/Resources/ResourceManager.hpp"
+#include "../../include/Resources/Shader.hpp"
+#include "../../include/Resources/Texture.hpp"
 
 #include <iostream>
 void Image::_draw(const glm::mat4& projection) const {

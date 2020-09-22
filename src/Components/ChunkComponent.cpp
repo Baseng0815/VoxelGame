@@ -1,11 +1,11 @@
 /*
-#include "../../include/Components/ChunkComponent.h"
+#include "../../include/Components/ChunkComponent.hpp"
 
-#include "../../include/Configuration.h"
-#include "../../include/Block.h"
-#include "../../include/WorldGeneration/WorldGenerator.h"
-#include "../../include/Events/Event.h"
-#include "../../include/Events/EventDispatcher.h"
+#include "../../include/Configuration.hpp"
+#include "../../include/Block.hpp"
+#include "../../include/WorldGeneration/WorldGenerator.hpp"
+#include "../../include/Events/Event.hpp"
+#include "../../include/Events/EventDispatcher.hpp"
 
 ChunkComponent::ChunkComponent(std::shared_mutex* blockMutex, int chunkX, int chunkZ) :
     blockMutex {blockMutex}, chunkX {chunkX}, chunkZ {chunkZ}

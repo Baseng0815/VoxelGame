@@ -1,8 +1,8 @@
-#include "../include/World.h"
+#include "../include/World.hpp"
 
-#include "../include/Events/EventDispatcher.h"
+#include "../include/Events/EventDispatcher.hpp"
 
-#include "../include/Components/ChunkComponent.h"
+#include "../include/Components/ChunkComponent.hpp"
 
 std::unordered_map<glm::vec2, entt::entity, Utility::HashFunctionVec2> World::chunksLookup;
 

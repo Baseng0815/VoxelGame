@@ -1,8 +1,8 @@
-#include "../../include/Gui/IngameLayerGUI.h"
+#include "../../include/Gui/IngameLayerGUI.hpp"
 
-#include "../../include/Gui/DebugLayout.h"
-#include "../../include/Resources/ResourceManager.h"
-#include "../../include/Gui/Image.h"
+#include "../../include/Gui/DebugLayout.hpp"
+#include "../../include/Resources/ResourceManager.hpp"
+#include "../../include/Gui/Image.hpp"
 
 IngameLayerGUI::IngameLayerGUI()
     : GUI {}

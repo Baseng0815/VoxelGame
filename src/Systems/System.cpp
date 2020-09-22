@@ -1,6 +1,6 @@
-#include "../../include/Systems/System.h"
+#include "../../include/Systems/System.hpp"
 
-#include "../../include/Events/EventDispatcher.h"
+#include "../../include/Events/EventDispatcher.hpp"
 
 System::System(Registry_T &registry, int updateDelay)
     : m_registry {registry}, m_updateDelay {updateDelay} {}

@@ -1,2 +1,2 @@
-#include "../../include/WorldGeneration/Biome.h"
+#include "../../include/WorldGeneration/Biome.hpp"
 

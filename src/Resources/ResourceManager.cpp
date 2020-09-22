@@ -1,12 +1,12 @@
-#include "../../include/Resources/ResourceManager.h"
+#include "../../include/Resources/ResourceManager.hpp"
 
 #include <iostream>
 
-#include "../../include/Resources/Font.h"
-#include "../../include/Resources/Shader.h"
-#include "../../include/Resources/Texture.h"
-#include "../../include/Resources/Geometry.h"
-#include "../../include/Resources/Material.h"
+#include "../../include/Resources/Font.hpp"
+#include "../../include/Resources/Shader.hpp"
+#include "../../include/Resources/Texture.hpp"
+#include "../../include/Resources/Geometry.hpp"
+#include "../../include/Resources/Material.hpp"
 
 std::map<ResourceID, ResourceHandle> ResourceManager::resources;
 

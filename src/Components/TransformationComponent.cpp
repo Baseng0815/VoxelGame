@@ -1,4 +1,4 @@
-#include "../../include/Components/TransformationComponent.h"
+#include "../../include/Components/TransformationComponent.hpp"
 
 void TransformationComponent::recalculateModelMatrix() const {
     glm::mat4 rotationMatrix = glm::toMat4(m_rotation);

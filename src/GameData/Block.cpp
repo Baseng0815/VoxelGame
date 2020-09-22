@@ -1,6 +1,6 @@
-#include "../../include/GameData/Block.h"
+#include "../../include/GameData/Block.hpp"
 
-#include "../../include/GameData/GameData.h"
+#include "../../include/GameData/GameData.hpp"
 
 bool Block::isSolid()
 {

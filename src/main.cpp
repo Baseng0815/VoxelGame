@@ -1,5 +1,5 @@
-#include "../include/Application.h"
-#include "../include/Events/EventDispatcher.h"
+#include "../include/Application.hpp"
+#include "../include/Events/EventDispatcher.hpp"
 #define WIN32
 
 #ifndef WIN32

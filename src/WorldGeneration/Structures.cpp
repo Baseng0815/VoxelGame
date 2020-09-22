@@ -1,4 +1,4 @@
-#include "../../include/WorldGeneration/Structures.h"
+#include "../../include/WorldGeneration/Structures.hpp"
 
 bool StructureId::operator==(const StructureId& other) const {
     return type == other.type && variation == other.variation;

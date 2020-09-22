@@ -1,6 +1,6 @@
-#include "../../include/Events/EventDispatcher.h"
+#include "../../include/Events/EventDispatcher.hpp"
 
-#include "../../include/Application.h"
+#include "../../include/Application.hpp"
 
 bool EventDispatcher::m_firstMouse = true;
 double EventDispatcher::m_prevX = 0;

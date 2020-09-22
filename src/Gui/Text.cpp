@@ -1,11 +1,11 @@
-#include "../../include/Gui/GUI.h"
-#include "../../include/Gui/Text.h"
+#include "../../include/Gui/GUI.hpp"
+#include "../../include/Gui/Text.hpp"
 
-#include "../../include/Resources/Font.h"
-#include "../../include/Resources/Shader.h"
-#include "../../include/Rendering/Window.h"
+#include "../../include/Resources/Font.hpp"
+#include "../../include/Resources/Shader.hpp"
+#include "../../include/Rendering/Window.hpp"
 
-#include "../../include/Resources/ResourceManager.h"
+#include "../../include/Resources/ResourceManager.hpp"
 
 #include <iostream>
 

@@ -1,4 +1,4 @@
-#include "../../include/Rendering/GBuffer.h"
+#include "../../include/Rendering/GBuffer.hpp"
 
 #ifdef WIN32
 #include <stdexcept>

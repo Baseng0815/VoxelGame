@@ -1,11 +1,11 @@
-#include "../../include/Systems/CloudSystem.h"
+#include "../../include/Systems/CloudSystem.hpp"
 
-#include "../../include/Events/EventDispatcher.h"
-#include "../../include/Configuration.h"
-#include "../../include/Resources/ResourceManager.h"
+#include "../../include/Events/EventDispatcher.hpp"
+#include "../../include/Configuration.hpp"
+#include "../../include/Resources/ResourceManager.hpp"
 
-#include "../../include/Components/MeshRenderComponent.h"
-#include "../../include/Components/TransformationComponent.h"
+#include "../../include/Components/MeshRenderComponent.hpp"
+#include "../../include/Components/TransformationComponent.hpp"
 
 #include <ctime>
 

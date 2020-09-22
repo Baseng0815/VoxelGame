@@ -1,6 +1,6 @@
-#include "../../include/Math/Plane.h"
+#include "../../include/Math/Plane.hpp"
 
-#include "../../include/Math/Ray.h"
+#include "../../include/Math/Ray.hpp"
 namespace Math {
     Plane::Plane() : Plane(glm::vec3(), glm::vec3()) {}
 

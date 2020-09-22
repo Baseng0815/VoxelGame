@@ -1,7 +1,7 @@
-//#include "../include/Utility.h"
+//#include "../include/Utility.hpp"
 
-#include "../include/Components/WorldComponent.h"
-#include "../include/Configuration.h"
+#include "../include/Components/WorldComponent.hpp"
+#include "../include/Configuration.hpp"
 
 #include <iostream>
 

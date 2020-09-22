@@ -1,14 +1,14 @@
 #include "../../include/Systems/ItemSystem.hpp"
 
 #include "../../include/Components/ItemComponent.hpp"
-#include "../../include/Components/MeshRenderComponent.h"
-#include "../../include/Components/PlayerComponent.h"
-#include "../../include/Components/TransformationComponent.h"
-#include "../../include/Components/VelocityComponent.h"
+#include "../../include/Components/MeshRenderComponent.hpp"
+#include "../../include/Components/PlayerComponent.hpp"
+#include "../../include/Components/TransformationComponent.hpp"
+#include "../../include/Components/VelocityComponent.hpp"
 
-#include "../../include/Events/EventDispatcher.h"
-#include "../../include/GameData/BlockTemplate.h"
-#include "../../include/Resources/ResourceManager.h"
+#include "../../include/Events/EventDispatcher.hpp"
+#include "../../include/GameData/BlockTemplate.hpp"
+#include "../../include/Resources/ResourceManager.hpp"
 
 void ItemSystem::handleBlockChanged(const BlockChangedEvent& e) {
     if (e.prevBlock != BlockId::BLOCK_AIR) {

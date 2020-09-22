@@ -1,8 +1,8 @@
-#include "../include/MainMenuLayer.h"
+#include "../include/MainMenuLayer.hpp"
 
-#include "../include/IngameLayer.h"
-#include "../include/Application.h"
-#include "../include/Gui/MainMenuLayout.h"
+#include "../include/IngameLayer.hpp"
+#include "../include/Application.hpp"
+#include "../include/Gui/MainMenuLayout.hpp"
 
 MainMenuLayer::MainMenuLayer(Application* application)
     : GameLayer(application) {

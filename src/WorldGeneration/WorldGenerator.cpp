@@ -1,11 +1,11 @@
 // in der .cpp kann man einbinden, was man will, da entsteht kein Problem
-//#include "../../include/WorldGeneration/WorldGenerator.h"
-#include "../../include/WorldGeneration/noiseutils.h"
-#include "../../include/Configuration.h"
-#include "../../include/Utility.h"
-#include "../../include/Systems/ChunkCreateSystem.h"
+//#include "../../include/WorldGeneration/WorldGenerator.hpp"
+#include "../../include/WorldGeneration/noiseutils.hpp"
+#include "../../include/Configuration.hpp"
+#include "../../include/Utility.hpp"
+#include "../../include/Systems/ChunkCreateSystem.hpp"
 
-#include "../../include/GameData/GameData.h"
+#include "../../include/GameData/GameData.hpp"
 
 #include <iostream>
 

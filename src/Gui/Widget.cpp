@@ -1,9 +1,9 @@
-//#include "../../include/Gui/Widget.h"
-#include "../../include/Gui/Layout.h"
+//#include "../../include/Gui/Widget.hpp"
+#include "../../include/Gui/Layout.hpp"
 
-#include "../../include/Resources/ResourceManager.h"
-#include "../../include/Resources/Shader.h"
-#include "../../include/Events/EventDispatcher.h"
+#include "../../include/Resources/ResourceManager.hpp"
+#include "../../include/Resources/Shader.hpp"
+#include "../../include/Events/EventDispatcher.hpp"
 
 void Widget::applyPadding()
 {

@@ -1,10 +1,10 @@
-#include "../../include/Resources/Texture.h"
+#include "../../include/Resources/Texture.hpp"
 
 #include <SOIL/SOIL.h>
 
 #include <iostream>
 
-#include "../../include/Configuration.h"
+#include "../../include/Configuration.hpp"
 
 void Texture::release()
 {

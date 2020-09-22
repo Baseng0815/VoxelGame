@@ -1,18 +1,18 @@
-#include "../include/Application.h"
+#include "../include/Application.hpp"
 
-//#include "../include/Configuration.h"
-//#include "../include/Events/Event.h"
-#include "../include/Events/EventDispatcher.h"
+//#include "../include/Configuration.hpp"
+//#include "../include/Events/Event.hpp"
+#include "../include/Events/EventDispatcher.hpp"
 
-#include "../include/Resources/ResourceManager.h"
+#include "../include/Resources/ResourceManager.hpp"
 
 // TODO put layers into own folder
-#include "../include/IngameLayer.h"
-#include "../include/MainMenuLayer.h"
+#include "../include/IngameLayer.hpp"
+#include "../include/MainMenuLayer.hpp"
 
-#include "../include/GameData/GameData.h"
+#include "../include/GameData/GameData.hpp"
 
-#include "../include/Components/CameraComponent.h"
+#include "../include/Components/CameraComponent.hpp"
 
 #include <chrono>
 //#include <iostream>

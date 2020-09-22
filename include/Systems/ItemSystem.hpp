@@ -1,6 +1,6 @@
-#include "System.h"
+#include "System.hpp"
 
-#include "../GameData/BlockIds.h"
+#include "../GameData/BlockIds.hpp"
 #include <glm/glm.hpp>
 #include <queue>
 

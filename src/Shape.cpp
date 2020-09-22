@@ -1,6 +1,6 @@
-﻿#include "../include/Shape.h"
+﻿#include "../include/Shape.hpp"
 
-#include "../include/Components/TransformationComponent.h"
+#include "../include/Components/TransformationComponent.hpp"
 
 Shape::Shape(std::vector<Triangle> triangles) {
     this->triangles = std::vector<Triangle>(triangles);

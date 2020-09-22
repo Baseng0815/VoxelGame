@@ -1,14 +1,14 @@
-#include "../include/Collision.h"
+#include "../include/Collision.hpp"
 
-#include "../include/Components/CollisionComponent.h"
-#include "../include/Components/TransformationComponent.h"
+#include "../include/Components/CollisionComponent.hpp"
+#include "../include/Components/TransformationComponent.hpp"
 
-#include "../include/Math/Plane.h"
-#include "../include/Math/Ray.h"
+#include "../include/Math/Plane.hpp"
+#include "../include/Math/Ray.hpp"
 
-#include "../include/World.h"
+#include "../include/World.hpp"
 
-#include "../include/GameData/GameData.h"
+#include "../include/GameData/GameData.hpp"
 
 #include <iostream>
 

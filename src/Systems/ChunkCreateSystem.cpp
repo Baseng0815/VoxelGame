@@ -1,17 +1,17 @@
-#include "../../include/Systems/ChunkCreateSystem.h"
+#include "../../include/Systems/ChunkCreateSystem.hpp"
 
-#include "../../include/World.h"
-#include "../../include/Math/Cuboid.h"
-#include "../../include/Configuration.h"
-#include "../../include/GameData/GameData.h"
-#include "../../include/Events/EventDispatcher.h"
+#include "../../include/World.hpp"
+#include "../../include/Math/Cuboid.hpp"
+#include "../../include/Configuration.hpp"
+#include "../../include/GameData/GameData.hpp"
+#include "../../include/Events/EventDispatcher.hpp"
 
-#include "../../include/Resources/Texture.h"
-#include "../../include/Resources/ResourceManager.h"
+#include "../../include/Resources/Texture.hpp"
+#include "../../include/Resources/ResourceManager.hpp"
 
-#include "../../include/Components/ChunkComponent.h"
-#include "../../include/Components/MeshRenderComponent.h"
-#include "../../include/Components/TransformationComponent.h"
+#include "../../include/Components/ChunkComponent.hpp"
+#include "../../include/Components/MeshRenderComponent.hpp"
+#include "../../include/Components/TransformationComponent.hpp"
 
 void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent &e)
 {

@@ -1,11 +1,11 @@
-#include "../../include/Resources/Font.h"
+#include "../../include/Resources/Font.hpp"
 
 #include <iostream>
 #include <ft2build.h>
 #include <freetype/freetype.h>
 
-#include "../../include/Configuration.h"
-#include "../../include/Resources/ResourceManager.h"
+#include "../../include/Configuration.hpp"
+#include "../../include/Resources/ResourceManager.hpp"
 
 void Font::release()
 {

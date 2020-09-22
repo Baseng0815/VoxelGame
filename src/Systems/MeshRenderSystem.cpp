@@ -1,13 +1,13 @@
-#include "../../include/Systems/MeshRenderSystem.h"
+#include "../../include/Systems/MeshRenderSystem.hpp"
 
-#include "../../include/Resources/ResourceManager.h"
+#include "../../include/Resources/ResourceManager.hpp"
 
-#include "../../include/Components/ChunkComponent.h"
-#include "../../include/Components/CameraComponent.h"
-#include "../../include/Components/MeshRenderComponent.h"
-#include "../../include/Components/TransformationComponent.h"
+#include "../../include/Components/ChunkComponent.hpp"
+#include "../../include/Components/CameraComponent.hpp"
+#include "../../include/Components/MeshRenderComponent.hpp"
+#include "../../include/Components/TransformationComponent.hpp"
 
-#include "../../include/Resources/Texture.h"
+#include "../../include/Resources/Texture.hpp"
 
 void MeshRenderSystem::_update(int dt)
 {

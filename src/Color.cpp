@@ -1,4 +1,4 @@
-#include "../include/Color.h"
+#include "../include/Color.hpp"
 
 Color
 Color::Amaranth = {229, 43, 80},

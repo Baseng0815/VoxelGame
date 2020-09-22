@@ -1,6 +1,6 @@
-#include "../../include/WorldGeneration/TerrainGenerator.h"
-#include "../../include/Configuration.h"
-#include "../../include/Utility.h"
+#include "../../include/WorldGeneration/TerrainGenerator.hpp"
+#include "../../include/Configuration.hpp"
+#include "../../include/Utility.hpp"
 
 TerrainGenerator::TerrainGenerator() {
     m_biomes.push_back({BiomeId::BIOME_FLAT, BlockId::BLOCK_GRASS, BlockId::BLOCK_DIRT, 1, 3});

@@ -1,15 +1,15 @@
-#include "../../include/Systems/InputSystem.h"
+#include "../../include/Systems/InputSystem.hpp"
 
-#include "../../include/Events/EventDispatcher.h"
-#include "../../include/World.h"
+#include "../../include/Events/EventDispatcher.hpp"
+#include "../../include/World.hpp"
 
-#include "../../include/Components/ChunkComponent.h"
-#include "../../include/Components/CameraComponent.h"
-#include "../../include/Components/VelocityComponent.h"
-#include "../../include/Components/RigidBodyComponent.h"
-#include "../../include/Components/TransformationComponent.h"
-#include "../../include/Components/PlayerComponent.h"
-#include "../../include/Components/CollisionComponent.h"
+#include "../../include/Components/ChunkComponent.hpp"
+#include "../../include/Components/CameraComponent.hpp"
+#include "../../include/Components/VelocityComponent.hpp"
+#include "../../include/Components/RigidBodyComponent.hpp"
+#include "../../include/Components/TransformationComponent.hpp"
+#include "../../include/Components/PlayerComponent.hpp"
+#include "../../include/Components/CollisionComponent.hpp"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/matrix_transform.hpp>

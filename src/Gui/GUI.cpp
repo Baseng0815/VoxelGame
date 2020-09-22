@@ -1,12 +1,12 @@
-#include "../../include/Gui/GUI.h"
-#include "../../include/Gui/Text.h"
-#include "../../include/Gui/Image.h"
+#include "../../include/Gui/GUI.hpp"
+#include "../../include/Gui/Text.hpp"
+#include "../../include/Gui/Image.hpp"
 
-#include "../../include/Resources/Shader.h"
+#include "../../include/Resources/Shader.hpp"
 
-#include "../../include/Configuration.h"
-#include "../../include/Events/EventDispatcher.h"
-#include "../../include/Resources/ResourceManager.h"
+#include "../../include/Configuration.hpp"
+#include "../../include/Events/EventDispatcher.hpp"
+#include "../../include/Resources/ResourceManager.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
 

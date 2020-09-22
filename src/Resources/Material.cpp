@@ -1,4 +1,4 @@
-#include "../../include/Resources/Material.h"
+#include "../../include/Resources/Material.hpp"
 #include <algorithm>
 
 void Material::release()

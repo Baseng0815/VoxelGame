@@ -41,7 +41,7 @@ if(WIN32)
     endif()
 
     file(GLOB_RECURSE SOURCES
-        include/*.h
+        include/*.hpp
         src/*.cpp)
 
     add_executable(VoxelGame ${SOURCES})
@@ -82,7 +82,7 @@ else()
     message("SOIL LIBRARIES: ${SOIL_LIBRARIES}")
 
     file(GLOB_RECURSE SOURCES
-        include/*.h
+        include/*.hpp
         src/*.cpp)
 
     add_executable(VoxelGame ${SOURCES})

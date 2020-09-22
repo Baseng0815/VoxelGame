@@ -1,10 +1,10 @@
-#include "../../include/WorldGeneration/StructureGenerator.h"
-#include "../../include/WorldGeneration/WorldGenerator.h"
+#include "../../include/WorldGeneration/StructureGenerator.hpp"
+#include "../../include/WorldGeneration/WorldGenerator.hpp"
 
-#include "../../include/Configuration.h"
-#include "../../include/Events/EventDispatcher.h"
-#include "../../include/Systems/ChunkCreateSystem.h"
-#include "../../include/Utility.h"
+#include "../../include/Configuration.hpp"
+#include "../../include/Events/EventDispatcher.hpp"
+#include "../../include/Systems/ChunkCreateSystem.hpp"
+#include "../../include/Utility.hpp"
 
 void StructureGenerator::generateStructure(const glm::vec2 &chunk, glm::vec3 position, const BlockCollection& structure,
                                            Block*** blocks) const {

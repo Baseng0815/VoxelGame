@@ -1,4 +1,4 @@
-#include "../../include/Gui/Rectangle.h"
+#include "../../include/Gui/Rectangle.hpp"
 
 Rectangle::Rectangle(float x, float y, float width, float height)
     : position(x, y), size(width, height) {}

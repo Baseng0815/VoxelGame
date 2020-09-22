@@ -1,6 +1,6 @@
-#include "../../include/Resources/Geometry.h"
+#include "../../include/Resources/Geometry.hpp"
 
-#include "../../include/Utility.h"
+#include "../../include/Utility.hpp"
 
 void Geometry::initBuffers()
 {

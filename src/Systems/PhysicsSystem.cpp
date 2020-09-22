@@ -1,14 +1,14 @@
-#include "../../include/Systems/PhysicsSystem.h"
+#include "../../include/Systems/PhysicsSystem.hpp"
 
-#include "../../include/Components/CollisionComponent.h"
-#include "../../include/Components/PlayerComponent.h"
-#include "../../include/Components/TransformationComponent.h"
-#include "../../include/Components/VelocityComponent.h"
+#include "../../include/Components/CollisionComponent.hpp"
+#include "../../include/Components/PlayerComponent.hpp"
+#include "../../include/Components/TransformationComponent.hpp"
+#include "../../include/Components/VelocityComponent.hpp"
 
-#include "../../include/Collision.h"
-#include "../../include/Configuration.h"
-#include "../../include/Events/EventDispatcher.h"
-#include "../../include/World.h"
+#include "../../include/Collision.hpp"
+#include "../../include/Configuration.hpp"
+#include "../../include/Events/EventDispatcher.hpp"
+#include "../../include/World.hpp"
 
 PhysicsSystem::PhysicsSystem(Registry_T& registry) : System{registry, 10} {
     m_blockCollisionHandle = EventDispatcher::onBlockCollision.subscribe(

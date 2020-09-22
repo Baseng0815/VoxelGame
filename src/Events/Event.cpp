@@ -1,8 +1,8 @@
-#include "../../include/Events/Event.h"
-#include "../../include/Math/Cuboid.h"
+#include "../../include/Events/Event.hpp"
+#include "../../include/Math/Cuboid.hpp"
 
-#include "../../include/Utility.h"
-#include "../../include/WorldGeneration/Structures.h"
+#include "../../include/Utility.hpp"
+#include "../../include/WorldGeneration/Structures.hpp"
 
 std::string KeyEvent::toString() const {
     std::stringstream ss;

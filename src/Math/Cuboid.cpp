@@ -1,6 +1,6 @@
-#include "../../include/Math/Cuboid.h"
-#include "../../include/Math/Plane.h"
-#include "../../include/Math/Ray.h"
+#include "../../include/Math/Cuboid.hpp"
+#include "../../include/Math/Plane.hpp"
+#include "../../include/Math/Ray.hpp"
 
 namespace Math {
     Cuboid::Cuboid() : min(glm::vec3()), max(glm::vec3()) {

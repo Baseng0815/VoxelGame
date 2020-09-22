@@ -1,4 +1,4 @@
-#include "../../include/Gui/UiMargin.h"
+#include "../../include/Gui/UiMargin.hpp"
 
 void Margin::vertical(float value) {
     top = bottom = value;

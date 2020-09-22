@@ -1,13 +1,13 @@
-#include "../../include/Resources/Shader.h"
+#include "../../include/Resources/Shader.hpp"
 
 #include <fstream>
 #include <iostream>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "../../include/Configuration.h"
-#include "../../include/Color.h"
-#include "../../include/Rendering/Light.h"
-#include "../../include/Resources/Material.h"
+#include "../../include/Configuration.hpp"
+#include "../../include/Color.hpp"
+#include "../../include/Rendering/Light.hpp"
+#include "../../include/Resources/Material.hpp"
 
 void Shader::release()
 {

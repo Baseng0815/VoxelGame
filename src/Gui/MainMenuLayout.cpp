@@ -1,8 +1,8 @@
-#include "../../include/Gui/MainMenuLayout.h"
+#include "../../include/Gui/MainMenuLayout.hpp"
 
-#include "../../include/Gui/Text.h"
-#include "../../include/Gui/Image.h"
-#include "../../include/Resources/ResourceManager.h"
+#include "../../include/Gui/Text.hpp"
+#include "../../include/Gui/Image.hpp"
+#include "../../include/Resources/ResourceManager.hpp"
 
 MainMenuLayout::MainMenuLayout(GUI &gui)
     : Layout("layout_mainmenu", gui) {

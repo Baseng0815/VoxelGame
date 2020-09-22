@@ -1,17 +1,17 @@
-#include "../../include/Systems/CollisionSystem.h"
+#include "../../include/Systems/CollisionSystem.hpp"
 
-#include "../../include/Components/CameraComponent.h"
-#include "../../include/Components/CollisionComponent.h"
-#include "../../include/Components/PlayerComponent.h"
-#include "../../include/Components/TransformationComponent.h"
-#include "../../include/Components/VelocityComponent.h"
+#include "../../include/Components/CameraComponent.hpp"
+#include "../../include/Components/CollisionComponent.hpp"
+#include "../../include/Components/PlayerComponent.hpp"
+#include "../../include/Components/TransformationComponent.hpp"
+#include "../../include/Components/VelocityComponent.hpp"
 
-#include "../../include/Events/EventDispatcher.h"
+#include "../../include/Events/EventDispatcher.hpp"
 
-#include "../../include/Math/Plane.h"
-#include "../../include/Math/Ray.h"
+#include "../../include/Math/Plane.hpp"
+#include "../../include/Math/Ray.hpp"
 
-#include "../../include/World.h"
+#include "../../include/World.hpp"
 
 CollisionSystem::CollisionSystem(Registry_T& registry) : System{registry, 0} {
 }

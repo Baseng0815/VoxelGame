@@ -1,10 +1,10 @@
-#include "../../include/Systems/PlayerMovementSystem.h"
+#include "../../include/Systems/PlayerMovementSystem.hpp"
 
-#include "../../include/Components/CameraComponent.h"
-#include "../../include/Components/PlayerComponent.h"
-#include "../../include/Components/VelocityComponent.h"
+#include "../../include/Components/CameraComponent.hpp"
+#include "../../include/Components/PlayerComponent.hpp"
+#include "../../include/Components/VelocityComponent.hpp"
 
-#include "../../include/Utility.h"
+#include "../../include/Utility.hpp"
 
 #include <iostream>
 

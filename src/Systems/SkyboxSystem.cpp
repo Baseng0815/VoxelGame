@@ -1,10 +1,10 @@
-#include "../../include/Systems/SkyboxSystem.h"
+#include "../../include/Systems/SkyboxSystem.hpp"
 
-#include "../../include/Resources/ResourceManager.h"
-#include "../../include/Resources/Shader.h"
+#include "../../include/Resources/ResourceManager.hpp"
+#include "../../include/Resources/Shader.hpp"
 
-#include "../../include/Components/SkyboxComponent.h"
-#include "../../include/Components/CameraComponent.h"
+#include "../../include/Components/SkyboxComponent.hpp"
+#include "../../include/Components/CameraComponent.hpp"
 
 void SkyboxSystem::_update(int dt)
 {

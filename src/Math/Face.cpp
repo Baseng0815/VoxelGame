@@ -1,5 +1,5 @@
-#include "../../include/Math/Face.h"
-#include "../../include/Math/Ray.h"
+#include "../../include/Math/Face.hpp"
+#include "../../include/Math/Ray.hpp"
 
 namespace Math {
 

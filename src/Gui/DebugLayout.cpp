@@ -1,8 +1,8 @@
-#include "../../include/Gui/GUI.h"
-#include "../../include/Gui/DebugLayout.h"
+#include "../../include/Gui/GUI.hpp"
+#include "../../include/Gui/DebugLayout.hpp"
 
-#include "../../include/Gui/Text.h"
-#include "../../include/Resources/ResourceManager.h"
+#include "../../include/Gui/Text.hpp"
+#include "../../include/Resources/ResourceManager.hpp"
 
 #include <sstream>
 #include <iomanip>

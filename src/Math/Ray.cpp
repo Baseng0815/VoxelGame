@@ -1,5 +1,5 @@
-#include "../../include/Math/Ray.h"
-#include "../../include/Math/Plane.h"
+#include "../../include/Math/Ray.hpp"
+#include "../../include/Math/Plane.hpp"
 
 namespace Math {
     Ray::Ray() : Ray(glm::vec3(), glm::vec3()) {

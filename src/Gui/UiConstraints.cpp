@@ -1,6 +1,6 @@
-//#include "../../include/Gui/UiConstraints.h"
+//#include "../../include/Gui/UiConstraints.hpp"
 
-#include "../../include/Gui/UiProperties.h"
+#include "../../include/Gui/UiProperties.hpp"
 
 Constraint::Constraint(ConstraintType type, float value)
     : type(type), value(value) {}

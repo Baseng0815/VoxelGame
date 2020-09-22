@@ -1,7 +1,7 @@
-#include "../../include/WorldGeneration/CaveGenerator.h"
+#include "../../include/WorldGeneration/CaveGenerator.hpp"
 
-#include "../../include/GameData/Block.h"
-#include "../../include/Configuration.h"
+#include "../../include/GameData/Block.hpp"
+#include "../../include/Configuration.hpp"
 
 CaveGenerator::CaveGenerator() {
     caveNoise.SetFrequency(0.02f);

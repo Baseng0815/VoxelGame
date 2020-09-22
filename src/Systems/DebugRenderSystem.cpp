@@ -1,11 +1,11 @@
-#include "../../include/Systems/DebugRenderSystem.h"
+#include "../../include/Systems/DebugRenderSystem.hpp"
 
-#include "../../include/Color.h"
-#include "../../include/Resources/Shader.h"
-#include "../../include/Events/EventDispatcher.h"
-#include "../../include/Resources/ResourceManager.h"
+#include "../../include/Color.hpp"
+#include "../../include/Resources/Shader.hpp"
+#include "../../include/Events/EventDispatcher.hpp"
+#include "../../include/Resources/ResourceManager.hpp"
 
-#include "../../include/Components/CameraComponent.h"
+#include "../../include/Components/CameraComponent.hpp"
 
 #include <glm/gtx/transform.hpp>
 

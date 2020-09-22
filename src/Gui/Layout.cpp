@@ -1,10 +1,10 @@
-#include "../../include/Gui/Text.h"
-#include "../../include/Gui/Image.h"
-#include "../../include/Gui/GUI.h"
-//#include "../../include/Gui/Layout.h"
+#include "../../include/Gui/Text.hpp"
+#include "../../include/Gui/Image.hpp"
+#include "../../include/Gui/GUI.hpp"
+//#include "../../include/Gui/Layout.hpp"
 
-#include "../../include/Resources/Shader.h"
-#include "../../include/Configuration.h"
+#include "../../include/Resources/Shader.hpp"
+#include "../../include/Configuration.hpp"
 
 void Layout::arrangeWidgets() {
     // set position of widgets based on stack mode and widget dimensions

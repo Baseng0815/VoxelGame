@@ -1,6 +1,6 @@
-//#include "../../include/Rendering/Window.h"
-#include "../../include/Configuration.h"
-#include "../../include/Events/EventDispatcher.h"
+//#include "../../include/Rendering/Window.hpp"
+#include "../../include/Configuration.hpp"
+#include "../../include/Events/EventDispatcher.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
 

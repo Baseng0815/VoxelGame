@@ -1,5 +1,5 @@
-#include "../../include/WorldGeneration/TerrainHeightGenerator.h"
-#include "../../include/Configuration.h"
+#include "../../include/WorldGeneration/TerrainHeightGenerator.hpp"
+#include "../../include/Configuration.hpp"
 
 TerrainHeightGenerator::TerrainHeightGenerator() {
 	m_baseNoise.SetFrequency(0.001);

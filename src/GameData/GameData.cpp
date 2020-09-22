@@ -1,6 +1,6 @@
-#include "../../include/GameData/GameData.h"
+#include "../../include/GameData/GameData.hpp"
 
-#include "../../include/Configuration.h"
+#include "../../include/Configuration.hpp"
 
 #include <fstream>
 #include <iostream>
