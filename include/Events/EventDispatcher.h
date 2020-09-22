@@ -33,6 +33,7 @@ public:
     static CallbackList<const FramebufferSizeEvent&> onFramebufferSize;
 
     static CallbackList<const EnterChunkEvent&> onEnterChunk;
+    static CallbackList<const EntityMovedEvent&> onEntityMoved;
     static CallbackList<const BlockChangedEvent&> onBlockChange;
     static CallbackList<const BlockCollisionEvent&> onBlockCollision;
 
@@ -44,6 +45,7 @@ public:
     static void raiseEvent(const ScrollEvent&);
     static void raiseEvent(const FramebufferSizeEvent&);
     static void raiseEvent(const EnterChunkEvent&);
+    static void raiseEvent(const EntityMovedEvent&);
     static void raiseEvent(const BlockChangedEvent&);
     static void raiseEvent(const BlockCollisionEvent&);
     static void raiseEvent(const StructureCreatedEvent&);

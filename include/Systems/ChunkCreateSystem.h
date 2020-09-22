@@ -35,6 +35,9 @@ struct GeometryData {
     std::vector<unsigned int> indices;
 };
 
+#ifndef __ATLAS__
+#define __ATLAS__
+
 using FaceUVs = std::array<glm::vec2, 4>;
 using BlockUVs = std::array<FaceUVs, 6>;
 using BlockUVsArray = std::array<BlockUVs, (size_t)BlockId::NUM_BLOCKS>;
@@ -45,6 +48,7 @@ struct Atlas {
 
     BlockUVsArray blockUVsArray;
 };
+#endif
 
 class ChunkCreateSystem : public System {
     private:

@@ -37,13 +37,13 @@ void World::setBlock(entt::registry* registry, const glm::vec3& position, Block 
     auto entity = getChunk(chunkPosition);
     ChunkComponent& chunk = registry->get<ChunkComponent>(entity);
 
+    BlockId prevBlock = chunk.blocks[(int)localPosition.x][(int)localPosition.y][(int)localPosition.z].type;
+
     chunk.blocks[(int)localPosition.x][(int)localPosition.y][(int)localPosition.z] = block;
     chunk.verticesOutdated = true;
 
-    //BlockChangedEvent blockChangedEvent;
-    //blockChangedEvent.position = position;
-
-    //EventDispatcher::raiseEvent(blockChangedEvent);
+    BlockChangedEvent blockChangedEvent{nullptr, position, prevBlock, block.type};
+    EventDispatcher::raiseEvent(blockChangedEvent);
 }
 
 void World::addChunk(entt::entity entity, const glm::vec2& position) {

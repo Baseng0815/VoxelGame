@@ -15,6 +15,7 @@ CallbackList<const ScrollEvent&> EventDispatcher::onMouseScroll;
 CallbackList<const FramebufferSizeEvent&> EventDispatcher::onFramebufferSize;
 
 CallbackList<const EnterChunkEvent&> EventDispatcher::onEnterChunk;
+CallbackList<const EntityMovedEvent&> EventDispatcher::onEntityMoved;
 CallbackList<const BlockChangedEvent&> EventDispatcher::onBlockChange;
 CallbackList<const BlockCollisionEvent&> EventDispatcher::onBlockCollision;
 
@@ -109,6 +110,10 @@ void EventDispatcher::raiseEvent(const FramebufferSizeEvent& e) {
 
 void EventDispatcher::raiseEvent(const EnterChunkEvent& e) {
     onEnterChunk.invoke(e);
+}
+
+void EventDispatcher::raiseEvent(const EntityMovedEvent& e) {
+    onEntityMoved.invoke(e);
 }
 
 void EventDispatcher::raiseEvent(const BlockChangedEvent& e) {

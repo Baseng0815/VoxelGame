@@ -75,6 +75,8 @@ struct EnterChunkEvent {
 struct BlockChangedEvent {
     Application* app;
     glm::vec3 position;
+    BlockId prevBlock;
+    BlockId newBlock;
 
     std::string toString() const;
 };
