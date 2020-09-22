@@ -6,6 +6,8 @@
 
 #include "../WorldGeneration/noiseutils.h"
 
+#include "../Resources/Geometry.h"
+
 using namespace noise;
 
 struct EnterChunkEvent;
@@ -32,6 +34,7 @@ class CloudSystem : public System {
         // perlin cloud generation
         module::Perlin m_perlinModule;
         CloudModule m_cloudModule;
+        Geometry m_geometry;
 
         // recalculate cloud geometry and change mesh renderer buffer data
         void recalculateCloudGeometry();

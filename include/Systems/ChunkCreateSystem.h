@@ -66,13 +66,13 @@ class ChunkCreateSystem : public System {
 
         CallbackHandle<const EnterChunkEvent&> m_enterChunkHandle;
         void handleEnterChunk(const EnterChunkEvent& e);
-        CallbackHandle<const StructureCreatedEvent&> m_structureCreatedHandle;        
+        CallbackHandle<const StructureCreatedEvent&> m_structureCreatedHandle;
         void handleStructureCreated(const StructureCreatedEvent& e);
 
         GenerationData updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ);
         void updateChunkStructures(glm::vec2 chunkPos, Block*** blocks);
         GeometryData updateChunkVertices(entt::entity entity, Block ***blocks, std::shared_mutex *blockMutex);
-        void updateChunkBuffers(Geometry& geometryComponent, const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices);        
+        void updateChunkBuffers(Geometry *geometryComponent, const std::vector<unsigned int> &indices, const std::vector<Vertex> &vertices);        
 
 
         void _update(int dt) override;

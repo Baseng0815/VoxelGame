@@ -5,5 +5,5 @@
 
 struct MeshRenderComponent {
     const Material *material;
-    Geometry geometry;
+    const Geometry *geometry;
 };

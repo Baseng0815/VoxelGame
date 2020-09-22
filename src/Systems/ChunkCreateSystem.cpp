@@ -34,9 +34,9 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent &e)
             if (std::count(m_loadedChunks.begin(), m_loadedChunks.end(), pos) == 0) {
                 entt::entity entity = m_registry.create();
 
+                const ChunkComponent &chunk = m_registry.emplace<ChunkComponent>(entity, new std::shared_mutex{}, x, z, new Geometry {});
                 m_registry.emplace<TransformationComponent>(entity, glm::vec3 {x * Configuration::CHUNK_SIZE, 0, z * Configuration::CHUNK_SIZE});
-                m_registry.emplace<MeshRenderComponent>(entity, ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS));
-                m_registry.emplace<ChunkComponent>(entity, new std::shared_mutex{}, x, z);
+                m_registry.emplace<MeshRenderComponent>(entity, ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS), chunk.geometry);
 
                 m_loadedChunks.push_back(pos);
             }
@@ -45,9 +45,9 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent &e)
 }
 
 void ChunkCreateSystem::handleStructureCreated(const StructureCreatedEvent& e) {
-    for (auto [chunk, blocks] : e.data) {
+    for (const auto &[chunk, blocks] : e.data) {
         if (m_structureQueue.contains(chunk)) {
-            for (auto block : blocks) {
+            for (const auto &block : blocks) {
                 m_structureQueue[chunk].emplace_back(block);
             }
         }
@@ -119,7 +119,7 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block**
         geometryData.indices.reserve(1048576);
     }
     catch (std::length_error e) {
-        std::cout << "WARNING: chunk buffer preallocation failed; " << e.what() << std::endl;
+        std::cerr << "WARNING: chunk buffer preallocation failed; " << e.what() << std::endl;
     }
 
     int faceCount = 0;
@@ -287,10 +287,10 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block**
     return geometryData;
 }
 
-void ChunkCreateSystem::updateChunkBuffers(Geometry& geometry, const std::vector<unsigned int>& indices,
+void ChunkCreateSystem::updateChunkBuffers(Geometry* geometry, const std::vector<unsigned int>& indices,
                                            const std::vector<Vertex>& vertices) {
 
-    geometry.fillBuffers(vertices, indices);
+    geometry->fillBuffers(vertices, indices);
 }
 
 void ChunkCreateSystem::_update(int dt) {
@@ -313,6 +313,15 @@ void ChunkCreateSystem::_update(int dt) {
             }
 
             delete[] chunk.blocks;
+
+            for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
+                    delete[] chunk.biomes[x];
+            }
+
+            delete[] chunk.biomes;
+
+            delete chunk.blockMutex;
+            delete chunk.geometry;
 
             // remove from loaded chunks and registry
             m_loadedChunks.erase(std::remove(m_loadedChunks.begin(), m_loadedChunks.end(), pos), m_loadedChunks.end());
@@ -337,7 +346,7 @@ void ChunkCreateSystem::_update(int dt) {
                     chunk.threadActiveOnSelf = true;
 
                     m_generationFutures.push_back(std::async(
-                            std::launch::async, [=]() { return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ); }));
+                            std::launch::async, [=, this]() { return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ); }));
 
                     chunk.verticesOutdated = true;
                 }
@@ -387,9 +396,8 @@ void ChunkCreateSystem::_update(int dt) {
     while (itGeo != m_geometryFutures.end()) {
         if (itGeo->valid() && itGeo->wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
             GeometryData geometryData = itGeo->get();
-            ChunkComponent& chunk = m_registry.get<ChunkComponent>(geometryData.entity);
-            MeshRenderComponent& meshRenderer = m_registry.get<MeshRenderComponent>(geometryData.entity);
-            updateChunkBuffers(meshRenderer.geometry, geometryData.indices, geometryData.vertices);
+            ChunkComponent &chunk = m_registry.get<ChunkComponent>(geometryData.entity);
+            updateChunkBuffers(chunk.geometry, geometryData.indices, geometryData.vertices);
 
             chunk.verticesOutdated = false;
             chunk.threadActiveOnSelf = false;
@@ -443,7 +451,7 @@ ChunkCreateSystem::ChunkCreateSystem(Registry_T& registry)
         EventDispatcher::onEnterChunk.subscribe([&](const EnterChunkEvent& e) { handleEnterChunk(e); });
 
     m_structureCreatedHandle = EventDispatcher::onStructureCreated.subscribe(
-        [&](const StructureCreatedEvent& e) { handleStructureCreated(e); });    
+        [&](const StructureCreatedEvent& e) { handleStructureCreated(e); });
 
     handleEnterChunk(EnterChunkEvent());
 }

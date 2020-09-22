@@ -122,9 +122,7 @@ void CloudSystem::recalculateCloudGeometry()
         }
     }
 
-    MeshRenderComponent &meshRenderer = m_registry.get<MeshRenderComponent>(m_cloudEntity);
-    meshRenderer.geometry.fillBuffers(vertices, indices);
-
+    m_geometry.fillBuffers(vertices, indices);
     // TODO when implementing this, change if statement and for loop
 }
 
@@ -145,8 +143,8 @@ CloudSystem::CloudSystem(Registry_T &registry)
     : System {registry, 0}, m_cloudEntity {registry.create()}
 {
     // all clouds are represented by a single entity and rendered using the mesh renderer
-    registry.emplace<MeshRenderComponent>(m_cloudEntity, MeshRenderComponent {ResourceManager::getResource<Material>(MATERIAL_CLOUDS)});
-    registry.emplace<TransformationComponent>(m_cloudEntity, TransformationComponent {glm::vec3 {0.f, Configuration::CLOUD_HEIGHT, 0.f}});
+    registry.emplace<MeshRenderComponent>(m_cloudEntity, ResourceManager::getResource<Material>(MATERIAL_CLOUDS), &m_geometry);
+    registry.emplace<TransformationComponent>(m_cloudEntity, glm::vec3 {0.f, Configuration::CLOUD_HEIGHT, 0.f});
 
     m_perlinModule.SetFrequency(8.5);
     m_perlinModule.SetOctaveCount(1);
