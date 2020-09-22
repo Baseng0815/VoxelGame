@@ -3,11 +3,11 @@
 #include "../../include/Utility.h"
 
 TerrainGenerator::TerrainGenerator() {
-    m_biomes.emplace_back(BiomeId::BIOME_FLAT, BlockId::BLOCK_GRASS, BlockId::BLOCK_DIRT, 1, 3);
-    m_biomes.emplace_back(BiomeId::BIOME_FLAT_TERRAIN, BlockId::BLOCK_GRASS, BlockId::BLOCK_DIRT, 1, 4);
-    m_biomes.emplace_back(BiomeId::BIOME_DESERT, BlockId::BLOCK_SAND, BlockId::BLOCK_SAND, 1, 4);
-    m_biomes.emplace_back(BiomeId::BIOME_BEACH, BlockId::BLOCK_SAND, BlockId::BLOCK_SAND, 1, 4);
-    m_biomes.emplace_back(BiomeId::BIOME_OCEAN, BlockId::BLOCK_SAND, BlockId::BLOCK_SAND, 1, 3);
+    m_biomes.push_back({BiomeId::BIOME_FLAT, BlockId::BLOCK_GRASS, BlockId::BLOCK_DIRT, 1, 3});
+    m_biomes.push_back({BiomeId::BIOME_FLAT_TERRAIN, BlockId::BLOCK_GRASS, BlockId::BLOCK_DIRT, 1, 4});
+    m_biomes.push_back({BiomeId::BIOME_DESERT, BlockId::BLOCK_SAND, BlockId::BLOCK_SAND, 1, 4});
+    m_biomes.push_back({BiomeId::BIOME_BEACH, BlockId::BLOCK_SAND, BlockId::BLOCK_SAND, 1, 4});
+    m_biomes.push_back({BiomeId::BIOME_OCEAN, BlockId::BLOCK_SAND, BlockId::BLOCK_SAND, 1, 3});
 }
 
 Biome TerrainGenerator::getBiome(BiomeId id) const {
