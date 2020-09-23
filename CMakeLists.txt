@@ -19,6 +19,7 @@ if(WIN32)
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /SAFESEH:NO")
     set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /SAFESEH:NO")
 
+    include_directories("C:/lib/assimp/include")    
     include_directories("C:/lib/entt-master/src")
     include_directories("C:/lib/GLEW/include")
     include_directories("C:/lib/GLFW/include")
@@ -29,6 +30,7 @@ if(WIN32)
     include_directories("C:/lib/freetype2/include/freetype2")
     include_directories("C:/lib/SOIL/src")
 
+    find_library(ASSIMP_LIBRARIES assimp-vc142-mt C:/lib/assimp/bin/Win32)
     find_library(GLEW_LIBRARIES glew32 C:/lib/GLEW/lib/Release/Win32)
     find_library(GLFW_LIBRARIES glfw3 C:/lib/GLFW/lib)
     find_library(FREETYPE_LIBRARIES freetype C:/lib/freetype2/Win32)
@@ -46,6 +48,7 @@ if(WIN32)
 
     add_executable(VoxelGame ${SOURCES})
     target_link_libraries(VoxelGame "-SAFESEH:NO"
+        ${ASSIMP_LIBRARIES}
         ${OPENGL_LIBRARIES}
         ${GLFW_LIBRARIES}
         ${GLEW_LIBRARIES}

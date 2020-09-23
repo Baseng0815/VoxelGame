@@ -44,7 +44,7 @@ Geometry::Geometry(const std::string& file)
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(Configuration::getStringValue("ResourceBasePath") + file, aiProcess_Triangulate | aiProcess_FlipUVs);
 
-    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
+    if (scene == nullptr|| !scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::cerr << "error: " << importer.GetErrorString() << "\n";
     }
 

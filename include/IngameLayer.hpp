@@ -9,11 +9,13 @@
 #include "Gui/IngameLayerGUI.hpp"
 
 #include "Events/CallbackHandle.hpp"
+#include "Resources/TextureAtlas.hpp"
 
 class IngameLayer : public GameLayer {
     private:
         std::vector<std::unique_ptr<System>> m_systems;
         Registry_T m_registry;
+        TextureAtlas m_atlas;
 
         CallbackHandle<const KeyEvent&> m_keyEventHandle;
         void handleKeys(const KeyEvent&);
