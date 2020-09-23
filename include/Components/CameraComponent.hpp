@@ -4,6 +4,8 @@
 #include "../../include/Configuration.hpp"
 
 struct CameraComponent {
+    bool viewMatrixOutdated = true;
+
     glm::mat4 perspectiveProjection, viewMatrix;
     glm::vec3 front, front_noY, right;
     float width;

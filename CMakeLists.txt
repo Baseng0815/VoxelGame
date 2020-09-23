@@ -54,7 +54,8 @@ if(WIN32)
         ${SOIL_LIBRARIES})
 
 else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -lm -pthread -ggdb")
+    set(CMAKE_CXX_STANDARD 20)
+    set(CMAKE_CXX_FLAGS_DEBUG "-ggdb")
 
     find_package(glfw3 3.3 REQUIRED)
     if (GLFW_FOUND)
@@ -76,10 +77,22 @@ else()
         message("Freetype was found")
     endif()
 
+    find_package(Assimp REQUIRED)
+    if (Assimp_FOUND)
+        message("assimp was found")
+    endif()
+
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+    if (THREADS_FOUND)
+        message("Threads was found")
+    endif()
+
     message("GLFW LIBRARIES: ${GLFW_LIBRARIES}")
     message("OpenGL LIBRARIES: ${OPENGL_LIBRARIES}")
     message("GLEW LIBRARIES: ${GLEW_LIBRARIES}")
-    message("SOIL LIBRARIES: ${SOIL_LIBRARIES}")
+    message("Freetype LIBRARIES: ${FREETYPE_LIBRARIES}")
+    message("Assimp LIBRARIES: ${ASSIMP_LIBRARIES}")
 
     file(GLOB_RECURSE SOURCES
         include/*.hpp
@@ -97,6 +110,8 @@ else()
         glfw ${GLFW_LIBRARIES}
         ${GLEW_LIBRARIES}
         ${FREETYPE_LIBRARIES}
+        ${ASSIMP_LIBRARIES}
         libnoise.so
-        libSOIL.so)
+        libSOIL.so
+        Threads::Threads)
 endif()

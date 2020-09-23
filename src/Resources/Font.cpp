@@ -50,7 +50,7 @@ Font::Font(const std::string& file) {
         Character character = {
                 texture, glm::ivec2(face->glyph->bitmap.width, face->glyph->bitmap.rows),
                 glm::ivec2(face->glyph->bitmap_left, face->glyph->bitmap_top),
-                face->glyph->advance.x
+                (GLuint)face->glyph->advance.x
         };
         m_characters.insert(std::make_pair(c, character));
     }

@@ -34,11 +34,11 @@ class InputSystem : public System {
         void handleFramebufferSizeEvent(const FramebufferSizeEvent&);
 
         void updateVectors(CameraComponent& camera);
-        void updateViewMatrix(CameraComponent& camera, TransformationComponent& transform);
+        void updateViewMatrix(CameraComponent& camera, const TransformationComponent& transform);
         void updateProjectionMatrix(CameraComponent& camera);
 
         void _update(int dt) override;
-        
+
         LookData selectedBlock;
 
         byte playerInputState = 0;

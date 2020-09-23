@@ -1,6 +1,13 @@
 #include "../../include/Resources/Geometry.hpp"
 
 #include "../../include/Utility.hpp"
+#include "../../include/Configuration.hpp"
+
+#include <assimp/scene.h>
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
+
+#include <iostream>
 
 void Geometry::initBuffers()
 {
@@ -31,7 +38,50 @@ void Geometry::release()
 
 Geometry::Geometry(const std::string& file)
 {
-    // TODO implement .obj file loading
+    std::cout << "loading geometry " << file << "\n";
+    initBuffers();
+
+    Assimp::Importer importer;
+    const aiScene *scene = importer.ReadFile(Configuration::getStringValue("ResourceBasePath") + file, aiProcess_Triangulate | aiProcess_FlipUVs);
+
+    if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
+        std::cerr << "error: " << importer.GetErrorString() << "\n";
+    }
+
+    std::vector<Vertex> vertices(1000);
+    std::vector<unsigned int> indices(10000);
+
+    // only using one mesh without child or materials
+    const aiMesh *mesh = scene->mMeshes[0];
+    for (size_t i = 0; i < mesh->mNumVertices; i++) {
+        glm::vec2 uv {0.f};
+        if (mesh->mTextureCoords[0]) {
+            uv.x = mesh->mTextureCoords[0][i].x;
+            uv.y = mesh->mTextureCoords[0][i].y;
+        }
+
+        vertices.emplace_back(Vertex {glm::vec3 {
+            mesh->mVertices[i].x,
+            mesh->mVertices[i].y,
+            mesh->mVertices[i].z
+        }, glm::vec3 {
+            mesh->mNormals[i].x,
+            mesh->mNormals[i].y,
+            mesh->mNormals[i].z
+        }, uv});
+    }
+
+    for (size_t i = 0; i < mesh->mNumFaces; i++) {
+        const aiFace &face = mesh->mFaces[i];
+        for (size_t j = 0; j < face.mNumIndices; j++) {
+            std::cout << face.mIndices[j] << "\n";
+            indices.emplace_back(face.mIndices[j]);
+        }
+    }
+
+    vertices.shrink_to_fit();
+    indices.shrink_to_fit();
+    fillBuffers(vertices, indices);
 }
 
 Geometry::Geometry(const std::vector<Vertex>& vertices, const std::vector<unsigned int>& indices)

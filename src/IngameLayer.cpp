@@ -27,7 +27,6 @@ void IngameLayer::handleKeys(const KeyEvent &e)
     if (e.action == GLFW_PRESS) {
         // handle constexpr keys
         switch (e.key) {
-
             // handle dynamically bound keys
             default:
                 if (e.key == Configuration::getAssociatedKey("KEYBIND_TOGGLE_DEBUG")) {
@@ -58,13 +57,13 @@ IngameLayer::IngameLayer(Application* application)
     m_systems.emplace_back(new MeshRenderSystem {m_registry});
     m_systems.emplace_back(new DebugRenderSystem {m_registry});
 
-
     // callbacks
     m_keyEventHandle = EventDispatcher::onKeyPress.subscribe([&](const KeyEvent &e) {
         handleKeys(e);
     });
 
     EventDispatcher::raiseEvent(EnterChunkEvent {nullptr, 0, 0, 0, 0});
+
 }
 
 IngameLayer::~IngameLayer() {

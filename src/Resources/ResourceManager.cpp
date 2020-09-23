@@ -24,6 +24,9 @@ void ResourceManager::loadResources() {
         "Textures/Skybox/1_0.png", "Textures/Skybox/1_1.png", "Textures/Skybox/1_2.png", "Textures/Skybox/1_3.png", "Textures/Skybox/1_4.png", "Textures/Skybox/1_5.png",
     })});
 
+    // geometries
+    resources.emplace(GEOMETRY_GRASS, ResourceHandle {new Geometry("Models/grass.obj")});
+
     // shaders
     // render 3d meshes with lighting and texturing
     resources.emplace(SHADER_MESH_RENDER_TEXTURE, ResourceHandle {new Shader("Shaders/meshRenderShader.vert", "Shaders/meshRenderShaderTexture.frag")});

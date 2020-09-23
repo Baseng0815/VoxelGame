@@ -12,11 +12,11 @@ void Texture::release()
 }
 
 Texture::Texture(const std::string& file) {
-    std::cout << "loading texture " << file << std::endl;
+    std::cout << "loading texture " << file << "\n";
 
     unsigned char *data = SOIL_load_image((Configuration::getStringValue("ResourceBasePath") + file).c_str(), &m_width, &m_height, &m_channels, SOIL_LOAD_RGBA);
     if (!data) {
-        std::cerr << "failed to load texture" << file << std::endl;
+        std::cerr << "failed to load texture" << file << "\n";
         exit(1);
     }
 
@@ -35,7 +35,7 @@ Texture::Texture(const std::string& file) {
 
 Texture::Texture(const std::array<std::string, 6> &files)
 {
-    std::cout << "loading cube textures:" << std::endl;;
+    std::cout << "loading cube textures:" << "\n";
     glGenTextures(1, &m_texture);
     glBindTexture(GL_TEXTURE_2D, m_texture);
 
@@ -44,7 +44,7 @@ Texture::Texture(const std::array<std::string, 6> &files)
         int width, height, channels;
         unsigned char *data = SOIL_load_image((Configuration::getStringValue("ResourceBasePath") + files[i]).c_str(), &width, &height, &channels, SOIL_LOAD_RGBA);
         if (!data) {
-            std::cerr << "failed to load texture" << files[i] << std::endl;
+            std::cerr << "failed to load texture" << files[i] << "\n";
             exit(1);
         }
         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);

@@ -20,21 +20,21 @@ namespace Utility {
     }
 
     std::tuple<glm::vec2, glm::vec3> GetChunkAndLocal(const glm::vec3& worldCoords) {
-        glm::vec2 chunkPos{std::floor(worldCoords.x / Configuration::CHUNK_SIZE),
-                        std::floor(worldCoords.z / Configuration::CHUNK_SIZE)};
+        glm::vec2 chunkPos {std::floor(worldCoords.x / Configuration::CHUNK_SIZE),
+            std::floor(worldCoords.z / Configuration::CHUNK_SIZE)};
 
-        glm::vec3 localCoords{localCoords.x = worldCoords.x - std::floor(worldCoords.x / Configuration::CHUNK_SIZE) *
-                                                                Configuration::CHUNK_SIZE,
-                            localCoords.y = worldCoords.y,
-                            localCoords.z = worldCoords.z - std::floor(worldCoords.z / Configuration::CHUNK_SIZE) *
-                                                                Configuration::CHUNK_SIZE};
+        glm::vec3 localCoords {
+            worldCoords.x - std::floor(worldCoords.x / Configuration::CHUNK_SIZE) * Configuration::CHUNK_SIZE,
+            worldCoords.y,
+            worldCoords.z - std::floor(worldCoords.z / Configuration::CHUNK_SIZE) * Configuration::CHUNK_SIZE
+        };
 
         return std::make_tuple(chunkPos, localCoords);
     }
 
     glm::vec2 GetChunk(const glm::vec3& worldCoords) {
         return glm::vec2{std::floor(worldCoords.x / Configuration::CHUNK_SIZE),
-                        std::floor(worldCoords.z / Configuration::CHUNK_SIZE)};
+            std::floor(worldCoords.z / Configuration::CHUNK_SIZE)};
     }
 
     glm::vec3 GetWorldCoords(const glm::vec2& chunk, const glm::vec3& chunkCoords) {
@@ -84,8 +84,8 @@ namespace Utility {
 
     glm::vec3 getFacePosition(const glm::vec3& blockPos, const glm::vec3& faceNormal) {
         glm::vec3 faceOffset = glm::vec3{0.5f * faceNormal.x * faceNormal.x + 0.5f * faceNormal.x,
-                                        0.5f * faceNormal.y * faceNormal.y + 0.5f * faceNormal.y,
-                                        0.5f * faceNormal.z * faceNormal.z + 0.5f * faceNormal.z};
+            0.5f * faceNormal.y * faceNormal.y + 0.5f * faceNormal.y,
+            0.5f * faceNormal.z * faceNormal.z + 0.5f * faceNormal.z};
 
         return blockPos + faceOffset;
     }

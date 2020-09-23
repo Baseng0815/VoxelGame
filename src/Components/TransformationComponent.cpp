@@ -55,6 +55,6 @@ void TransformationComponent::scale(const glm::vec3 &pscale) {
     recalculateModelMatrix();
 }
 
-glm::mat4 TransformationComponent::getModelMatrix() const {
+const glm::mat4 &TransformationComponent::getModelMatrix() const {
     return m_modelMatrix;
 }

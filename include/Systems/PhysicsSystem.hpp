@@ -6,8 +6,10 @@
 #include "../Math/Cuboid.hpp"
 
 struct PlayerComponent;
-struct TransformationComponent;
+struct CameraComponent;
 struct VelocityComponent;
+struct TransformationComponent;
+
 struct BlockCollisionEvent;
 
 class PhysicsSystem : public System {
@@ -17,10 +19,12 @@ class PhysicsSystem : public System {
     void _update(int dt) override;
 
     void updatePlayer(float dt, PlayerComponent& player, TransformationComponent& transform,
-                      VelocityComponent& velocity) const;
-    void handleBlockCollision(entt::entity entity, glm::vec3 block) const;
+                      VelocityComponent& velocity, CameraComponent &camera) const;
 
-    static void applyVelocities(float dt, TransformationComponent& transform, VelocityComponent& velocity);
+    void handleBlockCollision(entt::entity entity, const glm::vec3 &block) const;
+
+    // returns true if entity was moved
+    static bool applyVelocities(float dt, TransformationComponent &transform, const VelocityComponent &velocity);
 
   public:
     PhysicsSystem(entt::registry& registry);

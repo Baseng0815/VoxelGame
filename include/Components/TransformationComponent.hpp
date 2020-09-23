@@ -29,5 +29,5 @@ struct TransformationComponent {
         void rotate(const glm::quat&);
         void scale(const glm::vec3&);
 
-        glm::mat4 getModelMatrix() const;
+        const glm::mat4 &getModelMatrix() const;
 };

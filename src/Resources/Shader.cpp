@@ -16,20 +16,19 @@ void Shader::release()
 
 std::string Shader::loadShader(const std::string &fileName)
 {
-    std::ifstream file;
-    file.open((fileName).c_str());
+    std::ifstream file { fileName };
 
     std::string output;
     std::string line;
 
-    if (file.is_open()) {
+    if (file.good()) {
         while (file.good()) {
             getline(file, line);
             output.append(line + "\n");
         }
     }
     else {
-        std::cerr << "Unable to load shader: " << fileName << std::endl;
+        std::cerr << "Unable to load shader: " << fileName << "\n";
     }
 
     return output;
