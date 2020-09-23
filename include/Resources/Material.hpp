@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "Resource.hpp"
+#include "../Color.hpp"
 
 class Texture;
 class Shader;
@@ -17,10 +18,8 @@ class Material : public Resource {
         const Texture *specularMap  = nullptr;
 
         // color properties
+        Color color;
         float shininess = 0.f;
-        glm::vec4 ambient   = glm::vec4 {0.f};
-        glm::vec4 diffuse   = glm::vec4 {0.f};
-        glm::vec4 specular  = glm::vec4 {0.f};
         const Shader *customShader = nullptr;
         bool useBlending    = false;
         bool useCulling     = true;

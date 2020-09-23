@@ -79,8 +79,6 @@ Geometry::Geometry(const std::string& file)
         }
     }
 
-    vertices.shrink_to_fit();
-    indices.shrink_to_fit();
     fillBuffers(vertices, indices);
 }
 

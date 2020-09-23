@@ -51,10 +51,12 @@ void ResourceManager::loadResources() {
     resources.emplace(MATERIAL_CHUNK_BLOCKS, ResourceHandle {material} );
 
     material = new Material {};
-    material->ambient = glm::vec4 {1.f, 1.f, 1.f, 0.7f};
-    material->customShader = ResourceManager::getResource<Shader>(SHADER_MVP_COLOR);
     material->useCulling = false;
     resources.emplace(MATERIAL_CLOUDS, ResourceHandle {material});
+
+    material = new Material {};
+    material->color = Color::Green;
+    resources.emplace(MATERIAL_GRASS, ResourceHandle {material});
 
     // fonts
     resources.emplace(FONT_KORURI, ResourceHandle {new Font("Fonts/Koruri-Regular.ttf")});

@@ -6,15 +6,12 @@ void Material::release()
 
 Material::Material(Material &&other) noexcept
 : diffuseMap {other.diffuseMap}, specularMap {other.specularMap},
-    ambient {other.ambient}, diffuse {other.diffuse}, specular {other.specular},
-    shininess {other.shininess}
+    color {other.color}, shininess {other.shininess}
 {
     other.diffuseMap = nullptr;
     other.specularMap = nullptr;
     other.shininess = 0.f;
-    other.ambient = glm::vec4 {0.f};
-    other.diffuse = glm::vec4 {0.f};
-    other.specular = glm::vec4 {0.f};
+    other.color = Color::White;
     other.customShader = nullptr;
 }
 
@@ -24,9 +21,7 @@ Material &Material::operator=(Material &&other) noexcept
         std::swap(diffuseMap, other.diffuseMap);
         std::swap(specularMap, other.specularMap);
         std::swap(shininess, other.shininess);
-        std::swap(ambient, other.ambient);
-        std::swap(diffuse, other.diffuse);
-        std::swap(specular, other.specular);
+        std::swap(color, other.color);
         std::swap(customShader, other.customShader);
     }
 

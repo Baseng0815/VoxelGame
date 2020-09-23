@@ -38,6 +38,8 @@ void IngameLayer::handleKeys(const KeyEvent &e)
     }
 }
 
+#include "../include/Components/MeshRenderComponent.hpp"
+
 IngameLayer::IngameLayer(Application* application)
     : GameLayer {application}
 {
@@ -64,6 +66,9 @@ IngameLayer::IngameLayer(Application* application)
 
     EventDispatcher::raiseEvent(EnterChunkEvent {nullptr, 0, 0, 0, 0});
 
+    entt::entity grass = m_registry.create();
+    m_registry.emplace<MeshRenderComponent>(grass, MeshRenderComponent {ResourceManager::getResource<Material>(MATERIAL_GRASS), ResourceManager::getResource<Geometry>(GEOMETRY_GRASS)});
+    m_registry.emplace<TransformationComponent>(grass, glm::vec3 {0.f, 63.f, 0.f});
 }
 
 IngameLayer::~IngameLayer() {

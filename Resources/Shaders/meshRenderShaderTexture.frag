@@ -38,8 +38,8 @@ uniform Material material;
 
 out vec4 out_Color;
 
-vec3 calcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir);
-vec3 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 fragPos);
+vec4 calcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir);
+vec4 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 fragPos);
 
 void main()
 {
@@ -47,22 +47,22 @@ void main()
     vec3 viewDir = normalize(viewPos - pass_fragPos);
 
     // directional light
-    vec3 result = calcDirLight(dirLight, norm, viewDir);
+    vec4 result = calcDirLight(dirLight, norm, viewDir);
     // point lights
     /*
     for (int i = 0; i < MAX_LIGHTS; i++)
         result += calcPointLight(pointLights[i], norm, viewDir, pass_fragPos);
     */
 
-    out_Color = vec4(result, 1.0f);
+    out_Color = result;
 }
 
 // directional light
-vec3 calcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir)
+vec4 calcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir)
 {
     // sampled colors
-    vec3 diffuseColor = texture2D(material.diffuseMap, pass_uvCoords).xyz;
-    vec3 specularColor = texture2D(material.specularMap, pass_uvCoords).xyz;
+    vec4 diffuseColor = texture2D(material.diffuseMap, pass_uvCoords);
+    vec4 specularColor = texture2D(material.specularMap, pass_uvCoords);
 
     // calculations
     // diffuse
@@ -74,19 +74,20 @@ vec3 calcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir)
     float spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
 
     // combine
-    vec3 ambient = light.ambient * diffuseColor;
-    vec3 diffuse = light.diffuse * diff * diffuseColor;
-    vec3 specular = light.specular * spec * specularColor;
+    // TODO upload vec4 directly
+    vec4 ambient = vec4(light.ambient, 1.f) * diffuseColor;
+    vec4 diffuse = vec4(light.diffuse, 1.f) * diff * diffuseColor;
+    vec4 specular = vec4(light.specular, 1.f) * spec * specularColor;
 
     return ambient + diffuse + specular;
 }
 
 // point light
-vec3 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 fragPos)
+vec4 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 fragPos)
 {
     // sampled colors
-    vec3 diffuseColor = texture2D(material.diffuseMap, pass_uvCoords).xyz;
-    vec3 specularColor = texture2D(material.specularMap, pass_uvCoords).xyz;
+    vec4 diffuseColor = texture2D(material.diffuseMap, pass_uvCoords);
+    vec4 specularColor = texture2D(material.specularMap, pass_uvCoords);
 
     // calculations
     // diffuse
@@ -102,9 +103,9 @@ vec3 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 fragPos)
     float attenuation = 1.0f / (light.constant + light.linear * dist + light.quadratic * dist * dist);
 
     // combine
-    vec3 ambient = light.ambient * diffuseColor;
-    vec3 diffuse = light.diffuse * diff * diffuseColor;
-    vec3 specular = light.specular * spec * specularColor;
+    vec4 ambient = vec4(light.ambient, 1.f) * diffuseColor;
+    vec4 diffuse = vec4(light.diffuse, 1.f) * diff * diffuseColor;
+    vec4 specular = vec4(light.specular, 1.f) * spec * specularColor;
 
     ambient *= attenuation;
     diffuse *= attenuation;

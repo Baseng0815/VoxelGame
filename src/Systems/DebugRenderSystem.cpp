@@ -33,7 +33,7 @@ void DebugRenderSystem::_update(int dt)
         m_mvpColorShader->upload("projectionMatrix", camera.perspectiveProjection);
 
         m_mvpColorShader->upload("modelMatrix", m_chunkModelMatrix);
-        m_mvpColorShader->upload("material.ambient", Color {255, 0, 0, 255});
+        m_mvpColorShader->upload("material.color", Color {255, 0, 0, 255});
 
         // draw chunk boundaries
         glBindVertexArray(m_chunkBoundaries.getVao());
