@@ -1,6 +1,8 @@
 #include "../../include/Math/Plane.hpp"
 
 #include "../../include/Math/Ray.hpp"
+#include <sstream>
+
 namespace Math {
     Plane::Plane() : Plane(glm::vec3(), glm::vec3()) {}
 
@@ -27,8 +29,14 @@ namespace Math {
         //       ->    ->
         //       n  *  r
 
-        float lambda = (d - glm::dot(ray.origin, normal)) / glm::dot(ray.getDirection(), normal);
+        float lambda = (d - glm::dot(ray.origin, normal)) / glm::dot(ray.getDirection(), normal);        
 
         return ray.getPoint(lambda);
+    }
+
+    std::string Plane::toString() const {
+        std::stringstream ss;
+        ss << normal.x << "x + " << normal.y << "y + " << normal.z << "z =" << d;
+        return ss.str();
     }
 }

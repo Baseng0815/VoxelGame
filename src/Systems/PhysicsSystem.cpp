@@ -1,10 +1,10 @@
 #include "../../include/Systems/PhysicsSystem.hpp"
 
 #include "../../include/Components/CameraComponent.hpp"
-#include "../../include/Components/PlayerComponent.hpp"
-#include "../../include/Components/VelocityComponent.hpp"
 #include "../../include/Components/CollisionComponent.hpp"
+#include "../../include/Components/PlayerComponent.hpp"
 #include "../../include/Components/TransformationComponent.hpp"
+#include "../../include/Components/VelocityComponent.hpp"
 
 #include "../../include/Collision.hpp"
 #include "../../include/Configuration.hpp"
@@ -24,10 +24,22 @@ void PhysicsSystem::_update(int millis) {
 
     // looks like velocities are already applied inside updatePlayer?
     /* applyVelocities(dt, transform, velocity); */
+
+    m_registry.view<TransformationComponent, VelocityComponent>(entt::exclude<PlayerComponent>).each([&](entt::entity entity, TransformationComponent &transform, VelocityComponent &velocity) {
+        glm::vec3 oldPos = transform.getPosition();        
+        if (m_registry.any<PlayerComponent>(entity)) {
+            throw new std::exception();
+        }
+
+        if (applyVelocities(dt, transform, velocity)) {
+            EntityMovedEvent e{nullptr, entity, transform.getPosition(), oldPos};
+            EventDispatcher::raiseEvent(e);            
+        }
+    });
 }
 
-void PhysicsSystem::updatePlayer(float dt, PlayerComponent& player, TransformationComponent& transform,
-                                 VelocityComponent& velocity, CameraComponent &cameraComponent) const {
+void PhysicsSystem::updatePlayer(float dt, PlayerComponent &player, TransformationComponent &transform,
+                                 VelocityComponent &velocity, CameraComponent &cameraComponent) const {
     if (!World::chunkCreated(Utility::GetChunk(transform.getPosition())))
         return;
 
@@ -44,13 +56,18 @@ void PhysicsSystem::updatePlayer(float dt, PlayerComponent& player, Transformati
 
     if (applyVelocities(dt, transform, velocity)) {
         cameraComponent.viewMatrixOutdated = true;
+
+        entt::entity entity = m_registry.view<PlayerComponent>().front();
+        EntityMovedEvent e{nullptr, entity, transform.getPosition(), oldPlayerPos};
+        EventDispatcher::raiseEvent(e);
     }
 
     const glm::vec3 &newPlayerPos = transform.getPosition();
     const glm::ivec2 &newChunk = Utility::GetChunk(newPlayerPos);
 
+    // TODO: Replace EnterChunkEvent by EntityMovedEvent
     if (newChunk != oldChunk) {
-        EnterChunkEvent e {nullptr, oldChunk.x, oldChunk.y, newChunk.x, newChunk.y};
+        EnterChunkEvent e{nullptr, oldChunk.x, oldChunk.y, newChunk.x, newChunk.y};
         EventDispatcher::raiseEvent(e);
     }
 
@@ -60,30 +77,32 @@ void PhysicsSystem::updatePlayer(float dt, PlayerComponent& player, Transformati
     }
 }
 
-bool PhysicsSystem::applyVelocities(float dt, TransformationComponent& transform, const VelocityComponent &velocity) {
+bool PhysicsSystem::applyVelocities(float dt, TransformationComponent &transform, const VelocityComponent &velocity) {
     bool wasMoved = false;
 
-    if (velocity.velocity != glm::vec3 {0.f}) {
+    if (velocity.velocity != glm::vec3{0.f}) {
         transform.move(dt * velocity.velocity);
         wasMoved = true;
     }
 
-    float phi = dt * glm::length(velocity.angularVelocity);
-    glm::quat pRot = glm::quat(Utility::radToDeg(phi), glm::normalize(velocity.angularVelocity));
+    if (velocity.angularVelocity != glm::vec3{0.f}) {
+        float phi = dt * glm::length(velocity.angularVelocity);
+        glm::quat pRot = glm::quat(Utility::radToDeg(phi), glm::normalize(velocity.angularVelocity));
 
-    transform.rotate(pRot);
+        transform.rotate(pRot);
+    }
 
     return wasMoved;
 }
 
 void PhysicsSystem::handleBlockCollision(entt::entity entity, const glm::vec3 &block) const {
-    TransformationComponent& transform = m_registry.get<TransformationComponent>(entity);
-    VelocityComponent& velocity = m_registry.get<VelocityComponent>(entity);
-    CollisionComponent& collision = m_registry.get<CollisionComponent>(entity);
+    TransformationComponent &transform = m_registry.get<TransformationComponent>(entity);
+    VelocityComponent &velocity = m_registry.get<VelocityComponent>(entity);
+    CollisionComponent &collision = m_registry.get<CollisionComponent>(entity);
 
     Math::Cuboid entityCol = collision.transform(transform);
 
-    std::vector<glm::vec3> tvs = Collision::getBlockTVs(block, entityCol);
+    std::vector<glm::vec3> tvs = Collision::getBlockTVs(block, entityCol);    
 
     if (tvs.size() == 0)
         return;
@@ -91,7 +110,7 @@ void PhysicsSystem::handleBlockCollision(entt::entity entity, const glm::vec3 &b
     glm::vec3 mtv;
     auto it = tvs.begin();
     do {
-        glm::vec3 normal = glm::normalize(*it);
+        glm::vec3 normal = glm::round(glm::normalize(*it));
 
         if (!World::getBlock(&m_registry, block + normal).isSolid()) {
             mtv = *it;
@@ -106,7 +125,7 @@ void PhysicsSystem::handleBlockCollision(entt::entity entity, const glm::vec3 &b
     } while (++it != tvs.end());
 
     if (m_registry.any<PlayerComponent>(entity)) {
-        PlayerComponent& player = m_registry.get<PlayerComponent>(entity);
+        PlayerComponent &player = m_registry.get<PlayerComponent>(entity);
 
         if (velocity.velocity.y == 0) {
             player.isFalling = false;
@@ -114,8 +133,8 @@ void PhysicsSystem::handleBlockCollision(entt::entity entity, const glm::vec3 &b
     }
 }
 
-PhysicsSystem::PhysicsSystem(Registry_T& registry) : System{registry, 0}
-{
+PhysicsSystem::PhysicsSystem(Registry_T &registry)
+    : System{registry, 0} {
     m_blockCollisionHandle = EventDispatcher::onBlockCollision.subscribe(
         [&](const BlockCollisionEvent &e) { handleBlockCollision(e.entity, e.block); });
 }

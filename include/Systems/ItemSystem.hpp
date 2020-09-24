@@ -8,6 +8,7 @@
 
 struct BlockChangedEvent;
 struct EntityMovedEvent;
+struct Vertex;
 
 class ItemSystem : public System {
   private:

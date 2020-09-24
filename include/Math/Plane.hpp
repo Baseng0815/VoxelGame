@@ -1,4 +1,5 @@
 #include <glm/glm.hpp>
+#include <string>
 
 namespace Math {
     struct Ray;
@@ -12,5 +13,7 @@ namespace Math {
         Plane(glm::vec3 normal, float d);
 
         glm::vec3 getIntersectionPoint(const Ray ray) const;
+
+        std::string toString() const;
     };
 }

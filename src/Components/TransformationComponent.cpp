@@ -46,7 +46,7 @@ void TransformationComponent::move(const glm::vec3 &pdelta) {
 }
 
 void TransformationComponent::rotate(const glm::quat &protation) {
-    m_rotation *= protation;
+    m_rotation = glm::normalize(m_rotation * protation);
     recalculateModelMatrix();
 }
 
