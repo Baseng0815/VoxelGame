@@ -60,8 +60,9 @@ void PhysicsSystem::handleBlockCollision(entt::entity entity, const glm::vec3 &b
     RigidBodyComponent &rigidBody = m_registry.get<RigidBodyComponent>(entity);
 
     Math::Cuboid entityCol = collision.transform(transform);
+    Math::Cuboid blockCol = Collision::getBlockCollision(block);
 
-    std::vector<glm::vec3> tvs = Collision::getBlockTVs(block, entityCol);
+    std::vector<glm::vec3> tvs = Collision::getTVs(blockCol, entityCol);
 
     if (tvs.size() == 0)
         return;

@@ -20,13 +20,18 @@ void ItemSystem::handleBlockChanged(const BlockChangedEvent &e) {
 }
 
 void ItemSystem::handlePlayerMoved(const EntityMovedEvent &e) {
-    glm::vec3 position = e.newPos;
+    const CollisionComponent &playerCollisionComponent = m_registry.get<CollisionComponent>(e.entity);
+    const TransformationComponent &playerTransformation = m_registry.get<TransformationComponent>(e.entity);
+    Math::Cuboid playerCollision = playerCollisionComponent.transform(playerTransformation);
 
-    const auto &view = m_registry.view<ItemComponent, TransformationComponent>();
+    const auto &view = m_registry.view<ItemComponent, TransformationComponent, CollisionComponent>();
     for (const auto &entity : view) {
+        const CollisionComponent &itemCollisionComponent = m_registry.get<CollisionComponent>(entity);
         const TransformationComponent &itemTransform = m_registry.get<TransformationComponent>(entity);
-        const glm::vec3 &itemPosition = itemTransform.getPosition();
-        if (glm::length(itemPosition - position) < .75f) {
+
+        Math::Cuboid itemCollision = itemCollisionComponent.transform(itemTransform);
+
+        if (playerCollision.intersects(itemCollision)) {
             m_invalidItems.push(entity);
         }
     }
