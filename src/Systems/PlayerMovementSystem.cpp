@@ -3,23 +3,29 @@
 #include "../../include/Components/CameraComponent.hpp"
 #include "../../include/Components/PlayerComponent.hpp"
 #include "../../include/Components/VelocityComponent.hpp"
+#include "../../include/Components/RigidBodyComponent.hpp"
 
+#include "../../include/Events/EventDispatcher.hpp"
 #include "../../include/Utility.hpp"
 
 #include <iostream>
+
+void PlayerMovementSystem::handlePlayerMoved(const EntityMovedEvent &e) const {
+    CameraComponent &camera = m_registry.get<CameraComponent>(e.entity);
+    camera.viewMatrixOutdated = true;
+}
 
 void PlayerMovementSystem::_update(int dt) {
     entt::entity player = m_registry.view<PlayerComponent>().front();
     PlayerComponent &playerComponent = m_registry.get<PlayerComponent>(player);
     VelocityComponent &velocityComponent = m_registry.get<VelocityComponent>(player);
-    CameraComponent &cameraComponent = m_registry.get<CameraComponent>(player);
+    const CameraComponent &cameraComponent = m_registry.get<CameraComponent>(player);
+    const RigidBodyComponent &rigidBody = m_registry.get<RigidBodyComponent>(player);
 
-    updatePlayerSpeed(playerComponent, velocityComponent, cameraComponent);
+    updatePlayerSpeed(playerComponent, velocityComponent, cameraComponent, rigidBody);
 }
 
-void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent& player, VelocityComponent& velocity,
-                                             CameraComponent& camera) const {
-
+void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent &player, VelocityComponent &velocity, const CameraComponent &camera, const RigidBodyComponent &rigidBody) const {
     glm::vec3 playerInput = glm::vec3();
 
     if (player.xAxisInput != 0) {
@@ -34,7 +40,6 @@ void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent& player, VelocityCo
         playerInput += player.zAxisInput * glm::vec3(0, 1, 0);
     }
 
-
     if (glm::length(playerInput) != 0) {
         glm::vec3 playerMovementDir = glm::normalize(playerInput);
 
@@ -47,17 +52,23 @@ void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent& player, VelocityCo
             velocity.velocity.z *= player.maxMovementSpeed / speed;
         }
 
-        if(velocity.velocity.y > player.maxMovementSpeed) {
+        if (velocity.velocity.y > player.maxMovementSpeed) {
             velocity.velocity.y = player.maxMovementSpeed;
         }
     }
     else {
-        if(!player.isFalling)
+        if (!rigidBody.isFalling)
             velocity.velocity *= 0.2f;
     }
 }
 
-PlayerMovementSystem::PlayerMovementSystem(Registry_T& registry) : System(registry, 0)
-{
+PlayerMovementSystem::PlayerMovementSystem(Registry_T &registry)
+    : System(registry, 0) {
 
+    m_playerMovedHandle = EventDispatcher::onEntityMoved.subscribe([&](const EntityMovedEvent &e) {
+        // if entity has PleyerComponent
+        if (m_registry.any<PlayerComponent>(e.entity)) {
+            handlePlayerMoved(e);
+        }
+    });
 }

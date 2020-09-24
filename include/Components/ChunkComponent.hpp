@@ -33,6 +33,5 @@ struct ChunkComponent {
     BiomeId** biomes = nullptr;
 
     bool verticesOutdated   = false;
-    bool threadActiveOnSelf = false;
-    bool structuresOutdated = false;
+    bool threadActiveOnSelf = false;    
 };

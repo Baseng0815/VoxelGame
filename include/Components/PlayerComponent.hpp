@@ -5,9 +5,7 @@ struct PlayerComponent {
     // 30 m / s
     float maxMovementSpeed = 5.0f;
 
-    float xAxisInput, yAxisInput, zAxisInput;
-
-    bool isFalling = true;
+    float xAxisInput, yAxisInput, zAxisInput;    
 
     glm::vec3 lookAt;
 };

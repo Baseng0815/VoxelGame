@@ -5,6 +5,7 @@
 #include "../../include/Components/PlayerComponent.hpp"
 #include "../../include/Components/TransformationComponent.hpp"
 #include "../../include/Components/VelocityComponent.hpp"
+#include "../../include/Components/RigidBodyComponent.hpp"
 
 #include "../../include/Events/EventDispatcher.hpp"
 
@@ -29,7 +30,7 @@ void CollisionSystem::_update(int dt) {
         }
     }
 
-    for (auto it = view.begin(); it != view.end(); it++) {
+    for (auto it = view.begin(); it != view.end(); it++) {        
         checkBlockCollisions(*it);
     }
 
@@ -76,7 +77,11 @@ void CollisionSystem::checkCollisions(entt::entity first, entt::entity secnd) {
 
 void CollisionSystem::checkBlockCollisions(entt::entity entity) {
     CollisionComponent &collision = m_registry.get<CollisionComponent>(entity);
-    TransformationComponent &transform = m_registry.get<TransformationComponent>(entity);
+    TransformationComponent &transform = m_registry.get<TransformationComponent>(entity);    
+
+    if(!World::chunkCreated(Utility::GetChunk(transform.getPosition()))) {
+        return;
+    }
 
     Math::Cuboid hitbox = collision.transform(transform);
     glm::vec3 minBlock = glm::floor(hitbox.min);

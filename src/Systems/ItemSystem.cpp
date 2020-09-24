@@ -1,8 +1,10 @@
 #include "../../include/Systems/ItemSystem.hpp"
 
+#include "../../include/Components/CollisionComponent.hpp"
 #include "../../include/Components/ItemComponent.hpp"
 #include "../../include/Components/MeshRenderComponent.hpp"
 #include "../../include/Components/PlayerComponent.hpp"
+#include "../../include/Components/RigidBodyComponent.hpp"
 #include "../../include/Components/TransformationComponent.hpp"
 #include "../../include/Components/VelocityComponent.hpp"
 
@@ -49,10 +51,14 @@ void ItemSystem::spawnItem(const glm::vec3 &position, const BlockId &block) {
 
     createItemGeometry(vertices, indices, blockUVs);
 
+    glm::vec3 offset = glm::vec3{rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX};
+
     ItemComponent &item = m_registry.emplace<ItemComponent>(entity, block, new Geometry{});
-    m_registry.emplace<TransformationComponent>(entity, position + glm::vec3{0.5f}, glm::vec3{0.f}, glm::vec3{1.0f});
-    VelocityComponent& velocity =  m_registry.emplace<VelocityComponent>(entity, glm::vec3{0}, glm::vec3{0.0f, 0.01f, 0.0f});
+    m_registry.emplace<TransformationComponent>(entity, position + offset, glm::vec3{0.f}, glm::vec3{1.0f});
+    VelocityComponent &velocity = m_registry.emplace<VelocityComponent>(entity, glm::vec3{0}, glm::vec3{0.0f, 0.01f, 0.0f});
     m_registry.emplace<MeshRenderComponent>(entity, ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS), item.geometry);
+    m_registry.emplace<RigidBodyComponent>(entity, 0.1f, false);
+    m_registry.emplace<CollisionComponent>(entity, glm::vec3{-0.1f, -0.5f, -0.1f}, 0.2f, 0.2f, 0.6f);
 
     item.geometry->fillBuffers(vertices, indices);
 }

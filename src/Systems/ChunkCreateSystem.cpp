@@ -11,15 +11,24 @@
 
 #include "../../include/Components/ChunkComponent.hpp"
 #include "../../include/Components/MeshRenderComponent.hpp"
+#include "../../include/Components/PlayerComponent.hpp"
 #include "../../include/Components/TransformationComponent.hpp"
 
-void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent &e) {
+void ChunkCreateSystem::handlePlayerMoved(const EntityMovedEvent &e) {
+    glm::vec2 oldChunk = Utility::GetChunk(e.oldPos);
+    glm::vec2 newChunk = Utility::GetChunk(e.newPos);
+    if (oldChunk == newChunk)
+        return;
+
+    int newX = newChunk.x;
+    int newZ = newChunk.y;
+
     // remove old chunks from ECS system and queue chunk data deletion
     auto view = m_registry.view<ChunkComponent>();
     for (auto entity : view) {
         const auto &chunk = view.get<ChunkComponent>(entity);
-        if (std::abs(e.newX - chunk.chunkX) > Configuration::CHUNK_PRELOAD_SIZE ||
-            std::abs(e.newZ - chunk.chunkZ) > Configuration::CHUNK_PRELOAD_SIZE) {
+        if (std::abs(newX - chunk.chunkX) > Configuration::CHUNK_PRELOAD_SIZE ||
+            std::abs(newZ - chunk.chunkZ) > Configuration::CHUNK_PRELOAD_SIZE) {
             if (!std::count(m_destructionQueue.begin(), m_destructionQueue.end(), entity)) {
                 m_destructionQueue.push_back(entity);
             }
@@ -27,8 +36,8 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent &e) {
     }
 
     // create new chunks which have come into range
-    for (int x = e.newX + Configuration::CHUNK_PRELOAD_SIZE; x >= e.newX - (int)Configuration::CHUNK_PRELOAD_SIZE; x--) {
-        for (int z = e.newZ + Configuration::CHUNK_PRELOAD_SIZE; z >= e.newZ - (int)Configuration::CHUNK_PRELOAD_SIZE; z--) {
+    for (int x = newX + Configuration::CHUNK_PRELOAD_SIZE; x >= newX - (int)Configuration::CHUNK_PRELOAD_SIZE; x--) {
+        for (int z = newZ + Configuration::CHUNK_PRELOAD_SIZE; z >= newZ - (int)Configuration::CHUNK_PRELOAD_SIZE; z--) {
             glm::vec2 pos{x, z};
             if (std::count(m_loadedChunks.begin(), m_loadedChunks.end(), pos) == 0) {
                 entt::entity entity = m_registry.create();
@@ -44,20 +53,8 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent &e) {
 }
 
 void ChunkCreateSystem::handleStructureCreated(const StructureCreatedEvent &e) {
-    for (const auto &[chunk, blocks] : e.data) {
-        if (m_structureQueue.contains(chunk)) {
-            for (const auto &block : blocks) {
-                m_structureQueue[chunk].emplace_back(block);
-            }
-        }
-        else {
-            m_structureQueue.emplace(chunk, blocks);
-        }
-
-        if (World::chunkCreated(chunk)) {
-            ChunkComponent &chunkComponent = m_registry.get<ChunkComponent>(World::getChunk(chunk));
-            chunkComponent.structuresOutdated = true;
-        }
+    for (const auto &pair : e.data) {
+        m_structureQueue.emplace_back(pair);
     }
 }
 
@@ -90,23 +87,20 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
     m_worldGenerator.generate(chunk, &generationData);
     m_structureGenerator.generateStructures(chunk, &generationData);
 
-    if (m_structureQueue.contains(chunk)) {
-        updateChunkStructures(chunk, generationData.blocks);
-    }
+    // if (m_structureQueue.contains(chunk)) {
+    //     updateChunkStructures(chunk, generationData.blocks);
+    // }
 
     return generationData;
 }
 
-void ChunkCreateSystem::updateChunkStructures(glm::vec2 chunkPosition, Block ***blocks) {
-    BlockCollection structureBlocks = m_structureQueue[chunkPosition];
+void ChunkCreateSystem::updateChunkStructures(Block ***chunkBlocks, BlockCollection structureBlocks) const {
     for (auto [pos, type] : structureBlocks) {
         int x = pos.x, y = pos.y, z = pos.z;
-        if (blocks[x][y][z].type == BlockId::BLOCK_AIR) {
-            blocks[x][y][z] = Block{type};
+        if (chunkBlocks[x][y][z].type == BlockId::BLOCK_AIR) {
+            chunkBlocks[x][y][z] = Block{type};
         }
     }
-
-    m_structureQueue.erase(chunkPosition);
 }
 
 GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block ***blocks, std::shared_mutex *blockMutex) {
@@ -349,12 +343,6 @@ void ChunkCreateSystem::_update(int dt) {
 
                     chunk.verticesOutdated = true;
                 }
-                else if (chunk.structuresOutdated) {
-                    updateChunkStructures(glm::vec2{chunk.chunkX, chunk.chunkZ}, chunk.blocks);
-
-                    chunk.structuresOutdated = false;
-                    chunk.verticesOutdated = true;
-                }
                 // update vertices
                 else if (chunk.verticesOutdated) {
                     m_constructionCount++;
@@ -408,18 +396,43 @@ void ChunkCreateSystem::_update(int dt) {
             itGeo++;
         }
     }
+
+    // process structures
+    auto itStr = m_structureQueue.begin();
+    while (itStr != m_structureQueue.end()) {
+        glm::vec2 chunkPos = (*itStr).first;
+        if (World::chunkCreated(chunkPos)) {
+            ChunkComponent &chunk = m_registry.get<ChunkComponent>(World::getChunk(chunkPos));
+            if (chunk.blocks) {
+                updateChunkStructures(chunk.blocks, (*itStr).second);
+
+                chunk.verticesOutdated = true;
+                itStr = m_structureQueue.erase(itStr);
+            }
+            else {
+                itStr++;
+            }
+        }
+        else {
+            itStr++;
+        }
+    }
 }
 
 ChunkCreateSystem::ChunkCreateSystem(Registry_T &registry, const TextureAtlas &atlas)
     : System{registry, 10}, m_worldGenerator{WorldType::WORLD_NORMAL}, m_structureGenerator{&m_worldGenerator}, m_atlas{atlas} {
     // event callbacks
-    m_enterChunkHandle =
-        EventDispatcher::onEnterChunk.subscribe([&](const EnterChunkEvent &e) { handleEnterChunk(e); });
+    m_playerMovedHandle = EventDispatcher::onEntityMoved.subscribe(
+        [&](const EntityMovedEvent &e) {
+            if (m_registry.any<PlayerComponent>(e.entity)) {
+                handlePlayerMoved(e);
+            }
+        });
 
     m_structureCreatedHandle = EventDispatcher::onStructureCreated.subscribe(
         [&](const StructureCreatedEvent &e) { handleStructureCreated(e); });
 
-    handleEnterChunk(EnterChunkEvent());
+    handlePlayerMoved(EntityMovedEvent{nullptr, entt::null, glm::vec3{0.f}, glm::vec3{FLT_MAX}});
 }
 
 int ChunkCreateSystem::getActiveChunkCount() const {

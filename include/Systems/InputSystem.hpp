@@ -21,6 +21,7 @@ struct FramebufferSizeEvent;
 class InputSystem : public System {
     private:
         struct LookData { glm::vec3 block; glm::vec3 face; bool valid; };
+        double lastSpaceInput = -1;
 
         CallbackHandle<const KeyEvent&> m_keyPressHandle;
         void handleKeyPressEvent(const KeyEvent&);

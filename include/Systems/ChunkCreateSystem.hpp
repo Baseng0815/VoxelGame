@@ -17,7 +17,7 @@
 #include <map>
 #include <shared_mutex>
 
-struct EnterChunkEvent;
+struct EntityMovedEvent;
 struct BlockChangedEvent;
 struct StructureCreatedEvent;
 
@@ -43,20 +43,20 @@ class ChunkCreateSystem : public System {
 
     WorldGenerator m_worldGenerator;
     StructureGenerator m_structureGenerator;
-    std::unordered_map<glm::vec2, BlockCollection, Utility::HashFunctionVec2> m_structureQueue;
+    std::vector<std::pair<glm::vec2, BlockCollection>> m_structureQueue;
     const TextureAtlas &m_atlas;
 
     int m_constructionCount = 0;
     std::vector<entt::entity> m_destructionQueue;
     std::vector<glm::vec2> m_loadedChunks;
 
-    CallbackHandle<const EnterChunkEvent &> m_enterChunkHandle;
-    void handleEnterChunk(const EnterChunkEvent &e);
+    CallbackHandle<const EntityMovedEvent &> m_playerMovedHandle;
+    void handlePlayerMoved(const EntityMovedEvent &e);
     CallbackHandle<const StructureCreatedEvent &> m_structureCreatedHandle;
     void handleStructureCreated(const StructureCreatedEvent &e);
 
     GenerationData updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ);
-    void updateChunkStructures(glm::vec2 chunkPos, Block ***blocks);
+    void updateChunkStructures(Block ***chunkBlocks, BlockCollection structureBlocks) const;
     GeometryData updateChunkVertices(entt::entity entity, Block ***blocks, std::shared_mutex *blockMutex);
     void updateChunkBuffers(Geometry *geometryComponent, const std::vector<unsigned int> &indices, const std::vector<Vertex> &vertices);
 
