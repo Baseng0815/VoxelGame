@@ -55,6 +55,10 @@ class ChunkCreateSystem : public System {
         std::vector<std::future<GenerationData>> m_generationFutures;
         std::vector<std::future<GeometryData>> m_geometryFutures;
 
+        // some static data needed
+        static const std::array<std::array<float, 8>, 24> generationDataBlock;
+        static const std::array<std::array<float, 8>, 24> generationDataPlane;
+
         WorldGenerator m_worldGenerator;
         StructureGenerator m_structureGenerator;
         std::unordered_map<glm::vec2, BlockCollection, Utility::HashFunctionVec2> m_structureQueue;
@@ -72,8 +76,7 @@ class ChunkCreateSystem : public System {
         GenerationData updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ);
         void updateChunkStructures(glm::vec2 chunkPos, Block*** blocks);
         GeometryData updateChunkVertices(entt::entity entity, Block ***blocks, std::shared_mutex *blockMutex);
-        void updateChunkBuffers(Geometry *geometryComponent, const std::vector<unsigned int> &indices, const std::vector<Vertex> &vertices);        
-
+        void updateChunkBuffers(Geometry *geometryComponent, const std::vector<unsigned int> &indices, const std::vector<Vertex> &vertices);
 
         void _update(int dt) override;
 

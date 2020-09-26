@@ -25,9 +25,7 @@ void ItemSystem::handlePlayerMoved(const EntityMovedEvent& e) {
         const glm::vec3& itemPosition = itemTransform.getPosition();
         if (glm::length(itemPosition - position) < .75f) {
             m_invalidItems.push(entity);
-        }
-    }
-}
+        } } }
 
 void ItemSystem::_update(int dt) {
     while (!m_invalidItems.empty()) {

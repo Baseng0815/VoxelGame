@@ -19,7 +19,7 @@ class Material : public Resource {
 
         // color properties
         Color color;
-        float shininess = 0.f;
+        float shininess = 2.f;
         const Shader *customShader = nullptr;
         bool useBlending    = false;
         bool useCulling     = true;

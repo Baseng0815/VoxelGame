@@ -18,7 +18,7 @@ void MeshRenderSystem::_update(int dt)
 
     auto uploadToShader = [&](const Shader *shader) {
         shader->upload("viewMatrix", camera.viewMatrix);
-        shader->upload("viewPos", glm::vec3 {0.f});
+        shader->upload("viewPos", glm::vec3 {1.f, 0.f, 0.f});
         shader->upload("projectionMatrix", camera.perspectiveProjection);
 
         for (int i = 0; i < MAX_LIGHTS; i++) {
@@ -95,7 +95,7 @@ MeshRenderSystem::MeshRenderSystem(Registry_T &registry)
     : System {registry, 0}, m_meshRenderShaderColor {ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_COLOR)},
     m_meshRenderShaderTexture {ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_TEXTURE)}
 {
-    m_sun.direction = glm::vec3 {0, -1, -1};
+    m_sun.direction = glm::vec3 {-0.3, -0.8, -0.5};
     m_sun.ambient   = glm::vec3 {0.2f};
     m_sun.diffuse   = glm::vec3 {0.5f};
     m_sun.specular  = glm::vec3 {0.2f};

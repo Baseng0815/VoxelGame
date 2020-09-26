@@ -13,9 +13,50 @@
 #include "../../include/Components/MeshRenderComponent.hpp"
 #include "../../include/Components/TransformationComponent.hpp"
 
+// this could probably be way better, but w/e
+const std::array<std::array<float, 8>, 24> ChunkCreateSystem::generationDataBlock = {
+    //                    x  y  z  nx  ny nz ix iy
+    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
+    std::array<float, 8> {0, 0, 1, -1, 0, 0, 4, 1},
+    std::array<float, 8> {0, 1, 1, -1, 0, 0, 4, 2},
+    std::array<float, 8> {0, 0, 0, -1, 0, 0, 4, 3},
+    std::array<float, 8> {1, 1, 1, 1, 0, 0, 2, 0},
+    std::array<float, 8> {1, 0, 0, 1, 0, 0, 2, 1},
+    std::array<float, 8> {1, 1, 0, 1, 0, 0, 2, 2},
+    std::array<float, 8> {1, 0, 1, 1, 0, 0, 2, 3},
+    std::array<float, 8> {0, 0, 1, 0, -1, 0, 5, 0},
+    std::array<float, 8> {1, 0, 0, 0, -1, 0, 5, 1},
+    std::array<float, 8> {1, 0, 1, 0, -1, 0, 5, 2},
+    std::array<float, 8> {0, 0, 0, 0, -1, 0, 5, 3},
+    std::array<float, 8> {0, 1, 0, 0, 1, 0, 0, 0},
+    std::array<float, 8> {1, 1, 1, 0, 1, 0, 0, 1},
+    std::array<float, 8> {1, 1, 0, 0, 1, 0, 0, 2},
+    std::array<float, 8> {0, 1, 1, 0, 1, 0, 0, 3},
+    std::array<float, 8> {1, 1, 0, 0, 0, -1, 3, 0},
+    std::array<float, 8> {0, 0, 0, 0, 0, -1, 3, 1},
+    std::array<float, 8> {0, 1, 0, 0, 0, -1, 3, 2},
+    std::array<float, 8> {1, 0, 0, 0, 0, -1, 3, 3},
+    std::array<float, 8> {0, 1, 1, 0, 0, 1, 1, 0},
+    std::array<float, 8> {1, 0, 1, 0, 0, 1, 1, 1},
+    std::array<float, 8> {1, 1, 1, 0, 0, 1, 1, 2},
+    std::array<float, 8> {0, 0, 1, 0, 0, 1, 1, 3}
+};
+
+const std::array<std::array<float, 8>, 24> ChunkCreateSystem::generationDataPlane = {
+    //                    x  y  z  nx  ny nz ix iy
+    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
+    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
+    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
+    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
+    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
+    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
+    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
+    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
+};
+
 void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent &e)
 {
-    // remove old chunks from ECS system and queue chunk data deletion
+    // queue chunk deletion
     auto view = m_registry.view<ChunkComponent>();
     for (auto entity : view) {
         const auto& chunk = view.get<ChunkComponent>(entity);
@@ -191,83 +232,14 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block**
                 int faceCountPerPass = 0;
 
                 // add vertices
-                // TODO maybe move the values out and use loops
-                if (draw[0]) {
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 1, 0} + blockPosition, glm::vec3{-1, 0, 0}, blockUVs[4][0]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 0, 1} + blockPosition, glm::vec3{-1, 0, 0}, blockUVs[4][1]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 1, 1} + blockPosition, glm::vec3{-1, 0, 0}, blockUVs[4][2]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 0, 0} + blockPosition, glm::vec3{-1, 0, 0}, blockUVs[4][3]});
-
-                    faceCountPerPass++;
-                }
-
-                if (draw[1]) {
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 1, 1} + blockPosition, glm::vec3{1, 0, 0}, blockUVs[2][0]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 0, 0} + blockPosition, glm::vec3{1, 0, 0}, blockUVs[2][1]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 1, 0} + blockPosition, glm::vec3{1, 0, 0}, blockUVs[2][2]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 0, 1} + blockPosition, glm::vec3{1, 0, 0}, blockUVs[2][3]});
-
-                    faceCountPerPass++;
-                }
-
-                if (draw[2]) {
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 0, 1} + blockPosition, glm::vec3{0, -1, 0}, blockUVs[5][0]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 0, 0} + blockPosition, glm::vec3{0, -1, 0}, blockUVs[5][1]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 0, 1} + blockPosition, glm::vec3{0, -1, 0}, blockUVs[5][2]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 0, 0} + blockPosition, glm::vec3{0, -1, 0}, blockUVs[5][3]});
-
-                    faceCountPerPass++;
-                }
-
-                if (draw[3]) {
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 1, 0} + blockPosition, glm::vec3{0, -1, 0}, blockUVs[0][0]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 1, 1} + blockPosition, glm::vec3{0, -1, 0}, blockUVs[0][1]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 1, 0} + blockPosition, glm::vec3{0, -1, 0}, blockUVs[0][2]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 1, 1} + blockPosition, glm::vec3{0, -1, 0}, blockUVs[0][3]});
-
-                    faceCountPerPass++;
-                }
-
-                if (draw[4]) {
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 1, 0} + blockPosition, glm::vec3{0, 0, -1}, blockUVs[3][0]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 0, 0} + blockPosition, glm::vec3{0, 0, -1}, blockUVs[3][1]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 1, 0} + blockPosition, glm::vec3{0, 0, -1}, blockUVs[3][2]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 0, 0} + blockPosition, glm::vec3{0, 0, -1}, blockUVs[3][3]});
-
-                    faceCountPerPass++;
-                }
-
-                if (draw[5]) {
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 1, 1} + blockPosition, glm::vec3{0, 0, -1}, blockUVs[1][0]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 0, 1} + blockPosition, glm::vec3{0, 0, -1}, blockUVs[1][1]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 1, 1} + blockPosition, glm::vec3{0, 0, -1}, blockUVs[1][2]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 0, 1} + blockPosition, glm::vec3{0, 0, -1}, blockUVs[1][3]});
-
-                    faceCountPerPass++;
+                for (size_t face = 0; face < 6; face++) {
+                    if (draw[face]) {
+                        for (size_t v = 0; v < 4; v++) {
+                            const auto &ref = generationDataBlock[face * 4 + v];
+                            geometryData.vertices.emplace_back(Vertex {glm::vec3 {ref[0], ref[1], ref[2]} + blockPosition, glm::vec3 {ref[3], ref[4], ref[5]}, glm::vec2 {blockUVs[ref[6]][ref[7]]}});
+                        }
+                        faceCountPerPass++;
+                    }
                 }
 
                 // add indices reserve some space to prevent reallocations
@@ -315,7 +287,7 @@ void ChunkCreateSystem::_update(int dt) {
             delete[] chunk.blocks;
 
             for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
-                    delete[] chunk.biomes[x];
+                delete[] chunk.biomes[x];
             }
 
             delete[] chunk.biomes;
@@ -454,6 +426,7 @@ ChunkCreateSystem::ChunkCreateSystem(Registry_T& registry)
         [&](const StructureCreatedEvent& e) { handleStructureCreated(e); });
 
     handleEnterChunk(EnterChunkEvent());
+
 }
 
 int ChunkCreateSystem::getActiveChunkCount() const {
