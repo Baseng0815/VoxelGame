@@ -1,6 +1,7 @@
 #include "../../include/Systems/ItemSystem.hpp"
 
 #include "../../include/Components/CollisionComponent.hpp"
+#include "../../include/Components/InventoryComponent.hpp"
 #include "../../include/Components/ItemComponent.hpp"
 #include "../../include/Components/MeshRenderComponent.hpp"
 #include "../../include/Components/PlayerComponent.hpp"
@@ -28,10 +29,23 @@ void ItemSystem::handlePlayerMoved(const EntityMovedEvent &e) {
     for (const auto &entity : view) {
         const CollisionComponent &itemCollisionComponent = m_registry.get<CollisionComponent>(entity);
         const TransformationComponent &itemTransform = m_registry.get<TransformationComponent>(entity);
+        const ItemComponent &item = m_registry.get<ItemComponent>(entity);
 
         Math::Cuboid itemCollision = itemCollisionComponent.transform(itemTransform);
 
         if (playerCollision.intersects(itemCollision)) {
+            InventoryComponent &inventory = m_registry.get<InventoryComponent>(e.entity);
+            int slot = Utility::getInventorySlot(inventory, item.blockId);
+
+            if (slot == -1) {
+                return;
+            }
+
+            if (inventory.slots[slot].first == BlockId::BLOCK_AIR) {
+                inventory.slots[slot].first = item.blockId;
+            }
+
+            inventory.slots[slot].second++;
             m_invalidItems.push(entity);
         }
     }

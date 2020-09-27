@@ -1,6 +1,7 @@
 //#include "../include/Utility.hpp"
 
 #include "../include/Components/WorldComponent.hpp"
+#include "../include/Components/InventoryComponent.hpp"
 #include "../include/Configuration.hpp"
 
 #include <iostream>
@@ -98,6 +99,21 @@ namespace Utility {
 
     float radToDeg(float rad) {
         return rad * (180 / PI);
+    }    
+
+    int getInventorySlot(const InventoryComponent& inventory, BlockId item) {
+        for (int i = 0; i < inventory.slotsCount; i++) {
+            if(inventory.slots[i].first == item) {
+                if(inventory.slots[i].second < 64) {
+                    return i;
+                }
+            }
+            else if(inventory.slots[i].first == BlockId::BLOCK_AIR){
+                return i;
+            }
+        }
+
+        return -1;
     }
 } // namespace Utility
 

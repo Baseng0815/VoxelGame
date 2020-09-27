@@ -10,6 +10,7 @@
 #include "../../include/Components/RigidBodyComponent.hpp"
 #include "../../include/Components/TransformationComponent.hpp"
 #include "../../include/Components/VelocityComponent.hpp"
+#include "../../include/Components/InventoryComponent.hpp"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtc/matrix_transform.hpp>
@@ -167,6 +168,7 @@ InputSystem::InputSystem(Registry_T &registry)
     m_registry.emplace<PlayerComponent>(entity);
     m_registry.emplace<CollisionComponent>(entity, glm::vec3{-0.5, 0, -0.5}, 1.0f, 2.0f, 1.0f);
     m_registry.emplace<RigidBodyComponent>(entity, 80.f, true);
+    m_registry.emplace<InventoryComponent>(entity, 36);
 
     entt::entity player = m_registry.view<PlayerComponent>().front();
     CameraComponent &cameraComponent = m_registry.get<CameraComponent>(player);

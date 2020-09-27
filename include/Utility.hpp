@@ -16,6 +16,7 @@
 #include "GameData/Block.hpp"
 
 struct WorldComponent;
+struct InventoryComponent;
 
 namespace Utility {
     class HashFunctionVec2 {
@@ -38,6 +39,8 @@ namespace Utility {
     void swap(std::vector<T> &vec, int pos1, int pos2);
 
     float radToDeg(float rad);
+
+    int getInventorySlot(const InventoryComponent &inventory, BlockId item);
 }
 
 std::ostream &operator<<(std::ostream &os, const glm::vec2 &vec);
