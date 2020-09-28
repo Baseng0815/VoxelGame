@@ -40,12 +40,14 @@ struct GeometryData {
 
 using FaceUVs = std::array<glm::vec2, 4>;
 using BlockUVs = std::array<FaceUVs, 6>;
+using FaceUVsArray = std::vector<FaceUVs>;
 using BlockUVsArray = std::array<BlockUVs, (size_t)BlockId::NUM_BLOCKS>;
 
 struct Atlas {
     int numRows, numCols;
     float uvXpT, uvYpT;
 
+    FaceUVsArray faceUVsArray;
     BlockUVsArray blockUVsArray;
 };
 #endif

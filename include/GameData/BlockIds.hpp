@@ -6,8 +6,8 @@ enum class BlockId : short {
     BLOCK_IRON, BLOCK_GOLD, BLOCK_DIAMOND, BLOCK_EMERALD, BLOCK_ORE_GOLD, BLOCK_ORE_IRON, BLOCK_ORE_COAL,
     BLOCK_BOOKSHELF, BLOCK_STONE_MOSSY, BLOCK_DIRT, BLOCK_LEAVES, BLOCK_WATER, BLOCK_LAVA,
 
-    NUM_BLOCKS,
-    // the following blocks are not really blocks; their geometry is just added to
-    // the chunk buffers so it can all be drawn in one swoop
-    SPECIAL_GRASS,
+    // the following blocks are non-solid blocks; they are made up of two orthogonal and textured 2d planes
+    PLANE_GRASS,
+
+    NUM_BLOCKS
 };

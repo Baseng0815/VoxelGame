@@ -14,6 +14,7 @@
 #include "../../include/Components/TransformationComponent.hpp"
 
 // this could probably be way better, but w/e
+// TODO put in file
 const std::array<std::array<float, 8>, 24> ChunkCreateSystem::generationDataBlock = {
     //                    x  y  z  nx  ny nz ix iy
     std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
@@ -43,15 +44,15 @@ const std::array<std::array<float, 8>, 24> ChunkCreateSystem::generationDataBloc
 };
 
 const std::array<std::array<float, 8>, 24> ChunkCreateSystem::generationDataPlane = {
-    //                    x  y  z  nx  ny nz ix iy
-    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
-    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
-    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
-    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
-    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
-    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
-    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
-    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
+    //                    x  y  z  nx  ny nz fi
+    std::array<float, 8> {0, 0, 0, 1, 0, -1, 0},
+    std::array<float, 8> {0, 1, 0, 1, 0, -1, 1},
+    std::array<float, 8> {1, 1, 1, 1, 0, -1, 2},
+    std::array<float, 8> {1, 0, 1, 1, 0, -1, 3},
+    std::array<float, 8> {1, 0, 0, -1, 0, 1, 0},
+    std::array<float, 8> {1, 1, 0, -1, 0, 1, 1},
+    std::array<float, 8> {0, 1, 1, -1, 0, 1, 2},
+    std::array<float, 8> {0, 0, 1, -1, 0, 1, 3},
 };
 
 void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent &e)
@@ -77,6 +78,7 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent &e)
 
                 const ChunkComponent &chunk = m_registry.emplace<ChunkComponent>(entity, new std::shared_mutex{}, x, z, new Geometry {});
                 m_registry.emplace<TransformationComponent>(entity, glm::vec3 {x * Configuration::CHUNK_SIZE, 0, z * Configuration::CHUNK_SIZE});
+                // TODO add two mesh renderers; one for solid blocks with culling and one for planes without culling
                 m_registry.emplace<MeshRenderComponent>(entity, ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS), chunk.geometry);
 
                 m_loadedChunks.push_back(pos);
@@ -168,19 +170,24 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block**
         for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
             for (int z = 0; z < Configuration::CHUNK_SIZE; z++) {
                 bool draw[6] = {false};
+                glm::vec3 blockPosition {x, y, z};
 
                 // use shared_lock for shared read access and unique_lock for unique write access
                 std::shared_lock<std::shared_mutex> blockLock(*blockMutex);
-                if (blocks[x][y][z].type == BlockId::BLOCK_AIR) {
+                const Block &block = blocks[x][y][z];
+                if (block.type == BlockId::BLOCK_AIR) {
                     continue;
                 }
 
-                if (blocks[x][y][z].type == BlockId::BLOCK_WATER) {
+                // water
+                if (block.type == BlockId::BLOCK_WATER) {
                     if (y < Configuration::CHUNK_HEIGHT - 1 && blocks[x][y + 1][z].type == BlockId::BLOCK_AIR) {
                         draw[3] = true;
                     }
                 }
-                else {
+
+                // solid blocks
+                else if (block.type < BlockId::PLANE_GRASS) {
                     // negative X
                     if (x > 0) {
                         if (!blocks[x - 1][y][z].isSolid())
@@ -223,34 +230,51 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block**
                     }
                     else
                         draw[5] = true;
-                }
-                blockLock.unlock();
 
-                glm::vec3 blockPosition {x, y, z};
-                const BlockUVs &blockUVs = m_atlas.blockUVsArray[(size_t)blocks[x][y][z].type];
+                    blockLock.unlock();
 
-                int faceCountPerPass = 0;
+                    const BlockUVs &blockUVs = m_atlas.blockUVsArray[(size_t)block.type];
 
-                // add vertices
-                for (size_t face = 0; face < 6; face++) {
-                    if (draw[face]) {
-                        for (size_t v = 0; v < 4; v++) {
-                            const auto &ref = generationDataBlock[face * 4 + v];
-                            geometryData.vertices.emplace_back(Vertex {glm::vec3 {ref[0], ref[1], ref[2]} + blockPosition, glm::vec3 {ref[3], ref[4], ref[5]}, glm::vec2 {blockUVs[ref[6]][ref[7]]}});
+                    int faceCountPerPass = 0;
+
+                    // add vertices
+                    for (size_t face = 0; face < 6; face++) {
+                        if (draw[face]) {
+                            for (size_t vi = 0; vi < 4; vi++) {
+                                const auto &ref = generationDataBlock[face * 4 + vi];
+                                geometryData.vertices.emplace_back(Vertex {glm::vec3 {ref[0], ref[1], ref[2]} + blockPosition, glm::vec3 {ref[3], ref[4], ref[5]}, glm::vec2 {blockUVs[ref[6]][ref[7]]}});
+                            }
+                            faceCountPerPass++;
                         }
-                        faceCountPerPass++;
+                    }
+
+                    // add indices
+                    for (int i = 0; i < faceCountPerPass; i++) {
+
+                        for (size_t j = 0; j < 6; j++) {
+                            constexpr int offsets[] = {0, 1, 2, 0, 3, 1};
+                            geometryData.indices.emplace_back(faceCount * 4 + offsets[j]);
+                        }
+                        faceCount++;
                     }
                 }
+                // special blocks using 2d planes
+                else {
+                    const FaceUVs &uvs = m_atlas.blockUVsArray[(size_t)block.type][0];
 
-                // add indices reserve some space to prevent reallocations
-                for (int i = 0; i < faceCountPerPass; i++) {
-                    constexpr int offsets[] = {0, 1, 2, 0, 3, 1};
-
-                    for (int j = 0; j < 6; j++) {
-                        geometryData.indices.emplace_back(faceCount * 4 + offsets[j]);
+                    for (size_t vi = 0; vi < 8; vi++) {
+                        const auto &ref = generationDataPlane[vi];
+                        geometryData.vertices.emplace_back(Vertex {glm::vec3 {ref[0], ref[1], ref[2]} + blockPosition, glm::vec3 {ref[3], ref[4], ref[5]}, uvs[ref[6]]});
                     }
 
-                    faceCount++;
+                    for (int i = 0; i < 2; i++) {
+                        for (size_t j = 0; j < 6; j++) {
+                            constexpr int offsets[] = {0, 1, 2, 0, 2, 3};
+                            geometryData.indices.emplace_back(faceCount * 4 + offsets[j]);
+                        }
+                        // yes, faceCount could be calculated using indices.size()
+                        faceCount++;
+                    }
                 }
             }
         }
@@ -349,6 +373,9 @@ void ChunkCreateSystem::_update(int dt) {
             ChunkComponent& chunk = m_registry.get<ChunkComponent>(generationData.entity);
 
             chunk.blocks = generationData.blocks;
+            for (int x = 0; x < 16; x++) {
+                chunk.blocks[x][80][0] = Block {BlockId::PLANE_GRASS};
+            }
             chunk.biomes = generationData.biomes;
             // chunk.verticesOutdated = true;
             chunk.threadActiveOnSelf = false;
@@ -396,26 +423,24 @@ ChunkCreateSystem::ChunkCreateSystem(Registry_T& registry)
     m_atlas.uvXpT = 1 / (float)m_atlas.numCols;
     m_atlas.uvYpT = 1 / (float)m_atlas.numRows;
 
-    std::vector<FaceUVs> faceUVs;
     // generate face uvs
     for (int i = 0; i < m_atlas.numCols * m_atlas.numRows; i++) {
         glm::vec2 topLeft = glm::vec2(i % m_atlas.numCols / (float)m_atlas.numCols , i / m_atlas.numCols / (float)m_atlas.numRows);
-        faceUVs.push_back({topLeft,
+        m_atlas.faceUVsArray.push_back({topLeft,
             glm::vec2 {topLeft.x + m_atlas.uvXpT, topLeft.y + m_atlas.uvYpT},
             glm::vec2 {topLeft.x + m_atlas.uvXpT, topLeft.y},
             glm::vec2 {topLeft.x, topLeft.y + m_atlas.uvYpT}});
     }
 
-    // generate block uv arrays
+    // generate block uv array
     for (size_t i = 0; i < m_atlas.blockUVsArray.size(); i++) {
         const BlockTemplate &blockTemplate = GameData::getBlockTemplate((BlockId)i);
-        m_atlas.blockUVsArray[i][0] = faceUVs[blockTemplate.tid_py];
-        m_atlas.blockUVsArray[i][1] = faceUVs[blockTemplate.tid_nx];
-        m_atlas.blockUVsArray[i][2] = faceUVs[blockTemplate.tid_px];
-        m_atlas.blockUVsArray[i][3] = faceUVs[blockTemplate.tid_nz];
-        m_atlas.blockUVsArray[i][4] = faceUVs[blockTemplate.tid_pz];
-        m_atlas.blockUVsArray[i][5] = faceUVs[blockTemplate.tid_ny];
-
+        m_atlas.blockUVsArray[i][0] = m_atlas.faceUVsArray[blockTemplate.tid_py];
+        m_atlas.blockUVsArray[i][1] = m_atlas.faceUVsArray[blockTemplate.tid_nx];
+        m_atlas.blockUVsArray[i][2] = m_atlas.faceUVsArray[blockTemplate.tid_px];
+        m_atlas.blockUVsArray[i][3] = m_atlas.faceUVsArray[blockTemplate.tid_nz];
+        m_atlas.blockUVsArray[i][4] = m_atlas.faceUVsArray[blockTemplate.tid_pz];
+        m_atlas.blockUVsArray[i][5] = m_atlas.faceUVsArray[blockTemplate.tid_ny];
     }
 
     // event callbacks
