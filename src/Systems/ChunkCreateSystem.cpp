@@ -54,7 +54,13 @@ void ChunkCreateSystem::handlePlayerMoved(const EntityMovedEvent &e) {
 
 void ChunkCreateSystem::handleStructureCreated(const StructureCreatedEvent &e) {
     for (const auto &pair : e.data) {
-        m_structureQueue.emplace_back(pair);
+        // TODO: fix error
+        try {
+            m_structureQueue.emplace_back(pair);
+        }
+        catch (std::exception) {
+            // ignore
+        }
     }
 }
 

@@ -5,13 +5,15 @@
 #include "../include/Systems/CollisionSystem.hpp"
 #include "../include/Systems/DebugRenderSystem.hpp"
 #include "../include/Systems/InputSystem.hpp"
+#include "../include/Systems/ItemSystem.hpp"
 #include "../include/Systems/MeshRenderSystem.hpp"
 #include "../include/Systems/PhysicsSystem.hpp"
 #include "../include/Systems/PlayerMovementSystem.hpp"
 #include "../include/Systems/SkyboxSystem.hpp"
-#include "../include/Systems/ItemSystem.hpp"
 
 #include "../include/Components/CameraComponent.hpp"
+#include "../include/Components/InventoryComponent.hpp"
+#include "../include/Components/PlayerComponent.hpp"
 #include "../include/Components/RigidBodyComponent.hpp"
 #include "../include/Components/TransformationComponent.hpp"
 #include "../include/Components/VelocityComponent.hpp"
@@ -20,6 +22,7 @@
 #include "../include/Application.hpp"
 #include "../include/Events/EventDispatcher.hpp"
 #include "../include/Gui/DebugLayout.hpp"
+#include "../include/Gui/InventoryLayout.hpp"
 #include "../include/Resources/ResourceManager.hpp"
 #include "../include/Resources/Texture.hpp"
 
@@ -32,6 +35,10 @@ void IngameLayer::handleKeys(const KeyEvent &e) {
             if (e.key == Configuration::getAssociatedKey("KEYBIND_TOGGLE_DEBUG")) {
                 UiProperties &properties = m_gui.getWidget<DebugLayout>("layout_debugpanel").properties();
                 properties.isVisible = !properties.isVisible;
+            }
+            else if (e.key == Configuration::getAssociatedKey("KEYBIND_OPEN_INVENTORY")) {
+                UiProperties &properties = m_gui.getWidget<InventoryLayout>("layout_inventory").properties();
+                properties.isVisible = !properties.isVisible;                
             }
             break;
         }

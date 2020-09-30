@@ -44,5 +44,5 @@ class GUI {
         void addPanel(Layout* layout);
 
         // widgets register and unregister themselves
-        void __registerWidget(Widget* widget);
+        void __registerWidget(Widget* widget);        
 };

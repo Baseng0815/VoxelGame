@@ -88,3 +88,7 @@ Color::Violet = {127, 0, 255},
 Color::Viridian = {64, 130, 109},
 Color::White = {255, 255, 255},
 Color::Yellow = {255, 255, 0};
+
+Color::Color(int r, int g, int b, int a)
+    : r{r}, g{g}, b{b}, a{a} {
+}

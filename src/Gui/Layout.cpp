@@ -7,6 +7,9 @@
 #include "../../include/Configuration.hpp"
 
 void Layout::arrangeWidgets() {
+    if(m_widgets.size() == 0)
+        return;
+    
     // set position of widgets based on stack mode and widget dimensions
     int start = m_invertStackWidgets ? m_widgets.size() - 1 : 0;
     // end = first nonvalid element

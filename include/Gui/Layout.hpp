@@ -13,7 +13,7 @@ class Widget;
 typedef std::vector<Widget*>::iterator WidgetIt;
 
 enum StackMode {
-    STACK_NONE = 0x00, STACK_VERTICAL = 0x01, STACK_HORIZONTAL = 0x02,
+    STACK_NONE = 0x00, STACK_VERTICAL = 0x01, STACK_HORIZONTAL = 0x02
 };
 
 // layouts can't have a MATCH_CONSTRAINT
@@ -46,6 +46,7 @@ class Layout : public Widget {
         // add existing widget
         Widget* addWidget(Widget* widget);
         void removeWidget(const std::string& id);
+        void clearWidgets();
 
         WidgetIt begin();
         WidgetIt end();
