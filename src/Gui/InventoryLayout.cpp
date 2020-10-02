@@ -16,6 +16,7 @@ InventoryLayout::InventoryLayout(GUI &gui)
     m_properties.constraints.width = RelativeConstraint(0.5f);
     m_properties.constraints.x = RelativeConstraint(0.25f);
     m_properties.constraints.y = RelativeConstraint(0.25f);
+    m_properties.padding.both(10);
     m_properties.isVisible = true;
 
     m_properties.backgroundColor = Color{21, 67, 96, 128};
@@ -27,10 +28,9 @@ InventoryLayout::InventoryLayout(GUI &gui)
     //     }
     // }
 
-    m_title->properties().constraints.x = AbsoluteConstraint(10);
-    // m_title->properties().margin.top = 20;
-    // m_title->properties().margin.left = 20;
-    
+    m_title->properties().constraints.x = CenterConstraint();
+    m_title->properties().constraints.y = AbsoluteConstraint(10);
+
     m_title->setString("Inventory");
     m_title->setFont(ResourceManager::getResource<Font>(FONT_KORURI));
     this->addWidget(m_title);

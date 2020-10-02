@@ -91,7 +91,7 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
 
     glm::vec2 chunk = glm::vec2{chunkX, chunkZ};
     m_worldGenerator.generate(chunk, &generationData);
-    m_structureGenerator.generateStructures(chunk, &generationData);
+    // m_structureGenerator.generateStructures(chunk, &generationData);
 
     // if (m_structureQueue.contains(chunk)) {
     //     updateChunkStructures(chunk, generationData.blocks);

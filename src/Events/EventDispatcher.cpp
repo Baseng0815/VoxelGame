@@ -21,7 +21,7 @@ CallbackList<const BlockCollisionEvent&> EventDispatcher::onBlockCollision;
 
 CallbackList<const StructureCreatedEvent&> EventDispatcher::onStructureCreated;
 
-glm::vec2 EventDispatcher::getFramebufferSize() {
+glm::vec2 EventDispatcher::getFramebufferSize() {    
     return m_framebufferSize;
 }
 

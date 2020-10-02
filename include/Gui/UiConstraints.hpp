@@ -14,14 +14,14 @@ class Constraint {
     public:
         Constraint(ConstraintType type = ConstraintType::CONSTRAINT_RELATIVE, float value = 0);
 
-        float getValue(float parent) const;
+        float getValue(float parentSize, float parentPosition) const;
         ConstraintType getType() const;
 };
 
-#define RelativeConstraint(value)   Constraint(ConstraintType::CONSTRAINT_RELATIVE, value)
-#define CenterConstraint()          Constraint(ConstraintType::CONSTRAINT_CENTER, 0)
-#define AbsoluteConstraint(value)   Constraint(ConstraintType::CONSTRAINT_ABSOLUTE, value)
-#define MatchConstraint()           Constraint(ConstraintType::CONSTRAINT_MATCH, 0)
+#define RelativeConstraint(value)       Constraint(ConstraintType::CONSTRAINT_RELATIVE, value)
+#define CenterConstraint()              Constraint(ConstraintType::CONSTRAINT_CENTER, 0)
+#define AbsoluteConstraint(value)       Constraint(ConstraintType::CONSTRAINT_ABSOLUTE, value)
+#define MatchConstraint()               Constraint(ConstraintType::CONSTRAINT_MATCH, 0)
 
 class UiProperties;
 
