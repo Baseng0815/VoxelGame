@@ -10,7 +10,7 @@
 #include "../../include/Resources/ResourceManager.hpp"
 
 #include "../../include/Components/ChunkComponent.hpp"
-#include "../../include/Components/MeshRenderComponent.hpp"
+#include "../../include/Components/MultiMeshRenderComponent.hpp"
 #include "../../include/Components/TransformationComponent.hpp"
 
 // this could probably be way better, but w/e
@@ -45,14 +45,14 @@ const std::array<std::array<float, 8>, 24> ChunkCreateSystem::generationDataBloc
 
 const std::array<std::array<float, 8>, 24> ChunkCreateSystem::generationDataPlane = {
     //                    x  y  z  nx  ny nz fi
-    std::array<float, 8> {0, 0, 0, 1, 0, -1, 0},
-    std::array<float, 8> {0, 1, 0, 1, 0, -1, 1},
+    std::array<float, 8> {0, 0, 0, 1, 0, -1, 3},
+    std::array<float, 8> {0, 1, 0, 1, 0, -1, 0},
     std::array<float, 8> {1, 1, 1, 1, 0, -1, 2},
-    std::array<float, 8> {1, 0, 1, 1, 0, -1, 3},
-    std::array<float, 8> {1, 0, 0, -1, 0, 1, 0},
-    std::array<float, 8> {1, 1, 0, -1, 0, 1, 1},
+    std::array<float, 8> {1, 0, 1, 1, 0, -1, 1},
+    std::array<float, 8> {1, 0, 0, -1, 0, 1, 3},
+    std::array<float, 8> {1, 1, 0, -1, 0, 1, 0},
     std::array<float, 8> {0, 1, 1, -1, 0, 1, 2},
-    std::array<float, 8> {0, 0, 1, -1, 0, 1, 3},
+    std::array<float, 8> {0, 0, 1, -1, 0, 1, 1},
 };
 
 void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent &e)
@@ -76,10 +76,13 @@ void ChunkCreateSystem::handleEnterChunk(const EnterChunkEvent &e)
             if (std::count(m_loadedChunks.begin(), m_loadedChunks.end(), pos) == 0) {
                 entt::entity entity = m_registry.create();
 
-                const ChunkComponent &chunk = m_registry.emplace<ChunkComponent>(entity, new std::shared_mutex{}, x, z, new Geometry {});
+                const ChunkComponent &chunk = m_registry.emplace<ChunkComponent>(entity, new std::shared_mutex{}, x, z, new Geometry {}, new Geometry {});
                 m_registry.emplace<TransformationComponent>(entity, glm::vec3 {x * Configuration::CHUNK_SIZE, 0, z * Configuration::CHUNK_SIZE});
                 // TODO add two mesh renderers; one for solid blocks with culling and one for planes without culling
-                m_registry.emplace<MeshRenderComponent>(entity, ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS), chunk.geometry);
+                m_registry.emplace<MultiMeshRenderComponent>(entity, std::vector<MeshRenderComponent> {
+                    {ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS_CULLED), chunk.geometryCulled},
+                    {ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS_NON_CULLED), chunk.geometryNonCulled}
+                });
 
                 m_loadedChunks.push_back(pos);
             }
@@ -154,18 +157,19 @@ void ChunkCreateSystem::updateChunkStructures(glm::vec2 chunkPosition, Block*** 
 }
 
 GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block*** blocks, std::shared_mutex* blockMutex) {
-    GeometryData geometryData;
-    geometryData.entity = entity;
+    GeometryData geometryData {entity};
     // reserve some space to prevent reallocations
+
     try {
-        geometryData.vertices.reserve(1048576);
-        geometryData.indices.reserve(1048576);
+        geometryData.verticesCulled.reserve(1048576);
+        geometryData.verticesNonCulled.reserve(1048576);
+        geometryData.indicesCulled.reserve(1048576);
+        geometryData.indicesNonCulled.reserve(1048576);
     }
     catch (std::length_error e) {
-        std::cerr << "WARNING: chunk buffer preallocation failed; " << e.what() << std::endl;
+        std::cerr << "WARNING: chunk buffer preallocation failed: " << e.what() << std::endl;
     }
 
-    int faceCount = 0;
     for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
         for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
             for (int z = 0; z < Configuration::CHUNK_SIZE; z++) {
@@ -242,7 +246,7 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block**
                         if (draw[face]) {
                             for (size_t vi = 0; vi < 4; vi++) {
                                 const auto &ref = generationDataBlock[face * 4 + vi];
-                                geometryData.vertices.emplace_back(Vertex {glm::vec3 {ref[0], ref[1], ref[2]} + blockPosition, glm::vec3 {ref[3], ref[4], ref[5]}, glm::vec2 {blockUVs[ref[6]][ref[7]]}});
+                                geometryData.verticesCulled.emplace_back(Vertex {glm::vec3 {ref[0], ref[1], ref[2]} + blockPosition, glm::vec3 {ref[3], ref[4], ref[5]}, glm::vec2 {blockUVs[ref[6]][ref[7]]}});
                             }
                             faceCountPerPass++;
                         }
@@ -250,30 +254,31 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block**
 
                     // add indices
                     for (int i = 0; i < faceCountPerPass; i++) {
+                        // 6 indices make up a whole face
+                        int faceCount = geometryData.indicesCulled.size() / 6;
 
                         for (size_t j = 0; j < 6; j++) {
                             constexpr int offsets[] = {0, 1, 2, 0, 3, 1};
-                            geometryData.indices.emplace_back(faceCount * 4 + offsets[j]);
+                            geometryData.indicesCulled.emplace_back(faceCount * 4 + offsets[j]);
                         }
-                        faceCount++;
                     }
                 }
-                // special blocks using 2d planes
+                // special blocks using other geometry which are not culled
                 else {
                     const FaceUVs &uvs = m_atlas.blockUVsArray[(size_t)block.type][0];
 
                     for (size_t vi = 0; vi < 8; vi++) {
                         const auto &ref = generationDataPlane[vi];
-                        geometryData.vertices.emplace_back(Vertex {glm::vec3 {ref[0], ref[1], ref[2]} + blockPosition, glm::vec3 {ref[3], ref[4], ref[5]}, uvs[ref[6]]});
+                        geometryData.verticesNonCulled.emplace_back(Vertex {glm::vec3 {ref[0], ref[1], ref[2]} + blockPosition, glm::vec3 {ref[3], ref[4], ref[5]}, uvs[ref[6]]});
                     }
 
                     for (int i = 0; i < 2; i++) {
+                        int faceCount = geometryData.indicesNonCulled.size() / 6;
+
                         for (size_t j = 0; j < 6; j++) {
                             constexpr int offsets[] = {0, 1, 2, 0, 2, 3};
-                            geometryData.indices.emplace_back(faceCount * 4 + offsets[j]);
+                            geometryData.indicesNonCulled.emplace_back(faceCount * 4 + offsets[j]);
                         }
-                        // yes, faceCount could be calculated using indices.size()
-                        faceCount++;
                     }
                 }
             }
@@ -317,7 +322,8 @@ void ChunkCreateSystem::_update(int dt) {
             delete[] chunk.biomes;
 
             delete chunk.blockMutex;
-            delete chunk.geometry;
+            delete chunk.geometryCulled;
+            delete chunk.geometryNonCulled;
 
             // remove from loaded chunks and registry
             m_loadedChunks.erase(std::remove(m_loadedChunks.begin(), m_loadedChunks.end(), pos), m_loadedChunks.end());
@@ -396,7 +402,12 @@ void ChunkCreateSystem::_update(int dt) {
         if (itGeo->valid() && itGeo->wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
             GeometryData geometryData = itGeo->get();
             ChunkComponent &chunk = m_registry.get<ChunkComponent>(geometryData.entity);
-            updateChunkBuffers(chunk.geometry, geometryData.indices, geometryData.vertices);
+
+            // culled geometry
+            updateChunkBuffers(chunk.geometryCulled, geometryData.indicesCulled, geometryData.verticesCulled);
+
+            // non-culled geometry
+            updateChunkBuffers(chunk.geometryNonCulled, geometryData.indicesNonCulled, geometryData.verticesNonCulled);
 
             chunk.verticesOutdated = false;
             chunk.threadActiveOnSelf = false;
@@ -426,7 +437,8 @@ ChunkCreateSystem::ChunkCreateSystem(Registry_T& registry)
     // generate face uvs
     for (int i = 0; i < m_atlas.numCols * m_atlas.numRows; i++) {
         glm::vec2 topLeft = glm::vec2(i % m_atlas.numCols / (float)m_atlas.numCols , i / m_atlas.numCols / (float)m_atlas.numRows);
-        m_atlas.faceUVsArray.push_back({topLeft,
+        // order: (0|0, 1|1, 1|0, 0|1)
+        m_atlas.faceUVsArray.emplace_back(FaceUVs {topLeft,
             glm::vec2 {topLeft.x + m_atlas.uvXpT, topLeft.y + m_atlas.uvYpT},
             glm::vec2 {topLeft.x + m_atlas.uvXpT, topLeft.y},
             glm::vec2 {topLeft.x, topLeft.y + m_atlas.uvYpT}});

@@ -53,7 +53,7 @@ IngameLayer::IngameLayer(Application* application)
     m_systems.emplace_back(new PlayerMovementSystem {m_registry });
     m_systems.emplace_back(new CloudSystem {m_registry });
     m_systems.emplace_back(new SkyboxSystem {m_registry });
-    m_systems.emplace_back(new CollisionSystem {m_registry});
+    //m_systems.emplace_back(new CollisionSystem {m_registry});
 
     // rendering
     m_systems.emplace_back(new MeshRenderSystem {m_registry});

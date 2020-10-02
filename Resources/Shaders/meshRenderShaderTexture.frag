@@ -38,16 +38,24 @@ uniform Material material;
 
 out vec4 out_Color;
 
-vec4 calcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir);
-vec4 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 fragPos);
+vec4 calcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir, vec4 diffuseColor, vec4 specularColor);
+vec4 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 fragPos, vec4 diffuseColor, vec4 specularColor);
 
 void main()
 {
     vec3 norm = normalize(pass_normal);
     vec3 viewDir = normalize(viewPos - pass_fragPos);
 
+    // sampled colors
+    vec4 diffuseColor = texture2D(material.diffuseMap, pass_uvCoords);
+    vec4 specularColor = texture2D(material.specularMap, pass_uvCoords);
+
+    if (diffuseColor.a < 0.1) {
+        discard;
+    }
+
     // directional light
-    vec4 result = calcDirLight(dirLight, norm, viewDir);
+    vec4 result = calcDirLight(dirLight, norm, viewDir, diffuseColor, specularColor);
     // point lights
     /*
     for (int i = 0; i < MAX_LIGHTS; i++)
@@ -58,12 +66,8 @@ void main()
 }
 
 // directional light
-vec4 calcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir)
+vec4 calcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir, vec4 diffuseColor, vec4 specularColor)
 {
-    // sampled colors
-    vec4 diffuseColor = texture2D(material.diffuseMap, pass_uvCoords);
-    vec4 specularColor = texture2D(material.specularMap, pass_uvCoords);
-
     // calculations
     // diffuse
     vec3 lightDir = normalize(light.direction);
@@ -83,12 +87,8 @@ vec4 calcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir)
 }
 
 // point light
-vec4 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 fragPos)
+vec4 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 fragPos, vec4 diffuseColor, vec4 specularColor)
 {
-    // sampled colors
-    vec4 diffuseColor = texture2D(material.diffuseMap, pass_uvCoords);
-    vec4 specularColor = texture2D(material.specularMap, pass_uvCoords);
-
     // calculations
     // diffuse
     vec3 lightDir = normalize(light.position - fragPos);

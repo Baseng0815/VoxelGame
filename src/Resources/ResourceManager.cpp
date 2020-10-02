@@ -48,7 +48,14 @@ void ResourceManager::loadResources() {
     material->diffuseMap = ResourceManager::getResource<Texture>(TEXTURE_ATLAS);
     material->specularMap = ResourceManager::getResource<Texture>(TEXTURE_BLACK);
     material->shininess = 32.f;
-    resources.emplace(MATERIAL_CHUNK_BLOCKS, ResourceHandle {material} );
+    resources.emplace(MATERIAL_CHUNK_BLOCKS_CULLED, ResourceHandle {material});
+
+    material = new Material {};
+    material->diffuseMap = ResourceManager::getResource<Texture>(TEXTURE_ATLAS);
+    material->specularMap = ResourceManager::getResource<Texture>(TEXTURE_BLACK);
+    material->shininess = 32.f;
+    material->useCulling = false;
+    resources.emplace(MATERIAL_CHUNK_BLOCKS_NON_CULLED, ResourceHandle {material});
 
     material = new Material {};
     material->useCulling = false;

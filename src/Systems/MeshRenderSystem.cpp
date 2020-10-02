@@ -5,9 +5,76 @@
 #include "../../include/Components/ChunkComponent.hpp"
 #include "../../include/Components/CameraComponent.hpp"
 #include "../../include/Components/MeshRenderComponent.hpp"
+#include "../../include/Components/MultiMeshRenderComponent.hpp"
 #include "../../include/Components/TransformationComponent.hpp"
 
 #include "../../include/Resources/Texture.hpp"
+
+void MeshRenderSystem::uploadToShader(const Shader *shader, const CameraComponent &camera) const
+{
+    shader->upload("viewMatrix", camera.viewMatrix);
+    shader->upload("viewPos", glm::vec3 {1.f, 0.f, 0.f});
+    shader->upload("projectionMatrix", camera.perspectiveProjection);
+
+    for (int i = 0; i < MAX_LIGHTS; i++) {
+        shader->upload("pointLights[" + std::to_string(i) + "]", m_pointLights[i]);
+    }
+
+    shader->upload("dirLight", m_sun);
+    shader->setUniformState(true);
+}
+
+void MeshRenderSystem::render(const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer, const CameraComponent &camera) const
+{
+    if (meshRenderer.geometry->getDrawCount() > 0) {
+        const Shader *shader = meshRenderer.material->customShader;
+        // no custom shader is used
+        if (!shader) {
+            shader = meshRenderer.material->diffuseMap ? m_meshRenderShaderTexture : m_meshRenderShaderColor;
+            shader->bind();
+            shader->upload("modelMatrix", transformation.getModelMatrix());
+            shader->upload("material", *meshRenderer.material);
+
+            // bind texture if diffuse map is specified
+            if (meshRenderer.material->diffuseMap) {
+                meshRenderer.material->diffuseMap->bind(GL_TEXTURE0);
+                // use given specular map
+                if (meshRenderer.material->specularMap) {
+                    meshRenderer.material->specularMap->bind(GL_TEXTURE1);
+                    // no specular map given, use full-white texture
+                } else {
+                    ResourceManager::getResource<Texture>(TEXTURE_WHITE)->bind(GL_TEXTURE1);
+                }
+            }
+            // use custom shader
+        } else {
+            shader->bind();
+            if (!shader->uniformsSet()) {
+                uploadToShader(shader, camera);
+                shader->setUniformState(true);
+            }
+            shader->upload("modelMatrix", transformation.getModelMatrix());
+            shader->upload("material", *meshRenderer.material);
+        }
+
+        // some more opengl states
+        if (meshRenderer.material->useBlending) {
+            glEnable(GL_BLEND);
+        } else {
+            glDisable(GL_BLEND);
+        }
+
+        if (meshRenderer.material->useCulling) {
+            glEnable(GL_CULL_FACE);
+        } else {
+            glDisable(GL_CULL_FACE);
+        }
+
+        // final draw call
+        glBindVertexArray(meshRenderer.geometry->getVao());
+        glDrawElements(GL_TRIANGLES, meshRenderer.geometry->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+    }
+}
 
 void MeshRenderSystem::_update(int dt)
 {
@@ -16,77 +83,25 @@ void MeshRenderSystem::_update(int dt)
     m_meshRenderShaderColor->bind();
     const CameraComponent &camera = m_registry.view<CameraComponent>().raw()[0];
 
-    auto uploadToShader = [&](const Shader *shader) {
-        shader->upload("viewMatrix", camera.viewMatrix);
-        shader->upload("viewPos", glm::vec3 {1.f, 0.f, 0.f});
-        shader->upload("projectionMatrix", camera.perspectiveProjection);
-
-        for (int i = 0; i < MAX_LIGHTS; i++) {
-            shader->upload("pointLights[" + std::to_string(i) + "]", m_pointLights[i]);
-        }
-
-        shader->upload("dirLight", m_sun);
-        shader->setUniformState(true);
-    };
-
     // texture shader
     m_meshRenderShaderTexture->bind();
-    uploadToShader(m_meshRenderShaderTexture);
+    uploadToShader(m_meshRenderShaderTexture, camera);
 
     // color shader
     m_meshRenderShaderColor->bind();
-    uploadToShader(m_meshRenderShaderColor);
+    uploadToShader(m_meshRenderShaderColor, camera);
 
-    // render
+    // render single mesh components
     m_registry.view<TransformationComponent, MeshRenderComponent>().each(
         [&](const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer) {
-            if (meshRenderer.geometry->getDrawCount() > 0) {
-                const Shader *shader = meshRenderer.material->customShader;
-                // no custom shader is used
-                if (!shader) {
-                    shader = meshRenderer.material->diffuseMap ? m_meshRenderShaderTexture : m_meshRenderShaderColor;
-                    shader->bind();
-                    shader->upload("modelMatrix", transformation.getModelMatrix());
-                    shader->upload("material", *meshRenderer.material);
+            render(transformation, meshRenderer, camera);
+        });
 
-                    // bind texture if diffuse map is specified
-                    if (meshRenderer.material->diffuseMap) {
-                        meshRenderer.material->diffuseMap->bind(GL_TEXTURE0);
-                        // use given specular map
-                        if (meshRenderer.material->specularMap) {
-                            meshRenderer.material->specularMap->bind(GL_TEXTURE1);
-                        // no specular map given, use full-white texture
-                        } else {
-                            ResourceManager::getResource<Texture>(TEXTURE_WHITE)->bind(GL_TEXTURE1);
-                        }
-                    }
-                // use custom shader
-                } else {
-                    shader->bind();
-                    if (!shader->uniformsSet()) {
-                        uploadToShader(shader);
-                        shader->setUniformState(true);
-                    }
-                    shader->upload("modelMatrix", transformation.getModelMatrix());
-                    shader->upload("material", *meshRenderer.material);
-                }
-
-                // some more opengl states
-                if (meshRenderer.material->useBlending) {
-                    glEnable(GL_BLEND);
-                } else {
-                    glDisable(GL_BLEND);
-                }
-
-                if (meshRenderer.material->useCulling) {
-                    glEnable(GL_CULL_FACE);
-                } else {
-                    glDisable(GL_CULL_FACE);
-                }
-
-                // final draw call
-                glBindVertexArray(meshRenderer.geometry->getVao());
-                glDrawElements(GL_TRIANGLES, meshRenderer.geometry->getDrawCount(), GL_UNSIGNED_INT, nullptr);
+    // render multi mesh components
+    m_registry.view<TransformationComponent, MultiMeshRenderComponent>().each(
+        [&](const TransformationComponent &transformation, const MultiMeshRenderComponent &multiMeshRenderer) {
+            for (const auto &meshRenderer : multiMeshRenderer.meshRenderComponents) {
+                render(transformation, meshRenderer, camera);
             }
         });
 }

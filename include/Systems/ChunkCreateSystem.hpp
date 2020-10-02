@@ -31,8 +31,10 @@ struct GenerationData {
 
 struct GeometryData {
     entt::entity entity;
-    std::vector<Vertex> vertices;
-    std::vector<unsigned int> indices;
+    std::vector<Vertex> verticesCulled;
+    std::vector<Vertex> verticesNonCulled;
+    std::vector<unsigned int> indicesCulled;
+    std::vector<unsigned int> indicesNonCulled;
 };
 
 #ifndef __ATLAS__
@@ -77,6 +79,7 @@ class ChunkCreateSystem : public System {
 
         GenerationData updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ);
         void updateChunkStructures(glm::vec2 chunkPos, Block*** blocks);
+        // return culled and non-culled geometry
         GeometryData updateChunkVertices(entt::entity entity, Block ***blocks, std::shared_mutex *blockMutex);
         void updateChunkBuffers(Geometry *geometryComponent, const std::vector<unsigned int> &indices, const std::vector<Vertex> &vertices);
 
