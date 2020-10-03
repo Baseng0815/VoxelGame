@@ -60,7 +60,8 @@ void IngameLayer::handleKeys(const KeyEvent &e) {
 }
 
 IngameLayer::IngameLayer(Application *application)
-    : GameLayer{application}, m_atlas{16, 16} {
+    : GameLayer{application}, m_atlas{16, 16}
+{
     m_application->getWindow().disableCursor();
 
     // create all systems

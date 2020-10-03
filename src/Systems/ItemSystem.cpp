@@ -47,9 +47,7 @@ void ItemSystem::handlePlayerMoved(const EntityMovedEvent &e) {
 
             inventory.slots[slot].second++;
             m_invalidItems.push(entity);
-        }
-    }
-}
+        } } }
 
 void ItemSystem::_update(int dt) {
     while (!m_invalidItems.empty()) {
@@ -75,7 +73,7 @@ void ItemSystem::spawnItem(const glm::vec3 &position, const BlockId &block) {
     ItemComponent &item = m_registry.emplace<ItemComponent>(entity, block, new Geometry{});
     m_registry.emplace<TransformationComponent>(entity, position + offset, glm::vec3{0.f}, glm::vec3{1.0f});
     VelocityComponent &velocity = m_registry.emplace<VelocityComponent>(entity, glm::vec3{0}, glm::vec3{0.0f, 0.01f, 0.0f});
-    m_registry.emplace<MeshRenderComponent>(entity, ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS), item.geometry);
+    m_registry.emplace<MeshRenderComponent>(entity, ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS_CULLED), item.geometry);
     m_registry.emplace<RigidBodyComponent>(entity, 0.1f, false);
     m_registry.emplace<CollisionComponent>(entity, glm::vec3{-0.1f, -0.5f, -0.1f}, 0.2f, 0.2f, 0.6f);
 
@@ -92,6 +90,7 @@ void ItemSystem::destroyItem(const entt::entity &entity) {
 }
 
 void ItemSystem::createItemGeometry(std::vector<Vertex> &vertices, std::vector<unsigned int> &indices, const BlockUVs &uvs) {
+    // TODO put all of this data into an external file and use scale matrices with default block geometry
     vertices.emplace_back(Vertex{glm::vec3{-0.1f, 0.1f, -0.1f}, glm::vec3{-1, 0, 0}, uvs[4][0]});
     vertices.emplace_back(Vertex{glm::vec3{-0.1f, -0.1f, 0.1f}, glm::vec3{-1, 0, 0}, uvs[4][1]});
     vertices.emplace_back(Vertex{glm::vec3{-0.1f, 0.1f, 0.1f}, glm::vec3{-1, 0, 0}, uvs[4][2]});

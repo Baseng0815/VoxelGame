@@ -197,8 +197,6 @@ void Shader::upload(const std::string &location, const DirectionalLight &dirLigh
 
 void Shader::upload(const std::string &location, const Material &material) const
 {
-    upload(location + ".ambient", material.ambient);
-    upload(location + ".diffuse", material.diffuse);
-    upload(location + ".specular", material.specular);
+    upload(location + ".color", material.color);
     upload(location + ".shininess", material.shininess);
 }

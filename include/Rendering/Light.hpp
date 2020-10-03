@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 
+// TODO use color
 struct PointLight {
     glm::vec3 position = glm::vec3(0.0f);
 
@@ -10,6 +11,7 @@ struct PointLight {
     glm::vec3 specular = glm::vec3(0.0f);
 
     // attenuation
+    // TODO implement this in fragment shader
     float constant = 1.0f, linear = 0.0f, quadratic = 0.0f;
 };
 

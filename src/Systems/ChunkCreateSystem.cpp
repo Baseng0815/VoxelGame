@@ -1,16 +1,17 @@
 #include "../../include/Systems/ChunkCreateSystem.hpp"
 
-#include "../../include/Configuration.hpp"
-#include "../../include/Events/EventDispatcher.hpp"
-#include "../../include/GameData/GameData.hpp"
-#include "../../include/Math/Cuboid.hpp"
 #include "../../include/World.hpp"
+#include "../../include/Math/Cuboid.hpp"
+#include "../../include/Configuration.hpp"
+#include "../../include/GameData/GameData.hpp"
+#include "../../include/Resources/TextureAtlas.hpp"
+#include "../../include/Events/EventDispatcher.hpp"
 
 #include "../../include/Resources/ResourceManager.hpp"
 #include "../../include/Resources/Texture.hpp"
 
 #include "../../include/Components/ChunkComponent.hpp"
-#include "../../include/Components/MeshRenderComponent.hpp"
+#include "../../include/Components/MultiMeshRenderComponent.hpp"
 #include "../../include/Components/PlayerComponent.hpp"
 #include "../../include/Components/TransformationComponent.hpp"
 
@@ -23,7 +24,7 @@ void ChunkCreateSystem::handlePlayerMoved(const EntityMovedEvent &e) {
     int newX = newChunk.x;
     int newZ = newChunk.y;
 
-    // remove old chunks from ECS system and queue chunk data deletion
+    // queue chunk deletion
     auto view = m_registry.view<ChunkComponent>();
     for (auto entity : view) {
         const auto &chunk = view.get<ChunkComponent>(entity);
@@ -42,9 +43,13 @@ void ChunkCreateSystem::handlePlayerMoved(const EntityMovedEvent &e) {
             if (std::count(m_loadedChunks.begin(), m_loadedChunks.end(), pos) == 0) {
                 entt::entity entity = m_registry.create();
 
-                const ChunkComponent &chunk = m_registry.emplace<ChunkComponent>(entity, new std::shared_mutex{}, x, z, new Geometry{});
-                m_registry.emplace<TransformationComponent>(entity, glm::vec3{x * Configuration::CHUNK_SIZE, 0, z * Configuration::CHUNK_SIZE});
-                m_registry.emplace<MeshRenderComponent>(entity, ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS), chunk.geometry);
+                const ChunkComponent &chunk = m_registry.emplace<ChunkComponent>(entity, new std::shared_mutex{}, x, z, new Geometry {}, new Geometry {});
+                m_registry.emplace<TransformationComponent>(entity, glm::vec3 {x * Configuration::CHUNK_SIZE, 0, z * Configuration::CHUNK_SIZE});
+                // TODO add two mesh renderers; one for solid blocks with culling and one for planes without culling
+                m_registry.emplace<MultiMeshRenderComponent>(entity, std::vector<MeshRenderComponent> {
+                    {ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS_CULLED), chunk.geometryCulled},
+                        {ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS_NON_CULLED), chunk.geometryNonCulled}
+                });
 
                 m_loadedChunks.push_back(pos);
             }
@@ -52,11 +57,53 @@ void ChunkCreateSystem::handlePlayerMoved(const EntityMovedEvent &e) {
     }
 }
 
+// this could probably be way better, but w/e
+// TODO put in file
+const std::array<std::array<float, 8>, 24> ChunkCreateSystem::generationDataBlock = {
+    //                    x  y  z  nx  ny nz ix iy
+    std::array<float, 8> {0, 1, 0, -1, 0, 0, 4, 0},
+    std::array<float, 8> {0, 0, 1, -1, 0, 0, 4, 1},
+    std::array<float, 8> {0, 1, 1, -1, 0, 0, 4, 2},
+    std::array<float, 8> {0, 0, 0, -1, 0, 0, 4, 3},
+    std::array<float, 8> {1, 1, 1, 1, 0, 0, 2, 0},
+    std::array<float, 8> {1, 0, 0, 1, 0, 0, 2, 1},
+    std::array<float, 8> {1, 1, 0, 1, 0, 0, 2, 2},
+    std::array<float, 8> {1, 0, 1, 1, 0, 0, 2, 3},
+    std::array<float, 8> {0, 0, 1, 0, -1, 0, 5, 0},
+    std::array<float, 8> {1, 0, 0, 0, -1, 0, 5, 1},
+    std::array<float, 8> {1, 0, 1, 0, -1, 0, 5, 2},
+    std::array<float, 8> {0, 0, 0, 0, -1, 0, 5, 3},
+    std::array<float, 8> {0, 1, 0, 0, 1, 0, 0, 0},
+    std::array<float, 8> {1, 1, 1, 0, 1, 0, 0, 1},
+    std::array<float, 8> {1, 1, 0, 0, 1, 0, 0, 2},
+    std::array<float, 8> {0, 1, 1, 0, 1, 0, 0, 3},
+    std::array<float, 8> {1, 1, 0, 0, 0, -1, 3, 0},
+    std::array<float, 8> {0, 0, 0, 0, 0, -1, 3, 1},
+    std::array<float, 8> {0, 1, 0, 0, 0, -1, 3, 2},
+    std::array<float, 8> {1, 0, 0, 0, 0, -1, 3, 3},
+    std::array<float, 8> {0, 1, 1, 0, 0, 1, 1, 0},
+    std::array<float, 8> {1, 0, 1, 0, 0, 1, 1, 1},
+    std::array<float, 8> {1, 1, 1, 0, 0, 1, 1, 2},
+    std::array<float, 8> {0, 0, 1, 0, 0, 1, 1, 3}
+};
+
+const std::array<std::array<float, 8>, 8> ChunkCreateSystem::generationDataPlane = {
+    //                    x  y  z  nx  ny nz fi
+    std::array<float, 8> {0, 0, 0, 1, 0, -1, 3},
+    std::array<float, 8> {0, 1, 0, 1, 0, -1, 0},
+    std::array<float, 8> {1, 1, 1, 1, 0, -1, 2},
+    std::array<float, 8> {1, 0, 1, 1, 0, -1, 1},
+    std::array<float, 8> {1, 0, 0, -1, 0, 1, 3},
+    std::array<float, 8> {1, 1, 0, -1, 0, 1, 0},
+    std::array<float, 8> {0, 1, 1, -1, 0, 1, 2},
+    std::array<float, 8> {0, 0, 1, -1, 0, 1, 1},
+};
+
 void ChunkCreateSystem::handleStructureCreated(const StructureCreatedEvent &e) {
     for (const auto &pair : e.data) {
         // TODO: fix error
         try {
-            m_structureQueue.emplace_back(pair);
+            m_structureQueue.insert(pair);
         }
         catch (std::exception) {
             // ignore
@@ -109,175 +156,127 @@ void ChunkCreateSystem::updateChunkStructures(Block ***chunkBlocks, BlockCollect
     }
 }
 
-GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block ***blocks, std::shared_mutex *blockMutex) {
-    GeometryData geometryData;
-    geometryData.entity = entity;
+GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block*** blocks, std::shared_mutex* blockMutex)
+{
+    GeometryData geometryData {entity};
+
     // reserve some space to prevent reallocations
     try {
-        geometryData.vertices.reserve(1048576);
-        geometryData.indices.reserve(1048576);
+        geometryData.verticesCulled.reserve(1048576);
+        geometryData.verticesNonCulled.reserve(1048576);
+        geometryData.indicesCulled.reserve(1048576);
+        geometryData.indicesNonCulled.reserve(1048576);
     }
     catch (std::length_error e) {
-        std::cerr << "WARNING: chunk buffer preallocation failed; " << e.what() << std::endl;
+        std::cerr << "WARNING: chunk buffer preallocation failed: " << e.what() << std::endl;
     }
 
-    int faceCount = 0;
     for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
         for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
             for (int z = 0; z < Configuration::CHUNK_SIZE; z++) {
                 bool draw[6] = {false};
+                glm::vec3 blockPosition {x, y, z};
 
                 // use shared_lock for shared read access and unique_lock for unique write access
                 std::shared_lock<std::shared_mutex> blockLock(*blockMutex);
-                if (blocks[x][y][z].type == BlockId::BLOCK_AIR) {
+                const Block &block = blocks[x][y][z];
+                if (block.type == BlockId::BLOCK_AIR) {
                     continue;
                 }
 
-                if (blocks[x][y][z].type == BlockId::BLOCK_WATER) {
+                // water
+                if (block.type == BlockId::BLOCK_WATER) {
                     if (y < Configuration::CHUNK_HEIGHT - 1 && blocks[x][y + 1][z].type == BlockId::BLOCK_AIR) {
                         draw[3] = true;
                     }
                 }
-                else {
+
+                // solid blocks
+                else if (block.type < BlockId::PLANE_GRASS) {
                     // negative X
                     if (x > 0) {
                         if (!blocks[x - 1][y][z].isSolid())
                             draw[0] = true;
                     }
-                    else
-                        draw[0] = true;
+                    else draw[0] = true;
                     // positive X
                     if (x < Configuration::CHUNK_SIZE - 1) {
                         if (!blocks[x + 1][y][z].isSolid())
                             draw[1] = true;
                     }
-                    else
-                        draw[1] = true;
+                    else draw[1] = true;
                     // negative Y
                     if (y > 0) {
                         if (!blocks[x][y - 1][z].isSolid())
                             draw[2] = true;
                     }
-                    else
-                        draw[2] = true;
+                    else draw[2] = true;
                     // positive Y
                     if (y < Configuration::CHUNK_HEIGHT - 1) {
                         if (!blocks[x][y + 1][z].isSolid())
                             draw[3] = true;
                     }
-                    else
-                        draw[3] = true;
+                    else draw[3] = true;
                     // negative Z
                     if (z > 0) {
                         if (!blocks[x][y][z - 1].isSolid())
                             draw[4] = true;
                     }
-                    else
-                        draw[4] = true;
+                    else draw[4] = true;
                     // positive Z
                     if (z < Configuration::CHUNK_SIZE - 1) {
                         if (!blocks[x][y][z + 1].isSolid())
                             draw[5] = true;
                     }
-                    else
-                        draw[5] = true;
-                }
-                blockLock.unlock();
+                    else draw[5] = true;
 
-                glm::vec3 blockPosition{x, y, z};
-                const BlockUVs &blockUVs = m_atlas.blockUVsArray[(size_t)blocks[x][y][z].type];
+                    blockLock.unlock();
 
-                int faceCountPerPass = 0;
+                    const BlockUVs &blockUVs = m_atlas.blockUVsArray[(size_t)block.type];
 
-                // add vertices
-                // TODO maybe move the values out and use loops
-                if (draw[0]) {
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 1, 0} + blockPosition, glm::vec3{-1, 0, 0}, blockUVs[4][0]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 0, 1} + blockPosition, glm::vec3{-1, 0, 0}, blockUVs[4][1]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 1, 1} + blockPosition, glm::vec3{-1, 0, 0}, blockUVs[4][2]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 0, 0} + blockPosition, glm::vec3{-1, 0, 0}, blockUVs[4][3]});
+                    int faceCountPerPass = 0;
 
-                    faceCountPerPass++;
-                }
-
-                if (draw[1]) {
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 1, 1} + blockPosition, glm::vec3{1, 0, 0}, blockUVs[2][0]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 0, 0} + blockPosition, glm::vec3{1, 0, 0}, blockUVs[2][1]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 1, 0} + blockPosition, glm::vec3{1, 0, 0}, blockUVs[2][2]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 0, 1} + blockPosition, glm::vec3{1, 0, 0}, blockUVs[2][3]});
-
-                    faceCountPerPass++;
-                }
-
-                if (draw[2]) {
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 0, 1} + blockPosition, glm::vec3{0, -1, 0}, blockUVs[5][0]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 0, 0} + blockPosition, glm::vec3{0, -1, 0}, blockUVs[5][1]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 0, 1} + blockPosition, glm::vec3{0, -1, 0}, blockUVs[5][2]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 0, 0} + blockPosition, glm::vec3{0, -1, 0}, blockUVs[5][3]});
-
-                    faceCountPerPass++;
-                }
-
-                if (draw[3]) {
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 1, 0} + blockPosition, glm::vec3{0, -1, 0}, blockUVs[0][0]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 1, 1} + blockPosition, glm::vec3{0, -1, 0}, blockUVs[0][1]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 1, 0} + blockPosition, glm::vec3{0, -1, 0}, blockUVs[0][2]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 1, 1} + blockPosition, glm::vec3{0, -1, 0}, blockUVs[0][3]});
-
-                    faceCountPerPass++;
-                }
-
-                if (draw[4]) {
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 1, 0} + blockPosition, glm::vec3{0, 0, -1}, blockUVs[3][0]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 0, 0} + blockPosition, glm::vec3{0, 0, -1}, blockUVs[3][1]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 1, 0} + blockPosition, glm::vec3{0, 0, -1}, blockUVs[3][2]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 0, 0} + blockPosition, glm::vec3{0, 0, -1}, blockUVs[3][3]});
-
-                    faceCountPerPass++;
-                }
-
-                if (draw[5]) {
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 1, 1} + blockPosition, glm::vec3{0, 0, -1}, blockUVs[1][0]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 0, 1} + blockPosition, glm::vec3{0, 0, -1}, blockUVs[1][1]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{1, 1, 1} + blockPosition, glm::vec3{0, 0, -1}, blockUVs[1][2]});
-                    geometryData.vertices.emplace_back(
-                        Vertex{glm::vec3{0, 0, 1} + blockPosition, glm::vec3{0, 0, -1}, blockUVs[1][3]});
-
-                    faceCountPerPass++;
-                }
-
-                // add indices reserve some space to prevent reallocations
-                for (int i = 0; i < faceCountPerPass; i++) {
-                    constexpr int offsets[] = {0, 1, 2, 0, 3, 1};
-
-                    for (int j = 0; j < 6; j++) {
-                        geometryData.indices.emplace_back(faceCount * 4 + offsets[j]);
+                    // add vertices
+                    for (size_t face = 0; face < 6; face++) {
+                        if (draw[face]) {
+                            for (size_t vi = 0; vi < 4; vi++) {
+                                const auto &ref = generationDataBlock[face * 4 + vi];
+                                geometryData.verticesCulled.emplace_back(Vertex {glm::vec3 {ref[0], ref[1], ref[2]} + blockPosition, glm::vec3 {ref[3], ref[4], ref[5]}, glm::vec2 {blockUVs[ref[6]][ref[7]]}});
+                            }
+                            faceCountPerPass++;
+                        }
                     }
 
-                    faceCount++;
+                    // add indices
+                    for (int i = 0; i < faceCountPerPass; i++) {
+                        // 6 indices make up a whole face
+                        int faceCount = geometryData.indicesCulled.size() / 6;
+
+                        for (size_t j = 0; j < 6; j++) {
+                            constexpr int offsets[] = {0, 1, 2, 0, 3, 1};
+                            geometryData.indicesCulled.emplace_back(faceCount * 4 + offsets[j]);
+                        }
+                    }
+                }
+                // special blocks using other geometry which are not culled
+                else {
+                    blockLock.unlock();
+
+                    const FaceUVs &uvs = m_atlas.blockUVsArray[(size_t)block.type][0];
+
+                    for (size_t vi = 0; vi < 8; vi++) {
+                        const auto &ref = generationDataPlane[vi];
+                        geometryData.verticesNonCulled.emplace_back(Vertex {glm::vec3 {ref[0], ref[1], ref[2]} + blockPosition, glm::vec3 {ref[3], ref[4], ref[5]}, uvs[ref[6]]});
+                    }
+
+                    for (int i = 0; i < 2; i++) {
+                        int faceCount = geometryData.indicesNonCulled.size() / 6;
+
+                        for (size_t j = 0; j < 6; j++) {
+                            constexpr int offsets[] = {0, 1, 2, 0, 2, 3};
+                            geometryData.indicesNonCulled.emplace_back(faceCount * 4 + offsets[j]);
+                        }
+                    }
                 }
             }
         }
@@ -320,7 +319,8 @@ void ChunkCreateSystem::_update(int dt) {
             delete[] chunk.biomes;
 
             delete chunk.blockMutex;
-            delete chunk.geometry;
+            delete chunk.geometryCulled;
+            delete chunk.geometryNonCulled;
 
             // remove from loaded chunks and registry
             m_loadedChunks.erase(std::remove(m_loadedChunks.begin(), m_loadedChunks.end(), pos), m_loadedChunks.end());
@@ -345,7 +345,7 @@ void ChunkCreateSystem::_update(int dt) {
                     chunk.threadActiveOnSelf = true;
 
                     m_generationFutures.push_back(std::async(
-                        std::launch::async, [=, this]() { return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ); }));
+                            std::launch::async, [=, this]() { return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ); }));
 
                     chunk.verticesOutdated = true;
                 }
@@ -390,7 +390,12 @@ void ChunkCreateSystem::_update(int dt) {
         if (itGeo->valid() && itGeo->wait_for(std::chrono::seconds(0)) == std::future_status::ready) {
             GeometryData geometryData = itGeo->get();
             ChunkComponent &chunk = m_registry.get<ChunkComponent>(geometryData.entity);
-            updateChunkBuffers(chunk.geometry, geometryData.indices, geometryData.vertices);
+
+            // culled geometry
+            updateChunkBuffers(chunk.geometryCulled, geometryData.indicesCulled, geometryData.verticesCulled);
+
+            // non-culled geometry
+            updateChunkBuffers(chunk.geometryNonCulled, geometryData.indicesNonCulled, geometryData.verticesNonCulled);
 
             chunk.verticesOutdated = false;
             chunk.threadActiveOnSelf = false;
@@ -426,20 +431,22 @@ void ChunkCreateSystem::_update(int dt) {
 }
 
 ChunkCreateSystem::ChunkCreateSystem(Registry_T &registry, const TextureAtlas &atlas)
-    : System{registry, 10}, m_worldGenerator{WorldType::WORLD_NORMAL}, m_structureGenerator{&m_worldGenerator}, m_atlas{atlas} {
-    // event callbacks
-    m_playerMovedHandle = EventDispatcher::onEntityMoved.subscribe(
-        [&](const EntityMovedEvent &e) {
-            if (m_registry.any<PlayerComponent>(e.entity)) {
-                handlePlayerMoved(e);
-            }
-        });
+    : System {registry, 10}, m_worldGenerator {WorldType::WORLD_NORMAL},
+    m_structureGenerator {&m_worldGenerator}, m_atlas {atlas} {
 
-    m_structureCreatedHandle = EventDispatcher::onStructureCreated.subscribe(
-        [&](const StructureCreatedEvent &e) { handleStructureCreated(e); });
+        // event callbacks
+        m_playerMovedHandle = EventDispatcher::onEntityMoved.subscribe(
+            [&](const EntityMovedEvent &e) {
+                if (m_registry.any<PlayerComponent>(e.entity)) {
+                    handlePlayerMoved(e);
+                }
+            });
 
-    handlePlayerMoved(EntityMovedEvent{nullptr, entt::null, glm::vec3{0.f}, glm::vec3{FLT_MAX}});
-}
+        m_structureCreatedHandle = EventDispatcher::onStructureCreated.subscribe(
+            [&](const StructureCreatedEvent &e) { handleStructureCreated(e); });
+
+        handlePlayerMoved(EntityMovedEvent{nullptr, entt::null, glm::vec3{0.f}, glm::vec3{FLT_MAX}});
+    }
 
 int ChunkCreateSystem::getActiveChunkCount() const {
     return m_loadedChunks.size();

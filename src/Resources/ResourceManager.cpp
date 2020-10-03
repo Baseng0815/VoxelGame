@@ -48,13 +48,22 @@ void ResourceManager::loadResources() {
     material->diffuseMap = ResourceManager::getResource<Texture>(TEXTURE_ATLAS);
     material->specularMap = ResourceManager::getResource<Texture>(TEXTURE_BLACK);
     material->shininess = 32.f;
-    resources.emplace(MATERIAL_CHUNK_BLOCKS, ResourceHandle {material} );
+    resources.emplace(MATERIAL_CHUNK_BLOCKS_CULLED, ResourceHandle {material});
 
     material = new Material {};
-    material->ambient = glm::vec4 {1.f, 1.f, 1.f, 0.7f};
-    material->customShader = ResourceManager::getResource<Shader>(SHADER_MVP_COLOR);
+    material->diffuseMap = ResourceManager::getResource<Texture>(TEXTURE_ATLAS);
+    material->specularMap = ResourceManager::getResource<Texture>(TEXTURE_BLACK);
+    material->shininess = 32.f;
+    material->useCulling = false;
+    resources.emplace(MATERIAL_CHUNK_BLOCKS_NON_CULLED, ResourceHandle {material});
+
+    material = new Material {};
     material->useCulling = false;
     resources.emplace(MATERIAL_CLOUDS, ResourceHandle {material});
+
+    material = new Material {};
+    material->color = Color::Green;
+    resources.emplace(MATERIAL_GRASS, ResourceHandle {material});
 
     // fonts
     resources.emplace(FONT_KORURI, ResourceHandle {new Font("Fonts/Koruri-Regular.ttf")});

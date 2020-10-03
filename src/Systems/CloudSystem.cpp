@@ -57,18 +57,18 @@ void CloudSystem::recalculateCloudGeometry()
             const int worldChunkZ = chunkZ + m_chunkPosZ;
             const bool isCloud = m_cloudModule.GetValue(worldChunkX, worldChunkZ - m_chunkOffset);
             if (isCloud) {
-                const float left    = worldChunkX * Configuration::CHUNK_SIZE;
-                const float right   = (worldChunkX + 1) * Configuration::CHUNK_SIZE;
+                const float left    = worldChunkX * Configuration::CHUNK_SIZE; const float right   = (worldChunkX + 1) * Configuration::CHUNK_SIZE;
                 const float front   = worldChunkZ * Configuration::CHUNK_SIZE;
                 const float back    = (worldChunkZ - 1) * Configuration::CHUNK_SIZE;
 
                 // cloud geometry on height 0; raised through model matrix
-                vertices.emplace_back(Vertex {glm::vec3 {left, 0.f, front}});
-                vertices.emplace_back(Vertex {glm::vec3 {left, 0.f, back}});
-                vertices.emplace_back(Vertex {glm::vec3 {right, 0.f, back}});
-                vertices.emplace_back(Vertex {glm::vec3 {right, 0.f, front}});
+                vertices.emplace_back(Vertex {glm::vec3 {left, 0.f, front}, glm::vec3 {0.f, -1.f, 0.f}});
+                vertices.emplace_back(Vertex {glm::vec3 {left, 0.f, back}, glm::vec3 {0.f, -1.f, 0.f}});
+                vertices.emplace_back(Vertex {glm::vec3 {right, 0.f, back}, glm::vec3 {0.f, -1.f, 0.f}});
+                vertices.emplace_back(Vertex {glm::vec3 {right, 0.f, front}, glm::vec3 {0.f, -1.f, 0.f}});
 
                 if (hasVolume) {
+                    // TODO add more vertices and normals
                     // add the other four vertices
                     vertices.emplace_back(Vertex {glm::vec3 {left, Configuration::CLOUD_VOLUMETRIC_HEIGHT, front}});
                     vertices.emplace_back(Vertex {glm::vec3 {left, Configuration::CLOUD_VOLUMETRIC_HEIGHT, back}});
