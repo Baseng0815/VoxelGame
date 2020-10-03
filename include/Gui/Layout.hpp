@@ -37,7 +37,7 @@ class Layout : public Widget {
     public:
         Layout(const std::string &id, GUI &gui);
 
-        void setStackMode(StackMode stackMode, bool invertStack, bool invertStackWidgets = false);
+        void setStackMode(StackMode stackMode, bool invertStack = false, bool invertStackWidgets = false);
 
         // create new widget
         template<class T>

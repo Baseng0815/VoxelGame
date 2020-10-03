@@ -17,10 +17,10 @@ InventoryLayout::InventoryLayout(GUI &gui)
     m_properties.constraints.x = RelativeConstraint(0.25f);
     m_properties.constraints.y = RelativeConstraint(0.25f);
     m_properties.padding.both(10);
-    m_properties.isVisible = true;
+    m_properties.isVisible = false;
 
     m_properties.backgroundColor = Color{21, 67, 96, 128};
-    setStackMode(StackMode::STACK_VERTICAL, true);
+    setStackMode(StackMode::STACK_HORIZONTAL);
 
     // for (int i = 0; i < inventory.slotsCount; i++) {
     //     if (inventory.slots[i].second != 0) {

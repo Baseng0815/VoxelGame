@@ -18,8 +18,8 @@ struct MouseButtonEvent;
 class Widget {
     protected:
         // everything is in screen space with (0|0) at the bottom left corner
-        Rectangle m_innerArea; // the area the widget takes up
-        Rectangle m_outerArea; // the area the widget takes up plus padding
+        Rectangle m_outerArea; // the area the widget takes up
+        Rectangle m_innerArea; // the area the widget takes up minus padding
 
         // calculates outerArea using padding and innerArea
         void applyPadding();

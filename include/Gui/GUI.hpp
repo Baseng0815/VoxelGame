@@ -32,6 +32,9 @@ class GUI {
         void draw();
         void update();
 
+        // sets the size of the GUI manual
+        void setSize(float width, float height);
+
         Widget& getWidget(const std::string& id);
 
         template<typename T>

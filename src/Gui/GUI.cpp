@@ -50,6 +50,11 @@ void GUI::update() {
     m_rootLayout->updateScreenElements();
 }
 
+void GUI::setSize(float width, float height) {
+    m_rootLayout->updateArea(Rectangle{0.f, 0.f, width, height});
+    m_rootLayout->updateScreenElements();
+}
+
 Widget& GUI::getWidget(const std::string& id) {
     auto it = m_widgets.find(id);
     if (it != m_widgets.end()) {

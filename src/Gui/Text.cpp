@@ -11,7 +11,7 @@
 
 void Text::_updateScreenElements()
 {
-    float x = m_innerArea.position.x;
+    float x = m_outerArea.position.x;
 
     // TODO find out why the hell just resizing the quads does NOT work (text becomes white)
     m_charRenderQuads.clear();
@@ -20,14 +20,14 @@ void Text::_updateScreenElements()
     for (int i = 0; i < m_charRenderQuads.size(); i++) {
         const Character& ch = m_font->getCharacter(m_string[i]);
         float xpos = x + ch.bearing.x * m_textScale;
-        float ypos = m_innerArea.position.y - (ch.size.y - ch.bearing.y) * m_textScale;
+        float ypos = m_outerArea.position.y - (ch.size.y - ch.bearing.y) * m_textScale;
 
         float w = ch.size.x * m_textScale;
         float h = ch.size.y * m_textScale;
 
         // adjustments for relatively sized text
         if (m_properties.constraints.width.getType() != ConstraintType::CONSTRAINT_MATCH) {
-            float scale = m_innerArea.size.x / m_minSize.x;
+            float scale = m_outerArea.size.x / m_minSize.x;
             w *= scale;
             x += (ch.advance >> 6) * m_textScale * scale;
         } else {
@@ -35,7 +35,7 @@ void Text::_updateScreenElements()
         }
 
         if (m_properties.constraints.height.getType() != ConstraintType::CONSTRAINT_MATCH) {
-            float scale = m_innerArea.size.y / m_minSize.y;
+            float scale = m_outerArea.size.y / m_minSize.y;
             h *= scale;
         }
 

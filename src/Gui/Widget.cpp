@@ -7,11 +7,11 @@
 
 void Widget::applyPadding()
 {
-    m_outerArea = m_innerArea;
-    m_outerArea.position.x -= m_properties.padding.left;
-    m_outerArea.size.x += m_properties.padding.right + m_properties.padding.left;
-    m_outerArea.position.y -= m_properties.padding.bottom;
-    m_outerArea.size.y += m_properties.padding.top + m_properties.padding.bottom;
+    m_innerArea = m_outerArea;
+    m_innerArea.position.x += m_properties.padding.left;
+    m_innerArea.size.x -= m_properties.padding.right + m_properties.padding.left;
+    m_innerArea.position.y += m_properties.padding.top;
+    m_innerArea.size.y -= m_properties.padding.top + m_properties.padding.bottom;
 }
 
 Color Widget::getBackgroundColor() const
@@ -36,8 +36,8 @@ Color Widget::getForegroundColor() const
 
 bool Widget::coordinatesInWidget(int x, int y)
 {
-    if (x > m_innerArea.position.x && x < m_innerArea.position.x + m_innerArea.size.x &&
-            y > m_innerArea.position.y && y < m_innerArea.position.y + m_innerArea.size.y) {
+    if (x > m_outerArea.position.x && x < m_outerArea.position.x + m_outerArea.size.x &&
+            y > m_outerArea.position.y && y < m_outerArea.position.y + m_outerArea.size.y) {
         return true;
     } else {
         return false;
@@ -126,7 +126,7 @@ void Widget::updateArea(const Rectangle& parent)
     if (m_isOutdated) {
         _updateMinimumSize();
 
-        m_innerArea = m_properties.constraints.getRect(parent, m_properties, m_minSize);
+        m_outerArea = m_properties.constraints.getRect(parent, m_properties, m_minSize);
         applyPadding();
 
         _updateArea();
@@ -146,33 +146,33 @@ UiProperties &Widget::properties()
 { return m_properties; }
 
 const glm::vec2 &Widget::_getPosition() const
-{ return m_outerArea.position; }
+{ return m_innerArea.position; }
 
 const glm::vec2 &Widget::_getSize() const
-{ return m_outerArea.size; }
+{ return m_innerArea.size; }
 
 const Rectangle &Widget::_getInnerArea() const
-{ return m_innerArea; }
-const Rectangle &Widget::_getOuterArea() const
 { return m_outerArea; }
+const Rectangle &Widget::_getOuterArea() const
+{ return m_innerArea; }
 
 void Widget::_setPosition(const glm::vec2 &position)
 {
-    m_outerArea.position = position;
+    m_innerArea.position = position;
 
     // readjust inner positions
-    m_innerArea.position.x = m_outerArea.position.x + m_properties.padding.left;
-    m_innerArea.position.y = m_outerArea.position.y + m_properties.padding.bottom;
+    m_outerArea.position.x = m_innerArea.position.x + m_properties.padding.left;
+    m_outerArea.position.y = m_innerArea.position.y + m_properties.padding.bottom;
     _invalidate();
 }
 
 void Widget::_setSize(const glm::vec2 &size)
 {
-    m_outerArea.size = size;
+    m_innerArea.size = size;
 
     // readjust inner sizes
-    m_innerArea.size.x = m_outerArea.size.y - m_properties.padding.left - m_properties.padding.right;
-    m_innerArea.size.y = m_outerArea.size.y - m_properties.padding.top - m_properties.padding.bottom;
+    m_outerArea.size.x = m_innerArea.size.y - m_properties.padding.left - m_properties.padding.right;
+    m_outerArea.size.y = m_innerArea.size.y - m_properties.padding.top - m_properties.padding.bottom;
     _invalidate();
 }
 
