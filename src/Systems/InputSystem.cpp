@@ -16,6 +16,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 void InputSystem::handleKeyPressEvent(const KeyEvent &e) {
+    entt::entity player = m_registry.view<PlayerComponent>().front();
+    PlayerComponent &playerComponent = m_registry.get<PlayerComponent>(player);
+    if(!playerComponent.inputEnabled)
+        return;
+
     bool changeFlyMode = false;
 
     byte inputCode = 0;
@@ -59,9 +64,6 @@ void InputSystem::handleKeyPressEvent(const KeyEvent &e) {
     float xAxisInput = (playerInputState & 1) - ((playerInputState & 2) >> 1);
     float yAxisInput = ((playerInputState & 4) >> 2) - ((playerInputState & 8) >> 3);
     float zAxisInput = ((playerInputState & 16) >> 4) - ((playerInputState & 32) >> 5);
-
-    entt::entity player = m_registry.view<PlayerComponent>().front();
-    PlayerComponent &playerComponent = m_registry.get<PlayerComponent>(player);
     // RigidBodyComponent &rigidBody = m_registry.get<RigidBodyComponent>(player);
 
     playerComponent.xAxisInput = -xAxisInput;
@@ -74,6 +76,9 @@ void InputSystem::handleMouseButtonEvent(const MouseButtonEvent &e) {
         entt::entity player = m_registry.view<PlayerComponent>().front();
         const PlayerComponent &playerComponent = m_registry.get<PlayerComponent>(player);
         const glm::vec3 &block = playerComponent.lookAt;
+    
+        if (!playerComponent.inputEnabled)
+            return;
 
         // TODO: Fix this
         if (block.y > 0 && block.y < Configuration::CHUNK_HEIGHT) {
@@ -84,7 +89,11 @@ void InputSystem::handleMouseButtonEvent(const MouseButtonEvent &e) {
 
 void InputSystem::handleMouseMoveEvent(const CursorEvent &e) {
     entt::entity player = m_registry.view<PlayerComponent>().front();
-    CameraComponent &cameraComponent = m_registry.get<CameraComponent>(player);
+    const PlayerComponent &playerComponent = m_registry.get<PlayerComponent>(player);
+    if (!playerComponent.inputEnabled)
+        return;
+
+    CameraComponent &cameraComponent = m_registry.get<CameraComponent>(player);    
 
     cameraComponent.yaw += e.dx * Configuration::getFloatValue("MOUSE_SENSITIVITY");
     cameraComponent.yaw = std::fmod(cameraComponent.yaw, 360.f);

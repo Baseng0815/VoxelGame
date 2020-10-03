@@ -22,6 +22,7 @@
 #include "../include/Application.hpp"
 #include "../include/Events/EventDispatcher.hpp"
 #include "../include/Gui/DebugLayout.hpp"
+#include "../include/Gui/Image.hpp"
 #include "../include/Gui/InventoryLayout.hpp"
 #include "../include/Resources/ResourceManager.hpp"
 #include "../include/Resources/Texture.hpp"
@@ -37,8 +38,21 @@ void IngameLayer::handleKeys(const KeyEvent &e) {
                 properties.isVisible = !properties.isVisible;
             }
             else if (e.key == Configuration::getAssociatedKey("KEYBIND_OPEN_INVENTORY")) {
-                UiProperties &properties = m_gui.getWidget<InventoryLayout>("layout_inventory").properties();
-                properties.isVisible = !properties.isVisible;                
+                UiProperties &inventory = m_gui.getWidget<InventoryLayout>("layout_inventory").properties();
+                UiProperties &crosshair = m_gui.getWidget<Image>("image_crosshair").properties();
+                entt::entity player = m_registry.view<PlayerComponent>().front();
+                PlayerComponent &playerComponent = m_registry.get<PlayerComponent>(player);
+
+                inventory.isVisible = !inventory.isVisible;
+                crosshair.isVisible = !inventory.isVisible;
+                playerComponent.inputEnabled = !inventory.isVisible;
+
+                if (inventory.isVisible) {
+                    m_application->getWindow().enableCursor();
+                }
+                else {
+                    m_application->getWindow().disableCursor();
+                }
             }
             break;
         }
