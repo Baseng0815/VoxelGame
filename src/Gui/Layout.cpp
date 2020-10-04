@@ -2,6 +2,7 @@
 #include "../../include/Gui/Image.hpp"
 #include "../../include/Gui/GUI.hpp"
 //#include "../../include/Gui/Layout.hpp"
+#include "../../include/Gui/ItemLayout.hpp"
 
 #include "../../include/Resources/Shader.hpp"
 #include "../../include/Configuration.hpp"
@@ -134,6 +135,45 @@ Widget *Layout::addWidget(Widget* widget)
     widget->_setParent(this);
     m_gui.__registerWidget(widget);
     return widget;
+}
+
+void Layout::removeWidget(const std::string& id) {
+    int i = 0;
+    while(i < m_widgets.size()) {
+        if (m_widgets[i]->getId() == id) {
+            break;
+        }
+        else {
+            i++;
+        }
+    }
+
+    Widget *widget = m_widgets[i];
+    m_gui.__unregisterWidget(widget);
+    m_widgets.erase(m_widgets.begin() + i);
+
+    delete widget;
+}
+
+void Layout::clearWidgets() {
+    while (m_widgets.size() > 0) {
+        Widget *widget = m_widgets.front();
+
+        m_gui.__unregisterWidget(widget);
+        m_widgets.erase(m_widgets.begin());
+
+        delete widget;
+    }
+}
+
+void Layout::_setPosition(const glm::vec2 & position) {
+    Widget::_setPosition(position);
+
+    for (auto widget : m_widgets) {
+        widget->updateArea(m_innerArea);
+    }
+
+    arrangeWidgets();
 }
 
 WidgetIt Layout::begin()

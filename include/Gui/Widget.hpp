@@ -83,7 +83,7 @@ class Widget {
         const glm::vec2 &_getSize() const;
         const Rectangle &_getInnerArea() const;
         const Rectangle &_getOuterArea() const;
-        void _setPosition(const glm::vec2 &position);
+        virtual void _setPosition(const glm::vec2 &position);
         void _setSize(const glm::vec2 &size);
 
         bool isHovering() const;

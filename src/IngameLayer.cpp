@@ -38,7 +38,9 @@ void IngameLayer::handleKeys(const KeyEvent &e) {
                 properties.isVisible = !properties.isVisible;
             }
             else if (e.key == Configuration::getAssociatedKey("KEYBIND_OPEN_INVENTORY")) {
-                UiProperties &inventory = m_gui.getWidget<InventoryLayout>("layout_inventory").properties();
+                InventoryLayout &layout = m_gui.getWidget<InventoryLayout>("layout_inventory");
+
+                UiProperties &inventory = layout.properties();
                 UiProperties &crosshair = m_gui.getWidget<Image>("image_crosshair").properties();
                 entt::entity player = m_registry.view<PlayerComponent>().front();
                 PlayerComponent &playerComponent = m_registry.get<PlayerComponent>(player);
@@ -49,6 +51,7 @@ void IngameLayer::handleKeys(const KeyEvent &e) {
 
                 if (inventory.isVisible) {
                     m_application->getWindow().enableCursor();
+                    layout.setInventory(m_registry.get<InventoryComponent>(player));
                 }
                 else {
                     m_application->getWindow().disableCursor();

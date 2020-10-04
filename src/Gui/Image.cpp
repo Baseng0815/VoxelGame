@@ -23,7 +23,7 @@ void Image::_updateMinimumSize() {
 }
 
 void Image::_updateScreenElements() {
-    m_renderQuad.resize(m_outerArea);
+    m_renderQuad.resize(m_innerArea);
 }
 
 Image::Image(const std::string& id, const Texture *texture)

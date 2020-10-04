@@ -71,3 +71,7 @@ void GUI::addPanel(Layout* panel) {
 void GUI::__registerWidget(Widget* widget) {
     m_widgets.insert(std::make_pair(widget->getId(), widget));
 }
+
+void GUI::__unregisterWidget(Widget* widget) {
+    m_widgets.erase(widget->getId());
+}

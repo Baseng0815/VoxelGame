@@ -1,4 +1,4 @@
-#pragma once
+ #pragma once
 
 #include "Widget.hpp"
 #include "../Rendering/RenderQuad.hpp"

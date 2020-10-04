@@ -26,7 +26,7 @@ class Constraint {
 class UiProperties;
 
 struct UiConstraints {
-    Constraint x = RelativeConstraint(0), y = RelativeConstraint(0),
+    Constraint x = AbsoluteConstraint(0), y = AbsoluteConstraint(0),
                width = MatchConstraint(), height = MatchConstraint();
 
     // calculate the final area a widget occupies

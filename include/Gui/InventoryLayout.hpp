@@ -7,6 +7,7 @@
 class GUI;
 struct InventoryComponent;
 class Text;
+class ItemLayout;
 
 class InventoryLayout : public Layout {  
   private:
@@ -14,14 +15,13 @@ class InventoryLayout : public Layout {
         int index;
         BlockId block;
         int count;
-    };
-
-    std::vector<InventorySlot> items;
+    };    
 
     Text *m_title;
-    Layout *firstRow, *secndRow, *thirdRow, *fourthRow;
-
+    ItemLayout *m_itemLayout;
 
   public:
-    InventoryLayout(GUI &gui);    
+    InventoryLayout(GUI &gui);
+
+    void setInventory(const InventoryComponent &inventory);
 };

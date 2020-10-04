@@ -48,6 +48,8 @@ class Layout : public Widget {
         void removeWidget(const std::string& id);
         void clearWidgets();
 
+        void _setPosition(const glm::vec2 &position) override;
+
         WidgetIt begin();
         WidgetIt end();
 };
