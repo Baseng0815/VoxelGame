@@ -7,6 +7,6 @@ struct InventoryComponent {
     std::vector<std::pair<BlockId, int>> slots;
 
     inline InventoryComponent(int slotsCount)
-        : slotsCount{slotsCount}, slots{slotsCount} {
+        : slotsCount{slotsCount}, slots(slotsCount) {
     }
 };

@@ -248,5 +248,15 @@
         "tid_pz": 237,
         "tid_nz": 237,
         "tid_ny": 237
+    },
+    {
+        "name": "PLANE_GRASS",
+        "is_solid": false,
+        "tid_py": 39,
+        "tid_px": 39,
+        "tid_nx": 39,
+        "tid_pz": 39,
+        "tid_nz": 39,
+        "tid_ny": 39
     }
 ]

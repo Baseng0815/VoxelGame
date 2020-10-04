@@ -42,14 +42,14 @@ Geometry::Geometry(const std::string& file)
     initBuffers();
 
     Assimp::Importer importer;
-    const aiScene *scene = importer.ReadFile(Configuration::getStringValue("ResourceBasePath") + file, aiProcess_Triangulate | aiProcess_FlipUVs);
+    const aiScene *scene = importer.ReadFile(Configuration::getStringValue("ResourceBasePath") + file, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_JoinIdenticalVertices);
 
     if (scene == nullptr|| !scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
         std::cerr << "error: " << importer.GetErrorString() << "\n";
     }
 
-    std::vector<Vertex> vertices(1000);
-    std::vector<unsigned int> indices(10000);
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
 
     // only using one mesh without child or materials
     const aiMesh *mesh = scene->mMeshes[0];
@@ -74,13 +74,10 @@ Geometry::Geometry(const std::string& file)
     for (size_t i = 0; i < mesh->mNumFaces; i++) {
         const aiFace &face = mesh->mFaces[i];
         for (size_t j = 0; j < face.mNumIndices; j++) {
-            std::cout << face.mIndices[j] << "\n";
             indices.emplace_back(face.mIndices[j]);
         }
     }
 
-    vertices.shrink_to_fit();
-    indices.shrink_to_fit();
     fillBuffers(vertices, indices);
 }
 

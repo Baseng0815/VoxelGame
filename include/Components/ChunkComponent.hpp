@@ -23,8 +23,9 @@ struct ChunkComponent {
     int chunkX, chunkZ;
 
     // raw pointer because ChunkComponent needs to be copyable
-    // TODO find out if it works using move semantics only
-    Geometry *geometry;
+    // TODO find out if this works using move semantics only
+    Geometry *geometryCulled;
+    Geometry *geometryNonCulled;
 
     // TODO make this more efficient (maybe use octrees?)
     Block*** blocks = nullptr;

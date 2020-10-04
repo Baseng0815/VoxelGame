@@ -8,6 +8,8 @@ class Shader;
 class Texture;
 
 struct CameraComponent;
+struct CameraComponent;
+struct MeshRenderComponent;
 struct TransformationComponent;
 
 struct FramebufferSizeEvent;
@@ -23,6 +25,9 @@ class MeshRenderSystem : public System {
 
         PointLight m_pointLights[MAX_LIGHTS];
         DirectionalLight m_sun;
+
+        void uploadToShader(const Shader *shader, const CameraComponent &camera) const;
+        void render(const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer, const CameraComponent &camera) const;
 
         void _update(int dt) override;
 
