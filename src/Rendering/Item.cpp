@@ -50,28 +50,28 @@ void Item::resize(const Rectangle &area, const BlockId &block) const {
     float uvX1 = (tmp.tid_nx % 16) * uvXpT;
     float uvY1 = (tmp.tid_nx / 16) * uvYpT;
 
-    float uvX2 = (tmp.tid_ny % 16) * uvXpT;
-    float uvY2 = (tmp.tid_ny / 16) * uvYpT;
+    float uvX2 = (tmp.tid_nz % 16) * uvXpT;
+    float uvY2 = (tmp.tid_nz / 16) * uvYpT;
 
-    float uvX3 = (tmp.tid_pz % 16) * uvXpT;
-    float uvY3 = (tmp.tid_pz / 16) * uvYpT;
+    float uvX3 = (tmp.tid_py % 16) * uvXpT;
+    float uvY3 = (tmp.tid_py / 16) * uvYpT;
 
     // clang-format off
     float vertices[] = {
         x1, y2, uvX1,           uvY1 + uvYpT,
         x2, y1, uvX1 + uvXpT,   uvY1 + uvYpT,
-        x2, y3, uvX1,           uvY1,
-        x1, y4, uvX1 + uvXpT,   uvY1,
+        x2, y3, uvX1 + uvXpT,   uvY1,
+        x1, y4, uvX1,           uvY1,
 
         x2, y1, uvX2,           uvY2 + uvYpT,
         x3, y2, uvX2 + uvXpT,   uvY2 + uvYpT,
-        x3, y4, uvX2,           uvY2,
-        x2, y3, uvX2 + uvXpT,   uvY2,         
+        x3, y4, uvX2 + uvXpT,   uvY2,
+        x2, y3, uvX2,           uvY2,         
          
         x2, y3, uvX3,           uvY3 + uvYpT,
         x3, y4, uvX3 + uvXpT,   uvY3 + uvYpT,
-        x2, y5, uvX3,           uvY3,
-        x1, y4, uvX3 + uvXpT,   uvY3,         
+        x2, y5, uvX3 + uvXpT,   uvY3,
+        x1, y4, uvX3,           uvY3
     };
 
     unsigned int indices[] = {

@@ -32,8 +32,7 @@ InventoryLayout::InventoryLayout(GUI &gui)
     m_title->setString("Inventory");
     m_title->setFont(ResourceManager::getResource<Font>(FONT_KORURI));
     this->addWidget(m_title);
-        
-    m_itemLayout->properties().backgroundColor = Color::Azure;
+            
     m_itemLayout->properties().margin.top = 10;
     this->addWidget(m_itemLayout);
 }
