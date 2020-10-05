@@ -28,13 +28,13 @@ void TerrainGenerator::createBlocks(Block*** blocks, int** heightMap, BiomeId** 
             BiomeId biomeId = biomes[cx][cz];
             Biome biome = getBiome(biomeId);
 
-            for (int cy = 0; cy < height; cy++) {
+            for (int cy = 0; cy <= height; cy++) {
                 Block block;
                 if (cy < randNext(2, 4))
                     block = Block {BlockId::BLOCK_BRICKS};
-                else if (cy < height - (biome.subsorfaceHeight + biome.surfaceHeight))
+                else if (cy <= height - (biome.subsorfaceHeight + biome.surfaceHeight))
                     block = Block {BlockId::BLOCK_STONE};
-                else if (cy < height - biome.surfaceHeight)
+                else if (cy <= height - biome.surfaceHeight)
                     block = Block {biome.subsurfaceBlocks};
                 else
                     block = Block {biome.surfaceBlocks};

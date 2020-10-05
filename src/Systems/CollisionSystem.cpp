@@ -31,7 +31,7 @@ void CollisionSystem::_update(int dt) {
     }
 
     for (auto it = view.begin(); it != view.end(); it++) {
-        checkBlockCollisions(*it);
+        checkBlockCollisions(*it, dt / 1000.0f);
     }
 
     auto playerView = m_registry.view<PlayerComponent, TransformationComponent, CameraComponent>();
@@ -74,38 +74,44 @@ void CollisionSystem::checkCollisions(entt::entity first, entt::entity secnd) {
     }
 }
 
-void CollisionSystem::checkBlockCollisions(entt::entity entity) {
+void CollisionSystem::checkBlockCollisions(entt::entity entity, float dt) {
     CollisionComponent &collision = m_registry.get<CollisionComponent>(entity);
     TransformationComponent &transform = m_registry.get<TransformationComponent>(entity);
+    VelocityComponent &velocity = m_registry.get<VelocityComponent>(entity);
 
-    if (!World::chunkCreated(Utility::GetChunk(transform.getPosition()))) {
+    glm::vec3 currPos = transform.getPosition();
+    if (!World::chunkCreated(Utility::GetChunk(currPos))) {
         return;
     }
 
-    Math::Cuboid hitbox = collision.transform(transform);
-    glm::vec3 minBlock = glm::floor(hitbox.min);
-    glm::vec3 maxBlock = glm::floor(hitbox.max);
-
     bool hasCollision = false;
     glm::vec3 block;
+    // for (int i = 0; i < 10; i++) {
+    //     glm::vec3 pos = currPos - ((10 - i) * dt) * velocity.velocity;
+        glm::vec3 pos = currPos;
 
-    for (int x = minBlock.x; x <= maxBlock.x; x++) {
-        for (int y = minBlock.y; y <= maxBlock.y; y++) {
-            for (int z = minBlock.z; z <= maxBlock.z; z++) {
-                glm::vec3 position = glm::vec3(x, y, z);
+        Math::Cuboid hitbox = collision.transform(pos);
+        glm::vec3 minBlock = glm::floor(hitbox.min);
+        glm::vec3 maxBlock = glm::floor(hitbox.max);
 
-                if (World::getBlock(&m_registry, position).isSolid()) {
-                    Math::Cuboid blockHitbox = Math::Cuboid(position, 1, 1, 1);
+        for (int x = minBlock.x; x <= maxBlock.x; x++) {
+            for (int y = minBlock.y; y <= maxBlock.y; y++) {
+                for (int z = minBlock.z; z <= maxBlock.z; z++) {
+                    glm::vec3 position = glm::vec3(x, y, z);
 
-                    if (hitbox.intersects(blockHitbox)) {
-                        hasCollision = true;
-                        block = position;
-                        break;
+                    if (World::getBlock(&m_registry, position).isSolid()) {
+                        Math::Cuboid blockHitbox = Math::Cuboid(position, 1, 1, 1);
+
+                        if (hitbox.intersects(blockHitbox)) {
+                            hasCollision = true;
+                            block = position;
+                            break;
+                        }
                     }
                 }
             }
         }
-    }
+    //}
 
     if (hasCollision) {
         BlockCollisionEvent e{nullptr, entity, block};

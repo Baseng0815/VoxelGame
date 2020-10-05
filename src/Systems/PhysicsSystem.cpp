@@ -90,7 +90,10 @@ void PhysicsSystem::handleBlockCollision(entt::entity entity, const glm::vec3 &b
 void PhysicsSystem::updateFalling(RigidBodyComponent &rigidBody, const TransformationComponent &transform, const VelocityComponent &velocity) const {
     const glm::vec3 &position = transform.getPosition();
 
-    if (!World::getBlock(&m_registry, glm::floor(position - glm::vec3{0.0f, 0.9f, 0.0f})).isSolid()) {
+    if (position.y < 1) {
+        rigidBody.isFalling = true;
+    }
+    else if (!World::getBlock(&m_registry, glm::floor(position - glm::vec3{0.0f, 0.9f, 0.0f})).isSolid()) {
         rigidBody.isFalling = true;
     }
     else if(velocity.velocity.y == 0) {

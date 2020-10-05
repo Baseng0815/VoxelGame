@@ -17,7 +17,7 @@ private:
     void updatePlayerLookAtBlock(PlayerComponent& player, TransformationComponent& transform, CameraComponent& camera) const;
     void checkCollisions(entt::entity first, entt::entity secnd);
 
-    void checkBlockCollisions(entt::entity entity);
+    void checkBlockCollisions(entt::entity entity, float dt);
 
   public:
     CollisionSystem(Registry_T& registry);

@@ -66,7 +66,18 @@ void WorldGenerator::generate(glm::vec2 position, GenerationData* data) {
 	m_terrainGenerator.createBlocks(data->blocks, heightMap, data->biomes);
 	generateOres(data->biomes, data->blocks);
 
-	m_caveGenerator.generateChunk(position, data->blocks);	
+	m_caveGenerator.generateChunk(position, data->blocks);
+
+    for (int cx = 0; cx < Configuration::CHUNK_SIZE; cx++) {
+        for (int cz = 0; cz < Configuration::CHUNK_SIZE; cz++) {
+			if(data->biomes[cx][cz] == BiomeId::BIOME_FLAT_TERRAIN) {
+                if(rand() % 5 == 0) {
+                	int height = heightMap[cx][cz] + 1;
+                    data->blocks[cx][height][cz] = Block{BlockId::PLANE_GRASS};
+                }
+            }
+        }
+    }
 }
 
 int WorldGenerator::getSurfaceHeight(glm::vec2 chunk, int x, int z) const {
