@@ -57,8 +57,13 @@ void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent &player, VelocityCo
         }
     }
     else {
-        if (!rigidBody.isFalling)
+        if (velocity.velocity.y == 0) {
             velocity.velocity *= 0.2f;
+        }
+        else {
+            velocity.velocity.x *= 0.8f;
+            velocity.velocity.z *= 0.8f;
+        }
     }
 }
 
