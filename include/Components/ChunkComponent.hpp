@@ -26,6 +26,7 @@ struct ChunkComponent {
     // TODO find out if this works using move semantics only
     Geometry *geometryCulled;
     Geometry *geometryNonCulled;
+    Geometry *geometryWater;
 
     // TODO make this more efficient (maybe use octrees?)
     Block*** blocks = nullptr;

@@ -31,7 +31,8 @@ void CollisionSystem::_update(int dt) {
     }
 
     for (auto it = view.begin(); it != view.end(); it++) {
-        checkBlockCollisions(*it, dt / 1000.0f);
+        // to avoid tunneling throght terrain at begin, wait for terrain generation
+        checkBlockCollisions(*it);
     }
 
     auto playerView = m_registry.view<PlayerComponent, TransformationComponent, CameraComponent>();
@@ -74,7 +75,7 @@ void CollisionSystem::checkCollisions(entt::entity first, entt::entity secnd) {
     }
 }
 
-void CollisionSystem::checkBlockCollisions(entt::entity entity, float dt) {
+void CollisionSystem::checkBlockCollisions(entt::entity entity) {
     CollisionComponent &collision = m_registry.get<CollisionComponent>(entity);
     TransformationComponent &transform = m_registry.get<TransformationComponent>(entity);
     VelocityComponent &velocity = m_registry.get<VelocityComponent>(entity);
