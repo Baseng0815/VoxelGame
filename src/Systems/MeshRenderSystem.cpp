@@ -3,17 +3,18 @@
 #include "../../include/Resources/ResourceManager.hpp"
 #include "../../include/Resources/Texture.hpp"
 
-#include "../../include/Events/EventDispatcher.hpp"
 #include "../../include/Events/Event.hpp"
+#include "../../include/Events/EventDispatcher.hpp"
 
 #include "../../include/Components/CameraComponent.hpp"
 #include "../../include/Components/ChunkComponent.hpp"
 #include "../../include/Components/MeshRenderComponent.hpp"
 #include "../../include/Components/MultiMeshRenderComponent.hpp"
+#include "../../include/Components/PlayerComponent.hpp"
 #include "../../include/Components/TransformationComponent.hpp"
 
-void MeshRenderSystem::handleFramebufferSize(const FramebufferSizeEvent& e) {
-    m_waterRenderbuffers->resize(e.width, e.height);    
+void MeshRenderSystem::handleFramebufferSize(const FramebufferSizeEvent &e) {
+    m_waterRenderbuffers->resize(e.width, e.height);
 }
 
 void MeshRenderSystem::uploadToShader(const Shader *shader, const CameraComponent &camera) const {
@@ -30,7 +31,7 @@ void MeshRenderSystem::uploadToShader(const Shader *shader, const CameraComponen
 }
 
 void MeshRenderSystem::render(const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer, const CameraComponent &camera) const {
-    if (meshRenderer.geometry->getDrawCount() > 0 && meshRenderer.material != ResourceManager::getResource<Material>(MATERIAL_WATER)) {
+    if (meshRenderer.geometry->getDrawCount() > 0) {
         const Shader *shader = meshRenderer.material->customShader;
         // no custom shader is used
         if (!shader) {
@@ -78,23 +79,26 @@ void MeshRenderSystem::render(const TransformationComponent &transformation, con
             glDisable(GL_CULL_FACE);
         }
 
+        if(meshRenderer.water) {
+            m_waterRenderbuffers->bind(RenderbufferId::RENDERBUFFER_WATER);            
+        }
+        else {
+            m_waterRenderbuffers->bind(RenderbufferId::RENDERBUFFER_SCENE);            
+        }
+
         // final draw call
         glBindVertexArray(meshRenderer.geometry->getVao());
         glDrawElements(GL_TRIANGLES, meshRenderer.geometry->getDrawCount(), GL_UNSIGNED_INT, nullptr);
     }
 }
 
-void MeshRenderSystem::renderWater(const TransformationComponent &transform, const MeshRenderComponent &meshRenderer, const CameraComponent &camera) const {
+void MeshRenderSystem::updateFramebuffer() const {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glDisable(GL_DEPTH_TEST);
-    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glEnable(GL_BLEND);
 
     m_framebufferShader->bind();
     m_waterRenderbuffers->bindTextures();
-    m_screenRenderquad.render();
-
-    glEnable(GL_DEPTH_TEST);
+    m_screenRenderquad.render();    
 }
 
 void MeshRenderSystem::_update(int dt) {
@@ -103,7 +107,7 @@ void MeshRenderSystem::_update(int dt) {
     // upload per-frame values for both shaders
     // color shader
     m_meshRenderShaderColor->bind();
-    const CameraComponent &camera = m_registry.view<CameraComponent>().raw()[0];
+    const CameraComponent &camera = m_registry.view<CameraComponent>().raw()[0];    
 
     // texture shader
     m_meshRenderShaderTexture->bind();
@@ -112,14 +116,10 @@ void MeshRenderSystem::_update(int dt) {
     // color shader
     m_meshRenderShaderColor->bind();
     uploadToShader(m_meshRenderShaderColor, camera);
-
+    
     // render single mesh components
     m_registry.view<TransformationComponent, MeshRenderComponent>().each(
         [&](const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer) {
-            // m_waterRenderbuffers->bind(RenderbufferId::RENDERBUFFER_REFLECTION);
-            // render(transformation, meshRenderer, camera);
-
-            m_waterRenderbuffers->bind(RenderbufferId::RENDERBUFFER_REFRACTION);
             render(transformation, meshRenderer, camera);
         });
 
@@ -127,15 +127,11 @@ void MeshRenderSystem::_update(int dt) {
     m_registry.view<TransformationComponent, MultiMeshRenderComponent>().each(
         [&](const TransformationComponent &transformation, const MultiMeshRenderComponent &multiMeshRenderer) {
             for (const auto &meshRenderer : multiMeshRenderer.meshRenderComponents) {
-                // m_waterRenderbuffers->bind(RenderbufferId::RENDERBUFFER_REFLECTION);
-                // render(transformation, meshRenderer, camera);
-
-                m_waterRenderbuffers->bind(RenderbufferId::RENDERBUFFER_REFRACTION);
                 render(transformation, meshRenderer, camera);
             }
-        });
+        });   
 
-    renderWater({}, {}, camera);
+    updateFramebuffer();
 }
 
 MeshRenderSystem::MeshRenderSystem(Registry_T &registry)

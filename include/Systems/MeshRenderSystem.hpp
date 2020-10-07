@@ -36,10 +36,10 @@ class MeshRenderSystem : public System {
         void handleFramebufferSize(const FramebufferSizeEvent & e);
 
         void uploadToShader(const Shader *shader, const CameraComponent &camera) const;
-        void render(const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer, const CameraComponent &camera) const;
+        void render(const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer, const CameraComponent &camera) const;        
 
-        void _update(int dt) override;
-        void renderWater(const TransformationComponent &transform, const MeshRenderComponent &waterRenderer, const CameraComponent &camera) const;        
+        void _update(int dt) override;        
+        void updateFramebuffer() const;
 
       public:
         MeshRenderSystem(Registry_T &registry);

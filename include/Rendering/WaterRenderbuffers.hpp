@@ -4,20 +4,20 @@
 
 enum class RenderbufferId {
     RENDERBUFFER_DEFAULT,
-    RENDERBUFFER_REFRACTION,
-    RENDERBUFFER_REFLECTION
+    RENDERBUFFER_SCENE,
+    RENDERBUFFER_WATER
 };
 
 class WaterRenderbuffers {
   private:
-    GLuint m_refractionBuffer;
-    GLuint m_reflectionBuffer;
+    GLuint m_sceneBuffer;
+    GLuint m_waterBuffer;
 
-    GLuint m_refractionDepthBuffer;
-    GLuint m_reflectionDepthBuffer;
+    GLuint m_sceneDepthBuffer;
+    GLuint m_waterDepthBuffer;
 
-    GLuint m_refractionTexture;
-    GLuint m_reflectionTexture;
+    GLuint m_sceneTexture;
+    GLuint m_waterTexture;
 
     void destroy();
     void create(int width, int height);
@@ -28,7 +28,7 @@ class WaterRenderbuffers {
 
     void bind(const RenderbufferId &id) const;
 
-    void bindTextures(unsigned int offset = 0) const;
+    void bindTextures() const;
 
     void clear() const;
 

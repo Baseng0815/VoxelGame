@@ -6,4 +6,6 @@
 struct MeshRenderComponent {
     const Material *material;
     const Geometry *geometry;
+
+    bool water = false;
 };
