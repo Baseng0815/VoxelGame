@@ -1,4 +1,4 @@
-#include "../../include/Rendering/WaterRenderbuffers.hpp"
+#include "../../include/Rendering/WaterRenderBuffers.hpp"
 
 #include "../../include/Resources/Shader.hpp"
 
