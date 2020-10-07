@@ -1,8 +1,5 @@
 #include "../../include/Rendering/GBuffer.hpp"
 
-#ifdef WIN32
-#include <stdexcept>
-#endif
 #include <stdexcept>
 
 void GBuffer::create(int width, int height) {

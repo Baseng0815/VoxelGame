@@ -42,6 +42,10 @@ void ResourceManager::loadResources() {
     resources.emplace(SHADER_TEXT, ResourceHandle {new Shader("Shaders/textShader")});
     // render 3d color
     resources.emplace(SHADER_MVP_COLOR, ResourceHandle {new Shader("Shaders/mvpColorShader")});
+    // water
+    resources.emplace(SHADER_WATER, ResourceHandle{new Shader{"Shaders/waterShader"}});
+    // framebuffer
+    resources.emplace(SHADER_FRAMEBUFFER, ResourceHandle{new Shader{"Shaders/framebufferQuad"}});
 
     // materials
     Material *material = new Material {};
@@ -64,6 +68,13 @@ void ResourceManager::loadResources() {
     material = new Material {};
     material->color = Color::Green;
     resources.emplace(MATERIAL_GRASS, ResourceHandle {material});
+
+    material = new Material{};
+    material->diffuseMap = ResourceManager::getResource<Texture>(TEXTURE_ATLAS);
+    material->specularMap = ResourceManager::getResource<Texture>(TEXTURE_BLACK);
+    material->shininess = 32.f;
+    material->customShader = ResourceManager::getResource<Shader>(SHADER_WATER);
+    resources.emplace(MATERIAL_WATER, ResourceHandle{material});
 
     // fonts
     resources.emplace(FONT_KORURI, ResourceHandle {new Font("Fonts/Koruri-Regular.ttf")});

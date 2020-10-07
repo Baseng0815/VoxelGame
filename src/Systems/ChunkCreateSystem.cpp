@@ -162,10 +162,10 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block *
     try {
         geometryData.verticesCulled.reserve(1048576);
         geometryData.verticesNonCulled.reserve(1048576);
-        geometryData.verticesWater.reserve(1048576);
+        // geometryData.verticesWater.reserve(1048576);
         geometryData.indicesCulled.reserve(1048576);
         geometryData.indicesNonCulled.reserve(1048576);
-        geometryData.indicesWater.reserve(1048576);
+        // geometryData.indicesWater.reserve(1048576);
     }
     catch (std::length_error e) {
         std::cerr << "WARNING: chunk buffer preallocation failed: " << e.what() << std::endl;
@@ -187,26 +187,26 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block *
 
                 // water
                 if (block.type == BlockId::BLOCK_WATER) {
-                    if (y < Configuration::CHUNK_HEIGHT - 1 && blocks[x][y + 1][z].type == BlockId::BLOCK_AIR) {
-                        blockLock.unlock();
+                    // if (y < Configuration::CHUNK_HEIGHT - 1 && blocks[x][y + 1][z].type == BlockId::BLOCK_AIR) {
+                    //     blockLock.unlock();
 
-                        const BlockUVs &blockUVs = m_atlas.blockUVsArray[(size_t)BlockId::BLOCK_WATER];                        
+                    //     const BlockUVs &blockUVs = m_atlas.blockUVsArray[(size_t)BlockId::BLOCK_WATER];                        
 
-                        // add vertices
-                        for (size_t vi = 0; vi < 4; vi++) {
-                            const auto &ref = generationDataBlock[12 + vi];
-                            geometryData.verticesWater.emplace_back(Vertex{glm::vec3{ref[0], ref[1] * 0.9f, ref[2]} + blockPosition, glm::vec3{ref[3], ref[4], ref[5]}, glm::vec2{blockUVs[ref[6]][ref[7]]}});
-                        }                        
+                    //     // add vertices
+                    //     for (size_t vi = 0; vi < 4; vi++) {
+                    //         const auto &ref = generationDataBlock[12 + vi];
+                    //         geometryData.verticesWater.emplace_back(Vertex{glm::vec3{ref[0], ref[1] * 0.9f, ref[2]} + blockPosition, glm::vec3{ref[3], ref[4], ref[5]}, glm::vec2{blockUVs[ref[6]][ref[7]]}});
+                    //     }                        
 
-                        // add indices
-                        // 6 indices make up a whole face
-                        int faceCount = geometryData.indicesWater.size() / 6;
+                    //     // add indices
+                    //     // 6 indices make up a whole face
+                    //     int faceCount = geometryData.indicesWater.size() / 6;
 
-                        for (size_t j = 0; j < 6; j++) {
-                            constexpr int offsets[] = {0, 1, 2, 0, 3, 1};
-                            geometryData.indicesWater.emplace_back(faceCount * 4 + offsets[j]);
-                        }
-                    }
+                    //     for (size_t j = 0; j < 6; j++) {
+                    //         constexpr int offsets[] = {0, 1, 2, 0, 3, 1};
+                    //         geometryData.indicesWater.emplace_back(faceCount * 4 + offsets[j]);
+                    //     }
+                    // }
                 }
 
                 // solid blocks
