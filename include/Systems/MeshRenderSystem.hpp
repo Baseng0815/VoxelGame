@@ -3,7 +3,7 @@
 #include "../../include/Rendering/RenderQuad.hpp"
 #include "../../include/Rendering/Light.hpp"
 #include "../../include/Resources/Shader.hpp"
-#include "../../include/Rendering/WaterRenderBuffers.hpp"
+#include "../../include/Rendering/WaterRenderbuffers.hpp"
 
 class Shader;
 class Texture;

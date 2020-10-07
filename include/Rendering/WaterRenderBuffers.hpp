@@ -18,6 +18,8 @@ class WaterRenderbuffers {
 
     GLuint m_sceneTexture;
     GLuint m_waterTexture;
+    GLuint m_sceneDepthTexture;
+    GLuint m_waterDepthTexture;
 
     void destroy();
     void create(int width, int height);

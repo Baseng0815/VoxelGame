@@ -93,10 +93,16 @@ void MeshRenderSystem::render(const TransformationComponent &transformation, con
 }
 
 void MeshRenderSystem::updateFramebuffer() const {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);    
+    glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
 
     m_framebufferShader->bind();
+    m_framebufferShader->upload("sceneTexture", 0);
+    m_framebufferShader->upload("waterTexture", 1);
+    // m_framebufferShader->upload("sceneDepth", 2);
+    // m_framebufferShader->upload("waterDepth", 3);
+
     m_waterRenderbuffers->bindTextures();
     m_screenRenderquad.render();    
 }

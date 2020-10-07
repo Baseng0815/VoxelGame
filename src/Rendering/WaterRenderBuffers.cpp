@@ -14,8 +14,7 @@ WaterRenderbuffers::~WaterRenderbuffers() {
 
 void WaterRenderbuffers::create(int width, int height) {
     glGenFramebuffers(1, &m_sceneBuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, m_sceneBuffer);
-    //glDrawBuffer(GL_COLOR_ATTACHMENT0);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_sceneBuffer);    
 
     glGenTextures(1, &m_sceneTexture);
     glBindTexture(GL_TEXTURE_2D, m_sceneTexture);
@@ -30,6 +29,16 @@ void WaterRenderbuffers::create(int width, int height) {
     glGenRenderbuffers(1, &m_sceneDepthBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, m_sceneDepthBuffer);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+
+    // glGenTextures(1, &m_sceneDepthTexture);
+    // glBindTexture(GL_TEXTURE_2D, m_sceneDepthTexture);
+
+    // glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT24, GL_UNSIGNED_BYTE, nullptr);
+
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    // glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_sceneDepthTexture, 0);
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_sceneDepthBuffer);
@@ -39,8 +48,7 @@ void WaterRenderbuffers::create(int width, int height) {
     }
 
     glGenFramebuffers(1, &m_waterBuffer);
-    glBindFramebuffer(GL_FRAMEBUFFER, m_waterBuffer);
-    //glDrawBuffer(GL_COLOR_ATTACHMENT0);
+    glBindFramebuffer(GL_FRAMEBUFFER, m_waterBuffer);    
 
     glGenTextures(1, &m_waterTexture);
     glBindTexture(GL_TEXTURE_2D, m_waterTexture);
@@ -55,6 +63,16 @@ void WaterRenderbuffers::create(int width, int height) {
     glGenRenderbuffers(1, &m_waterDepthBuffer);
     glBindRenderbuffer(GL_RENDERBUFFER, m_waterDepthBuffer);
     glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
+
+    // glGenTextures(1, &m_waterDepthTexture);
+    // glBindTexture(GL_TEXTURE_2D, m_waterDepthTexture);
+
+    // glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT24, GL_UNSIGNED_BYTE, nullptr);
+
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    // glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_waterDepthTexture, 0);    
     glBindRenderbuffer(GL_RENDERBUFFER, 0);
 
     glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_waterDepthBuffer);
@@ -89,9 +107,14 @@ void WaterRenderbuffers::bindTextures() const {
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_sceneTexture);
 
-    // TODO find out why this is not working
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, m_waterTexture);    
+    glBindTexture(GL_TEXTURE_2D, m_waterTexture);
+
+    // glActiveTexture(GL_TEXTURE2);
+    // glBindTexture(GL_TEXTURE_2D, m_sceneDepthTexture);
+
+    // glActiveTexture(GL_TEXTURE3);
+    // glBindTexture(GL_TEXTURE_2D, m_waterDepthTexture);
 }
 
 void WaterRenderbuffers::clear() const {

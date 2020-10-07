@@ -186,7 +186,7 @@ GeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, Block *
                 }
 
                 // water
-                if (block.type == BlockId::BLOCK_WATER || block.type == BlockId::BLOCK_LAVA) {
+                if (block.type == BlockId::BLOCK_WATER) {
                     if (y < Configuration::CHUNK_HEIGHT - 1 && blocks[x][y + 1][z].type == BlockId::BLOCK_AIR) {
                         blockLock.unlock();
 
