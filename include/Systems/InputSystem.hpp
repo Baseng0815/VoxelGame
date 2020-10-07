@@ -5,10 +5,9 @@
 #include "System.hpp"
 #include "../Events/CallbackHandle.hpp"
 
-class Camera;
-class CameraComponent;
-class TransformationComponent;
-class VelocityComponent;
+struct CameraComponent;
+struct TransformationComponent;
+struct VelocityComponent;
 
 struct KeyEvent;
 struct MouseButtonEvent;
@@ -34,9 +33,7 @@ class InputSystem : public System {
         CallbackHandle<const FramebufferSizeEvent&> m_framebufferHandle;
         void handleFramebufferSizeEvent(const FramebufferSizeEvent&);
 
-        void updateVectors(CameraComponent& camera);
-        void updateViewMatrix(CameraComponent& camera, const TransformationComponent& transform);
-        void updateProjectionMatrix(CameraComponent& camera);
+        void updateVectors(CameraComponent& camera);        
 
         void _update(int dt) override;
 

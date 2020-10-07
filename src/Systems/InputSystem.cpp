@@ -12,8 +12,6 @@
 #include "../../include/Components/VelocityComponent.hpp"
 #include "../../include/Components/InventoryComponent.hpp"
 
-#define GLM_ENABLE_EXPERIMENTAL
-#include <glm/gtc/matrix_transform.hpp>
 
 void InputSystem::handleKeyPressEvent(const KeyEvent &e) {
     entt::entity player = m_registry.view<PlayerComponent>().front();
@@ -63,8 +61,7 @@ void InputSystem::handleKeyPressEvent(const KeyEvent &e) {
 
     float xAxisInput = (playerInputState & 1) - ((playerInputState & 2) >> 1);
     float yAxisInput = ((playerInputState & 4) >> 2) - ((playerInputState & 8) >> 3);
-    float zAxisInput = ((playerInputState & 16) >> 4) - ((playerInputState & 32) >> 5);
-    // RigidBodyComponent &rigidBody = m_registry.get<RigidBodyComponent>(player);
+    float zAxisInput = ((playerInputState & 16) >> 4) - ((playerInputState & 32) >> 5);    
 
     playerComponent.xAxisInput = -xAxisInput;
     playerComponent.yAxisInput = -yAxisInput;
@@ -121,7 +118,7 @@ void InputSystem::handleScrollEvent(const ScrollEvent &e) {
                 camera.fov = 1;
             }
 
-            updateProjectionMatrix(camera);
+            camera.updateProjectionMatrix();
         });
 }
 
@@ -131,7 +128,7 @@ void InputSystem::handleFramebufferSizeEvent(const FramebufferSizeEvent &e) {
 
     cameraComponent.width = e.width;
     cameraComponent.height = e.height;
-    updateProjectionMatrix(cameraComponent);
+    cameraComponent.updateProjectionMatrix();
 }
 
 void InputSystem::updateVectors(CameraComponent &camera) {
@@ -145,15 +142,6 @@ void InputSystem::updateVectors(CameraComponent &camera) {
     camera.viewMatrixOutdated = true;
 }
 
-void InputSystem::updateViewMatrix(CameraComponent &camera, const TransformationComponent &transform) {
-    camera.viewMatrix = glm::lookAt(transform.getPosition() + camera.playerOffset, transform.getPosition() + camera.playerOffset + camera.front, glm::vec3(0, 1, 0));
-}
-
-void InputSystem::updateProjectionMatrix(CameraComponent &camera) {
-    // clip far = sqrt(3) * SKYBOX_SIZE
-    camera.perspectiveProjection = glm::perspective(glm::radians(camera.fov), camera.width / (float)camera.height, 0.1f, 7000.f);
-}
-
 void InputSystem::_update(int dt) {
     entt::entity player = m_registry.view<PlayerComponent>().front();
     CameraComponent &cameraComponent = m_registry.get<CameraComponent>(player);
@@ -161,8 +149,7 @@ void InputSystem::_update(int dt) {
     if (cameraComponent.viewMatrixOutdated) {
         const TransformationComponent &transformComponent = m_registry.get<TransformationComponent>(player);
 
-        updateViewMatrix(cameraComponent, transformComponent);
-        cameraComponent.viewMatrixOutdated = false;
+        cameraComponent.updateViewMatrix(transformComponent);
     }
 }
 
@@ -181,7 +168,7 @@ InputSystem::InputSystem(Registry_T &registry)
 
     entt::entity player = m_registry.view<PlayerComponent>().front();
     CameraComponent &cameraComponent = m_registry.get<CameraComponent>(player);
-    updateProjectionMatrix(cameraComponent);
+    cameraComponent.updateProjectionMatrix();
 
     m_keyPressHandle = EventDispatcher::onKeyPress.subscribe([this](const KeyEvent &e) {
         handleKeyPressEvent(e);
