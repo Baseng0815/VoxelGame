@@ -100,8 +100,8 @@ void MeshRenderSystem::updateFramebuffer() const {
     m_framebufferShader->bind();
     m_framebufferShader->upload("sceneTexture", 0);
     m_framebufferShader->upload("waterTexture", 1);
-    // m_framebufferShader->upload("sceneDepth", 2);
-    // m_framebufferShader->upload("waterDepth", 3);
+    m_framebufferShader->upload("sceneDepthTexture", 2);
+    m_framebufferShader->upload("waterDepthTexture", 3);
 
     m_waterRenderbuffers->bindTextures();
     m_screenRenderquad.render();    

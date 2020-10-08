@@ -6,8 +6,8 @@ out vec4 color;
 uniform sampler2D sceneTexture;
 uniform sampler2D waterTexture;
 
-uniform sampler2D sceneDepth;
-uniform sampler2D waterDepth;
+uniform sampler2D sceneDepthTexture;
+uniform sampler2D waterDepthTexture;
 
 void main() {
     vec4 sceneColor = texture2D(sceneTexture, pass_uvCoords);
@@ -15,11 +15,16 @@ void main() {
 
     float alpha = waterColor.w;
         
-    // float sceneDepthTexel = texture2D(sceneDepth, pass_uvCoords).z;
-    // float waterDepthTexel = texture2D(waterDepth, pass_uvCoords).z;
+    vec4 sceneDepth = texture2D(sceneDepthTexture, pass_uvCoords);
+    vec4 waterDepth = texture2D(waterDepthTexture, pass_uvCoords);
 
-    color = (1 - alpha) * sceneColor + alpha * waterColor;                
-    if(sceneColor.w > 0.1) {    
-        color = vec4(color.xyz, 1.0);
+    if (sceneDepth.z > waterDepth.z) {
+        color = (1 - alpha) * sceneColor + alpha * waterColor;                
+        if(sceneColor.w > 0.1) {    
+            color = vec4(color.xyz, 1.0);
+        }    
     }
+    else {
+        color = sceneColor;
+    }    
 }
