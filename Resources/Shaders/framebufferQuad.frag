@@ -18,5 +18,8 @@ void main() {
     // float sceneDepthTexel = texture2D(sceneDepth, pass_uvCoords).z;
     // float waterDepthTexel = texture2D(waterDepth, pass_uvCoords).z;
 
-    color = (1 - alpha) * sceneColor + alpha * waterColor;    
+    color = (1 - alpha) * sceneColor + alpha * waterColor;                
+    if(sceneColor.w > 0.1) {    
+        color = vec4(color.xyz, 1.0);
+    }
 }
