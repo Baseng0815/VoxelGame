@@ -20,11 +20,12 @@ void main() {
 
     if (sceneDepth.z > waterDepth.z) {
         color = (1 - alpha) * sceneColor + alpha * waterColor;                
-        if(sceneColor.w > 0.1) {    
-            color = vec4(color.xyz, 1.0);
-        }    
     }
     else {
         color = sceneColor;
+    }
+
+    if(sceneColor.w > 0.1) {    
+        color = vec4(color.xyz, 1.0);
     }    
 }
