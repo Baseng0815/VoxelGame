@@ -49,7 +49,7 @@ void ChunkCreateSystem::handlePlayerMoved(const EntityMovedEvent &e) {
                 m_registry.emplace<MultiMeshRenderComponent>(entity, std::vector<MeshRenderComponent>{
                                                                          {ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS_CULLED), chunk.geometryCulled},
                                                                          {ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS_NON_CULLED), chunk.geometryNonCulled},
-                                                                         {ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS_CULLED), chunk.geometryWater, true}});
+                                                                         {ResourceManager::getResource<Material>(MATERIAL_WATER), chunk.geometryWater, true}});
 
                 m_loadedChunks.push_back(pos);
             }

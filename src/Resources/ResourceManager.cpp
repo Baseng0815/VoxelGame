@@ -36,6 +36,8 @@ void ResourceManager::loadResources() {
     resources.emplace(SHADER_TEXTURE_QUAD, ResourceHandle {new Shader("Shaders/texturedQuadShader")});
     // render 2d quads using color
     resources.emplace(SHADER_COLOR_QUAD, ResourceHandle {new Shader("Shaders/coloredQuadShader")});
+    // render water
+    resources.emplace(SHADER_WATER, ResourceHandle{new Shader("Shaders/waterShader")});
     // render 3d skybox
     resources.emplace(SHADER_SKYBOX, ResourceHandle {new Shader("Shaders/skyboxShader")});
     // render 2d text
@@ -58,6 +60,13 @@ void ResourceManager::loadResources() {
     material->shininess = 32.f;
     material->useCulling = false;
     resources.emplace(MATERIAL_CHUNK_BLOCKS_NON_CULLED, ResourceHandle {material});
+
+    material = new Material{};
+    material->diffuseMap = ResourceManager::getResource<Texture>(TEXTURE_ATLAS);
+    material->specularMap = ResourceManager::getResource<Texture>(TEXTURE_BLACK);
+    material->shininess = 32.f;    
+    material->customShader = ResourceManager::getResource<Shader>(SHADER_WATER);
+    resources.emplace(MATERIAL_WATER, ResourceHandle{material});
 
     material = new Material {};
     material->useCulling = false;
@@ -94,6 +103,10 @@ void ResourceManager::loadResources() {
     // mvp color shader
     shader = getResource<Shader>(SHADER_MVP_COLOR);
     shader->setAttributes({"position"});
+
+    // framebuffer shader
+    shader = getResource<Shader>(SHADER_FRAMEBUFFER);
+    shader->setAttributes({"sceneTexture", "waterTexture", "sceneDepthTexture", "waterDepthTexture"});
 
     std::cout << "loaded " << resources.size() << " resources" << std::endl;
 }

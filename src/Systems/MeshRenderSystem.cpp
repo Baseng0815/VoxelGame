@@ -17,9 +17,9 @@ void MeshRenderSystem::handleFramebufferSize(const FramebufferSizeEvent &e) {
     m_waterRenderbuffers->resize(e.width, e.height);
 }
 
-void MeshRenderSystem::uploadToShader(const Shader *shader, const CameraComponent &camera) const {
+void MeshRenderSystem::uploadToShader(const Shader *shader, const CameraComponent &camera, const TransformationComponent& playerTransform) const {
     shader->upload("viewMatrix", camera.viewMatrix);
-    shader->upload("viewPos", glm::vec3{1.f, 0.f, 0.f});
+    shader->upload("viewPos", camera.playerOffset + playerTransform.getPosition());
     shader->upload("projectionMatrix", camera.perspectiveProjection);
 
     for (int i = 0; i < MAX_LIGHTS; i++) {
@@ -30,7 +30,7 @@ void MeshRenderSystem::uploadToShader(const Shader *shader, const CameraComponen
     shader->setUniformState(true);
 }
 
-void MeshRenderSystem::render(const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer, const CameraComponent &camera) const {
+void MeshRenderSystem::render(const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer, const CameraComponent &camera, const TransformationComponent& playerTransform) const {
     if (meshRenderer.geometry->getDrawCount() > 0) {
         const Shader *shader = meshRenderer.material->customShader;
         // no custom shader is used
@@ -57,7 +57,7 @@ void MeshRenderSystem::render(const TransformationComponent &transformation, con
         else {
             shader->bind();
             if (!shader->uniformsSet()) {
-                uploadToShader(shader, camera);
+                uploadToShader(shader, camera, playerTransform);
                 shader->setUniformState(true);
             }
             shader->upload("modelMatrix", transformation.getModelMatrix());
@@ -113,27 +113,28 @@ void MeshRenderSystem::_update(int dt) {
     // upload per-frame values for both shaders
     // color shader
     m_meshRenderShaderColor->bind();
-    const CameraComponent &camera = m_registry.view<CameraComponent>().raw()[0];    
+    const CameraComponent &camera = m_registry.view<CameraComponent>().raw()[0];
+    const TransformationComponent &playerTransform = m_registry.get<TransformationComponent>(m_registry.view<PlayerComponent>().front());
 
     // texture shader
     m_meshRenderShaderTexture->bind();
-    uploadToShader(m_meshRenderShaderTexture, camera);
+    uploadToShader(m_meshRenderShaderTexture, camera, playerTransform);
 
     // color shader
     m_meshRenderShaderColor->bind();
-    uploadToShader(m_meshRenderShaderColor, camera);
+    uploadToShader(m_meshRenderShaderColor, camera, playerTransform);
     
     // render single mesh components
     m_registry.view<TransformationComponent, MeshRenderComponent>().each(
         [&](const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer) {
-            render(transformation, meshRenderer, camera);
+            render(transformation, meshRenderer, camera, playerTransform);
         });
 
     // render multi mesh components
     m_registry.view<TransformationComponent, MultiMeshRenderComponent>().each(
         [&](const TransformationComponent &transformation, const MultiMeshRenderComponent &multiMeshRenderer) {
             for (const auto &meshRenderer : multiMeshRenderer.meshRenderComponents) {
-                render(transformation, meshRenderer, camera);
+                render(transformation, meshRenderer, camera, playerTransform);
             }
         });   
 

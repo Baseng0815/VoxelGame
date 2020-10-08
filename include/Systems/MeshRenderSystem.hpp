@@ -35,8 +35,8 @@ class MeshRenderSystem : public System {
         CallbackHandle<const FramebufferSizeEvent &> m_framebufferCallbackHandle;
         void handleFramebufferSize(const FramebufferSizeEvent & e);
 
-        void uploadToShader(const Shader *shader, const CameraComponent &camera) const;
-        void render(const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer, const CameraComponent &camera) const;        
+        void uploadToShader(const Shader *shader, const CameraComponent &camera, const TransformationComponent& playerTransform) const;
+        void render(const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer, const CameraComponent &camera, const TransformationComponent &playerTransform) const;
 
         void _update(int dt) override;        
         void updateFramebuffer() const;
