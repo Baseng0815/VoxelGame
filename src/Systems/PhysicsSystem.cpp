@@ -27,8 +27,7 @@ void PhysicsSystem::_update(int millis) {
         });
 }
 
-void PhysicsSystem::applyVelocities(float dt, const entt::entity &entity, TransformationComponent &transform, const VelocityComponent &velocity) const {
-    bool wasMoved = false;
+void PhysicsSystem::applyVelocities(float dt, const entt::entity &entity, TransformationComponent &transform, const VelocityComponent &velocity) const {    
 
     if (velocity.velocity != glm::vec3{0.f}) {
         glm::vec3 oldPos = transform.getPosition();
@@ -41,7 +40,7 @@ void PhysicsSystem::applyVelocities(float dt, const entt::entity &entity, Transf
 
     if (velocity.angularVelocity != glm::vec3{0.f}) {
         float phi = dt * glm::length(velocity.angularVelocity);
-        glm::quat pRot = glm::quat(Utility::radToDeg(phi), glm::normalize(velocity.angularVelocity));
+        glm::quat pRot = glm::quat(glm::degrees(phi), glm::normalize(velocity.angularVelocity));
 
         transform.rotate(pRot);
     }

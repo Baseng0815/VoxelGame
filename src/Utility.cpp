@@ -1,4 +1,4 @@
-//#include "../include/Utility.hpp"
+#include "../include/Utility.hpp"
 
 #include "../include/Components/WorldComponent.hpp"
 #include "../include/Components/InventoryComponent.hpp"
@@ -51,54 +51,6 @@ namespace Utility {
         int cz = worldCoords.z - std::floor(worldCoords.z / Configuration::CHUNK_SIZE) * Configuration::CHUNK_SIZE;
 
         return glm::vec3{cx, worldCoords.y, cz};
-    }
-
-    glm::vec3 GetBlockCoords(const glm::vec3& coords) {
-        glm::vec3 block = glm::vec3();
-
-        for (int i = 0; i < 3; i++) {
-            float a = coords[i] - floor(coords[i]);
-
-            block[i] = a <= 0.5 ? floor(coords[i]) : ceil(coords[i]);
-        }
-
-        return block;
-    }
-
-    glm::vec3 getBlockNormal(glm::vec3 moveDir) {
-        float maxAbs = 0;
-        glm::vec3 normal{};
-
-        for (int i = 0; i < 3; i++) {
-            float component = moveDir[i];
-
-            if (std::fabs(component) > maxAbs) {
-                maxAbs = std::fabs(component);
-                normal = glm::vec3{};
-
-                normal[i] = component < 0 ? 1 : -1;
-            }
-        }
-
-        return normal;
-    }
-
-    glm::vec3 getFacePosition(const glm::vec3& blockPos, const glm::vec3& faceNormal) {
-        glm::vec3 faceOffset = glm::vec3{0.5f * faceNormal.x * faceNormal.x + 0.5f * faceNormal.x,
-            0.5f * faceNormal.y * faceNormal.y + 0.5f * faceNormal.y,
-            0.5f * faceNormal.z * faceNormal.z + 0.5f * faceNormal.z};
-
-        return blockPos + faceOffset;
-    }
-
-    template <typename T> void swap(std::vector<T>& vec, int pos1, int pos2) {
-        T tmp = vec[pos2];
-        vec[pos2] = vec[pos1];
-        vec[pos1] = tmp;
-    }
-
-    float radToDeg(float rad) {
-        return rad * (180 / PI);
     }    
 
     int getInventorySlot(const InventoryComponent& inventory, BlockId item) {
