@@ -23,6 +23,6 @@ void CameraComponent::updateViewMatrix(const TransformationComponent &playerTran
     viewMatrixOutdated = false;
 }
 
-void CameraComponent::updateProjectionMatrix() {    
+void CameraComponent::updateProjectionMatrix() {
     perspectiveProjection = glm::perspective(glm::radians(fov), width / (float)height, 0.1f, 7000.f);    
 }

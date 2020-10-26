@@ -1,14 +1,14 @@
 #pragma once
 
-#include <glm/glm.hpp>
+#include "../Color.hpp"
 
 // TODO use color
 struct PointLight {
-    glm::vec3 position = glm::vec3(0.0f);
+    glm::vec3 position {0.0f};
 
-    glm::vec3 ambient = glm::vec3(0.0f);
-    glm::vec3 diffuse = glm::vec3(0.0f);
-    glm::vec3 specular = glm::vec3(0.0f);
+    Color ambient;
+    Color diffuse;
+    Color specular;
 
     // attenuation
     // TODO implement this in fragment shader
@@ -16,9 +16,9 @@ struct PointLight {
 };
 
 struct DirectionalLight {
-    glm::vec3 direction = glm::vec3(0, -1, 0);
+    glm::vec3 direction {0, -1, 0};
 
-    glm::vec3 ambient = glm::vec3(0.0f);
-    glm::vec3 diffuse = glm::vec3(0.0f);
-    glm::vec3 specular = glm::vec3(0.0f);
+    Color ambient;
+    Color diffuse;
+    Color specular;
 };

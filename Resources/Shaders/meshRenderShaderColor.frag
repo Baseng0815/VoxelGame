@@ -13,9 +13,9 @@ struct Material {
 struct PointLight {
     vec3 position;
 
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
+    vec4 ambient;
+    vec4 diffuse;
+    vec4 specular;
 
     float constant, linear, quadratic;
 };
@@ -23,9 +23,9 @@ struct PointLight {
 struct DirectionalLight {
     vec3 direction;
 
-    vec3 ambient;
-    vec3 diffuse;
-    vec3 specular;
+    vec4 ambient;
+    vec4 diffuse;
+    vec4 specular;
 };
 
 #define MAX_LIGHTS 1
@@ -68,9 +68,9 @@ vec4 calcDirLight(DirectionalLight light, vec3 normal, vec3 viewDir)
     float spec = pow(max(dot(viewDir, reflectDir), 0.0f), material.shininess);
 
     // combine
-    vec4 ambient = vec4(light.ambient, 1.f) * material.color;
-    vec4 diffuse = vec4(light.diffuse, 1.f) * diff * material.color;
-    vec4 specular = vec4(light.specular, 1.f) * spec * material.color;
+    vec4 ambient = light.ambient * material.color;
+    vec4 diffuse = light.diffuse * diff * material.color;
+    vec4 specular = light.specular * spec * material.color;
 
     return ambient + diffuse + specular;
 }
@@ -92,9 +92,9 @@ vec4 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 fragPos)
     float attenuation = 1.0f / (light.constant + light.linear * dist + light.quadratic * dist * dist);
 
     // combine
-    vec4 ambient = vec4(light.ambient, 1.f) * material.color;
-    vec4 diffuse = vec4(light.diffuse, 1.f) * diff * material.color;
-    vec4 specular = vec4(light.specular, 1.f) * spec * material.color;
+    vec4 ambient = light.ambient * material.color;
+    vec4 diffuse = light.diffuse * diff * material.color;
+    vec4 specular = light.specular * spec * material.color;
 
     ambient *= attenuation;
     diffuse *= attenuation;

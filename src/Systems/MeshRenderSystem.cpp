@@ -79,11 +79,12 @@ void MeshRenderSystem::render(const TransformationComponent &transformation, con
             glDisable(GL_CULL_FACE);
         }
 
-        if(meshRenderer.water) {
-            m_waterRenderbuffers->bind(RenderbufferId::RENDERBUFFER_WATER);            
-        }
-        else {
-            m_waterRenderbuffers->bind(RenderbufferId::RENDERBUFFER_SCENE);            
+        if (meshRenderer.water) {
+            m_waterRenderbuffers->bind(RenderbufferId::RENDERBUFFER_WATER);
+        } else {
+            // TODO find fix
+            // m_waterRenderbuffers->bind(RenderbufferId::RENDERBUFFER_SCENE);
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
         // final draw call
@@ -93,7 +94,7 @@ void MeshRenderSystem::render(const TransformationComponent &transformation, con
 }
 
 void MeshRenderSystem::updateFramebuffer() const {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);    
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
 
@@ -104,7 +105,7 @@ void MeshRenderSystem::updateFramebuffer() const {
     m_framebufferShader->upload("waterDepthTexture", 3);
 
     m_waterRenderbuffers->bindTextures();
-    m_screenRenderquad.render();    
+    m_screenRenderquad.render();
 }
 
 void MeshRenderSystem::_update(int dt) {
@@ -123,7 +124,7 @@ void MeshRenderSystem::_update(int dt) {
     // color shader
     m_meshRenderShaderColor->bind();
     uploadToShader(m_meshRenderShaderColor, camera, playerTransform);
-    
+
     // render single mesh components
     m_registry.view<TransformationComponent, MeshRenderComponent>().each(
         [&](const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer) {
@@ -136,22 +137,24 @@ void MeshRenderSystem::_update(int dt) {
             for (const auto &meshRenderer : multiMeshRenderer.meshRenderComponents) {
                 render(transformation, meshRenderer, camera, playerTransform);
             }
-        });   
+        });
 
     updateFramebuffer();
 }
 
 MeshRenderSystem::MeshRenderSystem(Registry_T &registry)
     : System{registry, 0},
-      m_meshRenderShaderColor{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_COLOR)},
-      m_meshRenderShaderTexture{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_TEXTURE)},
-      m_waterRenderbuffers{new WaterRenderbuffers{800, 600}},
-      m_screenRenderquad{Rectangle{-1, -1, 2, 2}},
-      m_framebufferShader{ResourceManager::getResource<Shader>(SHADER_FRAMEBUFFER)} {
+    m_meshRenderShaderColor{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_COLOR)},
+    m_meshRenderShaderTexture{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_TEXTURE)},
+    m_waterRenderbuffers{new WaterRenderbuffers{800, 600}},
+    m_screenRenderquad{Rectangle{-1, -1, 2, 2}},
+    m_framebufferShader{ResourceManager::getResource<Shader>(SHADER_FRAMEBUFFER)}
+{
+
     m_sun.direction = glm::vec3{-0.3, -0.8, -0.5};
-    m_sun.ambient = glm::vec3{0.2f};
-    m_sun.diffuse = glm::vec3{0.5f};
-    m_sun.specular = glm::vec3{0.2f};
+    m_sun.ambient = Color {70};
+    m_sun.diffuse = Color {200};
+    m_sun.specular = Color {30};
 
     m_framebufferCallbackHandle = EventDispatcher::onFramebufferSize.subscribe(
         [&](const FramebufferSizeEvent &e) {

@@ -3,7 +3,7 @@
 #include "../../include/Rendering/RenderQuad.hpp"
 #include "../../include/Rendering/Light.hpp"
 #include "../../include/Resources/Shader.hpp"
-#include "../../include/Rendering/WaterRenderbuffers.hpp"
+#include "../../include/Rendering/WaterRenderBuffers.hpp"
 
 class Shader;
 class Texture;
@@ -28,7 +28,7 @@ class MeshRenderSystem : public System {
 
         PointLight m_pointLights[MAX_LIGHTS];
         DirectionalLight m_sun;
-        
+
         WaterRenderbuffers *m_waterRenderbuffers;
         RenderQuad m_screenRenderquad;
 
@@ -38,9 +38,9 @@ class MeshRenderSystem : public System {
         void uploadToShader(const Shader *shader, const CameraComponent &camera, const TransformationComponent& playerTransform) const;
         void render(const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer, const CameraComponent &camera, const TransformationComponent &playerTransform) const;
 
-        void _update(int dt) override;        
+        void _update(int dt) override;
         void updateFramebuffer() const;
 
-      public:
+    public:
         MeshRenderSystem(Registry_T &registry);
 };

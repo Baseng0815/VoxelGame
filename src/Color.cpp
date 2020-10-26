@@ -90,5 +90,9 @@ Color::White = {255, 255, 255},
 Color::Yellow = {255, 255, 0};
 
 Color::Color(int r, int g, int b, int a)
-    : r{r}, g{g}, b{b}, a{a} {
-}
+    : r {r}, g {g}, b {b}, a {a}
+{ }
+
+Color::Color(int grayscale)
+    : r {grayscale}, g {grayscale}, b {grayscale}, a {255}
+{ }
