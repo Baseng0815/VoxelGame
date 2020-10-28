@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include <glm/glm.hpp>
+#include <glm/gtx/hash.hpp>
 #include <entt/entt.hpp>
 
 #include "../GameData/Block.hpp"
@@ -101,5 +102,5 @@ struct BlockCollisionEvent {
 struct StructureCreatedEvent {
     Application* app;
 
-    std::unordered_map<glm::vec2, BlockCollection, Utility::HashFunctionVec2> data;
+    std::unordered_map<glm::vec2, BlockCollection, std::hash<glm::vec2>> data;
 };

@@ -6,11 +6,7 @@
 
 #include <iostream>
 
-namespace Utility {
-    long HashFunctionVec2::operator()(const glm::vec2& vec) const {
-        return std::hash<float>{}(vec.x) ^ (std::hash<float>{}(vec.y) << 1);
-    }
-
+namespace Utility {    
     bool InChunk(const glm::vec3& pos) {
         return pos.x >= 0 && pos.x < Configuration::CHUNK_SIZE && pos.y >= 0 && pos.y < Configuration::CHUNK_HEIGHT &&
             pos.z >= 0 && pos.z < Configuration::CHUNK_SIZE;

@@ -2,13 +2,14 @@
 
 #include <entt/entt.hpp>
 #include <glm/glm.hpp>
+#include <glm/gtx/hash.hpp>
 #include <unordered_map>
 
 struct Block;
 
 class World {
     private:
-        static std::unordered_map<glm::vec2, entt::entity, Utility::HashFunctionVec2> chunksLookup;
+        static std::unordered_map<glm::vec2, entt::entity, std::hash<glm::vec2>> chunksLookup;
 
     public:
         static entt::entity getChunk(const glm::vec2 &chunk);
