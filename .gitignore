@@ -56,3 +56,4 @@ out/*
 .vscode/*
 vc140.pdb
 copyDlls.cmd
+copyFiles.ps1
