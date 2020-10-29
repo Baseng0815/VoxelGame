@@ -8,8 +8,8 @@
 
 void StructureGenerator::generateStructure(const glm::vec2 &chunk, glm::vec3 position, const BlockCollection& structure,
                                            Block*** blocks) const {
-    std::unordered_map<glm::vec2, BlockCollection, Utility::HashFunctionVec2> chunkOverflow =
-        std::unordered_map<glm::vec2, BlockCollection, Utility::HashFunctionVec2>{};
+    std::unordered_map<glm::vec2, BlockCollection, std::hash<glm::vec2>> chunkOverflow =
+        std::unordered_map<glm::vec2, BlockCollection, std::hash<glm::vec2>>{};
 
     for (const auto &[localPos, blockType] : structure) {
         glm::vec3 pos = localPos + position;

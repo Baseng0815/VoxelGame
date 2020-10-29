@@ -5,5 +5,5 @@
 struct Block {
     BlockId type;
 
-    bool isSolid();
+    bool isSolid();    
 };

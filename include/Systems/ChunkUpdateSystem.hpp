@@ -11,5 +11,5 @@ class ChunkUpdateSystem : public System {
     void _update(int dt) override;
 
   public:
-    ChunkUpdateSystem(Registry_T registry);
+    ChunkUpdateSystem(Registry_T& registry);
 };

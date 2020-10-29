@@ -27,13 +27,11 @@ namespace Utility {
     glm::vec3 GetWorldCoords(const glm::vec2& chunk, const glm::vec3& chunkCoords);
     glm::vec3 GetChunkCoords(const glm::vec3& worldPos);
     glm::vec3 GetBlockCoords(const glm::vec3& coords);
-
-    glm::vec3 getFacePosition(const glm::vec3& blockPos, const glm::vec3& faceNormal);
+    
+    std::vector<glm::vec3> getNeighborBlocks(const glm::vec3& blockPos, bool moore = false);
 
     template <typename T>
-    void swap(std::vector<T>& vec, int pos1, int pos2);
-
-    float radToDeg(float rad);
+    void swap(std::vector<T>& vec, int pos1, int pos2);    
 
     int getInventorySlot(const InventoryComponent& inventory, BlockId item);
     } // namespace Utility
