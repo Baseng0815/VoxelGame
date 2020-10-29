@@ -18,7 +18,6 @@
 #include "../include/Components/RigidBodyComponent.hpp"
 #include "../include/Components/TransformationComponent.hpp"
 #include "../include/Components/VelocityComponent.hpp"
-#include "../include/Components/WorldComponent.hpp"
 
 #include "../include/Application.hpp"
 #include "../include/Events/EventDispatcher.hpp"
@@ -78,7 +77,7 @@ IngameLayer::IngameLayer(Application *application)
     m_systems.emplace_back(new SkyboxSystem{m_registry});
     m_systems.emplace_back(new CollisionSystem{m_registry});
     m_systems.emplace_back(new ItemSystem{m_registry, m_atlas});
-    m_systems.emplace_back(new ChunkUpdateSystem{m_registry});
+    //m_systems.emplace_back(new ChunkUpdateSystem{m_registry});
 
     // rendering
     m_systems.emplace_back(new MeshRenderSystem{m_registry});

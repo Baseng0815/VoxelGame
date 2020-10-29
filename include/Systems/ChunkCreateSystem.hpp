@@ -12,6 +12,7 @@
 
 #include <atomic>
 #include <entt/entt.hpp>
+#include <glm/gtx/hash.hpp>
 #include <future>
 #include <map>
 #include <shared_mutex>
@@ -24,13 +25,14 @@ struct Vertex;
 struct ChunkComponent;
 struct TextureAtlas;
 
+
 struct GenerationData {
     entt::entity entity;
     Block ***blocks;
     BiomeId **biomes;
 };
 
-struct GeometryData {
+struct ChunkGeometryData {
     entt::entity entity;
     std::vector<Vertex> verticesCulled;
     std::vector<Vertex> verticesNonCulled;
@@ -43,15 +45,14 @@ struct GeometryData {
 class ChunkCreateSystem : public System {
     private:
         std::vector<std::future<GenerationData>> m_generationFutures;
-        std::vector<std::future<GeometryData>> m_geometryFutures;
+        std::vector<std::future<ChunkGeometryData>> m_geometryFutures;
 
         // some static data needed
-        static const std::array<std::array<float, 8>, 24> generationDataBlock;
-        static const std::array<std::array<float, 8>, 8> generationDataPlane;
+        
 
         WorldGenerator m_worldGenerator;
         StructureGenerator m_structureGenerator;
-        std::unordered_map<glm::vec2, BlockCollection, Utility::HashFunctionVec2> m_structureQueue;
+        std::unordered_map<glm::vec2, BlockCollection, std::hash<glm::vec2>> m_structureQueue;
         const TextureAtlas &m_atlas;
 
         int m_constructionCount = 0;
@@ -65,7 +66,7 @@ class ChunkCreateSystem : public System {
 
         GenerationData updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ);
         void updateChunkStructures(Block ***chunkBlocks, BlockCollection structureBlocks) const;
-        GeometryData updateChunkVertices(entt::entity entity, Block ***blocks, std::shared_mutex *blockMutex);
+        ChunkGeometryData updateChunkVertices(entt::entity entity, Block ***blocks, std::shared_mutex *blockMutex);
         void updateChunkBuffers(Geometry *geometryComponent, const std::vector<unsigned int> &indices, const std::vector<Vertex> &vertices);
 
         void _update(int dt) override;
