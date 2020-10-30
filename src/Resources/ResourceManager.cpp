@@ -64,8 +64,8 @@ void ResourceManager::loadResources() {
     material = new Material{};
     material->diffuseMap = ResourceManager::getResource<Texture>(TEXTURE_ATLAS);
     material->specularMap = ResourceManager::getResource<Texture>(TEXTURE_BLACK);
-    material->shininess = 32.f;    
-    material->customShader = ResourceManager::getResource<Shader>(SHADER_WATER);
+    material->shininess = 32.f;
+    material->useBlending = true;    
     resources.emplace(MATERIAL_WATER, ResourceHandle{material});
 
     material = new Material {};

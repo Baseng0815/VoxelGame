@@ -9,7 +9,6 @@ class Shader;
 class Texture;
 
 struct CameraComponent;
-struct CameraComponent;
 struct MeshRenderComponent;
 struct WaterRenderComponent;
 struct TransformationComponent;
@@ -23,23 +22,15 @@ class MeshRenderSystem : public System {
     private:
         // TODO maybe use dynamically each frame instead of storing it here
         const Shader *m_meshRenderShaderColor;
-        const Shader *m_meshRenderShaderTexture;
-        const Shader *m_framebufferShader;
+        const Shader *m_meshRenderShaderTexture;        
 
         PointLight m_pointLights[MAX_LIGHTS];
         DirectionalLight m_sun;
 
-        WaterRenderbuffers *m_waterRenderbuffers;
-        RenderQuad m_screenRenderquad;
-
-        CallbackHandle<const FramebufferSizeEvent &> m_framebufferCallbackHandle;
-        void handleFramebufferSize(const FramebufferSizeEvent & e);
-
         void uploadToShader(const Shader *shader, const CameraComponent &camera, const TransformationComponent& playerTransform) const;
         void render(const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer, const CameraComponent &camera, const TransformationComponent &playerTransform) const;
 
-        void _update(int dt) override;
-        void updateFramebuffer() const;
+        void _update(int dt) override;        
 
     public:
         MeshRenderSystem(Registry_T &registry);

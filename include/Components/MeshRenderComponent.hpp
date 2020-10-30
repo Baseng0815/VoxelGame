@@ -7,5 +7,5 @@ struct MeshRenderComponent {
     const Material *material;
     const Geometry *geometry;
 
-    bool water = false;
+    int order = 0;
 };

@@ -13,11 +13,7 @@
 #include "../../include/Components/PlayerComponent.hpp"
 #include "../../include/Components/TransformationComponent.hpp"
 
-void MeshRenderSystem::handleFramebufferSize(const FramebufferSizeEvent &e) {
-    m_waterRenderbuffers->resize(e.width, e.height);
-}
-
-void MeshRenderSystem::uploadToShader(const Shader *shader, const CameraComponent &camera, const TransformationComponent& playerTransform) const {
+void MeshRenderSystem::uploadToShader(const Shader* shader, const CameraComponent& camera, const TransformationComponent& playerTransform) const {
     shader->upload("viewMatrix", camera.viewMatrix);
     shader->upload("viewPos", camera.playerOffset + playerTransform.getPosition());
     shader->upload("projectionMatrix", camera.perspectiveProjection);
@@ -30,9 +26,9 @@ void MeshRenderSystem::uploadToShader(const Shader *shader, const CameraComponen
     shader->setUniformState(true);
 }
 
-void MeshRenderSystem::render(const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer, const CameraComponent &camera, const TransformationComponent& playerTransform) const {
+void MeshRenderSystem::render(const TransformationComponent& transformation, const MeshRenderComponent& meshRenderer, const CameraComponent& camera, const TransformationComponent& playerTransform) const {
     if (meshRenderer.geometry->getDrawCount() > 0) {
-        const Shader *shader = meshRenderer.material->customShader;
+        const Shader* shader = meshRenderer.material->customShader;
         // no custom shader is used
         if (!shader) {
             shader = meshRenderer.material->diffuseMap ? m_meshRenderShaderTexture : m_meshRenderShaderColor;
@@ -77,15 +73,7 @@ void MeshRenderSystem::render(const TransformationComponent &transformation, con
         }
         else {
             glDisable(GL_CULL_FACE);
-        }
-
-        if (meshRenderer.water) {
-            m_waterRenderbuffers->bind(RenderbufferId::RENDERBUFFER_WATER);
-        } else {
-            // TODO find fix
-            // m_waterRenderbuffers->bind(RenderbufferId::RENDERBUFFER_SCENE);
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
-        }
+        }        
 
         // final draw call
         glBindVertexArray(meshRenderer.geometry->getVao());
@@ -93,29 +81,12 @@ void MeshRenderSystem::render(const TransformationComponent &transformation, con
     }
 }
 
-void MeshRenderSystem::updateFramebuffer() const {
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glDisable(GL_DEPTH_TEST);
-    glEnable(GL_BLEND);
-
-    m_framebufferShader->bind();
-    m_framebufferShader->upload("sceneTexture", 0);
-    m_framebufferShader->upload("waterTexture", 1);
-    m_framebufferShader->upload("sceneDepthTexture", 2);
-    m_framebufferShader->upload("waterDepthTexture", 3);
-
-    m_waterRenderbuffers->bindTextures();
-    m_screenRenderquad.render();
-}
-
-void MeshRenderSystem::_update(int dt) {
-    m_waterRenderbuffers->clear();
-
+void MeshRenderSystem::_update(int dt) {    
     // upload per-frame values for both shaders
     // color shader
     m_meshRenderShaderColor->bind();
-    const CameraComponent &camera = m_registry.view<CameraComponent>().raw()[0];
-    const TransformationComponent &playerTransform = m_registry.get<TransformationComponent>(m_registry.view<PlayerComponent>().front());
+    const CameraComponent& camera = m_registry.view<CameraComponent>().raw()[0];
+    const TransformationComponent& playerTransform = m_registry.get<TransformationComponent>(m_registry.view<PlayerComponent>().front());
 
     // texture shader
     m_meshRenderShaderTexture->bind();
@@ -125,39 +96,35 @@ void MeshRenderSystem::_update(int dt) {
     m_meshRenderShaderColor->bind();
     uploadToShader(m_meshRenderShaderColor, camera, playerTransform);
 
-    // render single mesh components
-    m_registry.view<TransformationComponent, MeshRenderComponent>().each(
-        [&](const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer) {
-            render(transformation, meshRenderer, camera, playerTransform);
-        });
+    const auto& singleMeshComponents = m_registry.view<TransformationComponent, MeshRenderComponent>();
+    const auto& multiMeshComponents = m_registry.view<TransformationComponent, MultiMeshRenderComponent>();
 
-    // render multi mesh components
-    m_registry.view<TransformationComponent, MultiMeshRenderComponent>().each(
-        [&](const TransformationComponent &transformation, const MultiMeshRenderComponent &multiMeshRenderer) {
-            for (const auto &meshRenderer : multiMeshRenderer.meshRenderComponents) {
-                render(transformation, meshRenderer, camera, playerTransform);
-            }
-        });
+    for (int i = 0; i < 2; i++) {
+        // render single mesh components
+        singleMeshComponents.each(
+            [&](const TransformationComponent& transformation, const MeshRenderComponent& meshRenderer) {
+                if (meshRenderer.order == i)
+                    render(transformation, meshRenderer, camera, playerTransform);
+            });
 
-    updateFramebuffer();
+        // render multi mesh components
+        multiMeshComponents.each(
+            [&](const TransformationComponent& transformation, const MultiMeshRenderComponent& multiMeshRenderer) {
+                for (const auto& meshRenderer : multiMeshRenderer.meshRenderComponents) {
+                    if (meshRenderer.order == i)
+                        render(transformation, meshRenderer, camera, playerTransform);
+                }
+            });
+    }    
 }
 
-MeshRenderSystem::MeshRenderSystem(Registry_T &registry)
+MeshRenderSystem::MeshRenderSystem(Registry_T& registry)
     : System{registry, 0},
-    m_meshRenderShaderColor{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_COLOR)},
-    m_meshRenderShaderTexture{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_TEXTURE)},
-    m_waterRenderbuffers{new WaterRenderbuffers{800, 600}},
-    m_screenRenderquad{Rectangle{-1, -1, 2, 2}},
-    m_framebufferShader{ResourceManager::getResource<Shader>(SHADER_FRAMEBUFFER)}
+      m_meshRenderShaderColor{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_COLOR)},
+      m_meshRenderShaderTexture{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_TEXTURE)}      
 {
-
     m_sun.direction = glm::vec3{-0.3, -0.8, -0.5};
-    m_sun.ambient = Color {70};
-    m_sun.diffuse = Color {200};
-    m_sun.specular = Color {30};
-
-    m_framebufferCallbackHandle = EventDispatcher::onFramebufferSize.subscribe(
-        [&](const FramebufferSizeEvent &e) {
-            handleFramebufferSize(e);
-        });
+    m_sun.ambient = Color{70};
+    m_sun.diffuse = Color{200};
+    m_sun.specular = Color{30};    
 }
