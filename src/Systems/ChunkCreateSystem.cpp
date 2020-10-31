@@ -101,12 +101,12 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
 }
 
 void ChunkCreateSystem::updateChunkStructures(Block*** chunkBlocks, BlockCollection structureBlocks) const {
-    for (auto [pos, type] : structureBlocks) {
-        int x = pos.x, y = pos.y, z = pos.z;
-        if (chunkBlocks[x][y][z].type == BlockId::BLOCK_AIR) {
-            chunkBlocks[x][y][z] = Block{type};
-        }
-    }
+    // for (auto [pos, type] : structureBlocks) {
+    //     int x = pos.x, y = pos.y, z = pos.z;
+    //     if (chunkBlocks[x][y][z].type == BlockId::BLOCK_AIR) {
+    //         chunkBlocks[x][y][z] = Block{type};
+    //     }
+    // }
 }
 
 ChunkGeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, const ChunkComponent& chunk) {

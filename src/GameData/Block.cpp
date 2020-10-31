@@ -9,3 +9,11 @@ bool Block::isSolid() const {
 bool Block::isTransparent() const {
     return GameData::getBlockTemplate(type).isTransparent;
 }
+
+Block::Block()
+    : Block{BlockId::BLOCK_AIR, nullptr} {
+}
+
+Block::Block(BlockId type, BlockState* state)
+    : type{type}, state{state} {
+}

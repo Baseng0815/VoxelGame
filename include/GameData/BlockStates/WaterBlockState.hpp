@@ -9,4 +9,8 @@ struct WaterBlockState : public BlockState {
     WaterBlockState()
         : BlockState{BlockId::BLOCK_WATER} {
     }
+
+    bool operator==(const WaterBlockState& state) {
+        return level == state.level && falling == state.falling;
+    }
 };

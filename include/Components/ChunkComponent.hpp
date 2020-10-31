@@ -12,11 +12,10 @@
 #include <unordered_map>
 
 #include "../GameData/BiomeIds.hpp"
+#include "../GameData/Block.hpp"
 #include <vector>
 
-struct Block;
 struct Cuboid;
-struct BlockState;
 
 class Geometry;
 
@@ -31,7 +30,7 @@ struct ChunkComponent {
     Geometry* geometryTransparent;
 
     // max 16 * 16 * 256 = 65535 elements
-    std::vector<Block> blockData;
+    std::vector<BlockId> blockData;
     std::vector<BlockState*> blockStates;
 
     // TODO make this more efficient (maybe use octrees?)

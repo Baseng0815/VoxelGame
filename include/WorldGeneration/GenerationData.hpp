@@ -6,7 +6,7 @@
 
 struct GenerationData {
     entt::entity entity;
-    std::vector<Block> blockData;
+    std::vector<BlockId> blockData;
     std::vector<BlockState*> stateData;
     int*** blocks;
     BiomeId** biomes;

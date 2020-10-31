@@ -32,7 +32,7 @@ class WorldGenerator {
     TerrainHeightGenerator m_heightGenerator;
     TerrainGenerator m_terrainGenerator;
 
-    void generateOres(BiomeId** biomes, Block*** blocks) const;
+    void generateOres(BiomeId** biomes, GenerationData*** blocks) const;
 
   public:
     WorldGenerator(WorldType type);

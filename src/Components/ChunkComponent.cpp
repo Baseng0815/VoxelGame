@@ -1,59 +1,89 @@
 #include "../../include/Components/ChunkComponent.hpp"
 
-#include "../../include/GameData/Block.hpp"
+#include "../../include/GameData/BlockStates/WaterBlockState.hpp"
 
 void ChunkComponent::setBlock(int x, int y, int z, const Block& block) {
-	/*for (int i = 0; i < blockData.size(); i++) {
-		if (blockData[i].type == block.type) {
-			blocks[x][y][z] = blocks[x][y][z] & 0xFFFF0000 | i & 0x0000FFFF;
-			return;
-		}
-	}*/
+    // type
+    int typeIndex = -1;
+    int index = 0;
+    while (index < blockData.size() && typeIndex == -1) {
+        if (block.type == blockData[index]) {
+            typeIndex = index;
+        }
+        index++;
+    }
 
-	blockData.emplace_back(block);
-	blocks[x][y][z] = blockData.size() - 1;
+    if (typeIndex == -1) {
+        blockData.emplace_back(block.type);
+        typeIndex = index;
+    }
+
+    // state
+    int stateIndex = -1;
+    if (block.state == nullptr) {
+        stateIndex = 0;
+    }
+    else if (*(block.state) == WaterBlockState{}) {
+        stateIndex = 1;
+    }
+    else {
+        int oldStateIndex = blocks[x][y][z] & (0xFFFF0000 >> 16);
+        if (oldStateIndex > 1) {
+            stateIndex = oldStateIndex;
+        }
+        else {
+            stateIndex = blockStates.size();
+            blockStates.push_back(block.state);
+        }
+    }
+
+    blocks[x][y][z] = (stateIndex << 16) | typeIndex;
 }
 
 const Block ChunkComponent::getBlock(int x, int y, int z) const {
-	int blockDataId = blocks[x][y][z] & 0x0000FFFF;
-	return blockData[blockDataId];
+    int blockTypeId = blocks[x][y][z] & 0x0000FFFF;
+    int blockStateId = (blocks[x][y][z] & 0xFFFF0000) >> 16;
+
+    return Block{blockData[blockTypeId], blockStates[blockStateId]};
 }
 
 Block ChunkComponent::getBlock(int x, int y, int z) {
-	int blockDataId = blocks[x][y][z] & 0x0000FFFF;
-	return blockData[blockDataId];
+    int blockTypeId = blocks[x][y][z] & 0x0000FFFF;
+    int blockStateId = blocks[x][y][z] >> 16;
+
+    return Block{blockData[blockTypeId], blockStates[blockStateId]};
 }
 
 template<typename s_type>
 void ChunkComponent::setBlockState(int x, int y, int z, s_type* state) {
-	if (state == BlockState::empty()) {
-		blocks[x][y][z] = blocks[x][y][z] & 0x0000FFFF;
-	}
-	else {
-		int stateIndex = blocks[x][y][z] >> 4;
-		
-		s_type* newState = new s_type;
-		std::copy<s_type, s_type>(*state, *newState);
+    // if (state == BlockState::empty()) {
+    //     blocks[x][y][z] = blocks[x][y][z] & 0x0000FFFF;
+    // }
+    // else {
+    //     int stateIndex = blocks[x][y][z] >> 4;
 
-		if (stateIndex != 0) {
-			blockStates[stateIndex] = newState;
-		}
-		else {
-			blockStates.emplace_back(newState);
-			blocks[x][y][z] |= (blockStates.size() - 1) << 4;
-		}
-	}
+    //     s_type* newState = new s_type;
+    //     std::copy<s_type, s_type>(*state, *newState);
+
+    //     if (stateIndex != 0) {
+    //         blockStates[stateIndex] = newState;
+    //     }
+    //     else {
+    //         blockStates.emplace_back(newState);
+    //         blocks[x][y][z] |= (blockStates.size() - 1) << 4;
+    //     }
+    // }
 }
 
 template<typename s_type>
 const s_type* ChunkComponent::getBlockState(int x, int y, int z) const {
-	int stateIndex = blocks[x][y][z] >> 4;
-	return reinterpret_cast<s_type*>(blockStates[stateIndex]);
+    int stateIndex = blocks[x][y][z] >> 16;
+    return reinterpret_cast<s_type*>(blockStates[stateIndex]);
 }
 
 template<typename s_type>
 s_type* ChunkComponent::getBlockState(int x, int y, int z) {
-	int stateIndex = blocks[x][y][z] >> 4;
+    int stateIndex = blocks[x][y][z] >> 16;
     return reinterpret_cast<s_type*>(blockStates[stateIndex]);
 }
 

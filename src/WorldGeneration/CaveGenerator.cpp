@@ -15,7 +15,7 @@ void CaveGenerator::generateChunk(glm::vec2 chunkPos, GenerationData* data) cons
     int water = 3;
     int lava = data->blockData.size();
 
-    data->blockData.emplace_back(Block{BlockId::BLOCK_LAVA});
+    data->blockData.push_back(BlockId::BLOCK_LAVA);
 
     for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
         for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {

@@ -5,11 +5,11 @@
 #include "../../include/GameData/BlockStates/WaterBlockState.hpp"
 
 TerrainGenerator::TerrainGenerator() {
-    m_biomes.push_back({BiomeId::BIOME_FLAT, BlockId::BLOCK_GRASS, BlockId::BLOCK_DIRT, 1, 3});
-    m_biomes.push_back({BiomeId::BIOME_FLAT_TERRAIN, BlockId::BLOCK_GRASS, BlockId::BLOCK_DIRT, 1, 4});
-    m_biomes.push_back({BiomeId::BIOME_DESERT, BlockId::BLOCK_SAND, BlockId::BLOCK_SAND, 1, 4});
-    m_biomes.push_back({BiomeId::BIOME_BEACH, BlockId::BLOCK_SAND, BlockId::BLOCK_SAND, 1, 4});
-    m_biomes.push_back({BiomeId::BIOME_OCEAN, BlockId::BLOCK_SAND, BlockId::BLOCK_SAND, 1, 3});
+    m_biomes.emplace_back(BiomeId::BIOME_FLAT, BlockId::BLOCK_GRASS, BlockId::BLOCK_DIRT, 1, 3);
+    m_biomes.emplace_back(BiomeId::BIOME_FLAT_TERRAIN, BlockId::BLOCK_GRASS, BlockId::BLOCK_DIRT, 1, 4);
+    m_biomes.emplace_back(BiomeId::BIOME_DESERT, BlockId::BLOCK_SAND, BlockId::BLOCK_SAND, 1, 4);
+    m_biomes.emplace_back(BiomeId::BIOME_BEACH, BlockId::BLOCK_SAND, BlockId::BLOCK_SAND, 1, 4);
+    m_biomes.emplace_back(BiomeId::BIOME_OCEAN, BlockId::BLOCK_SAND, BlockId::BLOCK_SAND, 1, 3);
 }
 
 Biome TerrainGenerator::getBiome(BiomeId id) const {
@@ -26,10 +26,10 @@ void TerrainGenerator::createBlocks(GenerationData* data, int** heightMap) const
     data->stateData.push_back(new BlockState{BlockState::empty()});
     data->stateData.push_back(new WaterBlockState{});
 
-    data->blockData.emplace_back(Block{BlockId::BLOCK_AIR});
-    data->blockData.emplace_back(Block{BlockId::BLOCK_BRICKS});
-    data->blockData.emplace_back(Block{BlockId::BLOCK_STONE});
-    data->blockData.emplace_back(Block{BlockId::BLOCK_WATER});
+    data->blockData.push_back(BlockId::BLOCK_AIR);
+    data->blockData.push_back(BlockId::BLOCK_BRICKS);
+    data->blockData.push_back(BlockId::BLOCK_STONE);
+    data->blockData.push_back(BlockId::BLOCK_WATER);
 
     for (int cx = 0; cx < Configuration::CHUNK_SIZE; cx++)
         for (int cz = 0; cz < Configuration::CHUNK_SIZE; cz++) {
@@ -41,11 +41,11 @@ void TerrainGenerator::createBlocks(GenerationData* data, int** heightMap) const
 
             int index = 0;
             while (subsurface == -1 && surface == -1 && index < data->blockData.size()) {
-                if (data->blockData[index].type == biome.subsurfaceBlocks) {
+                if (data->blockData[index] == biome.subsurfaceBlocks) {
                     subsurface = index;
                 }
 
-                if (data->blockData[index].type == biome.surfaceBlocks) {
+                if (data->blockData[index] == biome.surfaceBlocks) {
                     surface = index;
                 }
 
@@ -53,16 +53,16 @@ void TerrainGenerator::createBlocks(GenerationData* data, int** heightMap) const
             }
 
             if (subsurface == -1) {
-                data->blockData.emplace_back(Block{biome.subsurfaceBlocks});
+                data->blockData.push_back(biome.subsurfaceBlocks);
                 subsurface = index++;
 
                 if (biome.surfaceBlocks == biome.subsurfaceBlocks) {
                     surface = subsurface;
-                }                
+                }
             }
 
             if (surface == -1) {
-                data->blockData.emplace_back(Block{biome.surfaceBlocks});
+                data->blockData.push_back(biome.surfaceBlocks);
                 surface = index++;
             }
 
@@ -71,7 +71,7 @@ void TerrainGenerator::createBlocks(GenerationData* data, int** heightMap) const
                 if (cy < randNext(2, 4))
                     // bricks
                     block = 1;
-                else if (cy <= height - (biome.subsorfaceHeight + biome.surfaceHeight))
+                else if (cy <= height - (biome.subsurfaceHeight + biome.surfaceHeight))
                     // stone
                     block = 2;
                 else if (cy <= height - biome.surfaceHeight)
