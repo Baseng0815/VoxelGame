@@ -28,14 +28,24 @@ void PhysicsSystem::_update(int millis) {
 }
 
 void PhysicsSystem::applyVelocities(float dt, const entt::entity &entity, TransformationComponent &transform, const VelocityComponent &velocity) const {    
-
     if (velocity.velocity != glm::vec3{0.f}) {
         glm::vec3 oldPos = transform.getPosition();
 
         transform.move(dt * velocity.velocity);
 
-        EntityMovedEvent e{nullptr, entity, transform.getPosition(), oldPos};
-        EventDispatcher::raiseEvent(e);        
+        EntityMovedEvent e {nullptr, entity, transform.getPosition(), oldPos};
+        EventDispatcher::raiseEvent(e);
+
+        // if entity is player, check for EnterChunk event
+        if (m_registry.has<PlayerComponent>(entity)) {
+            glm::ivec2 oldChunk = Utility::GetChunk(oldPos);
+            glm::ivec2 newChunk = Utility::GetChunk(transform.getPosition());
+
+            if (oldChunk != newChunk) {
+                EnterChunkEvent enterChunkEvent {nullptr, oldChunk.x, oldChunk.y, newChunk.x, newChunk.y};
+                EventDispatcher::raiseEvent(enterChunkEvent);
+            }
+        }
     }
 
     if (velocity.angularVelocity != glm::vec3{0.f}) {

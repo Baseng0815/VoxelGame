@@ -2,7 +2,6 @@
 
 #include "../Color.hpp"
 
-// TODO use color
 struct PointLight {
     glm::vec3 position {0.0f};
 

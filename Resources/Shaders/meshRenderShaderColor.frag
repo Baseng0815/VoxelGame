@@ -28,12 +28,15 @@ struct DirectionalLight {
     vec4 specular;
 };
 
-#define MAX_LIGHTS 1
+#define MAX_POINT_LIGHTS $
+#define MAX_DIR_LIGHTS   $
 
-uniform vec3 viewPos;
-uniform PointLight pointLights[MAX_LIGHTS];
-uniform DirectionalLight dirLight;
-uniform Material material;
+uniform vec3                viewPos;
+uniform DirectionalLight    dirLights[MAX_DIR_LIGHTS];
+uniform PointLight          pointLights[MAX_POINT_LIGHTS];
+uniform Material            material;
+uniform int                 dirLightCount;
+uniform int                 pointLightCount;
 
 out vec4 out_Color;
 
@@ -44,8 +47,11 @@ void main() {
     vec3 norm = normalize(pass_normal);
     vec3 viewDir = normalize(viewPos - pass_fragPos);
 
-    // directional light
-    vec4 result = calcDirLight(dirLight, norm, viewDir);
+    // dir lights
+    vec4 result = vec4(0.f);
+    for (int i = 0; i < dirLightCount; i++)
+        result += calcDirLight(dirLights[i], norm, viewDir);
+
     // point lights
     /*
     for (int i = 0; i < MAX_LIGHTS; i++)

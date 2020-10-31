@@ -1,6 +1,7 @@
 #include "../../include/Resources/ResourceManager.hpp"
 
 #include <iostream>
+#include "../../include/Configuration.hpp"
 
 #include "../../include/Resources/Font.hpp"
 #include "../../include/Resources/Shader.hpp"
@@ -29,9 +30,11 @@ void ResourceManager::loadResources() {
 
     // shaders
     // render 3d meshes with lighting and texturing
-    resources.emplace(SHADER_MESH_RENDER_TEXTURE, ResourceHandle {new Shader("Shaders/meshRenderShader.vert", "Shaders/meshRenderShaderTexture.frag")});
+    resources.emplace(SHADER_MESH_RENDER_TEXTURE, ResourceHandle {new Shader("Shaders/meshRenderShader.vert", "Shaders/meshRenderShaderTexture.frag",
+                                                                           std::vector<std::string> {std::to_string(Configuration::MAX_POINT_LIGHTS), std::to_string(Configuration::MAX_DIR_LIGHTS)})});
     // render 3d meshes with lighting and color
-    resources.emplace(SHADER_MESH_RENDER_COLOR, ResourceHandle {new Shader("Shaders/meshRenderShader.vert", "Shaders/meshRenderShaderColor.frag")});
+    resources.emplace(SHADER_MESH_RENDER_COLOR, ResourceHandle {new Shader("Shaders/meshRenderShader.vert", "Shaders/meshRenderShaderColor.frag",
+                                                                           std::vector<std::string> {std::to_string(Configuration::MAX_POINT_LIGHTS), std::to_string(Configuration::MAX_DIR_LIGHTS)})});
     // render 2d quads using texture
     resources.emplace(SHADER_TEXTURE_QUAD, ResourceHandle {new Shader("Shaders/texturedQuadShader")});
     // render 2d quads using color
@@ -43,9 +46,7 @@ void ResourceManager::loadResources() {
     // render 2d text
     resources.emplace(SHADER_TEXT, ResourceHandle {new Shader("Shaders/textShader")});
     // render 3d color
-    resources.emplace(SHADER_MVP_COLOR, ResourceHandle {new Shader("Shaders/mvpColorShader")});    
-    // framebuffer
-    resources.emplace(SHADER_FRAMEBUFFER, ResourceHandle{new Shader{"Shaders/framebufferQuad"}});
+    resources.emplace(SHADER_MVP_COLOR, ResourceHandle {new Shader("Shaders/mvpColorShader")});
 
     // materials
     Material *material = new Material {};
@@ -65,7 +66,7 @@ void ResourceManager::loadResources() {
     material->diffuseMap = ResourceManager::getResource<Texture>(TEXTURE_ATLAS);
     material->specularMap = ResourceManager::getResource<Texture>(TEXTURE_BLACK);
     material->shininess = 32.f;
-    material->useBlending = true;    
+    material->useBlending = true;
     resources.emplace(MATERIAL_WATER, ResourceHandle{material});
 
     material = new Material {};
@@ -104,10 +105,6 @@ void ResourceManager::loadResources() {
     shader = getResource<Shader>(SHADER_MVP_COLOR);
     shader->setAttributes({"position"});
 
-    // framebuffer shader
-    shader = getResource<Shader>(SHADER_FRAMEBUFFER);
-    shader->setAttributes({"sceneTexture", "waterTexture", "sceneDepthTexture", "waterDepthTexture"});
-
     std::cout << "loaded " << resources.size() << " resources" << std::endl;
 }
 
@@ -128,3 +125,4 @@ template const Shader* ResourceManager::getResource<Shader>(const ResourceID&);
 template const Font* ResourceManager::getResource<Font>(const ResourceID&);
 template const Geometry* ResourceManager::getResource<Geometry>(const ResourceID&);
 template const Material* ResourceManager::getResource<Material>(const ResourceID&);
+

@@ -12,14 +12,25 @@
 #include "../../include/Components/MultiMeshRenderComponent.hpp"
 #include "../../include/Components/PlayerComponent.hpp"
 #include "../../include/Components/TransformationComponent.hpp"
+#include "../../include/Components/LightComponent.hpp"
 
 void MeshRenderSystem::uploadToShader(const Shader* shader, const CameraComponent& camera, const TransformationComponent& playerTransform) const {
     shader->upload("viewMatrix", camera.viewMatrix);
     shader->upload("viewPos", camera.playerOffset + playerTransform.getPosition());
     shader->upload("projectionMatrix", camera.perspectiveProjection);
 
-    for (int i = 0; i < MAX_LIGHTS; i++) {
-        shader->upload("pointLights[" + std::to_string(i) + "]", m_pointLights[i]);
+    const LightingComponent &lighting = m_registry.raw<LightingComponent>()[0];
+
+    // upload dir lights
+    shader->upload("dirLightCount", (int)lighting.dirLights.size());
+    for (size_t i = 0; i < lighting.dirLights.size(); i++) {
+        shader->upload("dirLights[" + std::to_string(i) + "]", lighting.dirLights[i]);
+    }
+
+    // upload point lights
+    shader->upload("pointLightCount", (int)lighting.pointLights.size());
+    for (size_t i = 0; i < lighting.pointLights.size(); i++) {
+        shader->upload("pointLights[" + std::to_string(i) + "]", lighting.pointLights[i]);
     }
 
     shader->upload("dirLight", m_sun);
@@ -73,7 +84,7 @@ void MeshRenderSystem::render(const TransformationComponent& transformation, con
         }
         else {
             glDisable(GL_CULL_FACE);
-        }        
+        }
 
         // final draw call
         glBindVertexArray(meshRenderer.geometry->getVao());
@@ -81,7 +92,7 @@ void MeshRenderSystem::render(const TransformationComponent& transformation, con
     }
 }
 
-void MeshRenderSystem::_update(int dt) {    
+void MeshRenderSystem::_update(int dt) {
     // upload per-frame values for both shaders
     // color shader
     m_meshRenderShaderColor->bind();
@@ -96,8 +107,8 @@ void MeshRenderSystem::_update(int dt) {
     m_meshRenderShaderColor->bind();
     uploadToShader(m_meshRenderShaderColor, camera, playerTransform);
 
-    const auto& singleMeshComponents = m_registry.view<TransformationComponent, MeshRenderComponent>();
-    const auto& multiMeshComponents = m_registry.view<TransformationComponent, MultiMeshRenderComponent>();
+    const auto &singleMeshComponents    = m_registry.view<TransformationComponent, MeshRenderComponent>();
+    const auto &multiMeshComponents     = m_registry.view<TransformationComponent, MultiMeshRenderComponent>();
 
     for (int i = 0; i < 2; i++) {
         // render single mesh components
@@ -115,16 +126,17 @@ void MeshRenderSystem::_update(int dt) {
                         render(transformation, meshRenderer, camera, playerTransform);
                 }
             });
-    }    
+    }
 }
 
 MeshRenderSystem::MeshRenderSystem(Registry_T& registry)
     : System{registry, 0},
-      m_meshRenderShaderColor{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_COLOR)},
-      m_meshRenderShaderTexture{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_TEXTURE)}      
+    m_meshRenderShaderColor{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_COLOR)},
+    m_meshRenderShaderTexture{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_TEXTURE)}
 {
-    m_sun.direction = glm::vec3{-0.3, -0.8, -0.5};
-    m_sun.ambient = Color{70};
-    m_sun.diffuse = Color{200};
-    m_sun.specular = Color{30};    
+    // create lighting component
+    entt::entity lightEntity = m_registry.create();
+    LightingComponent lighting;
+    lighting.dirLights.emplace_back(DirectionalLight {glm::vec3 {-0.3f, -0.8f, -0.5f}, Color {70}, Color {200}, Color {30}});
+    m_registry.emplace<LightingComponent>(lightEntity, lighting);
 }

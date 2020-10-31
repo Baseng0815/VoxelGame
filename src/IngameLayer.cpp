@@ -31,33 +31,33 @@ void IngameLayer::handleKeys(const KeyEvent &e) {
     if (e.action == GLFW_PRESS) {
         // handle constexpr keys
         switch (e.key) {
-        // handle dynamically bound keys
-        default:
-            if (e.key == Configuration::getAssociatedKey("KEYBIND_TOGGLE_DEBUG")) {
-                UiProperties &properties = m_gui.getWidget<DebugLayout>("layout_debugpanel").properties();
-                properties.isVisible = !properties.isVisible;
-            }
-            else if (e.key == Configuration::getAssociatedKey("KEYBIND_OPEN_INVENTORY")) {
-                InventoryLayout &layout = m_gui.getWidget<InventoryLayout>("layout_inventory");
-
-                UiProperties &inventory = layout.properties();
-                UiProperties &crosshair = m_gui.getWidget<Image>("image_crosshair").properties();
-                entt::entity player = m_registry.view<PlayerComponent>().front();
-                PlayerComponent &playerComponent = m_registry.get<PlayerComponent>(player);
-
-                inventory.isVisible = !inventory.isVisible;
-                crosshair.isVisible = !inventory.isVisible;
-                playerComponent.inputEnabled = !inventory.isVisible;
-
-                if (inventory.isVisible) {
-                    m_application->getWindow().enableCursor();
-                    layout.setInventory(m_registry.get<InventoryComponent>(player));
+            // handle dynamically bound keys
+            default:
+                if (e.key == Configuration::getAssociatedKey("KEYBIND_TOGGLE_DEBUG")) {
+                    UiProperties &properties = m_gui.getWidget<DebugLayout>("layout_debugpanel").properties();
+                    properties.isVisible = !properties.isVisible;
                 }
-                else {
-                    m_application->getWindow().disableCursor();
+                else if (e.key == Configuration::getAssociatedKey("KEYBIND_OPEN_INVENTORY")) {
+                    InventoryLayout &layout = m_gui.getWidget<InventoryLayout>("layout_inventory");
+
+                    UiProperties &inventory = layout.properties();
+                    UiProperties &crosshair = m_gui.getWidget<Image>("image_crosshair").properties();
+                    entt::entity player = m_registry.view<PlayerComponent>().front();
+                    PlayerComponent &playerComponent = m_registry.get<PlayerComponent>(player);
+
+                    inventory.isVisible = !inventory.isVisible;
+                    crosshair.isVisible = !inventory.isVisible;
+                    playerComponent.inputEnabled = !inventory.isVisible;
+
+                    if (inventory.isVisible) {
+                        m_application->getWindow().enableCursor();
+                        layout.setInventory(m_registry.get<InventoryComponent>(player));
+                    }
+                    else {
+                        m_application->getWindow().disableCursor();
+                    }
                 }
-            }
-            break;
+                break;
         }
     }
 }
@@ -111,21 +111,21 @@ void IngameLayer::update(int dt) {
 
     m_time += dt;
     if (m_time > 1000) {
-        entt::entity entity = m_registry.view<TransformationComponent, CameraComponent>().front();
+        entt::entity player = m_registry.view<PlayerComponent>().front();
 
-        const TransformationComponent &transform = m_registry.get<TransformationComponent>(entity);
-        const CameraComponent &camera = m_registry.get<CameraComponent>(entity);
+        const TransformationComponent &transform    = m_registry.get<TransformationComponent>(player);
+        const CameraComponent         &camera       = m_registry.get<CameraComponent>(player);
 
-        DebugLayoutInfo info{m_frameCounter * 1000 / m_time,
-                             m_time * 1000 / std::max(m_frameCounter, 1),
-                             static_cast<const ChunkCreateSystem *>(m_systems[0].get())->getActiveChunkCount(),
-                             transform.getPosition(),
-                             camera.front,
-                             camera.yaw,
-                             camera.pitch,
-                             camera.fov,
-                             (int)floor(transform.getPosition().x / Configuration::CHUNK_SIZE),
-                             (int)floor(transform.getPosition().z / Configuration::CHUNK_SIZE)};
+        DebugLayoutInfo info {m_frameCounter * 1000 / m_time,
+            m_time * 1000 / std::max(m_frameCounter, 1),
+            static_cast<const ChunkCreateSystem*>(m_systems[0].get())->getActiveChunkCount(),
+            transform.getPosition(),
+            camera.front,
+            camera.yaw,
+            camera.pitch,
+            camera.fov,
+            (int)std::floor(transform.getPosition().x / Configuration::CHUNK_SIZE),
+            (int)std::floor(transform.getPosition().z / Configuration::CHUNK_SIZE)};
 
         m_gui.getWidget<DebugLayout>("layout_debugpanel").setValues(info);
         m_time = 1;

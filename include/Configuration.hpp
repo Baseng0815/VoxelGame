@@ -19,6 +19,8 @@ class Configuration {
         static constexpr int CHUNK_MAX_LOADING = 2;
         static constexpr int MAP_SEED_SIZE = 256;
         static constexpr int SKYBOX_SIZE = 4000;
+        static constexpr int MAX_POINT_LIGHTS   = 10;
+        static constexpr int MAX_DIR_LIGHTS     = 1;
         // units per second
         static constexpr float CLOUD_SPEED = 16;
         // the higher the bias, the more clouds there will be

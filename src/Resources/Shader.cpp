@@ -86,11 +86,35 @@ GLint Shader::getLocation(const std::string &location) const
 }
 
 // Public functions
-Shader::Shader(const std::string& vertex, const std::string &fragment) {
+Shader::Shader(const std::string& vertex, const std::string &fragment, const std::vector<std::string> &replaceValues)
+{
     std::cout << "loading vertex shader " << vertex << " and fragment shader " << fragment << std::endl;
     m_program = glCreateProgram();
-    GLuint shaderVert = createShader(loadShader(Configuration::getStringValue("ResourceBasePath") + vertex), GL_VERTEX_SHADER);
-    GLuint shaderFrag = createShader(loadShader(Configuration::getStringValue("ResourceBasePath") + fragment), GL_FRAGMENT_SHADER);
+
+    std::string shaderSourceVert = loadShader(Configuration::getStringValue("ResourceBasePath") + vertex);
+    std::string shaderSourceFrag = loadShader(Configuration::getStringValue("ResourceBasePath") + fragment);
+
+    // replace $ with values
+    size_t valueIndex = 0;
+    auto repl = [&](std::string &src) {
+        size_t placeholderIndex = src.find('$');
+        std::cout << placeholderIndex << std::endl;
+        while (placeholderIndex != std::string::npos) {
+            src.replace(placeholderIndex, 1, replaceValues[valueIndex]);
+            placeholderIndex = src.find('$');
+            valueIndex++;
+        }
+    };
+
+    repl(shaderSourceVert);
+    repl(shaderSourceFrag);
+
+    if (fragment == "Shaders/meshRenderShaderColor.frag") {
+        std::cout << shaderSourceFrag << std::endl;
+    }
+
+    GLuint shaderVert = createShader(shaderSourceVert, GL_VERTEX_SHADER);
+    GLuint shaderFrag = createShader(shaderSourceFrag, GL_FRAGMENT_SHADER);
 
     glAttachShader(m_program, shaderVert);
     glAttachShader(m_program, shaderFrag);
@@ -104,8 +128,9 @@ Shader::Shader(const std::string& vertex, const std::string &fragment) {
     glDeleteShader(shaderFrag);
 }
 
-Shader::Shader(const std::string &file)
-    : Shader(file + ".vert", file + ".frag") {}
+Shader::Shader(const std::string &file, const std::vector<std::string> &replaceValues)
+    : Shader(file + ".vert", file + ".frag", replaceValues)
+{}
 
 Shader::~Shader()
 {

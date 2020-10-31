@@ -32,8 +32,9 @@ class Shader : public Resource {
         void release() override;
 
     public:
-        Shader(const std::string& vertex, const std::string& fragment);
-        Shader(const std::string& file);
+        // all $ characters will be replaced by replaceValues according to order
+        Shader(const std::string& vertex, const std::string& fragment, const std::vector<std::string> &replaceValues = {});
+        Shader(const std::string& file, const std::vector<std::string> &replaceValues = {});
         ~Shader();
 
         Shader(Shader&&) noexcept;
