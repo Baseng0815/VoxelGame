@@ -25,14 +25,15 @@ void GameData::loadGameData()
 
     for (auto it = root.begin(); it != root.end(); it++) {
         BlockTemplate blockTemplate;
-        blockTemplate.name      = (*it)["name"].get<std::string>();
-        blockTemplate.isSolid   = (*it)["is_solid"].get<bool>();
-        blockTemplate.tid_py    = (*it)["tid_py"].get<int>();
-        blockTemplate.tid_px    = (*it)["tid_px"].get<int>();
-        blockTemplate.tid_nx    = (*it)["tid_nx"].get<int>();
-        blockTemplate.tid_pz    = (*it)["tid_pz"].get<int>();
-        blockTemplate.tid_nz    = (*it)["tid_nz"].get<int>();
-        blockTemplate.tid_ny    = (*it)["tid_ny"].get<int>();
+        blockTemplate.name          = (*it)["name"].get<std::string>();
+        blockTemplate.isSolid       = (*it)["is_solid"].get<bool>();
+        blockTemplate.isTransparent = (*it).contains("is_transparent") ? (*it)["is_transparent"].get<bool>() : false;
+        blockTemplate.tid_py        = (*it)["tid_py"].get<int>();
+        blockTemplate.tid_px        = (*it)["tid_px"].get<int>();
+        blockTemplate.tid_nx        = (*it)["tid_nx"].get<int>();
+        blockTemplate.tid_pz        = (*it)["tid_pz"].get<int>();
+        blockTemplate.tid_nz        = (*it)["tid_nz"].get<int>();
+        blockTemplate.tid_ny        = (*it)["tid_ny"].get<int>();
         std::cout << blockTemplate.name << std::endl;
 
         m_blockTemplates.emplace_back(std::move(blockTemplate));

@@ -2,6 +2,8 @@
 #include <glm/glm.hpp>
 #include <noise/noise.h>
 
+#include "GenerationData.hpp"
+
 struct Block;
 using namespace noise::module;
 
@@ -12,5 +14,5 @@ class CaveGenerator {
 
     CaveGenerator();
 
-    void generateChunk(glm::vec2 chunkPos, Block*** blocks) const;
+    void generateChunk(glm::vec2 chunkPos, GenerationData* blocks) const;
 };

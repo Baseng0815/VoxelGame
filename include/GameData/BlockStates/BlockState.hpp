@@ -3,7 +3,7 @@
 
 struct BlockState;
 
-struct BlockState {        
+struct BlockState {
     BlockId blockId;
 
     bool outdated = true;

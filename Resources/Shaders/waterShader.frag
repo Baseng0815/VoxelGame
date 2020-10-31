@@ -64,7 +64,7 @@ void main()
 
     float alpha = (1 - dot(viewDir, vec3(0, 1, 0))) * 0.2 + 0.8;
 
-   out_Color = vec4(result.xyz, alpha);
+    out_Color = vec4(result.xyz, alpha);
 }
 
 // directional light

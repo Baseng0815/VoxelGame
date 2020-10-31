@@ -1,8 +1,8 @@
 #pragma once
 #include "Biome.hpp"
-#include <vector>
+#include "GenerationData.hpp"
 
-struct Block;
+#include <vector>
 
 class TerrainGenerator {
 private:
@@ -12,5 +12,5 @@ private:
 public:
     TerrainGenerator();
 
-    void createBlocks(Block*** blocks, int** heightMap, BiomeId** biomes) const;
+    void createBlocks(GenerationData* data, int** heightMap) const;
 };

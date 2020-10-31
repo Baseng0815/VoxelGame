@@ -64,23 +64,23 @@ void WorldGenerator::generate(glm::vec2 position, GenerationData *data) {
         heightMap[i] = new int[Configuration::CHUNK_SIZE];
 
     m_heightGenerator.generateChunkHeight(position, heightMap, data->biomes);
-    m_terrainGenerator.createBlocks(data->blocks, heightMap, data->biomes);
-    generateOres(data->biomes, data->blocks);
+    m_terrainGenerator.createBlocks(data, heightMap);
+    //generateOres(data->biomes, data->blocks);
 
-    m_caveGenerator.generateChunk(position, data->blocks);
+    m_caveGenerator.generateChunk(position, data);
 
-    for (int cx = 0; cx < Configuration::CHUNK_SIZE; cx++) {
-        for (int cz = 0; cz < Configuration::CHUNK_SIZE; cz++) {
-            if (data->biomes[cx][cz] == BiomeId::BIOME_FLAT_TERRAIN) {
-                if (rand() % 5 == 0) {
-                    int height = heightMap[cx][cz] + 1;
-                    if (data->blocks[cx][height - 1][cz].type == BlockId::BLOCK_GRASS) {
-                        data->blocks[cx][height][cz] = Block{BlockId::PLANE_GRASS};
-                    }
-                }
-            }
-        }
-    }
+    // for (int cx = 0; cx < Configuration::CHUNK_SIZE; cx++) {
+    //     for (int cz = 0; cz < Configuration::CHUNK_SIZE; cz++) {
+    //         if (data->biomes[cx][cz] == BiomeId::BIOME_FLAT_TERRAIN) {
+    //             if (rand() % 5 == 0) {
+    //                 int height = heightMap[cx][cz] + 1;
+    //                 if (data->blocks[cx][height - 1][cz].type == BlockId::BLOCK_GRASS) {
+    //                     data->blocks[cx][height][cz] = Block{BlockId::PLANE_GRASS};
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 int WorldGenerator::getSurfaceHeight(glm::vec2 chunk, int x, int z) const {

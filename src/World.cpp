@@ -2,13 +2,13 @@
 
 #include "../include/Events/EventDispatcher.hpp"
 
-#include "../include/Components/ChunkComponent.hpp"
 #include "../include/Components/BlockStateComponent.hpp"
+#include "../include/Components/ChunkComponent.hpp"
 
 std::unordered_map<glm::ivec2, entt::entity, std::hash<glm::ivec2>> World::chunksLookup;
 std::unordered_map<glm::ivec3, entt::entity, std::hash<glm::ivec3>> World::blockStates;
 
-entt::entity World::getChunk(const glm::vec2& chunk) {    
+entt::entity World::getChunk(const glm::vec2& chunk) {
     return chunksLookup[glm::floor(chunk)];
 }
 
@@ -27,7 +27,7 @@ Block World::getBlock(const entt::registry* registry, const glm::vec3& position)
 
     const ChunkComponent& chunk = registry->get<ChunkComponent>(entity);
 
-    Block block = chunk.blocks[(int)localPosition.x][(int)localPosition.y][(int)localPosition.z];
+    Block block = chunk.getBlock(localPosition.x, localPosition.y, localPosition.z);
 
     return block;
 }
@@ -38,9 +38,9 @@ void World::setBlock(entt::registry* registry, const glm::vec3& position, Block 
     auto entity = getChunk(chunkPosition);
     ChunkComponent& chunk = registry->get<ChunkComponent>(entity);
 
-    BlockId prevBlock = chunk.blocks[(int)localPosition.x][(int)localPosition.y][(int)localPosition.z].type;
+    BlockId prevBlock = chunk.getBlock(localPosition.x, localPosition.y, localPosition.z).type;
 
-    chunk.blocks[(int)localPosition.x][(int)localPosition.y][(int)localPosition.z] = block;
+    chunk.setBlock(localPosition.x, localPosition.y, localPosition.z, block);
     chunk.verticesOutdated = true;
 
     BlockChangedEvent blockChangedEvent{nullptr, position, prevBlock, block.type};
@@ -48,7 +48,7 @@ void World::setBlock(entt::registry* registry, const glm::vec3& position, Block 
 }
 
 BlockStateComponent& World::getBlockState(entt::registry& registry, const glm::vec3& blockPos) {
-    if(blockStates.contains(blockPos)) {
+    if (blockStates.contains(blockPos)) {
         entt::entity stateEntity = blockStates[blockPos];
         return registry.get<BlockStateComponent>(stateEntity);
     }
@@ -57,7 +57,7 @@ BlockStateComponent& World::getBlockState(entt::registry& registry, const glm::v
 }
 
 void World::setBlockState(entt::registry& registry, const glm::vec3& blockPos, BlockState& state) {
-    if(blockStates.contains(blockPos)) {
+    if (blockStates.contains(blockPos)) {
         entt::entity stateEntity = blockStates[blockPos];
         BlockStateComponent& stateComponent = registry.get<BlockStateComponent>(stateEntity);
         stateComponent.state = state;

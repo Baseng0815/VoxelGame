@@ -44,14 +44,16 @@ const GeometryData BlockGeometry::generationDataPlane = {
 GeometryData BlockGeometry::getGeometry(const BlockId& id, BlockState* state) {
     GeometryData geometry;
     if (id >= BlockId::PLANE_GRASS) {
-        return GeometryData{generationDataPlane.begin(), generationDataPlane.end()};
+        return generationDataPlane;
     }
     else {
         if (id == BlockId::BLOCK_WATER) {
-            float height = 1;
+            float height = 7.0f / 8.0f;
             if (state != nullptr) {
                 WaterBlockState* waterBlockState = reinterpret_cast<WaterBlockState*>(state);
-                height = (1 - waterBlockState->level) / 8.0f;
+                if (!(waterBlockState->level == 0 || waterBlockState->level == 8)) {
+                    height = (1 - waterBlockState->level) / 8.0f;
+                }
             }
 
             GeometryData waterGeo;
@@ -65,7 +67,7 @@ GeometryData BlockGeometry::getGeometry(const BlockId& id, BlockState* state) {
             return waterGeo;
         }
         else {
-            return GeometryData{generationDataBlock.begin(), generationDataBlock.end()};
+            return generationDataBlock;
         }
     }
 }

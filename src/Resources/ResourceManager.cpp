@@ -43,9 +43,7 @@ void ResourceManager::loadResources() {
     // render 2d text
     resources.emplace(SHADER_TEXT, ResourceHandle {new Shader("Shaders/textShader")});
     // render 3d color
-    resources.emplace(SHADER_MVP_COLOR, ResourceHandle {new Shader("Shaders/mvpColorShader")});    
-    // framebuffer
-    resources.emplace(SHADER_FRAMEBUFFER, ResourceHandle{new Shader{"Shaders/framebufferQuad"}});
+    resources.emplace(SHADER_MVP_COLOR, ResourceHandle {new Shader("Shaders/mvpColorShader")});        
 
     // materials
     Material *material = new Material {};
@@ -65,7 +63,8 @@ void ResourceManager::loadResources() {
     material->diffuseMap = ResourceManager::getResource<Texture>(TEXTURE_ATLAS);
     material->specularMap = ResourceManager::getResource<Texture>(TEXTURE_BLACK);
     material->shininess = 32.f;
-    material->useBlending = true;    
+    material->useBlending = true;
+    material->useCulling = false;
     resources.emplace(MATERIAL_WATER, ResourceHandle{material});
 
     material = new Material {};
@@ -102,11 +101,7 @@ void ResourceManager::loadResources() {
 
     // mvp color shader
     shader = getResource<Shader>(SHADER_MVP_COLOR);
-    shader->setAttributes({"position"});
-
-    // framebuffer shader
-    shader = getResource<Shader>(SHADER_FRAMEBUFFER);
-    shader->setAttributes({"sceneTexture", "waterTexture", "sceneDepthTexture", "waterDepthTexture"});
+    shader->setAttributes({"position"});    
 
     std::cout << "loaded " << resources.size() << " resources" << std::endl;
 }

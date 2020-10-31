@@ -5,5 +5,6 @@
 struct Block {
     BlockId type;
 
-    bool isSolid();    
+    bool isSolid() const;
+    bool isTransparent() const;
 };
