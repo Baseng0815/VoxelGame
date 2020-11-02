@@ -5,6 +5,7 @@
 
 #include "../../include/Components/SkyboxComponent.hpp"
 #include "../../include/Components/CameraComponent.hpp"
+#include "../../include/Components/PlayerComponent.hpp"
 
 void SkyboxSystem::_update(int dt)
 {
@@ -15,6 +16,7 @@ void SkyboxSystem::_update(int dt)
     if (!m_skyboxShader->uniformsSet()) {
         m_skyboxShader->upload("viewMatrix", camera.viewMatrix);
         m_skyboxShader->upload("projectionMatrix", camera.perspectiveProjection);
+        m_skyboxShader->upload("modelMatrix", glm::mat4 {1.f});
         m_skyboxShader->setUniformState(true);
     }
 
@@ -27,9 +29,10 @@ void SkyboxSystem::_update(int dt)
 }
 
 SkyboxSystem::SkyboxSystem(Registry_T &registry)
-    : System {registry, 0}, m_skyboxShader {ResourceManager::getResource<Shader>(SHADER_SKYBOX)}
+    : System {registry, 0}, m_skyboxShader {ResourceManager::getResource<Shader>(SHADER_SKYBOX)},
+    m_player {m_registry.view<PlayerComponent>().front()}, m_skybox {m_registry.create()}
 {
-    const constexpr int &SIZE = Configuration::SKYBOX_SIZE;
+    const int SIZE = Configuration::SKYBOX_SIZE;
 
     const std::vector<Vertex> vertices = {
         Vertex {glm::vec3 {-SIZE, SIZE, -SIZE}},
@@ -59,7 +62,6 @@ SkyboxSystem::SkyboxSystem(Registry_T &registry)
 
     Geometry skyboxGeometry {vertices, indices};
 
-    auto skyboxEntity = registry.create();
-    registry.emplace<SkyboxComponent>(skyboxEntity, SkyboxComponent { std::move(skyboxGeometry),
+    registry.emplace<SkyboxComponent>(m_skybox, SkyboxComponent { std::move(skyboxGeometry),
         ResourceManager::getResource<Texture>(TEXTURE_CUBE_SKYBOX) });
 }

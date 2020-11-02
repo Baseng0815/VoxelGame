@@ -23,14 +23,4 @@ class Material : public Resource {
         const Shader *customShader = nullptr;
         bool useBlending    = false;
         bool useCulling     = true;
-
-        Material() = default;
-        // TODO kind of unnecessary, maybe handle material differently?
-        // material does not fit into RAII very well
-        ~Material() = default;
-
-        Material(const Material&) = delete;
-        Material &operator=(const Material&) = delete;
-        Material(Material&&) noexcept;
-        Material &operator=(Material&&) noexcept;
 };

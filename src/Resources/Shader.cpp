@@ -98,7 +98,6 @@ Shader::Shader(const std::string& vertex, const std::string &fragment, const std
     size_t valueIndex = 0;
     auto repl = [&](std::string &src) {
         size_t placeholderIndex = src.find('$');
-        std::cout << placeholderIndex << std::endl;
         while (placeholderIndex != std::string::npos) {
             src.replace(placeholderIndex, 1, replaceValues[valueIndex]);
             placeholderIndex = src.find('$');
@@ -108,10 +107,6 @@ Shader::Shader(const std::string& vertex, const std::string &fragment, const std
 
     repl(shaderSourceVert);
     repl(shaderSourceFrag);
-
-    if (fragment == "Shaders/meshRenderShaderColor.frag") {
-        std::cout << shaderSourceFrag << std::endl;
-    }
 
     GLuint shaderVert = createShader(shaderSourceVert, GL_VERTEX_SHADER);
     GLuint shaderFrag = createShader(shaderSourceFrag, GL_FRAGMENT_SHADER);

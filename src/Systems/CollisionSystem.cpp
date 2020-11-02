@@ -47,7 +47,7 @@ void CollisionSystem::_update(int dt) {
 }
 
 void CollisionSystem::updatePlayerLookAtBlock(PlayerComponent &player, TransformationComponent &transform, CameraComponent &camera) const {
-    Math::Ray lookDirection = Math::Ray(transform.getPosition() + camera.playerOffset, camera.front);
+    Math::Ray lookDirection = Math::Ray(transform.getPosition() + camera.positionOffset, camera.front);
 
     glm::vec3 lookAt = lookDirection.getFirstBlock(5, [&](glm::vec3 pos) {
         return World::getBlock(&m_registry, pos).isSolid();

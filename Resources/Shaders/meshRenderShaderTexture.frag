@@ -59,14 +59,14 @@ void main()
 
     // dir lights
     vec4 result = vec4(0.f);
-    for (int i = 0; i < dirLightCount; i++)
+    for (int i = 0; i < dirLightCount; i++) {
         result += calcDirLight(dirLights[i], norm, viewDir, diffuseColor, specularColor);
+    }
 
     // point lights
-    /*
-    for (int i = 0; i < MAX_LIGHTS; i++)
+    for (int i = 0; i < pointLightCount; i++) {
         result += calcPointLight(pointLights[i], norm, viewDir, pass_fragPos, diffuseColor, specularColor);
-    */
+    }
 
     out_Color = result;
 }
@@ -113,9 +113,9 @@ vec4 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 fragPos, v
     vec4 diffuse = light.diffuse * diff * diffuseColor;
     vec4 specular = light.specular * spec * specularColor;
 
-    ambient *= attenuation;
-    diffuse *= attenuation;
-    specular *= attenuation;
+    /* ambient *= attenuation; */
+    /* diffuse *= attenuation; */
+    /* specular *= attenuation; */
 
-    return ambient + diffuse + specular;
+    return (ambient + diffuse + specular) * attenuation;
 }

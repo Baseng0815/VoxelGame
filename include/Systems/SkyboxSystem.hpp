@@ -9,6 +9,9 @@ class SkyboxSystem : public System {
     private:
         const Shader *m_skyboxShader;
 
+        entt::entity m_player;
+        entt::entity m_skybox;
+
         void _update(int dt) override;
 
     public:

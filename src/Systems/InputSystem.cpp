@@ -23,33 +23,33 @@ void InputSystem::handleKeyPressEvent(const KeyEvent &e) {
 
     byte inputCode = 0;
     switch (e.key) {
-    case GLFW_KEY_W:
-        inputCode = 1;
-        break;
-    case GLFW_KEY_S:
-        inputCode = 2;
-        break;
-    case GLFW_KEY_A:
-        inputCode = 4;
-        break;
-    case GLFW_KEY_D:
-        inputCode = 8;
-        break;
-    case GLFW_KEY_SPACE:
-        inputCode = 16;
+        case GLFW_KEY_W:
+            inputCode = 1;
+            break;
+        case GLFW_KEY_S:
+            inputCode = 2;
+            break;
+        case GLFW_KEY_A:
+            inputCode = 4;
+            break;
+        case GLFW_KEY_D:
+            inputCode = 8;
+            break;
+        case GLFW_KEY_SPACE:
+            inputCode = 16;
 
-        // if (e.action == GLFW_RELEASE)
-        //     lastSpaceInput = glfwGetTime();
-        // else if (e.action == GLFW_PRESS) {
-        //     double dt = glfwGetTime() - lastSpaceInput;
-        //     if (dt > 0.5) {
-        //         changeFlyMode = true;
-        //     }
-        // }
-        break;
-    case GLFW_KEY_LEFT_SHIFT:
-        inputCode = 32;
-        break;
+            // if (e.action == GLFW_RELEASE)
+            //     lastSpaceInput = glfwGetTime();
+            // else if (e.action == GLFW_PRESS) {
+            //     double dt = glfwGetTime() - lastSpaceInput;
+            //     if (dt > 0.5) {
+            //         changeFlyMode = true;
+            //     }
+            // }
+            break;
+        case GLFW_KEY_LEFT_SHIFT:
+            inputCode = 32;
+            break;
     }
 
     if (e.action == GLFW_PRESS) {
@@ -61,7 +61,7 @@ void InputSystem::handleKeyPressEvent(const KeyEvent &e) {
 
     float xAxisInput = (playerInputState & 1) - ((playerInputState & 2) >> 1);
     float yAxisInput = ((playerInputState & 4) >> 2) - ((playerInputState & 8) >> 3);
-    float zAxisInput = ((playerInputState & 16) >> 4) - ((playerInputState & 32) >> 5);    
+    float zAxisInput = ((playerInputState & 16) >> 4) - ((playerInputState & 32) >> 5);
 
     playerComponent.xAxisInput = -xAxisInput;
     playerComponent.yAxisInput = -yAxisInput;
@@ -73,7 +73,7 @@ void InputSystem::handleMouseButtonEvent(const MouseButtonEvent &e) {
         entt::entity player = m_registry.view<PlayerComponent>().front();
         const PlayerComponent &playerComponent = m_registry.get<PlayerComponent>(player);
         const glm::vec3 &block = playerComponent.lookAt;
-    
+
         if (!playerComponent.inputEnabled)
             return;
 
@@ -90,7 +90,7 @@ void InputSystem::handleMouseMoveEvent(const CursorEvent &e) {
     if (!playerComponent.inputEnabled)
         return;
 
-    CameraComponent &cameraComponent = m_registry.get<CameraComponent>(player);    
+    CameraComponent &cameraComponent = m_registry.get<CameraComponent>(player);
 
     cameraComponent.yaw += e.dx * Configuration::getFloatValue("MOUSE_SENSITIVITY");
     cameraComponent.yaw = std::fmod(cameraComponent.yaw, 360.f);
@@ -107,28 +107,25 @@ void InputSystem::handleMouseMoveEvent(const CursorEvent &e) {
 }
 
 void InputSystem::handleScrollEvent(const ScrollEvent &e) {
-    m_registry.view<CameraComponent>().each(
-        [&](auto &camera) {
-            camera.fov -= e.dy;
+    CameraComponent &cameraComponent = m_registry.get<CameraComponent>(m_player);
+    cameraComponent.fov -= e.dy;
 
-            if (camera.fov > 179) {
-                camera.fov = 179;
-            }
-            else if (camera.fov < 1) {
-                camera.fov = 1;
-            }
+    if (cameraComponent.fov > 179) {
+        cameraComponent.fov = 179;
+    }
+    else if (cameraComponent.fov < 1) {
+        cameraComponent.fov = 1;
+    }
 
-            camera.updateProjectionMatrix();
-        });
+    updateProjectionMatrix(cameraComponent);
 }
 
 void InputSystem::handleFramebufferSizeEvent(const FramebufferSizeEvent &e) {
-    entt::entity player = m_registry.view<PlayerComponent>().front();
-    CameraComponent &cameraComponent = m_registry.get<CameraComponent>(player);
+    CameraComponent &cameraComponent = m_registry.get<CameraComponent>(m_player);
 
     cameraComponent.width = e.width;
     cameraComponent.height = e.height;
-    cameraComponent.updateProjectionMatrix();
+    updateProjectionMatrix(cameraComponent);
 }
 
 void InputSystem::updateVectors(CameraComponent &camera) {
@@ -136,57 +133,68 @@ void InputSystem::updateVectors(CameraComponent &camera) {
     camera.front.y = sin(glm::radians(camera.pitch));
     camera.front.z = sin(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
     camera.front = glm::normalize(camera.front);
-    camera.right = glm::normalize(glm::cross(camera.front, glm::vec3(0, 1, 0)));
-    camera.front_noY = glm::cross(camera.right, glm::vec3(0, 1, 0));
+    camera.right = glm::normalize(glm::cross(camera.front, glm::vec3 {0.f, 1.f, 0.f}));
+    camera.front_noY = glm::cross(camera.right, glm::vec3{0.f, 1.f, 0.f});
 
     camera.viewMatrixOutdated = true;
 }
 
+void InputSystem::updateViewMatrix(CameraComponent &camera)
+{
+    const TransformationComponent &transform = m_registry.get<TransformationComponent>(m_player);
+
+    camera.viewMatrix = glm::lookAt(transform.getPosition() + camera.positionOffset,
+                                             transform.getPosition() + camera.positionOffset + camera.front,
+                                             glm::vec3 {0.f, 1.f, 0.f});
+}
+
+void InputSystem::updateProjectionMatrix(CameraComponent &camera) {
+    camera.perspectiveProjection = glm::perspective(glm::radians(camera.fov), camera.width / (float)camera.height, 0.1f, 7000.f);
+}
+
 void InputSystem::_update(int dt) {
-    entt::entity player = m_registry.view<PlayerComponent>().front();
-    CameraComponent &cameraComponent = m_registry.get<CameraComponent>(player);
+    CameraComponent &camera = m_registry.get<CameraComponent>(m_player);
 
-    if (cameraComponent.viewMatrixOutdated) {
-        const TransformationComponent &transformComponent = m_registry.get<TransformationComponent>(player);
-
-        cameraComponent.updateViewMatrix(transformComponent);
+    if (camera.viewMatrixOutdated) {
+        updateViewMatrix(camera);
     }
 }
 
+// TODO maybe create player somewhere else
 InputSystem::InputSystem(Registry_T &registry)
-    : System{registry, 0} {
-    // create camera and update projection matrix
-    // TODO put into extra system
-    entt::entity entity = m_registry.create();
-    m_registry.emplace<CameraComponent>(entity, 90.f, Configuration::getFloatValue("WINDOW_WIDTH"), Configuration::getFloatValue("WINDOW_HEIGHT"));
-    m_registry.emplace<TransformationComponent>(entity, glm::vec3{0.f, 100.f, 0.f}, glm::vec3{0.f, 0.f, 0.f}, glm::vec3{1, 1, 1});
-    m_registry.emplace<VelocityComponent>(entity);
-    m_registry.emplace<PlayerComponent>(entity);
-    m_registry.emplace<CollisionComponent>(entity, glm::vec3{-0.5, 0, -0.5}, 1.0f, 2.0f, 1.0f);
-    m_registry.emplace<RigidBodyComponent>(entity, 80.f, true);
-    m_registry.emplace<InventoryComponent>(entity, 36);
+    : System{registry, 0}, m_player {m_registry.create()} {
+        m_registry.emplace<TransformationComponent>(m_player, glm::vec3{0.f, 100.f, 0.f}, glm::vec3{0.f, 0.f, 0.f}, glm::vec3{1, 1, 1});
+        m_registry.emplace<VelocityComponent>(m_player);
+        m_registry.emplace<PlayerComponent>(m_player);
+        m_registry.emplace<CollisionComponent>(m_player, glm::vec3{-0.5, 0, -0.5}, 1.0f, 2.0f, 1.0f);
+        m_registry.emplace<RigidBodyComponent>(m_player, 80.f, true);
+        m_registry.emplace<InventoryComponent>(m_player, 36);
 
-    entt::entity player = m_registry.view<PlayerComponent>().front();
-    CameraComponent &cameraComponent = m_registry.get<CameraComponent>(player);
-    cameraComponent.updateProjectionMatrix();
+        // create camera and update projection matrix
+        CameraComponent &cameraComponent = m_registry.emplace<CameraComponent>(m_player, 90.f, Configuration::getFloatValue("WINDOW_WIDTH"), Configuration::getFloatValue("WINDOW_HEIGHT"));
 
-    m_keyPressHandle = EventDispatcher::onKeyPress.subscribe([this](const KeyEvent &e) {
-        handleKeyPressEvent(e);
-    });
+        updateVectors(cameraComponent);
+        updateViewMatrix(cameraComponent);
+        updateProjectionMatrix(cameraComponent);
 
-    m_mouseButtonHandle = EventDispatcher::onMouseButtonPress.subscribe([this](const MouseButtonEvent &e) {
-        handleMouseButtonEvent(e);
-    });
+        // subscribe to events
+        m_keyPressHandle = EventDispatcher::onKeyPress.subscribe([this](const KeyEvent &e) {
+            handleKeyPressEvent(e);
+        });
 
-    m_cursorHandle = EventDispatcher::onCursorMove.subscribe([this](const CursorEvent &e) {
-        handleMouseMoveEvent(e);
-    });
+        m_mouseButtonHandle = EventDispatcher::onMouseButtonPress.subscribe([this](const MouseButtonEvent &e) {
+            handleMouseButtonEvent(e);
+        });
 
-    m_scrollHandle = EventDispatcher::onMouseScroll.subscribe([this](const ScrollEvent &e) {
-        handleScrollEvent(e);
-    });
+        m_cursorHandle = EventDispatcher::onCursorMove.subscribe([this](const CursorEvent &e) {
+            handleMouseMoveEvent(e);
+        });
 
-    m_framebufferHandle = EventDispatcher::onFramebufferSize.subscribe([this](const FramebufferSizeEvent &e) {
-        handleFramebufferSizeEvent(e);
-    });
-}
+        m_scrollHandle = EventDispatcher::onMouseScroll.subscribe([this](const ScrollEvent &e) {
+            handleScrollEvent(e);
+        });
+
+        m_framebufferHandle = EventDispatcher::onFramebufferSize.subscribe([this](const FramebufferSizeEvent &e) {
+            handleFramebufferSizeEvent(e);
+        });
+    }

@@ -16,20 +16,22 @@
 
 void MeshRenderSystem::uploadToShader(const Shader* shader, const CameraComponent& camera, const TransformationComponent& playerTransform) const {
     shader->upload("viewMatrix", camera.viewMatrix);
-    shader->upload("viewPos", camera.playerOffset + playerTransform.getPosition());
+    shader->upload("viewPos", camera.positionOffset + playerTransform.getPosition());
     shader->upload("projectionMatrix", camera.perspectiveProjection);
 
     const LightingComponent &lighting = m_registry.raw<LightingComponent>()[0];
 
     // upload dir lights
     shader->upload("dirLightCount", (int)lighting.dirLights.size());
-    for (size_t i = 0; i < lighting.dirLights.size(); i++) {
+    size_t lightCount = std::min(lighting.dirLights.size(), (size_t)Configuration::MAX_DIR_LIGHTS);
+    for (size_t i = 0; i < lightCount; i++) {
         shader->upload("dirLights[" + std::to_string(i) + "]", lighting.dirLights[i]);
     }
 
     // upload point lights
     shader->upload("pointLightCount", (int)lighting.pointLights.size());
-    for (size_t i = 0; i < lighting.pointLights.size(); i++) {
+    lightCount = std::min(lighting.pointLights.size(), (size_t)Configuration::MAX_POINT_LIGHTS);
+    for (size_t i = 0; i < lightCount; i++) {
         shader->upload("pointLights[" + std::to_string(i) + "]", lighting.pointLights[i]);
     }
 
@@ -88,6 +90,7 @@ void MeshRenderSystem::render(const TransformationComponent& transformation, con
 
         // final draw call
         glBindVertexArray(meshRenderer.geometry->getVao());
+        glEnable(GL_DEPTH_TEST);
         glDrawElements(GL_TRIANGLES, meshRenderer.geometry->getDrawCount(), GL_UNSIGNED_INT, nullptr);
     }
 }
@@ -96,8 +99,8 @@ void MeshRenderSystem::_update(int dt) {
     // upload per-frame values for both shaders
     // color shader
     m_meshRenderShaderColor->bind();
-    const CameraComponent& camera = m_registry.view<CameraComponent>().raw()[0];
-    const TransformationComponent& playerTransform = m_registry.get<TransformationComponent>(m_registry.view<PlayerComponent>().front());
+    const CameraComponent&          camera          = m_registry.view<CameraComponent>().raw()[0];
+    const TransformationComponent&  playerTransform = m_registry.get<TransformationComponent>(m_registry.view<PlayerComponent>().front());
 
     // texture shader
     m_meshRenderShaderTexture->bind();

@@ -20,6 +20,7 @@ struct FramebufferSizeEvent;
 class InputSystem : public System {
     private:
         struct LookData { glm::vec3 block; glm::vec3 face; bool valid; };
+        entt::entity m_player;
         double lastSpaceInput = -1;
 
         CallbackHandle<const KeyEvent&> m_keyPressHandle;
@@ -33,7 +34,9 @@ class InputSystem : public System {
         CallbackHandle<const FramebufferSizeEvent&> m_framebufferHandle;
         void handleFramebufferSizeEvent(const FramebufferSizeEvent&);
 
-        void updateVectors(CameraComponent& camera);        
+        void updateVectors(CameraComponent &camera);
+        void updateViewMatrix(CameraComponent &camera);
+        void updateProjectionMatrix(CameraComponent &camera);
 
         void _update(int dt) override;
 

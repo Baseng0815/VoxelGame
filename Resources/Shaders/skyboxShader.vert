@@ -6,8 +6,9 @@ out vec3 pass_uvCoords;
 
 uniform mat4 projectionMatrix;
 uniform mat4 viewMatrix;
+uniform mat4 modelMatrix;
 
 void main() {
-    gl_Position = projectionMatrix * viewMatrix * vec4(position, 1);
+    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1);
     pass_uvCoords = position;
 }
