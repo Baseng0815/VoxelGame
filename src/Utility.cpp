@@ -6,18 +6,18 @@
 #include <iostream>
 
 namespace Utility {
-    bool InChunk(const glm::vec3& pos) {
+    bool inChunk(const glm::vec3& pos) {
         return pos.x >= 0 && pos.x < Configuration::CHUNK_SIZE && pos.y >= 0 && pos.y < Configuration::CHUNK_HEIGHT &&
-            pos.z >= 0 && pos.z < Configuration::CHUNK_SIZE;
+               pos.z >= 0 && pos.z < Configuration::CHUNK_SIZE;
     }
 
-    bool InChunk(const int x, const int y, const int z) {
+    bool inChunk(const int x, const int y, const int z) {
         return x >= 0 && x < Configuration::CHUNK_SIZE && y >= 0 && y < Configuration::CHUNK_HEIGHT && z >= 0 && z < Configuration::CHUNK_SIZE;
     }
 
     std::tuple<glm::vec2, glm::vec3> GetChunkAndLocal(const glm::vec3& worldCoords) {
         glm::vec2 chunkPos{std::floor(worldCoords.x / Configuration::CHUNK_SIZE),
-                        std::floor(worldCoords.z / Configuration::CHUNK_SIZE)};
+                           std::floor(worldCoords.z / Configuration::CHUNK_SIZE)};
 
         glm::vec3 localCoords{
             worldCoords.x - std::floor(worldCoords.x / Configuration::CHUNK_SIZE) * Configuration::CHUNK_SIZE,
@@ -29,7 +29,7 @@ namespace Utility {
 
     glm::vec2 GetChunk(const glm::vec3& worldCoords) {
         return glm::vec2{std::floor(worldCoords.x / Configuration::CHUNK_SIZE),
-                        std::floor(worldCoords.z / Configuration::CHUNK_SIZE)};
+                         std::floor(worldCoords.z / Configuration::CHUNK_SIZE)};
     }
 
     glm::vec3 GetWorldCoords(const glm::vec2& chunk, const glm::vec3& chunkCoords) {
@@ -38,6 +38,13 @@ namespace Utility {
         chunkTransform[1][2] = Configuration::CHUNK_SIZE;
 
         return chunkTransform * chunk + chunkCoords;
+    }
+
+    glm::vec3 GetWorldCoords(const int chunkX, const int chunkZ, const int x, const int y, const int z) {
+        return glm::vec3{
+            chunkX * Configuration::CHUNK_SIZE + x,
+            y,
+            chunkZ * Configuration::CHUNK_SIZE + z};
     }
 
     glm::vec3 GetChunkCoords(const glm::vec3& worldCoords) {
@@ -49,25 +56,22 @@ namespace Utility {
 
     std::vector<glm::vec3> getNeighborBlocks(const glm::vec3& blockPos, bool moore) {
         std::vector<glm::vec3> positions;
+        positions.emplace_back(blockPos.x - 1, blockPos.y, blockPos.z);
+        positions.emplace_back(blockPos.x + 1, blockPos.y, blockPos.z);
+        positions.emplace_back(blockPos.x, blockPos.y - 1, blockPos.z);
+        positions.emplace_back(blockPos.x, blockPos.y + 1, blockPos.z);
+        positions.emplace_back(blockPos.x, blockPos.y, blockPos.z - 1);
+        positions.emplace_back(blockPos.x, blockPos.y, blockPos.z + 1);
 
-        for (int x = -1; x <= 1; x++) {
-            for (int y = -1; y <= 1; y++) {
-                for (int z = -1; y <= 1; z++) {
-                    if(y < 256 && y >= 0) {
-                        glm::vec3 offset = glm::vec3{x, y, z};
-                        float length = glm::length(offset);
-                        if(length == 0) {
-                            continue;
-                        }
-                        else if(length > 1 && moore) {
-                            positions.emplace_back(blockPos + offset);
-                            continue;
-                        }
-
-                        positions.emplace_back(blockPos + offset);
-                    }
-                }
-            }
+        if (moore) {
+            positions.emplace_back(blockPos.x - 1, blockPos.y - 1, blockPos.z - 1);
+            positions.emplace_back(blockPos.x - 1, blockPos.y - 1, blockPos.z + 1);
+            positions.emplace_back(blockPos.x - 1, blockPos.y + 1, blockPos.z - 1);
+            positions.emplace_back(blockPos.x - 1, blockPos.y + 1, blockPos.z + 1);
+            positions.emplace_back(blockPos.x + 1, blockPos.y - 1, blockPos.z - 1);
+            positions.emplace_back(blockPos.x + 1, blockPos.y - 1, blockPos.z + 1);
+            positions.emplace_back(blockPos.x + 1, blockPos.y + 1, blockPos.z - 1);
+            positions.emplace_back(blockPos.x + 1, blockPos.y + 1, blockPos.z + 1);
         }
 
         return positions;

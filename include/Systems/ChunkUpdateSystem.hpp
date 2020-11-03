@@ -3,14 +3,17 @@
 #include "System.hpp"
 
 struct ChunkComponent;
+struct BlockChangedEvent;
+struct Block;
+struct WaterBlockState;
 
 class ChunkUpdateSystem : public System {
   private:
     void updateFluids(ChunkComponent& chunk, int dt);
 
-    void updateWater(ChunkComponent& chunk, int x, int y, int z);
+    static void updateWater(ChunkComponent& chunk, Block& block, WaterBlockState& waterState, bool waterOnTop = false);
 
-    void _update(int dt) override;
+    void _update(int dt) override;    
 
   public:
     ChunkUpdateSystem(Registry_T& registry);

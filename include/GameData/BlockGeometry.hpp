@@ -1,7 +1,6 @@
 #pragma once
 
-#include "BlockIds.hpp"
-#include "BlockStates/BlockState.hpp"
+#include "Block.hpp"
 
 #include <array>
 #include <glm/glm.hpp>
@@ -15,5 +14,5 @@ class BlockGeometry {
     static const GeometryData generationDataPlane;
 
   public:
-    static GeometryData getGeometry(const BlockId& id, BlockState* state = nullptr);
+    static GeometryData getGeometry(const Block& block);
 };

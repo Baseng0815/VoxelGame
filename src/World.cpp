@@ -2,71 +2,46 @@
 
 #include "../include/Events/EventDispatcher.hpp"
 
-#include "../include/Components/BlockStateComponent.hpp"
 #include "../include/Components/ChunkComponent.hpp"
 
 std::unordered_map<glm::ivec2, entt::entity, std::hash<glm::ivec2>> World::chunksLookup;
 std::unordered_map<glm::ivec3, entt::entity, std::hash<glm::ivec3>> World::blockStates;
 
-entt::entity World::getChunk(const glm::vec2& chunk) {
-    return chunksLookup[glm::floor(chunk)];
+ChunkComponent& World::getChunk(entt::registry& registry, const glm::vec2& chunk) {
+    return registry.get<ChunkComponent>(chunksLookup[glm::floor(chunk)]);
 }
 
 bool World::chunkCreated(const glm::vec2& chunk) {
     return chunksLookup.contains(glm::floor(chunk));
 }
 
-Block World::getBlock(const entt::registry* registry, const glm::vec3& position) {
+Block World::getBlock(entt::registry& registry, const glm::vec3& position) {
     auto [chunkPosition, localPosition] = Utility::GetChunkAndLocal(position);
 
     if (!chunkCreated(chunkPosition)) {
-        return Block();
+        return Block{};
     }
 
-    auto entity = getChunk(chunkPosition);
-
-    const ChunkComponent& chunk = registry->get<ChunkComponent>(entity);
+    const ChunkComponent& chunk = getChunk(registry, chunkPosition);
 
     Block block = chunk.getBlock(localPosition.x, localPosition.y, localPosition.z);
 
     return block;
 }
 
-void World::setBlock(entt::registry* registry, const glm::vec3& position, Block block) {
+void World::setBlock(entt::registry& registry, const glm::vec3& position, Block block) {
     auto [chunkPosition, localPosition] = Utility::GetChunkAndLocal(position);
 
-    auto entity = getChunk(chunkPosition);
-    ChunkComponent& chunk = registry->get<ChunkComponent>(entity);
+    if (chunkCreated(chunkPosition)) {
+        ChunkComponent& chunk = getChunk(registry, chunkPosition);
 
-    BlockId prevBlock = chunk.getBlock(localPosition.x, localPosition.y, localPosition.z).type;
+        BlockId prevBlock = chunk.getBlock(localPosition.x, localPosition.y, localPosition.z).type;
 
-    chunk.setBlock(localPosition.x, localPosition.y, localPosition.z, block);
-    chunk.verticesOutdated = true;
+        chunk.setBlock(localPosition.x, localPosition.y, localPosition.z, block);
+        chunk.verticesOutdated = true;
 
-    BlockChangedEvent blockChangedEvent{nullptr, position, prevBlock, block.type};
-    EventDispatcher::raiseEvent(blockChangedEvent);
-}
-
-BlockStateComponent& World::getBlockState(entt::registry& registry, const glm::vec3& blockPos) {
-    if (blockStates.contains(blockPos)) {
-        entt::entity stateEntity = blockStates[blockPos];
-        return registry.get<BlockStateComponent>(stateEntity);
-    }
-    else
-        throw std::exception{};
-}
-
-void World::setBlockState(entt::registry& registry, const glm::vec3& blockPos, BlockState& state) {
-    if (blockStates.contains(blockPos)) {
-        entt::entity stateEntity = blockStates[blockPos];
-        BlockStateComponent& stateComponent = registry.get<BlockStateComponent>(stateEntity);
-        stateComponent.state = state;
-    }
-    else {
-        entt::entity stateEntity = registry.create();
-        blockStates.emplace(blockPos, stateEntity);
-
-        registry.emplace<BlockStateComponent>(stateEntity, blockPos, state);
+        BlockChangedEvent blockChangedEvent{nullptr, position, prevBlock, block.type};
+        EventDispatcher::raiseEvent(blockChangedEvent);
     }
 }
 

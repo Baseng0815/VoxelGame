@@ -23,9 +23,6 @@ Biome TerrainGenerator::getBiome(BiomeId id) const {
 }
 
 void TerrainGenerator::createBlocks(GenerationData* data, int** heightMap) const {
-    data->stateData.push_back(new BlockState{BlockState::empty()});
-    data->stateData.push_back(new WaterBlockState{});
-
     data->blockData.push_back(BlockId::BLOCK_AIR);
     data->blockData.push_back(BlockId::BLOCK_BRICKS);
     data->blockData.push_back(BlockId::BLOCK_STONE);
@@ -81,7 +78,8 @@ void TerrainGenerator::createBlocks(GenerationData* data, int** heightMap) const
                 }
                 else if (cy <= 63) {
                     // water default state index and block index
-                    block = 1 << 16 | 3;
+                    block = 3;
+                    // data->stateData.createBlockState<WaterBlockState>(glm::vec3{cx, cy, cz});
                 }
                 else {
                     // air

@@ -13,6 +13,8 @@
 
 #include "../GameData/BiomeIds.hpp"
 #include "../GameData/Block.hpp"
+
+#include "../GameData/BlockStates/BlockStateContainer.hpp"
 #include <vector>
 
 struct Cuboid;
@@ -31,11 +33,12 @@ struct ChunkComponent {
 
     // max 16 * 16 * 256 = 65535 elements
     std::vector<BlockId> blockData;
-    std::vector<BlockState*> blockStates;
+    BlockStateContainer blockStates;
+    bool needsUpdate = false;
 
     // TODO make this more efficient (maybe use octrees?)
     // four bytes blockdata and four bytes block type
-    int*** blocks = nullptr;
+    short*** blocks = nullptr;
 
     // TODO maybe use chunk-wise biomes and interpolate
     BiomeId** biomes = nullptr;
@@ -43,14 +46,12 @@ struct ChunkComponent {
     bool verticesOutdated = false;
     bool threadActiveOnSelf = false;
 
+    int getBlockIndex(const BlockId& type) const;
+
     void setBlock(int x, int y, int z, const Block& block);
+
     const Block getBlock(int x, int y, int z) const;
+
     Block getBlock(int x, int y, int z);
 
-    template<typename s_type>
-    void setBlockState(int x, int y, int z, s_type* state);
-    template<typename s_type>
-    const s_type* getBlockState(int x, int y, int z) const;
-    template<typename s_type>
-    s_type* getBlockState(int x, int y, int z);
 };

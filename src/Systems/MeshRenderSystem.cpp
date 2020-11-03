@@ -73,7 +73,7 @@ void MeshRenderSystem::render(const TransformationComponent& transformation, con
         }
         else {
             glDisable(GL_CULL_FACE);
-        }        
+        }
 
         // final draw call
         glBindVertexArray(meshRenderer.geometry->getVao());
@@ -81,7 +81,7 @@ void MeshRenderSystem::render(const TransformationComponent& transformation, con
     }
 }
 
-void MeshRenderSystem::_update(int dt) {    
+void MeshRenderSystem::_update(int dt) {
     // upload per-frame values for both shaders
     // color shader
     m_meshRenderShaderColor->bind();
@@ -115,16 +115,15 @@ void MeshRenderSystem::_update(int dt) {
                         render(transformation, meshRenderer, camera, playerTransform);
                 }
             });
-    }    
+    }
 }
 
 MeshRenderSystem::MeshRenderSystem(Registry_T& registry)
     : System{registry, 0},
       m_meshRenderShaderColor{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_COLOR)},
-      m_meshRenderShaderTexture{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_TEXTURE)}      
-{
+      m_meshRenderShaderTexture{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_TEXTURE)} {
     m_sun.direction = glm::vec3{-0.3, -0.8, -0.5};
     m_sun.ambient = Color{70};
     m_sun.diffuse = Color{200};
-    m_sun.specular = Color{30};    
+    m_sun.specular = Color{30};
 }

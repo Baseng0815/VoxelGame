@@ -13,7 +13,7 @@ void StructureGenerator::generateStructure(const glm::vec2 &chunk, glm::vec3 pos
 
     for (const auto &[localPos, blockType] : structure) {
         glm::vec3 pos = localPos + position;
-        if (Utility::InChunk(pos)) {
+        if (Utility::inChunk(pos)) {
             blocks[(int)pos.x][(int)pos.y][(int)pos.z].type = blockType;
         }
         else {            

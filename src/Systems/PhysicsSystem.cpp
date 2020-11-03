@@ -72,7 +72,7 @@ void PhysicsSystem::handleBlockCollision(entt::entity entity, const glm::vec3 &b
     do {
         glm::vec3 normal = glm::round(glm::normalize(*it));
 
-        if (!World::getBlock(&m_registry, block + normal).isSolid()) {
+        if (!World::getBlock(m_registry, block + normal).isSolid()) {
             mtv = *it;
 
             transform.move(mtv);
@@ -93,7 +93,7 @@ void PhysicsSystem::updateFalling(RigidBodyComponent &rigidBody, const Transform
     if (position.y < 1) {
         rigidBody.isFalling = true;
     }
-    else if (!World::getBlock(&m_registry, glm::floor(position - glm::vec3{0.0f, 0.9f, 0.0f})).isSolid()) {
+    else if (!World::getBlock(m_registry, glm::floor(position - glm::vec3{0.0f, 0.9f, 0.0f})).isSolid()) {
         rigidBody.isFalling = true;
     }
     else if(velocity.velocity.y == 0) {

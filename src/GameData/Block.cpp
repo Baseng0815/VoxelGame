@@ -1,5 +1,6 @@
 #include "../../include/GameData/Block.hpp"
 
+#include "../../include/GameData/BlockStates/BlockState.hpp"
 #include "../../include/GameData/GameData.hpp"
 
 bool Block::isSolid() const {
@@ -11,9 +12,15 @@ bool Block::isTransparent() const {
 }
 
 Block::Block()
-    : Block{BlockId::BLOCK_AIR, nullptr} {
+    : Block{glm::vec3{}, BlockId::BLOCK_AIR} {
 }
 
-Block::Block(BlockId type, BlockState* state)
-    : type{type}, state{state} {
+Block::Block(const glm::vec3& position, BlockId type)
+    : Block{position, type, nullptr} {
+}
+
+Block::Block(const glm::vec3& position, BlockId type, BlockState* state)
+    : type{type},
+      state{state},
+      position{position} {
 }

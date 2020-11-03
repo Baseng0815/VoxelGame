@@ -7,7 +7,23 @@ struct WaterBlockState : public BlockState {
     bool falling = false;
 
     WaterBlockState()
-        : BlockState{BlockId::BLOCK_WATER} {
+        : BlockState{} {
+    }
+
+    WaterBlockState(bool falling)
+        : BlockState{},
+          falling{true} {
+    }
+
+    WaterBlockState(int level)
+        : BlockState{},
+          level{level} {
+    }
+
+    WaterBlockState(bool falling, int level)
+        : BlockState{},
+          falling{falling},
+          level{level} {
     }
 
     bool operator==(const WaterBlockState& state) {

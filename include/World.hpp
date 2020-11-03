@@ -6,8 +6,7 @@
 #include <unordered_map>
 
 struct Block;
-struct BlockState;
-struct BlockStateComponent;
+struct ChunkComponent;
 
 class World {
     private:
@@ -15,14 +14,11 @@ class World {
         static std::unordered_map<glm::ivec3, entt::entity, std::hash<glm::ivec3>> blockStates;
 
       public:
-        static entt::entity getChunk(const glm::vec2 &chunk);
+        static ChunkComponent& getChunk(entt::registry& registry, const glm::vec2& chunk);
         static bool chunkCreated(const glm::vec2 &chunk);
 
-        static Block getBlock(const entt::registry *registry, const glm::vec3 &position);
-        static void setBlock(entt::registry *registry, const glm::vec3 &position, Block block);
-
-        static BlockStateComponent& getBlockState(entt::registry& registry, const glm::vec3& blockPos);
-        static void setBlockState(entt::registry& registry, const glm::vec3& blockPos, BlockState& state);
+        static Block getBlock(entt::registry& registry, const glm::vec3 &position);
+        static void setBlock(entt::registry& registry, const glm::vec3 &position, Block block);
 
         static void addChunk(entt::entity entity, const glm::vec2 &position);
         static void removeChunk(entt::entity entity);
