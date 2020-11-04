@@ -2,6 +2,7 @@
 
 #include <glm/glm.hpp>
 
+// TODO put this all into functions and constexpr
 #define BUFFER_OFFSET(x) ((void*)(x))
 #define PI 3.1415926535897932384626433832f
 

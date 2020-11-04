@@ -10,6 +10,7 @@
 #include "../include/Systems/PhysicsSystem.hpp"
 #include "../include/Systems/PlayerMovementSystem.hpp"
 #include "../include/Systems/SkyboxSystem.hpp"
+#include "../include/Systems/DayNightSystem.hpp"
 
 #include "../include/Components/CameraComponent.hpp"
 #include "../include/Components/InventoryComponent.hpp"
@@ -63,24 +64,26 @@ void IngameLayer::handleKeys(const KeyEvent &e) {
 }
 
 IngameLayer::IngameLayer(Application *application)
-    : GameLayer{application}, m_atlas{16, 16}
+    : GameLayer {application}, m_atlas {16, 16}
 {
     m_application->getWindow().disableCursor();
 
     // create all systems
     // updating and physics
-    m_systems.emplace_back(new ChunkCreateSystem{m_registry, m_atlas});
-    m_systems.emplace_back(new PhysicsSystem{m_registry});
-    m_systems.emplace_back(new InputSystem{m_registry});
-    m_systems.emplace_back(new PlayerMovementSystem{m_registry});
-    m_systems.emplace_back(new CloudSystem{m_registry});
-    m_systems.emplace_back(new SkyboxSystem{m_registry});
-    m_systems.emplace_back(new CollisionSystem{m_registry});
-    m_systems.emplace_back(new ItemSystem{m_registry, m_atlas});
+    // TODO add clear description of which systems to initialize and update first
+    m_systems.emplace_back(new ChunkCreateSystem    {m_registry, m_atlas});
+    m_systems.emplace_back(new PhysicsSystem        {m_registry});
+    m_systems.emplace_back(new InputSystem          {m_registry});
+    m_systems.emplace_back(new PlayerMovementSystem {m_registry});
+    m_systems.emplace_back(new CloudSystem          {m_registry});
+    m_systems.emplace_back(new SkyboxSystem         {m_registry});
+    m_systems.emplace_back(new CollisionSystem      {m_registry});
+    m_systems.emplace_back(new DayNightSystem       {m_registry});
+    m_systems.emplace_back(new ItemSystem           {m_registry, m_atlas});
 
     // rendering
-    m_systems.emplace_back(new MeshRenderSystem{m_registry});
-    m_systems.emplace_back(new DebugRenderSystem{m_registry});
+    m_systems.emplace_back(new MeshRenderSystem     {m_registry});
+    m_systems.emplace_back(new DebugRenderSystem    {m_registry});
 
     // callbacks
     m_keyEventHandle = EventDispatcher::onKeyPress.subscribe([&](const KeyEvent &e) {
@@ -110,6 +113,7 @@ void IngameLayer::update(int dt) {
     }
 
     m_time += dt;
+    // update debug info every 1000ms
     if (m_time > 1000) {
         entt::entity player = m_registry.view<PlayerComponent>().front();
 
@@ -118,6 +122,7 @@ void IngameLayer::update(int dt) {
 
         DebugLayoutInfo info {m_frameCounter * 1000 / m_time,
             m_time * 1000 / std::max(m_frameCounter, 1),
+            // TODO make accessing systems easier, maybe using a map?
             static_cast<const ChunkCreateSystem*>(m_systems[0].get())->getActiveChunkCount(),
             transform.getPosition(),
             camera.front,

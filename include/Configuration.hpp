@@ -5,6 +5,8 @@
 
 struct Event;
 
+// this class contains settings and compile-time constants
+// TODO maybe move settings out of here
 class Configuration {
     private:
         static std::map<std::string, float> floatValues;
@@ -12,20 +14,22 @@ class Configuration {
         static std::map<std::string, int> keyBinds;
 
     public:
-        static constexpr int CHUNK_SIZE = 16;
-        static constexpr int CHUNK_HEIGHT = 256;
+        static constexpr int CHUNK_SIZE         = 16;
+        static constexpr int CHUNK_HEIGHT       = 256;
         static constexpr int CHUNK_PRELOAD_SIZE = 6;
         static constexpr int CHUNK_COUNT_PER_AXIS = CHUNK_PRELOAD_SIZE * 2 + 1;
-        static constexpr int CHUNK_MAX_LOADING = 2;
-        static constexpr int MAP_SEED_SIZE = 256;
-        static constexpr int SKYBOX_SIZE = 4000;
+        static constexpr int CHUNK_MAX_LOADING  = 2;
+        static constexpr int MAP_SEED_SIZE      = 256;
+        static constexpr int SKYBOX_SIZE        = 4000;
         static constexpr int MAX_POINT_LIGHTS   = 10;
         static constexpr int MAX_DIR_LIGHTS     = 1;
+        // in real seconds
+        static constexpr int DAYNIGHT_DURATION  = 100;
         // units per second
-        static constexpr float CLOUD_SPEED = 16;
+        static constexpr float CLOUD_SPEED      = 16;
         // the higher the bias, the more clouds there will be
-        static constexpr double CLOUD_BIAS = 0.0;
-        static constexpr float CLOUD_HEIGHT = 120;
+        static constexpr double CLOUD_BIAS      = 0.0;
+        static constexpr float CLOUD_HEIGHT     = 120;
         static constexpr float CLOUD_VOLUMETRIC_HEIGHT = 8;
 
         // resourceBasePath contains all resources and static data

@@ -140,6 +140,6 @@ MeshRenderSystem::MeshRenderSystem(Registry_T& registry)
     // create lighting component
     entt::entity lightEntity = m_registry.create();
     LightingComponent lighting;
-    lighting.dirLights.emplace_back(DirectionalLight {glm::vec3 {-0.3f, -0.8f, -0.5f}, Color {70}, Color {200}, Color {30}});
+    lighting.dirLights.emplace_back(DirectionalLight {glm::vec3 {0.f, 0.f, 0.f}, Color {30}, Color {220}, Color {30}});
     m_registry.emplace<LightingComponent>(lightEntity, lighting);
 }

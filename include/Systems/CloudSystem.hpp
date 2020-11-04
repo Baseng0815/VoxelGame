@@ -12,6 +12,7 @@ using namespace noise;
 
 struct EnterChunkEvent;
 
+// used to generate a binary map of clouds (y or n)
 class CloudModule : public module::Module {
     public:
         CloudModule();

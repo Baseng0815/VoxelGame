@@ -23,7 +23,7 @@ class IngameLayer : public GameLayer {
     int m_time = 0;
     int m_frameCounter = 0;
 
-    IngameLayerGUI m_gui;    
+    IngameLayerGUI m_gui;
 
   public:
     IngameLayer(Application *application);

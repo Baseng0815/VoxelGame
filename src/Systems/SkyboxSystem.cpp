@@ -6,17 +6,21 @@
 #include "../../include/Components/SkyboxComponent.hpp"
 #include "../../include/Components/CameraComponent.hpp"
 #include "../../include/Components/PlayerComponent.hpp"
+#include "../../include/Components/TransformationComponent.hpp"
+
+#include <glm/gtx/transform.hpp>
 
 void SkyboxSystem::_update(int dt)
 {
-    const SkyboxComponent &skybox = m_registry.view<SkyboxComponent>().raw()[0];
-    const CameraComponent &camera = m_registry.view<CameraComponent>().raw()[0];
+    const SkyboxComponent &skybox               = m_registry.get<SkyboxComponent>(m_skybox);
+    const TransformationComponent &transform    = m_registry.get<TransformationComponent>(m_skybox);
+    const CameraComponent &camera               = m_registry.get<CameraComponent>(m_player);
 
     m_skyboxShader->bind();
     if (!m_skyboxShader->uniformsSet()) {
         m_skyboxShader->upload("viewMatrix", camera.viewMatrix);
         m_skyboxShader->upload("projectionMatrix", camera.perspectiveProjection);
-        m_skyboxShader->upload("modelMatrix", glm::mat4 {1.f});
+        m_skyboxShader->upload("modelMatrix", transform.getModelMatrix());
         m_skyboxShader->setUniformState(true);
     }
 
@@ -64,4 +68,5 @@ SkyboxSystem::SkyboxSystem(Registry_T &registry)
 
     registry.emplace<SkyboxComponent>(m_skybox, SkyboxComponent { std::move(skyboxGeometry),
         ResourceManager::getResource<Texture>(TEXTURE_CUBE_SKYBOX) });
+    registry.emplace<TransformationComponent>(m_skybox, TransformationComponent {});
 }
