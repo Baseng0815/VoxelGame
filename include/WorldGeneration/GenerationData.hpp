@@ -7,8 +7,8 @@
 
 struct GenerationData {
     entt::entity entity;
-    std::vector<BlockId> blockData;
+    
     BlockStateContainer stateData;
-    short*** blocks;
+    BlockId*** blocks;
     BiomeId** biomes;
 };

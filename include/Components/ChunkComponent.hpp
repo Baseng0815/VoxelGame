@@ -30,23 +30,19 @@ struct ChunkComponent {
     Geometry* geometryNonCulled;
     Geometry* geometryTransparent;
 
-    // max 16 * 16 * 256 = 65535 elements
-    // TODO remove blockVector
-    std::vector<BlockId> blockData;
+    // max 16 * 16 * 256 = 65535 elements        
     BlockStateContainer blockStates;
     bool needsUpdate = false;
 
     // TODO make this more efficient (maybe use octrees?)
     // four bytes blockdata and four bytes block type
-    short*** blocks = nullptr;
+    BlockId*** blocks = nullptr;
 
     // TODO maybe use chunk-wise biomes and interpolate
     BiomeId** biomes = nullptr;
 
     bool verticesOutdated = false;
-    bool threadActiveOnSelf = false;
-
-    int getBlockIndex(const BlockId& type) const;
+    bool threadActiveOnSelf = false;    
 
     void setBlock(int x, int y, int z, const Block& block);
     void setBlock(const glm::vec3& position, const Block& block);

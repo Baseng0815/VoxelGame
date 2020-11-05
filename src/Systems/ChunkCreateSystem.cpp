@@ -3,6 +3,7 @@
 #include "../../include/Configuration.hpp"
 #include "../../include/Events/EventDispatcher.hpp"
 #include "../../include/GameData/BlockGeometry.hpp"
+#include "../../include/GameData/BlockStates/WaterBlockState.hpp"
 #include "../../include/GameData/GameData.hpp"
 #include "../../include/Math/Cuboid.hpp"
 #include "../../include/Resources/TextureAtlas.hpp"
@@ -75,11 +76,11 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
     generationData.entity = entity;
 
     // allocate blocks
-    generationData.blocks = new short**[Configuration::CHUNK_SIZE];
+    generationData.blocks = new BlockId**[Configuration::CHUNK_SIZE];
     for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
-        generationData.blocks[x] = new short*[Configuration::CHUNK_HEIGHT];
+        generationData.blocks[x] = new BlockId*[Configuration::CHUNK_HEIGHT];
         for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
-            generationData.blocks[x][y] = new short[Configuration::CHUNK_SIZE];
+            generationData.blocks[x][y] = new BlockId[Configuration::CHUNK_SIZE];
         }
     }
 
@@ -141,7 +142,7 @@ ChunkGeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, co
                 }
 
                 const BlockState* state = nullptr;
-                switch(block.type) {
+                switch (block.type) {
                     case BlockId::BLOCK_WATER:
                         state = chunk.blockStates.getState<WaterBlockState>(blockPosition);
                         break;
@@ -377,7 +378,7 @@ void ChunkCreateSystem::_update(int dt) {
 
             // chunk.blocks = generationData.blocks;
             chunk.blocks = generationData.blocks;
-            chunk.blockData = generationData.blockData;
+
             chunk.blockStates = generationData.stateData;
             chunk.biomes = generationData.biomes;
             // chunk.verticesOutdated = true;

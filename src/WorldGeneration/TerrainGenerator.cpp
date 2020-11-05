@@ -23,68 +23,30 @@ Biome TerrainGenerator::getBiome(BiomeId id) const {
 }
 
 void TerrainGenerator::createBlocks(GenerationData* data, int** heightMap) const {
-    data->blockData.push_back(BlockId::BLOCK_AIR);
-    data->blockData.push_back(BlockId::BLOCK_BRICKS);
-    data->blockData.push_back(BlockId::BLOCK_STONE);
-    data->blockData.push_back(BlockId::BLOCK_WATER);
-
     for (int cx = 0; cx < Configuration::CHUNK_SIZE; cx++)
         for (int cz = 0; cz < Configuration::CHUNK_SIZE; cz++) {
             int height = heightMap[cx][cz];
             BiomeId biomeId = data->biomes[cx][cz];
             Biome biome = getBiome(biomeId);
-            int subsurface = -1;
-            int surface = -1;
-
-            int index = 0;
-            while (subsurface == -1 && surface == -1 && index < data->blockData.size()) {
-                if (data->blockData[index] == biome.subsurfaceBlocks) {
-                    subsurface = index;
-                }
-
-                if (data->blockData[index] == biome.surfaceBlocks) {
-                    surface = index;
-                }
-
-                index++;
-            }
-
-            if (subsurface == -1) {
-                data->blockData.push_back(biome.subsurfaceBlocks);
-                subsurface = index++;
-
-                if (biome.surfaceBlocks == biome.subsurfaceBlocks) {
-                    surface = subsurface;
-                }
-            }
-
-            if (surface == -1) {
-                data->blockData.push_back(biome.surfaceBlocks);
-                surface = index++;
-            }
 
             for (int cy = 0; cy < Configuration::CHUNK_HEIGHT; cy++) {
-                int block;
+                BlockId block = BlockId::BLOCK_AIR;
                 if (cy < randNext(2, 4))
                     // bricks
-                    block = 1;
+                    block = BlockId::BLOCK_BRICKS;
                 else if (cy <= height - (biome.subsurfaceHeight + biome.surfaceHeight))
                     // stone
-                    block = 2;
+                    block = BlockId::BLOCK_STONE;
                 else if (cy <= height - biome.surfaceHeight)
-                    block = subsurface;
+                    block = biome.subsurfaceBlocks;
                 else if (cy <= height) {
-                    block = surface;
+                    block = biome.surfaceBlocks;
                 }
-                else if (cy <= 63) {
+                else if (cy <= 63 && (biome.id == BiomeId::BIOME_OCEAN || biome.id == BiomeId::BIOME_BEACH)) {
                     // water default state index and block index
-                    block = 3;
+                    block = BlockId::BLOCK_WATER;
                     data->stateData.createBlockState<WaterBlockState>(glm::vec3{cx, cy, cz});
-                }
-                else {
-                    // air
-                    block = 0;
-                }
+                }                
 
                 data->blocks[cx][cy][cz] = block;
             }

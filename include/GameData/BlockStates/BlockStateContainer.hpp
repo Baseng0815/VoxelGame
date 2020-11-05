@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../../Typedefs.hpp"
-#include "WaterBlockState.hpp"
+#include "BlockState.hpp"
 
 #include <glm/glm.hpp>
 
@@ -11,13 +11,12 @@
 struct BlockStateContainer {
   private:
     std::map<int, int> blockIndices;
-    std::vector<WaterBlockState*> waterStates;
+    std::vector<BlockState*> stateData;
 
   public:
     template<typename T>
     T* createBlockState(const glm::vec3& position);
-
-    template<typename T>
+    
     void deleteBlockState(const glm::vec3& position);
 
     template<typename T>
