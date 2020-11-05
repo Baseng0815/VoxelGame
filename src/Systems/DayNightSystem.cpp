@@ -17,7 +17,6 @@ void DayNightSystem::_update(int dt)
     LightingComponent &lighting = m_registry.raw<LightingComponent>()[0];
     lighting.dirLights[0].direction.x = -std::cos(angle);
     lighting.dirLights[0].direction.y = -std::sin(angle);
-    std::cout << lighting.dirLights[0].direction.x << " " << lighting.dirLights[0].direction.y << "\n";
 
     TransformationComponent &transform = m_registry.get<TransformationComponent>(m_skybox);
     transform.setRotation(glm::angleAxis(angle, glm::vec3 {0.f, 0.f, 1.f}));
