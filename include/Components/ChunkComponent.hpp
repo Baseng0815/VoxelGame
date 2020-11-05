@@ -32,10 +32,11 @@ struct ChunkComponent {
     Geometry* geometryTransparent;
 
     // max 16 * 16 * 256 = 65535 elements
+    // TODO remove blockVector
     std::vector<BlockId> blockData;
     BlockStateContainer blockStates;
     bool needsUpdate = false;
-
+    
     // TODO make this more efficient (maybe use octrees?)
     // four bytes blockdata and four bytes block type
     short*** blocks = nullptr;
@@ -49,9 +50,11 @@ struct ChunkComponent {
     int getBlockIndex(const BlockId& type) const;
 
     void setBlock(int x, int y, int z, const Block& block);
+    void setBlock(const glm::vec3& position, const Block& block);
 
     const Block getBlock(int x, int y, int z) const;
+    const Block getBlock(const glm::vec3& position) const;
 
     Block getBlock(int x, int y, int z);
-
+    Block getBlock(const glm::vec3& position);
 };

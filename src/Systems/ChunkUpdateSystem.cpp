@@ -1,6 +1,7 @@
 #include "../../include/Systems/ChunkUpdateSystem.hpp"
 
 #include "../../include/Components/ChunkComponent.hpp"
+#include "../../include/Events/EventDispatcher.hpp"
 #include "../../include/GameData/Block.hpp"
 #include "../../include/GameData/BlockStates/WaterBlockState.hpp"
 #include "../../include/World.hpp"
@@ -8,100 +9,97 @@
 #include "../../include/Configuration.hpp"
 
 #include <vector>
+#include <iostream>
 
-void ChunkUpdateSystem::updateFluids(ChunkComponent& chunk, int dt) {
-    int waterId = chunk.getBlockIndex(BlockId::BLOCK_WATER);
+void ChunkUpdateSystem::handleBlockChanged(const BlockChangedEvent& e) {
+    auto& [chunkCoords, position] = Utility::GetChunkAndLocal(e.position);
+    ChunkComponent& chunk = World::getChunk(m_registry, chunkCoords);    
 
-    for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
-        for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
-            for (int z = 0; z < Configuration::CHUNK_SIZE; z++) {
-                Block block = chunk.getBlock(x, y, z);
-                if (!block.isSolid()) {
-                    if (Utility::inChunk(x - 1, y, z)) {
-                        if (chunk.blocks[x - 1][y][z] == waterId) {
-                            WaterBlockState& waterState = chunk.blockStates.getState<WaterBlockState>(glm::vec3{x - 1, y, z});
-                            updateWater(chunk, block, waterState);
-                        }
-                    }
-                    // else {
-                    //     ChunkComponent& ch = World::getChunk(m_registry, glm::vec2{chunk.chunkX - 1, chunk.chunkZ});
-                    // }
+    for (int x = -1; x <= 1; x++) {
+        for (int y = 0; y <= 1; y++) {
+            for (int z = -1; z <= 1; z++) {
+                if ((x * z) == 0) {
+                    int cx = position.x + x;
+                    int cy = position.y + y;
+                    int cz = position.z + z;
 
-                    if (Utility::inChunk(x + 1, y, z)) {
-                        if (chunk.blocks[x + 1][y][z] == waterId) {
-                            WaterBlockState& waterState = chunk.blockStates.getState<WaterBlockState>(glm::vec3{x + 1, y, z});
-                            updateWater(chunk, block, waterState);
-                        }
-                    }
+                    Utility::chunk_execute(m_registry, chunk, cx, cy, cz,
+                                           [&](ChunkComponent& otherChunk, const int& x, const int& y, const int& z) {
+                                               Block& block = otherChunk.getBlock(x, y, z);
+                                               if (block.type == BlockId::BLOCK_WATER) {
+                                                   updateWater(otherChunk, x, y, z);
+                                               }
+                                           });
+                }
+            }
+        }
+    }
 
-                    if (Utility::inChunk(x, y + 1, z)) {
-                        if (chunk.blocks[x][y + 1][z] == waterId) {
-                            WaterBlockState& waterState = chunk.blockStates.getState<WaterBlockState>(glm::vec3{x, y + 1, z});
-                            updateWater(chunk, block, waterState, true);
-                        }
-                    }
+    chunk.verticesOutdated = true;
+}
 
-                    if (Utility::inChunk(x, y, z - 1)) {
-                        if (chunk.blocks[x][y][z - 1] == waterId) {
-                            WaterBlockState& waterState = chunk.blockStates.getState<WaterBlockState>(glm::vec3{x, y, z - 1});
-                            updateWater(chunk, block, waterState);
-                        }
-                    }
+void ChunkUpdateSystem::updateWater(ChunkComponent& chunk, const int& x, const int& y, const int& z) {
+    Block& block = chunk.getBlock(x, y, z);
+    WaterBlockState* state = reinterpret_cast<WaterBlockState*>(block.state);
 
-                    if (Utility::inChunk(x, y, z + 1)) {
-                        if (chunk.blocks[x][y][z + 1] == waterId) {
-                            WaterBlockState& waterState = chunk.blockStates.getState<WaterBlockState>(glm::vec3{x, y, z + 1});
-                            updateWater(chunk, block, waterState);
-                        }
-                    }
+    if (y > 1) {
+        Block& lowerBlock = chunk.getBlock(x, y - 1, z);
+        // TODO: Range checking
+        if (!lowerBlock.isSolid()) {
+            glm::vec3 lowerPos = glm::vec3{x, y - 1, z};
+
+            // create new falling state
+            if (lowerBlock.type == BlockId::BLOCK_WATER) {
+                chunk.blockStates.deleteBlockState<WaterBlockState>(lowerPos);
+            }
+
+            WaterBlockState* newState = chunk.blockStates.createBlockState<WaterBlockState>(lowerPos);
+            newState->level = 8;
+
+            chunk.blocks[x][y - 1][z] = chunk.getBlockIndex(BlockId::BLOCK_WATER);
+            updateWater(chunk, x, y - 1, z);
+            chunk.verticesOutdated = true;
+            return;
+        }
+    }
+
+    if (state->level < 7 || state->level == 8) {
+        int level = state->level == 8 ? 1 : state->level + 1;
+
+        for (int x1 = -1; x1 <= 1; x1++) {
+            for (int z1 = -1; z1 <= 1; z1++) {
+                if ((x1 * z1) == 0) {
+                    Utility::chunk_execute(m_registry, chunk,
+                                           x + x1, y, z + z1,
+                                           [&](ChunkComponent& chunk, const int& cx, const int& cy, const int& cz) {
+                                               Block& tmp = chunk.getBlock(cx, cy, cz);
+                                               if (tmp.type == BlockId::BLOCK_WATER) {
+                                                   WaterBlockState* tmpState = reinterpret_cast<WaterBlockState*>(tmp.state);
+                                                   if (tmpState->level > level) {
+                                                       tmpState->level = level;
+                                                       updateWater(chunk, cx, cy, cz);
+                                                       chunk.verticesOutdated = true;
+                                                   }
+                                               }
+                                               // not solid and no water
+                                               else if (!tmp.isSolid()) {
+                                                   WaterBlockState* tmp = chunk.blockStates.createBlockState<WaterBlockState>(glm::vec3{cx, cy, cz});
+                                                   tmp->level = level;
+                                                   chunk.blocks[cx][cy][cz] = chunk.getBlockIndex(BlockId::BLOCK_WATER);
+                                                   updateWater(chunk, cx, cy, cz);
+                                                   chunk.verticesOutdated = true;
+                                               }
+                                           });
                 }
             }
         }
     }
 }
 
-void ChunkUpdateSystem::updateWater(ChunkComponent& chunk, Block& block, WaterBlockState& waterState, bool waterOnTop) {
-    glm::vec3 position = Utility::GetChunkCoords(block.position);
-    int x = position.x, y = position.y, z = position.z;
-
-    if (waterOnTop) {
-        chunk.blocks[x][y][z] = chunk.getBlockIndex(BlockId::BLOCK_WATER);
-        // chunk.verticesOutdated = true;
-    }
-    else {
-        int level = waterState.level + 1;
-
-        if (block.type == BlockId::BLOCK_WATER) {
-            WaterBlockState* oldState = reinterpret_cast<WaterBlockState*>(block.state);
-            if (oldState->level <= level) {
-                return;
-            }
-        }
-        
-        if (level <= 7) {
-            chunk.blockStates.deleteBlockState<WaterBlockState>(position);
-
-            WaterBlockState& newState = chunk.blockStates.createBlockState<WaterBlockState>(position);
-            newState.falling = false;
-            newState.level = level;
-            chunk.blocks[x][y][z] = chunk.getBlockIndex(BlockId::BLOCK_WATER);
-            // chunk.verticesOutdated = true;
-        }
-    }
-}
-
 void ChunkUpdateSystem::_update(int dt) {
-    m_registry.view<ChunkComponent>().each(
-        [&](ChunkComponent& chunk) {
-            if (chunk.needsUpdate) {
-                chunk.needsUpdate = false;
-                updateFluids(chunk, dt);
-
-                // chunk.verticesOutdated = true;
-            }
-        });
 }
 
 ChunkUpdateSystem::ChunkUpdateSystem(Registry_T& registry)
     : System{registry, 0} {
+    m_blockHandle = EventDispatcher::onBlockChange.subscribe([&](const BlockChangedEvent& e) { handleBlockChanged(e); });
 }

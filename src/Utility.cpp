@@ -1,7 +1,9 @@
 #include "../include/Utility.hpp"
 
+#include "../include/Components/ChunkComponent.hpp"
 #include "../include/Components/InventoryComponent.hpp"
 #include "../include/Configuration.hpp"
+#include "../include/World.hpp"
 
 #include <iostream>
 
@@ -77,6 +79,36 @@ namespace Utility {
         return positions;
     }
 
+    void chunk_execute(entt::registry& registry, ChunkComponent& inChunk, const int& cx, const int& cy, const int& cz, std::function<void(ChunkComponent&, const int&, const int&, const int&)> action) {
+        if (cy < 0 || cy >= Configuration::CHUNK_HEIGHT) {
+            return;
+        }
+
+        int x = cx;
+        int y = cy;
+        int z = cz;        
+        int chunkXOff = 0;
+        int chunkZOff = 0;
+
+        if (x < 0 || x >= Configuration::CHUNK_SIZE) {
+            chunkXOff = floor(x / (float)Configuration::CHUNK_SIZE);
+            x = x - floor(x / (float)Configuration::CHUNK_SIZE) * Configuration::CHUNK_SIZE;
+        }
+
+        if (z < 0 || z >= Configuration::CHUNK_SIZE) {
+            chunkZOff = floor(z / (float)Configuration::CHUNK_SIZE);
+            z = z - floor(z / (float)Configuration::CHUNK_SIZE) * Configuration::CHUNK_SIZE;
+        }
+
+        if (chunkXOff != 0 || chunkZOff != 0) {
+            ChunkComponent& other = World::getChunk(registry, glm::vec2{inChunk.chunkX + chunkXOff, inChunk.chunkZ + chunkZOff});
+            action(other, x, y, z);
+        }
+        else {
+            action(inChunk, x, y, z);
+        }        
+    }
+
     int getInventorySlot(const InventoryComponent& inventory, BlockId item) {
         for (int i = 0; i < inventory.slotsCount; i++) {
             if (inventory.slots[i].first == item) {
@@ -91,6 +123,7 @@ namespace Utility {
 
         return -1;
     }
+
 } // namespace Utility
 
 std::ostream& operator<<(std::ostream& os, const glm::vec2& vec) {

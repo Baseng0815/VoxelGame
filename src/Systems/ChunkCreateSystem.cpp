@@ -72,7 +72,7 @@ void ChunkCreateSystem::handleStructureCreated(const StructureCreatedEvent& e) {
 
 GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ) {
     GenerationData generationData;
-    generationData.entity = entity;    
+    generationData.entity = entity;
 
     // allocate blocks
     generationData.blocks = new short**[Configuration::CHUNK_SIZE];
@@ -134,16 +134,24 @@ ChunkGeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, co
                 // use shared_lock for shared read access and unique_lock for unique write access
                 std::shared_lock<std::shared_mutex> blockLock(*(chunk.blockMutex));
                 const Block& block = chunk.getBlock(x, y, z);
+
                 if (block.type == BlockId::BLOCK_AIR) {
                     blockLock.unlock();
                     continue;
                 }
 
-                GeometryData blockGeo = BlockGeometry::getGeometry(block);
+                const BlockState* state = nullptr;
+                switch(block.type) {
+                    case BlockId::BLOCK_WATER:
+                        state = chunk.blockStates.getState<WaterBlockState>(blockPosition);
+                        break;
+                }
+
+                GeometryData blockGeo = BlockGeometry::getGeometry(block.type, state);
 
                 // solid blocks
                 if (block.type < BlockId::PLANE_GRASS) {
-                    if (block.type == BlockId::BLOCK_WATER) {                    
+                    if (block.type == BlockId::BLOCK_WATER) {
                         if (y < Configuration::CHUNK_HEIGHT - 1 && chunk.getBlock(x, y + 1, z).type != BlockId::BLOCK_WATER) {
                             draw[3] = true;
                         }
@@ -344,6 +352,7 @@ void ChunkCreateSystem::_update(int dt) {
                     m_generationFutures.push_back(std::async(
                         std::launch::async, [=, this]() { return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ); }));
 
+                    chunk.needsUpdate = true;
                     chunk.verticesOutdated = true;
                 }
                 // update vertices
@@ -370,7 +379,7 @@ void ChunkCreateSystem::_update(int dt) {
             chunk.blocks = generationData.blocks;
             chunk.blockData = generationData.blockData;
             chunk.blockStates = generationData.stateData;
-            chunk.biomes = generationData.biomes;                        
+            chunk.biomes = generationData.biomes;
             // chunk.verticesOutdated = true;
             chunk.threadActiveOnSelf = false;
             m_constructionCount--;
@@ -402,7 +411,6 @@ void ChunkCreateSystem::_update(int dt) {
 
             chunk.verticesOutdated = false;
             chunk.threadActiveOnSelf = false;
-            chunk.needsUpdate = true;
             m_constructionCount--;
 
             itGeo = m_geometryFutures.erase(itGeo);

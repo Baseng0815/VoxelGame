@@ -79,7 +79,7 @@ void TerrainGenerator::createBlocks(GenerationData* data, int** heightMap) const
                 else if (cy <= 63) {
                     // water default state index and block index
                     block = 3;
-                    // data->stateData.createBlockState<WaterBlockState>(glm::vec3{cx, cy, cz});
+                    data->stateData.createBlockState<WaterBlockState>(glm::vec3{cx, cy, cz});
                 }
                 else {
                     // air

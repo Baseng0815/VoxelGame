@@ -13,11 +13,13 @@
 #include <ostream>
 #include <utility>
 #include <vector>
+#include <entt/entt.hpp>
 
 #include "GameData/Block.hpp"
 
 struct WorldComponent;
 struct InventoryComponent;
+struct ChunkComponent;
 
 namespace Utility {
     bool inChunk(const glm::vec3& position);
@@ -30,7 +32,10 @@ namespace Utility {
     glm::vec3 GetChunkCoords(const glm::vec3& worldPos);
     glm::vec3 GetBlockCoords(const glm::vec3& coords);
 
-    std::vector<glm::vec3> getNeighborBlocks(const glm::vec3& blockPos, bool moore = false);    
+    std::vector<glm::vec3> getNeighborBlocks(const glm::vec3& blockPos, bool moore = false);
+
+    /*Executes an action at the given chunk position with bounds checking */
+    void chunk_execute(entt::registry& registry, ChunkComponent& chunk, const int& cx, const int& cy, const int& cz, std::function<void(ChunkComponent&, const int&, const int&, const int&)> action);
 
     int getInventorySlot(const InventoryComponent& inventory, BlockId item);
 } // namespace Utility

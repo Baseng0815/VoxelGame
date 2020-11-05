@@ -2,6 +2,9 @@
 
 #include "System.hpp"
 
+#include <future>
+#include <vector>
+
 struct ChunkComponent;
 struct BlockChangedEvent;
 struct Block;
@@ -9,11 +12,14 @@ struct WaterBlockState;
 
 class ChunkUpdateSystem : public System {
   private:
-    void updateFluids(ChunkComponent& chunk, int dt);
+    CallbackHandle<const BlockChangedEvent&> m_blockHandle;
+    void handleBlockChanged(const BlockChangedEvent& e);    
 
-    static void updateWater(ChunkComponent& chunk, Block& block, WaterBlockState& waterState, bool waterOnTop = false);
+    void updateWater(ChunkComponent& chunk, const int& x, const int& y, const int& z);
 
-    void _update(int dt) override;    
+    void _update(int dt) override;
+
+    std::vector<std::future<void>> m_updateFutures;
 
   public:
     ChunkUpdateSystem(Registry_T& registry);

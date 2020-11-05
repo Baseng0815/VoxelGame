@@ -2,51 +2,43 @@
 
 #include <stdexcept>
 
+BlockStateContainer& BlockStateContainer::operator=(const BlockStateContainer& other) {
+    this->blockIndices = other.blockIndices;
+    this->waterStates = other.waterStates;
+    return *this;
+}
+
 template<>
-WaterBlockState& BlockStateContainer::createBlockState<WaterBlockState>(const glm::vec3& position) {
-    blockIndices[position] = waterStates.size();
-    return waterStates.emplace_back(true);
+WaterBlockState* BlockStateContainer::createBlockState<WaterBlockState>(const glm::vec3& position) {
+    int key = (int)position.x << 12 | (int)position.y << 4 | (int)position.z;
+    blockIndices[key] = waterStates.size();
+    WaterBlockState* state = new WaterBlockState{};
+    return waterStates.emplace_back(state);
 }
 
 template<>
 void BlockStateContainer::deleteBlockState<WaterBlockState>(const glm::vec3& position) {
     try {
-        int index = blockIndices.at(position);
+        int key = (int)position.x << 12 | (int)position.y << 4 | (int)position.z;
+        int index = blockIndices.at(key);
+        delete waterStates[index];
         waterStates.erase(waterStates.begin() + index);
-        blockIndices.erase(position);
+        blockIndices.erase(key);
     }
     catch (std::out_of_range e) {
     }
 }
 
 template<>
-WaterBlockState& BlockStateContainer::getState<WaterBlockState>(const glm::vec3& position) {
-    if (blockIndices.contains(position)) {
-        int index = blockIndices[position];
-        return waterStates[index];
-    }
-    else {
-        return waterStates[0];
-    }
+WaterBlockState* BlockStateContainer::getState<WaterBlockState>(const glm::vec3& position) {
+    int key = (int)position.x << 12 | (int)position.y << 4 | (int)position.z;
+    int index = blockIndices[key];
+    return waterStates[index];
 }
 
 template<>
-const WaterBlockState& BlockStateContainer::getState<WaterBlockState>(const glm::vec3& position) const {
-    if (blockIndices.contains(position)) {
-        int index = blockIndices.at(position);
-        return waterStates[index];
-    }
-    else {
-        return waterStates[0];
-    }
-}
-
-template<>
-WaterBlockState& BlockStateContainer::operator[](const glm::vec3& position) {
-    return getState<WaterBlockState>(position);
-}
-
-template<>
-const WaterBlockState& BlockStateContainer::operator[](const glm::vec3& position) const {
-    return getState<WaterBlockState>(position);
+const WaterBlockState* BlockStateContainer::getState<WaterBlockState>(const glm::vec3& position) const {
+    int key = (int)position.x << 12 | (int)position.y << 4 | (int)position.z;
+    int index = blockIndices.at(key);
+    return waterStates[index];
 }

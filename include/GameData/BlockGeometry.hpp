@@ -14,5 +14,5 @@ class BlockGeometry {
     static const GeometryData generationDataPlane;
 
   public:
-    static GeometryData getGeometry(const Block& block);
+    static GeometryData getGeometry(const BlockId& type, const BlockState* state);
 };

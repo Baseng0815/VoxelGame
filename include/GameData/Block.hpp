@@ -16,5 +16,5 @@ struct Block {
 
     Block();
     Block(const glm::vec3& position, BlockId type);
-    Block(const glm::vec3& position, BlockId type, BlockState* state);
+    Block(const glm::vec3& position, BlockId type, BlockState* state);    
 };

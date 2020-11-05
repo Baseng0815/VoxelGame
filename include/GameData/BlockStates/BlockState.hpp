@@ -2,5 +2,6 @@
 #include "../BlockIds.hpp"
 
 struct BlockState {
-    bool outdated = true;    
+    bool outdated = true;
+
 };

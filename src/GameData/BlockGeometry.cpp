@@ -41,16 +41,16 @@ const GeometryData BlockGeometry::generationDataPlane = {
     std::array<float, 8>{0, 0, 1, -1, 0, 1, 1},
 };
 
-GeometryData BlockGeometry::getGeometry(const Block& block) {
+GeometryData BlockGeometry::getGeometry(const BlockId& type, const BlockState* state) {
     GeometryData geometry;
-    if (block.type >= BlockId::PLANE_GRASS) {
+    if (type >= BlockId::PLANE_GRASS) {
         return generationDataPlane;
     }
     else {
-        if (block.type == BlockId::BLOCK_WATER) {            
+        if (type == BlockId::BLOCK_WATER) {            
             float height = 7.0f / 8.0f;
-            if (block.state != nullptr) {
-                WaterBlockState* waterBlockState = reinterpret_cast<WaterBlockState*>(block.state);
+            if (state != nullptr) {
+                const WaterBlockState* waterBlockState = reinterpret_cast<const WaterBlockState*>(state);
                 if (!(waterBlockState->level == 0 || waterBlockState->level == 8)) {
                     height = (7 - waterBlockState->level) / 8.0f;
                 }
