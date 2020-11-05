@@ -12,8 +12,8 @@
 #include <iostream>
 
 void ChunkUpdateSystem::handleBlockChanged(const BlockChangedEvent& e) {
-    auto& [chunkCoords, position] = Utility::GetChunkAndLocal(e.position);
-    ChunkComponent& chunk = World::getChunk(m_registry, chunkCoords);    
+    auto [chunkCoords, position] = Utility::GetChunkAndLocal(e.position);
+    ChunkComponent& chunk = World::getChunk(m_registry, chunkCoords);
 
     for (int x = -1; x <= 1; x++) {
         for (int y = 0; y <= 1; y++) {
@@ -25,7 +25,7 @@ void ChunkUpdateSystem::handleBlockChanged(const BlockChangedEvent& e) {
 
                     Utility::chunk_execute(m_registry, chunk, cx, cy, cz,
                                            [&](ChunkComponent& otherChunk, const int& x, const int& y, const int& z) {
-                                               Block& block = otherChunk.getBlock(x, y, z);
+                                               Block block = otherChunk.getBlock(x, y, z);
                                                if (block.type == BlockId::BLOCK_WATER) {
                                                    updateWater(otherChunk, x, y, z);
                                                }
@@ -39,11 +39,11 @@ void ChunkUpdateSystem::handleBlockChanged(const BlockChangedEvent& e) {
 }
 
 void ChunkUpdateSystem::updateWater(ChunkComponent& chunk, const int& x, const int& y, const int& z) {
-    Block& block = chunk.getBlock(x, y, z);
+    Block block = chunk.getBlock(x, y, z);
     WaterBlockState* state = reinterpret_cast<WaterBlockState*>(block.state);
 
     if (y > 1) {
-        Block& lowerBlock = chunk.getBlock(x, y - 1, z);
+        Block lowerBlock = chunk.getBlock(x, y - 1, z);
         // TODO: Range checking
         if (!lowerBlock.isSolid()) {
             glm::vec3 lowerPos = glm::vec3{x, y - 1, z};
@@ -72,7 +72,7 @@ void ChunkUpdateSystem::updateWater(ChunkComponent& chunk, const int& x, const i
                     Utility::chunk_execute(m_registry, chunk,
                                            x + x1, y, z + z1,
                                            [&](ChunkComponent& chunk, const int& cx, const int& cy, const int& cz) {
-                                               Block& tmp = chunk.getBlock(cx, cy, cz);
+                                               Block tmp = chunk.getBlock(cx, cy, cz);
                                                if (tmp.type == BlockId::BLOCK_WATER) {
                                                    WaterBlockState* tmpState = reinterpret_cast<WaterBlockState*>(tmp.state);
                                                    if (tmpState->level > level) {
@@ -101,5 +101,5 @@ void ChunkUpdateSystem::_update(int dt) {
 
 ChunkUpdateSystem::ChunkUpdateSystem(Registry_T& registry)
     : System{registry, 0} {
-    m_blockHandle = EventDispatcher::onBlockChange.subscribe([&](const BlockChangedEvent& e) { handleBlockChanged(e); });
-}
+        m_blockHandle = EventDispatcher::onBlockChange.subscribe([&](const BlockChangedEvent& e) { handleBlockChanged(e); });
+    }

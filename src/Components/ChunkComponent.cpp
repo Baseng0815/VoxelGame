@@ -35,6 +35,9 @@ void ChunkComponent::setBlock(int x, int y, int z, const Block& block) {
             blockStates.deleteBlockState<WaterBlockState>(blockPosition);
             blockStates.createBlockState<WaterBlockState>(blockPosition);
             break;
+
+        default:
+            break;
     }
 
     blocks[x][y][z] = typeIndex;
@@ -56,16 +59,19 @@ void ChunkComponent::setBlock(const glm::vec3& position, const Block& block) {
             blockStates.deleteBlockState<WaterBlockState>(position);
             blockStates.createBlockState<WaterBlockState>(position);
             break;
+
+        default:
+            break;
     }
 
     blocks[(int)position.x][(int)position.y][(int)position.z] = typeIndex;
 }
 
-const Block ChunkComponent::getBlock(int x, int y, int z) const {
+Block ChunkComponent::getBlock(int x, int y, int z) const {
     if (inRange(x, 0, Configuration::CHUNK_SIZE) && inRange(y, 0, Configuration::CHUNK_HEIGHT) && inRange(z, 0, Configuration::CHUNK_SIZE)) {
         int blockTypeId = blocks[x][y][z];
 
-        BlockId type = blockData[blockTypeId];        
+        BlockId type = blockData[blockTypeId];
 
         return Block{Utility::GetWorldCoords(chunkX, chunkZ, x, y, z), type};
     }
@@ -74,7 +80,7 @@ const Block ChunkComponent::getBlock(int x, int y, int z) const {
     }
 }
 
-const Block ChunkComponent::getBlock(const glm::vec3& position) const {
+Block ChunkComponent::getBlock(const glm::vec3& position) const {
     return getBlock(position.x, position.y, position.z);
 }
 
@@ -86,12 +92,12 @@ Block ChunkComponent::getBlock(int x, int y, int z) {
         Block block;
         switch (type) {
             case BlockId::BLOCK_WATER: {
-                WaterBlockState* state = blockStates.getState<WaterBlockState>(glm::vec3{x, y, z});
-                block = Block{Utility::GetWorldCoords(chunkX, chunkZ, x, y, z), type, state};
-            } break;
+                                           WaterBlockState* state = blockStates.getState<WaterBlockState>(glm::vec3{x, y, z});
+                                           block = Block{Utility::GetWorldCoords(chunkX, chunkZ, x, y, z), type, state};
+                                       } break;
             default:
-                block = Block{Utility::GetWorldCoords(chunkX, chunkZ, x, y, z), type, nullptr};
-                break;
+                                       block = Block{Utility::GetWorldCoords(chunkX, chunkZ, x, y, z), type, nullptr};
+                                       break;
         }
 
         return block;
