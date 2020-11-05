@@ -4,49 +4,46 @@
 
 #include "../include/Components/ChunkComponent.hpp"
 
-std::unordered_map<glm::vec2, entt::entity, Utility::HashFunctionVec2> World::chunksLookup;
+std::unordered_map<glm::ivec2, entt::entity, std::hash<glm::ivec2>> World::chunksLookup;
+std::unordered_map<glm::ivec3, entt::entity, std::hash<glm::ivec3>> World::blockStates;
 
-entt::entity World::getChunk(const glm::vec2& chunk)
-{
-    return chunksLookup[chunk];
+ChunkComponent& World::getChunk(entt::registry& registry, const glm::vec2& chunk) {
+    return registry.get<ChunkComponent>(chunksLookup[glm::floor(chunk)]);
 }
 
-bool World::chunkCreated(const glm::vec2& chunk)
-{
-    return chunksLookup.contains(chunk);
+bool World::chunkCreated(const glm::vec2& chunk) {
+    return chunksLookup.contains(glm::floor(chunk));
 }
 
-Block World::getBlock(const entt::registry* registry, const glm::vec3& position)
-{
+Block World::getBlock(entt::registry& registry, const glm::vec3& position) {
     auto [chunkPosition, localPosition] = Utility::GetChunkAndLocal(position);
 
     if (!chunkCreated(chunkPosition)) {
-        return Block();
+        return Block{};
     }
 
-    auto entity = getChunk(chunkPosition);
+    const ChunkComponent& chunk = getChunk(registry, chunkPosition);
 
-    const ChunkComponent& chunk = registry->get<ChunkComponent>(entity);
-
-    Block block = chunk.blocks[(int)localPosition.x][(int)localPosition.y][(int)localPosition.z];
+    Block block = chunk.getBlock(localPosition.x, localPosition.y, localPosition.z);
 
     return block;
 }
 
-void World::setBlock(entt::registry* registry, const glm::vec3& position, Block block)
+void World::setBlock(entt::registry& registry, const glm::vec3& position, Block block)
 {
     auto [chunkPosition, localPosition] = Utility::GetChunkAndLocal(position);
 
-    auto entity = getChunk(chunkPosition);
-    ChunkComponent& chunk = registry->get<ChunkComponent>(entity);
+    if (chunkCreated(chunkPosition)) {
+        ChunkComponent& chunk = getChunk(registry, chunkPosition);
 
-    BlockId prevBlock = chunk.blocks[(int)localPosition.x][(int)localPosition.y][(int)localPosition.z].type;
+        BlockId prevBlock = chunk.getBlock(localPosition.x, localPosition.y, localPosition.z).type;
 
-    chunk.blocks[(int)localPosition.x][(int)localPosition.y][(int)localPosition.z] = block;
-    chunk.verticesOutdated = true;
+        chunk.setBlock(localPosition.x, localPosition.y, localPosition.z, block);
+        chunk.verticesOutdated = true;
 
-    BlockChangedEvent blockChangedEvent{nullptr, position, prevBlock, block.type};
-    EventDispatcher::raiseEvent(blockChangedEvent);
+        BlockChangedEvent blockChangedEvent{nullptr, position, prevBlock, block.type};
+        EventDispatcher::raiseEvent(blockChangedEvent);
+    }
 }
 
 void World::addChunk(entt::entity entity, const glm::vec2& position)

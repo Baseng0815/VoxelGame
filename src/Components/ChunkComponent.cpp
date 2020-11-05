@@ -1,35 +1,83 @@
-/*
 #include "../../include/Components/ChunkComponent.hpp"
 
 #include "../../include/Configuration.hpp"
-#include "../../include/Block.hpp"
-#include "../../include/WorldGeneration/WorldGenerator.hpp"
-#include "../../include/Events/Event.hpp"
-#include "../../include/Events/EventDispatcher.hpp"
+#include "../../include/GameData/BlockStates/WaterBlockState.hpp"
+#include "../../include/Utility.hpp"
 
-ChunkComponent::ChunkComponent(std::shared_mutex* blockMutex, int chunkX, int chunkZ) :
-    blockMutex {blockMutex}, chunkX {chunkX}, chunkZ {chunkZ}
-{ }
+#include <mutex>
 
-ChunkComponent::ChunkComponent(const ChunkComponent& other) :
-    blocks {other.blocks}, biomes {other.biomes}, blockMutex {other.blockMutex}, verticesOutdated { other.verticesOutdated.load()},
-    threadActiveOnSelf { other.threadActiveOnSelf.load()}, chunkX {other.chunkX}, chunkZ {other.chunkZ}
-{ }
+void ChunkComponent::setBlock(int x, int y, int z, const Block& block) {
+    glm::vec3 blockPosition{x, y, z};
+    std::lock_guard<std::shared_mutex> lock{*blockMutex};
 
-ChunkComponent& ChunkComponent::operator=(const ChunkComponent& other)
-{
-    if (this != &other) {
-        blockMutex = other.blockMutex;
-        chunkX = other.chunkX;
-        chunkZ = other.chunkZ;
+    // state
+    // if needed delete old state and create new state
+    switch (block.type) {
+        case BlockId::BLOCK_WATER:           
+            blockStates.createBlockState<WaterBlockState>(blockPosition);
+            break;
 
-        blocks = other.blocks;
-        biomes = other.biomes;
-
-        verticesOutdated    = other.verticesOutdated.load();
-        threadActiveOnSelf  = other.threadActiveOnSelf.load();
+        default:
+            break;
     }
 
-    return *this;
+    blocks[x][y][z] = block.type;
 }
-*/
+
+void ChunkComponent::setBlock(const glm::vec3& position, const Block& block) {
+    std::lock_guard<std::shared_mutex> lock{*blockMutex};
+
+    // state
+    // if needed delete old state and create new state
+    switch (block.type) {
+        case BlockId::BLOCK_WATER:            
+            blockStates.createBlockState<WaterBlockState>(position);
+            break;
+
+        default:
+            break;
+    }
+
+    blocks[(int)position.x][(int)position.y][(int)position.z] = block.type;
+}
+
+Block ChunkComponent::getBlock(int x, int y, int z) const {
+    if (Utility::inChunk(x, y, z)) {
+        BlockId type = blocks[x][y][z];
+
+        return Block{Utility::GetWorldCoords(chunkX, chunkZ, x, y, z), type};
+    }
+    else {
+        return Block{};
+    }
+}
+
+Block ChunkComponent::getBlock(const glm::vec3& position) const {
+    return getBlock(position.x, position.y, position.z);
+}
+
+Block ChunkComponent::getBlock(int x, int y, int z) {
+    if (Utility::inChunk(x, y, z)) {
+        BlockId type = blocks[x][y][z];
+
+        Block block;
+        switch (type) {
+            case BlockId::BLOCK_WATER: {
+                WaterBlockState* state = blockStates.getState<WaterBlockState>(glm::vec3{x, y, z});
+                block = Block{Utility::GetWorldCoords(chunkX, chunkZ, x, y, z), type, state};
+            } break;
+            default:
+                block = Block{Utility::GetWorldCoords(chunkX, chunkZ, x, y, z), type, nullptr};
+                break;
+        }
+
+        return block;
+    }
+    else {
+        return Block{};
+    }
+}
+
+Block ChunkComponent::getBlock(const glm::vec3& position) {
+    return getBlock(position.x, position.y, position.z);
+}

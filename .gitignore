@@ -56,3 +56,5 @@ out/*
 vc140.pdb
 copyDlls.cmd
 copyFiles.ps1
+CMakeSettings.json
+compile_commands.json

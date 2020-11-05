@@ -2,6 +2,7 @@
     {
         "name": "BLOCK_AIR",
         "is_solid": false,
+        "is_transparent": true,
         "tid_py": 0,
         "tid_px": 0,
         "tid_nx": 0,
@@ -232,6 +233,7 @@
     {
         "name": "BLOCK_WATER",
         "is_solid": false,
+        "is_transparent": true,
         "tid_py": 205,
         "tid_px": 205,
         "tid_nx": 205,
@@ -252,6 +254,7 @@
     {
         "name": "PLANE_GRASS",
         "is_solid": false,
+        "is_transparent": true,
         "tid_py": 39,
         "tid_px": 39,
         "tid_nx": 39,

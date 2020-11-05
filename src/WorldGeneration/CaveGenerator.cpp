@@ -9,18 +9,18 @@ CaveGenerator::CaveGenerator() {
     caveNoise.SetLacunarity(1.25f);
 }
 
-void CaveGenerator::generateChunk(glm::vec2 chunkPos, Block*** blocks) const {
+void CaveGenerator::generateChunk(glm::vec2 chunkPos, GenerationData* data) const {    
     for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
         for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
             for (int z = 0; z < Configuration::CHUNK_SIZE; z++) {
-                if (blocks[x][y][z].type != BlockId::BLOCK_BRICKS && blocks[x][y][z].type != BlockId::BLOCK_WATER) {
+                if (data->blocks[x][y][z] != BlockId::BLOCK_BRICKS && data->blocks[x][y][z] != BlockId::BLOCK_WATER) {
                     if (caveNoise.GetValue(x + chunkPos.x * Configuration::CHUNK_SIZE, y,
                                             z + chunkPos.y * Configuration::CHUNK_SIZE) > threshold) {
                         if(y > 10) {
-                            blocks[x][y][z] = Block {BlockId::BLOCK_AIR};
+                            data->blocks[x][y][z] = BlockId::BLOCK_AIR;
                         }
                         else {
-                            blocks[x][y][z] = Block{BlockId::BLOCK_LAVA};
+                            data->blocks[x][y][z] = BlockId::BLOCK_LAVA;
                         }
                     }
                 }

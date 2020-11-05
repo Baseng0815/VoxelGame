@@ -50,7 +50,7 @@ void CollisionSystem::updatePlayerLookAtBlock(PlayerComponent &player, Transform
     Math::Ray lookDirection = Math::Ray(transform.getPosition() + camera.positionOffset, camera.front);
 
     glm::vec3 lookAt = lookDirection.getFirstBlock(5, [&](glm::vec3 pos) {
-        return World::getBlock(&m_registry, pos).isSolid();
+        return World::getBlock(m_registry, pos).isSolid();
     });
 
     player.lookAt = lookAt;
@@ -97,7 +97,7 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
             for (int z = minBlock.z; z <= maxBlock.z; z++) {
                 glm::vec3 position = glm::vec3(x, y, z);
 
-                if (World::getBlock(&m_registry, position).isSolid()) {
+                if (World::getBlock(m_registry, position).isSolid()) {
                     Math::Cuboid blockHitbox = Math::Cuboid(position, 1, 1, 1);
 
                     if (hitbox.intersects(blockHitbox)) {

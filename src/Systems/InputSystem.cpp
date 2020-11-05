@@ -79,7 +79,7 @@ void InputSystem::handleMouseButtonEvent(const MouseButtonEvent &e) {
 
         // TODO: Fix this
         if (block.y > 0 && block.y < Configuration::CHUNK_HEIGHT) {
-            World::setBlock(&m_registry, block, Block());
+            World::setBlock(m_registry, block, Block());
         }
     }
 }

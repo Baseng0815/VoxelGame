@@ -102,7 +102,7 @@ std::vector<glm::vec3> Collision::getTVs(const Math::Cuboid &first, const Math::
     return tvs;
 }
 
-std::vector<Math::Cuboid> Collision::getBlockCollisions(const entt::registry *registry, const Math::Cuboid &blocks) {
+std::vector<Math::Cuboid> Collision::getBlockCollisions(entt::registry& registry, const Math::Cuboid &blocks) {
     std::vector<Math::Cuboid> collisions = std::vector<Math::Cuboid>{};
 
     int minX = std::floor(blocks.getMin().x);
