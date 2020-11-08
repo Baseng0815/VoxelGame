@@ -22,6 +22,7 @@
 
 #include "../include/Application.hpp"
 #include "../include/Events/EventDispatcher.hpp"
+#include "../include/Gui/InventoryLayout.hpp"
 #include "../include/Gui/DebugLayout.hpp"
 #include "../include/Gui/HotbarLayout.hpp"
 #include "../include/Gui/Image.hpp"
@@ -39,24 +40,26 @@ void IngameLayer::handleKeys(const KeyEvent& e) {
                     properties.isVisible = !properties.isVisible;
                 }
                 else if (e.key == Configuration::getAssociatedKey("KEYBIND_OPEN_INVENTORY")) {
-                    // InventoryLayout &layout = m_gui.getWidget<InventoryLayout>("layout_inventory");
+                    InventoryLayout& layout = m_gui.getWidget<InventoryLayout>("inventory_layout");
 
-                    // UiProperties &inventory = layout.properties();
-                    // UiProperties &crosshair = m_gui.getWidget<Image>("image_crosshair").properties();
-                    // entt::entity player = m_registry.view<PlayerComponent>().front();
-                    // PlayerComponent &playerComponent = m_registry.get<PlayerComponent>(player);
+                    UiProperties &inventory = layout.properties();
+                    UiProperties &crosshair = m_gui.getWidget<Image>("image_crosshair").properties();
+                    UiProperties& hotbar = m_gui.getWidget<HotbarLayout>("hotbar_layout").properties();
+                    entt::entity player = m_registry.view<PlayerComponent>().front();
+                    PlayerComponent &playerComponent = m_registry.get<PlayerComponent>(player);
 
-                    // inventory.isVisible = !inventory.isVisible;
-                    // crosshair.isVisible = !inventory.isVisible;
-                    // playerComponent.inputEnabled = !inventory.isVisible;
+                    inventory.isVisible = !inventory.isVisible;
+                    crosshair.isVisible = !inventory.isVisible;
+                    hotbar.isVisible = !inventory.isVisible;
+                    playerComponent.inputEnabled = !inventory.isVisible;
 
-                    // if (inventory.isVisible) {
-                    //     m_application->getWindow().enableCursor();
-                    //     layout.setInventory(m_registry.get<InventoryComponent>(player));
-                    // }
-                    // else {
-                    //     m_application->getWindow().disableCursor();
-                    // }
+                    if (inventory.isVisible) {
+                        m_application->getWindow().enableCursor();
+                        // layout.setInventory(m_registry.get<InventoryComponent>(player));
+                    }
+                    else {
+                        m_application->getWindow().disableCursor();
+                    }
                 }
                 break;
         }

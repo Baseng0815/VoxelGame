@@ -26,6 +26,7 @@ void ResourceManager::loadResources() {
     })});
     resources.emplace(TEXTURE_GUI_HOTBAR, ResourceHandle{new Texture("Textures/Gui/hotbar.png")});
     resources.emplace(TEXTURE_GUI_HOTBAR_SELECTOR, ResourceHandle{new Texture("Textures/Gui/hotbar_selector.png")});
+    resources.emplace(TEXTURE_GUI_INVENTORY, ResourceHandle{new Texture("Textures/Gui/inventory.png")});
 
     // shaders
     // render 3d meshes with lighting and texturing
