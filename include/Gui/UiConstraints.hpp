@@ -14,7 +14,8 @@ class Constraint {
     public:
         Constraint(ConstraintType type = ConstraintType::CONSTRAINT_RELATIVE, float value = 0);
 
-        float getValue(float parentSize, float parentPosition) const;
+        float getPosition(float parentSize, float parentPosition) const;
+        float getSize(float parentSize) const;
         ConstraintType getType() const;
 };
 

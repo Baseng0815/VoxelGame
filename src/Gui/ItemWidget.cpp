@@ -8,7 +8,7 @@
 ItemWidget::ItemWidget(const std::string &id, const BlockId &block)
     : Widget{id}, m_block{block},
       m_shader{ResourceManager::getResource<Shader>(SHADER_TEXTURE_QUAD)} {
-    m_minSize = glm::vec2{48.0f};
+    m_minSize = glm::vec2{64.0f};
 }
 
 void ItemWidget::_draw(const glm::mat4 &projection) const {
@@ -23,7 +23,7 @@ void ItemWidget::_draw(const glm::mat4 &projection) const {
 
         texture->bind(GL_TEXTURE0);
         m_item.render();
-    }
+    }    
 }
 
 void ItemWidget::_updateScreenElements() {

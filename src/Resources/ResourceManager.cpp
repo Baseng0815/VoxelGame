@@ -24,6 +24,8 @@ void ResourceManager::loadResources() {
     resources.emplace(TEXTURE_CUBE_SKYBOX, ResourceHandle {new Texture({
         "Textures/Skybox/1_0.png", "Textures/Skybox/1_1.png", "Textures/Skybox/1_2.png", "Textures/Skybox/1_3.png", "Textures/Skybox/1_4.png", "Textures/Skybox/1_5.png",
     })});
+    resources.emplace(TEXTURE_GUI_HOTBAR, ResourceHandle{new Texture("Textures/Gui/hotbar.png")});
+    resources.emplace(TEXTURE_GUI_HOTBAR_SELECTOR, ResourceHandle{new Texture("Textures/Gui/hotbar_selector.png")});
 
     // shaders
     // render 3d meshes with lighting and texturing

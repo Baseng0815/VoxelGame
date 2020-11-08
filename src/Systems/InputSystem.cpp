@@ -107,17 +107,17 @@ void InputSystem::handleMouseMoveEvent(const CursorEvent &e) {
 }
 
 void InputSystem::handleScrollEvent(const ScrollEvent &e) {
-    CameraComponent &cameraComponent = m_registry.get<CameraComponent>(m_player);
-    cameraComponent.fov -= e.dy;
+    // CameraComponent &cameraComponent = m_registry.get<CameraComponent>(m_player);
+    // cameraComponent.fov -= e.dy;
 
-    if (cameraComponent.fov > 179) {
-        cameraComponent.fov = 179;
-    }
-    else if (cameraComponent.fov < 1) {
-        cameraComponent.fov = 1;
-    }
+    // if (cameraComponent.fov > 179) {
+    //     cameraComponent.fov = 179;
+    // }
+    // else if (cameraComponent.fov < 1) {
+    //     cameraComponent.fov = 1;
+    // }
 
-    updateProjectionMatrix(cameraComponent);
+    // updateProjectionMatrix(cameraComponent);
 }
 
 void InputSystem::handleFramebufferSizeEvent(const FramebufferSizeEvent &e) {

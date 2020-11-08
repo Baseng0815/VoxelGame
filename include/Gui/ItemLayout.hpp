@@ -1,17 +1,13 @@
 #pragma once
+
 #include "Layout.hpp"
 
-class GUI;
+class ItemWidget;
 
 class ItemLayout : public Layout {
-  protected:
-    void _updateMinimumSize() override;
-
-    float m_slotSpacing = 10.f;
+  private:
+    ItemWidget* m_item;
 
   public:
-    ItemLayout(const std::string& id, GUI &gui);
-
-    void setSlotSpacing(float value);
-    float getSlotSpacing() const;
+    ItemLayout(const std::string& id, GUI& gui);
 };

@@ -3,13 +3,16 @@
 #include "../GameData/BlockIds.hpp"
 #include "Widget.hpp"
 #include "../Rendering/Item.hpp"
+#include "Text.hpp"
+
 
 class ItemWidget : public Widget {
   private:
-    Item m_item;
+    Item m_item;    
+    
     const Shader *m_shader;
 
-    BlockId m_block;
+    BlockId m_block;    
 
     void _draw(const glm::mat4& projection) const override;
     void _updateScreenElements() override;

@@ -18,7 +18,7 @@ class Configuration {
         static constexpr int CHUNK_HEIGHT       = 256;
         static constexpr int CHUNK_PRELOAD_SIZE = 6;
         static constexpr int CHUNK_COUNT_PER_AXIS = CHUNK_PRELOAD_SIZE * 2 + 1;
-        static constexpr int CHUNK_MAX_LOADING  = 2;
+        static constexpr int CHUNK_MAX_LOADING  = 3;
         static constexpr int MAP_SEED_SIZE      = 256;
         static constexpr int SKYBOX_SIZE        = 4000;
         static constexpr int MAX_POINT_LIGHTS   = 10;

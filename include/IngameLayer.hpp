@@ -11,14 +11,19 @@
 #include "Events/CallbackHandle.hpp"
 #include "Resources/TextureAtlas.hpp"
 
+struct ScrollEvent;
+
 class IngameLayer : public GameLayer {
   private:
     std::vector<std::unique_ptr<System>> m_systems;
     Registry_T m_registry;
     TextureAtlas m_atlas;
 
-    CallbackHandle<const KeyEvent &> m_keyEventHandle;
-    void handleKeys(const KeyEvent &);
+    CallbackHandle<const KeyEvent&> m_keyEventHandle;
+    void handleKeys(const KeyEvent&);
+
+    CallbackHandle<const ScrollEvent&> m_scrollEventHandle;
+    void handleScroll(const ScrollEvent&);
 
     int m_time = 0;
     int m_frameCounter = 0;
@@ -26,7 +31,7 @@ class IngameLayer : public GameLayer {
     IngameLayerGUI m_gui;
 
   public:
-    IngameLayer(Application *application);
+    IngameLayer(Application* application);
     ~IngameLayer();
 
     void update(int dt) override;
