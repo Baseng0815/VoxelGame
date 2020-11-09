@@ -18,7 +18,18 @@ class InventoryLayout : public Layout {
     };
     // clang-format on
 
+    Image* m_slotSelector;
+    int m_selectedSlot = -1;
+
     std::array<ItemLayout*, 36> m_slots;
+
+    CallbackHandle<const CursorEvent&> onMoveHandle;
+    void onCursorMove(const CursorEvent& e);
+
+    CallbackHandle<const MouseButtonEvent&> onMouseButtonHandle;
+    void onMouseButton(const MouseButtonEvent& e);
+
+    static int getSlot(const glm::vec2& cursorPosition);
 
   public:
     InventoryLayout(GUI& gui);

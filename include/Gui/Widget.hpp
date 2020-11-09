@@ -47,8 +47,10 @@ class Widget {
         const Shader* m_coloredQuadShader;
 
         bool coordinatesInWidget(int x, int y);
-        void handleCursorMove(const CursorEvent &e);
-        void handleButtonPress(const MouseButtonEvent &e);
+        CallbackHandle<const CursorEvent&> m_cursorCallbackHandle;
+        void handleCursorMove(const CursorEvent& e);
+        CallbackHandle<const MouseButtonEvent&> m_mouseButtonCallbackHandle;
+        void handleButtonPress(const MouseButtonEvent& e);
 
         virtual void _draw(const glm::mat4 &projection) const;
         virtual void _updateScreenElements();
