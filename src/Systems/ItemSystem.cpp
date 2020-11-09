@@ -70,7 +70,7 @@ void ItemSystem::spawnItem(const glm::vec3& position, const BlockId& block) {
 
 	createItemGeometry(vertices, indices, blockUVs);
 
-	glm::vec3 offset = glm::vec3{ rand() / (float)RAND_MAX, rand() / (float)RAND_MAX, rand() / (float)RAND_MAX };
+	glm::vec3 offset = glm::vec3{ rand() / (float)RAND_MAX, 0.5f + 0.5f * rand() / (float)RAND_MAX, rand() / (float)RAND_MAX };
 
 	ItemComponent& item = m_registry.emplace<ItemComponent>(entity, block, new Geometry{});
 	m_registry.emplace<TransformationComponent>(entity, position + offset, glm::vec3{ 0.f }, glm::vec3{ 1.0f });
@@ -83,8 +83,7 @@ void ItemSystem::spawnItem(const glm::vec3& position, const BlockId& block) {
 }
 
 void ItemSystem::destroyItem(const entt::entity& entity) {
-	ItemComponent& item = m_registry.get<ItemComponent>(entity);
-	std::cout << "picked up item! blockId: " << (size_t)item.blockId << std::endl;
+	ItemComponent& item = m_registry.get<ItemComponent>(entity);	
 
 	delete item.geometry;
 

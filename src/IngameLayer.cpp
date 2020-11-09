@@ -55,7 +55,7 @@ void IngameLayer::handleKeys(const KeyEvent& e) {
 
                     if (inventory.isVisible) {
                         m_application->getWindow().enableCursor();
-                        // layout.setInventory(m_registry.get<InventoryComponent>(player));
+                        layout.setInventory(m_registry.get<InventoryComponent>(player));
                     }
                     else {
                         m_application->getWindow().disableCursor();
@@ -132,9 +132,10 @@ void IngameLayer::update(int dt) {
     }
 
     m_time += dt;
+    entt::entity player = m_registry.view<PlayerComponent>().front();
+
     // update debug info every 1000ms
     if (m_time > 1000) {
-        entt::entity player = m_registry.view<PlayerComponent>().front();
 
         const TransformationComponent& transform = m_registry.get<TransformationComponent>(player);
         const CameraComponent& camera = m_registry.get<CameraComponent>(player);
@@ -155,6 +156,10 @@ void IngameLayer::update(int dt) {
         m_time = 1;
         m_frameCounter = 0;
     }
+
+    const InventoryComponent& inventory = m_registry.get<InventoryComponent>(player);
+    HotbarLayout& hotbar = m_gui.getWidget<HotbarLayout>("hotbar_layout");
+    hotbar.updateItems(inventory);
 
     m_gui.update();
     m_gui.draw();

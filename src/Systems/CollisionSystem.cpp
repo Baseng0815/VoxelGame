@@ -21,17 +21,17 @@ CollisionSystem::CollisionSystem(Registry_T &registry)
 void CollisionSystem::_update(int dt) {
     auto view = m_registry.view<TransformationComponent, CollisionComponent, VelocityComponent>();
 
-    for (auto it = view.begin(); it != view.end(); it++) {
-        for (auto jt = it; jt != view.end(); jt++) {
-            if (it == jt)
-                continue;
+    // for (auto it = view.begin(); it != view.end(); it++) {
+    //     for (auto jt = it; jt != view.end(); jt++) {
+    //         if (it == jt)
+    //             continue;
 
-            checkCollisions(*it, *jt);
-        }
-    }
+    //         checkCollisions(*it, *jt);
+    //     }
+    // }
 
     for (auto it = view.begin(); it != view.end(); it++) {
-        // to avoid tunneling throght terrain at begin, wait for terrain generation
+        // to avoid tunneling throght terrain at begin wait for terrain generation
         checkBlockCollisions(*it);
     }
 

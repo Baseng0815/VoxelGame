@@ -5,6 +5,7 @@
 #include "../../include/Resources/ResourceIDs.hpp"
 #include "../../include/Resources/ResourceManager.hpp"
 #include "../../include/Resources/Texture.hpp"
+#include "../../include/Components/InventoryComponent.hpp"
 
 HotbarLayout::HotbarLayout(GUI& gui)
     : Layout{"hotbar_layout", gui} {
@@ -32,6 +33,7 @@ HotbarLayout::HotbarLayout(GUI& gui)
         item->properties().constraints.width = AbsoluteConstraint(64);
 
         addWidget(item);
+        m_items[i] = item;
     }
 
     m_selector = new Image("hotbar_selector", ResourceManager::getResource<Texture>(TEXTURE_GUI_HOTBAR_SELECTOR));
@@ -52,4 +54,11 @@ void HotbarLayout::setSelectionIndex(int index) {
 
 int HotbarLayout::getSelectionIndex() const {
     return m_selectionIndex;
+}
+
+void HotbarLayout::updateItems(const InventoryComponent& inventory) {
+    for (int i = 0; i < 9; i++) {
+        auto& [block, count] = inventory.slots[i];
+        m_items[i]->setData(block, count);
+    }
 }
