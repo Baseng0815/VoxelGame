@@ -3,6 +3,8 @@
 #include "Layout.hpp"
 #include <array>
 #include <glm/glm.hpp>
+#include "DragContext.hpp"
+#include "../GameData/BlockIds.hpp"
 
 struct InventoryComponent;
 class ItemLayout;
@@ -18,10 +20,12 @@ class InventoryLayout : public Layout {
     };
     // clang-format on
 
+    InventoryComponent* m_playerInventory;
     Image* m_slotSelector;
     int m_selectedSlot = -1;
+    DragContext<std::pair<BlockId, int>> m_dragContext;
 
-    std::array<ItemLayout*, 36> m_slots;
+    std::array<ItemLayout*, 36> m_slots;    
 
     CallbackHandle<const CursorEvent&> onMoveHandle;
     void onCursorMove(const CursorEvent& e);
@@ -34,5 +38,5 @@ class InventoryLayout : public Layout {
   public:
     InventoryLayout(GUI& gui);
 
-    void setInventory(const InventoryComponent& inventory);
+    void setInventory(InventoryComponent& inventory);
 };

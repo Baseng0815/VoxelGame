@@ -9,6 +9,7 @@
 #include <entt/entt.hpp>
 
 #include "../GameData/Block.hpp"
+#include "../Gui/DragContext.hpp"
 #include "../Utility.hpp"
 #include "../WorldGeneration/Structures.hpp"
 
@@ -17,7 +18,10 @@ enum EventType {
     KEY_EVENT, MOUSE_BUTTON_EVENT, CURSOR_EVENT, SCROLL_EVENT, FRAMEBUFFER_SIZE_EVENT,
 
     // advanced events
-    ENTER_CHUNK_EVENT, BLOCK_CHANGED_EVENT, ENTITY_MOVED_EVENT
+    ENTER_CHUNK_EVENT, BLOCK_CHANGED_EVENT, ENTITY_MOVED_EVENT,
+
+    // GUI events
+    DRAG_START, DRAG_END
 };
 
 class Application;
@@ -103,4 +107,11 @@ struct StructureCreatedEvent {
     Application* app;
 
     std::unordered_map<glm::vec2, BlockCollection, std::hash<glm::vec2>> data;
+};
+
+template<typename T>
+struct DragEvent {
+    Application* app;
+
+    DragContext<T> data;
 };

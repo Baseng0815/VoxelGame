@@ -1,14 +1,14 @@
 #pragma once
 
-#include "Event.hpp"
 #include "CallbackList.hpp"
+#include "Event.hpp"
 
 #include "../Rendering/Window.hpp"
 
 #include <vector>
 
 class EventDispatcher {
-private:
+  private:
     static bool m_firstMouse;
     static double m_prevX, m_prevY;
 
@@ -20,7 +20,7 @@ private:
     static void scrollCallback(GLFWwindow* window, double xoffset, double yoffset);
     static void framebufferSizeCallback(GLFWwindow* window, int width, int height);
 
-public:
+  public:
     static glm::vec2 getFramebufferSize();
 
     static void attachToWindow(const Window& window);
@@ -39,7 +39,11 @@ public:
 
     static CallbackList<const StructureCreatedEvent&> onStructureCreated;
 
-    static void raiseEvent(const KeyEvent&);
+    static CallbackList<DragEvent<std::tuple<BlockId, int>>&> onItemDragStart;
+    static CallbackList<const DragEvent<std::tuple<BlockId, int>>&> onItemDrop;
+
+    static void
+    raiseEvent(const KeyEvent&);
     static void raiseEvent(const MouseButtonEvent&);
     static void raiseEvent(const CursorEvent&);
     static void raiseEvent(const ScrollEvent&);
@@ -49,6 +53,8 @@ public:
     static void raiseEvent(const BlockChangedEvent&);
     static void raiseEvent(const BlockCollisionEvent&);
     static void raiseEvent(const StructureCreatedEvent&);
+    static void raiseItemDragStartEvent(DragEvent<std::tuple<BlockId, int>>&);
+    static void raiseItemDropEvent(const DragEvent<std::tuple<BlockId, int>>&);
 
     // sets mouse state to firstMouse so the first input event is ignored
     static void resetMouseState();

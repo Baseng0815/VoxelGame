@@ -21,6 +21,9 @@ CallbackList<const BlockCollisionEvent&> EventDispatcher::onBlockCollision;
 
 CallbackList<const StructureCreatedEvent&> EventDispatcher::onStructureCreated;
 
+CallbackList<DragEvent<std::tuple<BlockId, int>>&> EventDispatcher::onItemDragStart;
+CallbackList<const DragEvent<std::tuple<BlockId, int>>&> EventDispatcher::onItemDrop;
+
 glm::vec2 EventDispatcher::getFramebufferSize() {    
     return m_framebufferSize;
 }
@@ -126,4 +129,12 @@ void EventDispatcher::raiseEvent(const BlockCollisionEvent& e) {
 
 void EventDispatcher::raiseEvent(const StructureCreatedEvent& e) {
     onStructureCreated.invoke(e);
+}
+
+void EventDispatcher::raiseItemDragStartEvent(DragEvent<std::tuple<BlockId, int>>& e) {
+    onItemDragStart.invoke(e);
+}
+
+void EventDispatcher::raiseItemDropEvent(const DragEvent<std::tuple<BlockId, int>>& e) {
+    onItemDrop.invoke(e);
 }
