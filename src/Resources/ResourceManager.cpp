@@ -48,6 +48,8 @@ void ResourceManager::loadResources() {
     resources.emplace(SHADER_TEXT, ResourceHandle {new Shader("Shaders/textShader")});
     // render 3d color
     resources.emplace(SHADER_MVP_COLOR, ResourceHandle {new Shader("Shaders/mvpColorShader")});
+    // block selector shader
+    resources.emplace(SHADER_BLOCK_SELECTOR, ResourceHandle{new Shader("Shaders/blockSelectionShader")});
 
     // materials
     Material *material = new Material {};

@@ -4,17 +4,17 @@
 
 // TODO put this all into functions and constexpr
 #define BUFFER_OFFSET(x) ((void*)(x))
-#define PI 3.1415926535897932384626433832f
+// #define PI 3.1415926535897932384626433832f
 
 #define randNext(min, max) ((min + (max - min) * (float)rand() / RAND_MAX))
 #define sign(x) (((x) < 0) ? (-1) : 1)
 #define inRange(x, min, max) (x >= min && x < max)
 
+#include <entt/entt.hpp>
 #include <functional>
 #include <ostream>
 #include <utility>
 #include <vector>
-#include <entt/entt.hpp>
 
 #include "GameData/Block.hpp"
 
@@ -23,6 +23,8 @@ struct InventoryComponent;
 struct ChunkComponent;
 
 namespace Utility {
+    constexpr float PI = 3.141592741f;    
+
     bool inChunk(const glm::vec3& position);
     bool inChunk(const int x, const int y, const int z);
 

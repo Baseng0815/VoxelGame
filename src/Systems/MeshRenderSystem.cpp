@@ -6,20 +6,21 @@
 #include "../../include/Events/Event.hpp"
 #include "../../include/Events/EventDispatcher.hpp"
 
+#include "../../include/Components/BlockSelectionComponent.hpp"
 #include "../../include/Components/CameraComponent.hpp"
 #include "../../include/Components/ChunkComponent.hpp"
+#include "../../include/Components/LightComponent.hpp"
 #include "../../include/Components/MeshRenderComponent.hpp"
 #include "../../include/Components/MultiMeshRenderComponent.hpp"
 #include "../../include/Components/PlayerComponent.hpp"
 #include "../../include/Components/TransformationComponent.hpp"
-#include "../../include/Components/LightComponent.hpp"
 
 void MeshRenderSystem::uploadToShader(const Shader* shader, const CameraComponent& camera, const TransformationComponent& playerTransform) const {
     shader->upload("viewMatrix", camera.viewMatrix);
     shader->upload("viewPos", camera.positionOffset + playerTransform.getPosition());
     shader->upload("projectionMatrix", camera.perspectiveProjection);
 
-    const LightingComponent &lighting = m_registry.raw<LightingComponent>()[0];
+    const LightingComponent& lighting = m_registry.raw<LightingComponent>()[0];
 
     // upload dir lights
     shader->upload("dirLightCount", (int)lighting.dirLights.size());
@@ -96,11 +97,23 @@ void MeshRenderSystem::render(const TransformationComponent& transformation, con
 }
 
 void MeshRenderSystem::_update(int dt) {
+    const CameraComponent& camera = m_registry.view<CameraComponent>().raw()[0];
+    const auto [playerTransform, player] = m_registry.get<TransformationComponent, PlayerComponent>(m_registry.view<PlayerComponent>().front());
+
+    // look at block is valid
+    if (player.lookAt.y > 0) {
+        m_blockSelectorShader->bind();
+        m_blockSelectorShader->upload("projectionMatrix", camera.perspectiveProjection);
+        m_blockSelectorShader->upload("viewMatrix", camera.viewMatrix);
+
+        const BlockSelectionComponent& blockSelector = m_registry.get<BlockSelectionComponent>(m_blockSelector);
+        m_blockSelectorShader->upload("selectedBlockPos", player.lookAt);
+        blockSelector.draw();
+    }
+
     // upload per-frame values for both shaders
     // color shader
     m_meshRenderShaderColor->bind();
-    const CameraComponent&          camera          = m_registry.view<CameraComponent>().raw()[0];
-    const TransformationComponent&  playerTransform = m_registry.get<TransformationComponent>(m_registry.view<PlayerComponent>().front());
 
     // texture shader
     m_meshRenderShaderTexture->bind();
@@ -110,8 +123,8 @@ void MeshRenderSystem::_update(int dt) {
     m_meshRenderShaderColor->bind();
     uploadToShader(m_meshRenderShaderColor, camera, playerTransform);
 
-    const auto &singleMeshComponents    = m_registry.view<TransformationComponent, MeshRenderComponent>();
-    const auto &multiMeshComponents     = m_registry.view<TransformationComponent, MultiMeshRenderComponent>();
+    const auto& singleMeshComponents = m_registry.view<TransformationComponent, MeshRenderComponent>();
+    const auto& multiMeshComponents = m_registry.view<TransformationComponent, MultiMeshRenderComponent>();
 
     for (int i = 0; i < 2; i++) {
         // render single mesh components
@@ -134,12 +147,16 @@ void MeshRenderSystem::_update(int dt) {
 
 MeshRenderSystem::MeshRenderSystem(Registry_T& registry)
     : System{registry, 0},
-    m_meshRenderShaderColor{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_COLOR)},
-    m_meshRenderShaderTexture{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_TEXTURE)}
-{
+      m_meshRenderShaderColor{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_COLOR)},
+      m_meshRenderShaderTexture{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_TEXTURE)},
+      m_blockSelectorShader{ResourceManager::getResource<Shader>(SHADER_BLOCK_SELECTOR)} {
     // create lighting component
     entt::entity lightEntity = m_registry.create();
     LightingComponent lighting;
-    lighting.dirLights.emplace_back(DirectionalLight {glm::vec3 {0.f, 0.f, 0.f}, Color {30}, Color {220}, Color {30}});
+    lighting.dirLights.emplace_back(DirectionalLight{glm::vec3{0.f, 0.f, 0.f}, Color{30}, Color{220}, Color{30}});
     m_registry.emplace<LightingComponent>(lightEntity, lighting);
+
+    // create block selection entity
+    m_blockSelector = m_registry.create();
+    m_registry.emplace<BlockSelectionComponent>(m_blockSelector);
 }

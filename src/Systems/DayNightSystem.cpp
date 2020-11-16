@@ -13,7 +13,7 @@ void DayNightSystem::_update(int dt)
     m_ingameTime += dt * m_ingameTimePerRealMillis;
     m_ingameTime = std::fmod(m_ingameTime, 24000.f);
 
-    float angle = 2 * PI * m_ingameTime / 24000.f;
+    float angle = 2 * Utility::PI * m_ingameTime / 24000.f;
     LightingComponent &lighting = m_registry.raw<LightingComponent>()[0];
     lighting.dirLights[0].direction.x = -std::cos(angle);
     lighting.dirLights[0].direction.y = -std::sin(angle);
