@@ -98,7 +98,7 @@ void MeshRenderSystem::render(const TransformationComponent& transformation, con
 
 void MeshRenderSystem::_update(int dt) {
     const CameraComponent& camera = m_registry.view<CameraComponent>().raw()[0];
-    const auto [playerTransform, player] = m_registry.get<TransformationComponent, PlayerComponent>(m_registry.view<PlayerComponent>().front());
+    const auto &[playerTransform, player] = m_registry.get<TransformationComponent, PlayerComponent>(m_registry.view<PlayerComponent>().front());
 
     // look at block is valid
     if (player.lookAt.y > 0) {
@@ -129,14 +129,15 @@ void MeshRenderSystem::_update(int dt) {
     for (int i = 0; i < 2; i++) {
         // render single mesh components
         singleMeshComponents.each(
-            [&](const TransformationComponent& transformation, const MeshRenderComponent& meshRenderer) {
+            // structured bindings are not variables, so the capture list does not implicitly capture it (valid for clang)
+            [&, playerTransform = playerTransform](const TransformationComponent& transformation, const MeshRenderComponent& meshRenderer) {
                 if (meshRenderer.order == i)
                     render(transformation, meshRenderer, camera, playerTransform);
             });
 
         // render multi mesh components
         multiMeshComponents.each(
-            [&](const TransformationComponent& transformation, const MultiMeshRenderComponent& multiMeshRenderer) {
+            [&, playerTransform = playerTransform](const TransformationComponent& transformation, const MultiMeshRenderComponent& multiMeshRenderer) {
                 for (const auto& meshRenderer : multiMeshRenderer.meshRenderComponents) {
                     if (meshRenderer.order == i)
                         render(transformation, meshRenderer, camera, playerTransform);
