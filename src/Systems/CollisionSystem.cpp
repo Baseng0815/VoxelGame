@@ -81,7 +81,7 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
     VelocityComponent &velocity = m_registry.get<VelocityComponent>(entity);
 
     glm::vec3 currPos = transform.getPosition();
-    if (!World::chunkCreated(Utility::GetChunk(currPos))) {
+    if (!World::chunkCreated(Utility::getChunk(currPos))) {
         return;
     }
 

@@ -44,12 +44,11 @@ struct ChunkComponent {
     bool verticesOutdated = false;
     bool threadActiveOnSelf = false;    
 
-    void setBlock(int x, int y, int z, const Block& block);
-    void setBlock(const glm::vec3& position, const Block& block);
+    void setBlock(const Block& block);    
 
     Block getBlock(int x, int y, int z) const;
-    Block getBlock(const glm::vec3& position) const;
+    Block getBlock(const glm::ivec3& position) const;
 
     Block getBlock(int x, int y, int z);
-    Block getBlock(const glm::vec3& position);
+    Block getBlock(const glm::ivec3& position);
 };

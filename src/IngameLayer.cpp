@@ -22,10 +22,10 @@
 
 #include "../include/Application.hpp"
 #include "../include/Events/EventDispatcher.hpp"
-#include "../include/Gui/InventoryLayout.hpp"
 #include "../include/Gui/DebugLayout.hpp"
 #include "../include/Gui/HotbarLayout.hpp"
 #include "../include/Gui/Image.hpp"
+#include "../include/Gui/InventoryLayout.hpp"
 #include "../include/Resources/ResourceManager.hpp"
 #include "../include/Resources/Texture.hpp"
 
@@ -42,11 +42,11 @@ void IngameLayer::handleKeys(const KeyEvent& e) {
                 else if (e.key == Configuration::getAssociatedKey("KEYBIND_OPEN_INVENTORY")) {
                     InventoryLayout& layout = m_gui.getWidget<InventoryLayout>("inventory_layout");
 
-                    UiProperties &inventory = layout.properties();
-                    UiProperties &crosshair = m_gui.getWidget<Image>("image_crosshair").properties();
+                    UiProperties& inventory = layout.properties();
+                    UiProperties& crosshair = m_gui.getWidget<Image>("image_crosshair").properties();
                     UiProperties& hotbar = m_gui.getWidget<HotbarLayout>("hotbar_layout").properties();
                     entt::entity player = m_registry.view<PlayerComponent>().front();
-                    PlayerComponent &playerComponent = m_registry.get<PlayerComponent>(player);
+                    PlayerComponent& playerComponent = m_registry.get<PlayerComponent>(player);
 
                     inventory.isVisible = !inventory.isVisible;
                     crosshair.isVisible = !inventory.isVisible;
@@ -70,12 +70,10 @@ void IngameLayer::handleScroll(const ScrollEvent& e) {
     HotbarLayout& hotbar = m_gui.getWidget<HotbarLayout>("hotbar_layout");
 
     int currentIndex = hotbar.getSelectionIndex();
-    if (e.dy > 0) {
-        hotbar.setSelectionIndex(currentIndex + 1);
-    }
-    else {
-        hotbar.setSelectionIndex(currentIndex + 8);
-    }
+    int index = (currentIndex + (e.dy > 0 ? 1 : 8)) % 9;
+    hotbar.setSelectionIndex(index);
+
+    m_registry.view<PlayerComponent>().raw()[0].selectedItemIndex = index;
 }
 
 IngameLayer::IngameLayer(Application* application)

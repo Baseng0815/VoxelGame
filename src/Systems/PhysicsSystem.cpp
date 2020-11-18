@@ -17,7 +17,7 @@ void PhysicsSystem::_update(int millis) {
 
     m_registry.view<TransformationComponent, VelocityComponent, RigidBodyComponent>().each(
         [&](entt::entity entity, TransformationComponent &transform, VelocityComponent &velocity, RigidBodyComponent& rigidBody) {
-            if (World::chunkCreated(Utility::GetChunk(transform.getPosition()))) {
+            if (World::chunkCreated(Utility::getChunk(transform.getPosition()))) {
                 applyAccelerations(dt, velocity, rigidBody);
 
                 applyVelocities(dt, entity, transform, velocity);
@@ -38,8 +38,8 @@ void PhysicsSystem::applyVelocities(float dt, const entt::entity &entity, Transf
 
         // if entity is player, check for EnterChunk event
         if (m_registry.has<PlayerComponent>(entity)) {
-            glm::ivec2 oldChunk = Utility::GetChunk(oldPos);
-            glm::ivec2 newChunk = Utility::GetChunk(transform.getPosition());
+            glm::ivec2 oldChunk = Utility::getChunk(oldPos);
+            glm::ivec2 newChunk = Utility::getChunk(transform.getPosition());
 
             if (oldChunk != newChunk) {
                 EnterChunkEvent enterChunkEvent {nullptr, oldChunk.x, oldChunk.y, newChunk.x, newChunk.y};

@@ -18,7 +18,7 @@ class World {
         static bool chunkCreated(const glm::vec2 &chunk);
 
         static Block getBlock(entt::registry& registry, const glm::vec3 &position);
-        static void setBlock(entt::registry& registry, const glm::vec3 &position, Block block);
+        static void setBlock(entt::registry& registry, Block block);
 
         static void addChunk(entt::entity entity, const glm::vec2 &position);
         static void removeChunk(entt::entity entity);

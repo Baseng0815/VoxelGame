@@ -18,8 +18,8 @@
 #include "../../include/Components/TransformationComponent.hpp"
 
 void ChunkCreateSystem::handlePlayerMoved(const EntityMovedEvent& e) {
-    glm::vec2 oldChunk = Utility::GetChunk(e.oldPos);
-    glm::vec2 newChunk = Utility::GetChunk(e.newPos);
+    glm::vec2 oldChunk = Utility::getChunk(e.oldPos);
+    glm::vec2 newChunk = Utility::getChunk(e.newPos);
     if (oldChunk == newChunk)
         return;
 

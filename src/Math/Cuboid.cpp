@@ -2,11 +2,14 @@
 #include "../../include/Math/Plane.hpp"
 #include "../../include/Math/Ray.hpp"
 
-namespace Math {
-    Cuboid::Cuboid() : min(glm::vec3()), max(glm::vec3()) {
+namespace Math {    
+    Cuboid::Cuboid()
+        : min(glm::vec3()),
+          max(glm::vec3()) {
     }
 
-    Cuboid::Cuboid(glm::vec3 min, glm::vec3 max) : min(min), max(max) {
+    Cuboid::Cuboid(glm::vec3 min, glm::vec3 max)
+        : min(min), max(max) {
     }
 
     Cuboid::Cuboid(glm::vec3 position, float sizeX, float sizeY, float sizeZ) {
@@ -34,27 +37,27 @@ namespace Math {
         glm::vec3 z = glm::vec3(0, 0, max.z - min.z);
 
         return std::vector<glm::vec3>{min, min + x, min + y, min + z,
-            min + x + y, min + x + z, min + y + z, min + x + y + z};
+                                      min + x + y, min + x + z, min + y + z, min + x + y + z};
     }
 
     std::vector<Plane> Cuboid::getFacePlanes() const {
         std::vector<Plane> planes = std::vector<Plane>();
 
         // push_back kopiert die Elemente; wenn das unnoetig ist, ist emplace_back besser
-        planes.emplace_back(Plane{ glm::vec3 {-1, 0, 0}, min });
-        planes.emplace_back(Plane{ glm::vec3 {0, -1, 0}, min });
-        planes.emplace_back(Plane{ glm::vec3 {0, 0, -1}, min });
+        planes.emplace_back(Plane{glm::vec3{-1, 0, 0}, min});
+        planes.emplace_back(Plane{glm::vec3{0, -1, 0}, min});
+        planes.emplace_back(Plane{glm::vec3{0, 0, -1}, min});
 
-        planes.emplace_back(Plane{ glm::vec3 {1, 0, 0}, max });
-        planes.emplace_back(Plane{ glm::vec3 {0, 1, 0}, max });
-        planes.emplace_back(Plane{ glm::vec3 {0, 0, 1}, max });
+        planes.emplace_back(Plane{glm::vec3{1, 0, 0}, max});
+        planes.emplace_back(Plane{glm::vec3{0, 1, 0}, max});
+        planes.emplace_back(Plane{glm::vec3{0, 0, 1}, max});
 
         return planes;
     }
 
     bool Cuboid::intersects(const Cuboid& other) const {
-        return other.min.x < max.x&& other.min.y < max.y&& other.min.z < max.z&& min.x < other.max.x&&
-            min.y < other.max.y&& min.z < other.max.z;
+        return other.min.x < max.x && other.min.y < max.y && other.min.z < max.z && min.x < other.max.x &&
+               min.y < other.max.y && min.z < other.max.z;
     }
 
     bool Cuboid::intersects(const Ray& ray, float* t) const {
@@ -111,4 +114,4 @@ namespace Math {
 
         return Cuboid(glm::vec3(minX, minY, minZ), glm::vec3(maxX, maxY, maxZ));
     }
-}
+} // namespace Math

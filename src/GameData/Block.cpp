@@ -12,14 +12,14 @@ bool Block::isTransparent() const {
 }
 
 Block::Block()
-    : Block{glm::vec3{}, BlockId::BLOCK_AIR} {
+    : Block{glm::ivec3{}, BlockId::BLOCK_AIR} {
 }
 
-Block::Block(const glm::vec3& position, BlockId type)
+Block::Block(const glm::ivec3& position, BlockId type)
     : Block{position, type, nullptr} {
 }
 
-Block::Block(const glm::vec3& position, BlockId type, BlockState* state)
+Block::Block(const glm::ivec3& position, BlockId type, BlockState* state)
     : type{type},
       state{state},
       position{position} {

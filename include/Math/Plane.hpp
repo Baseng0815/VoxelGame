@@ -15,5 +15,5 @@ namespace Math {
         glm::vec3 getIntersectionPoint(const Ray ray) const;
 
         std::string toString() const;
-    };
-}
+    };    
+} // namespace Math

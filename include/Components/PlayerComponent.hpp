@@ -9,4 +9,5 @@ struct PlayerComponent {
     bool inputEnabled = true;
 
     glm::vec3 lookAt;
+    short selectedItemIndex;
 };

@@ -6,7 +6,16 @@ namespace Math {
 	struct Ray;
 	struct Plane;
 
-	struct Cuboid {
+    constexpr glm::vec3 cuboidNormals[6] = {
+        glm::vec3{-1, 0, 0},
+        glm::vec3{0, -1, 0},
+        glm::vec3{0, 0, -1},
+        glm::vec3{1, 0, 0},
+        glm::vec3{0, 1, 0},
+        glm::vec3{0, 0, 1}
+    };
+
+    struct Cuboid {
 	public:
 		glm::vec3 min;
 		glm::vec3 max;

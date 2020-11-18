@@ -1,11 +1,11 @@
 #include "../../include/Gui/HotbarLayout.hpp"
 
+#include "../../include/Components/InventoryComponent.hpp"
 #include "../../include/Gui/Image.hpp"
 #include "../../include/Gui/ItemLayout.hpp"
 #include "../../include/Resources/ResourceIDs.hpp"
 #include "../../include/Resources/ResourceManager.hpp"
 #include "../../include/Resources/Texture.hpp"
-#include "../../include/Components/InventoryComponent.hpp"
 
 HotbarLayout::HotbarLayout(GUI& gui)
     : Layout{"hotbar_layout", gui} {
@@ -46,7 +46,7 @@ HotbarLayout::HotbarLayout(GUI& gui)
 }
 
 void HotbarLayout::setSelectionIndex(int index) {
-    m_selectionIndex = index % 9;
+    m_selectionIndex = index;
 
     m_selector->properties().constraints.x = AbsoluteConstraint(m_selectionIndex * 74);
     m_selector->_invalidate();

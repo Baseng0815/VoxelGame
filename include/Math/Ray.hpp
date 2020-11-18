@@ -23,6 +23,9 @@ struct Ray {
 
     bool intersects(const Plane &plane, float *t) const;
 
-    glm::vec3 getFirstBlock(float maxT, std::function<bool(glm::vec3)> predicate) const;    
+    glm::vec3 getFirstBlock(float maxT, std::function<bool(glm::vec3)> predicate) const;
+
+    // make sure that the ray intersects the block
+    glm::vec3 getIntersectionFaceNormal(const glm::ivec3 block) const;
 };
 } // namespace Math

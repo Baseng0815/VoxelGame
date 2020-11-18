@@ -29,19 +29,19 @@ Block World::getBlock(entt::registry& registry, const glm::vec3& position) {
     return block;
 }
 
-void World::setBlock(entt::registry& registry, const glm::vec3& position, Block block)
+void World::setBlock(entt::registry& registry, Block block)
 {
-    auto [chunkPosition, localPosition] = Utility::GetChunkAndLocal(position);
+    auto [chunkPosition, localPosition] = Utility::GetChunkAndLocal(block.position);
 
     if (chunkCreated(chunkPosition)) {
         ChunkComponent& chunk = getChunk(registry, chunkPosition);
 
         BlockId prevBlock = chunk.getBlock(localPosition.x, localPosition.y, localPosition.z).type;
 
-        chunk.setBlock(localPosition.x, localPosition.y, localPosition.z, block);
+        chunk.setBlock(block);
         chunk.verticesOutdated = true;
 
-        BlockChangedEvent blockChangedEvent{nullptr, position, prevBlock, block.type};
+        BlockChangedEvent blockChangedEvent{nullptr, block.position, prevBlock, block.type};
         EventDispatcher::raiseEvent(blockChangedEvent);
     }
 }
