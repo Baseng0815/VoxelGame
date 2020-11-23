@@ -66,16 +66,6 @@ void IngameLayer::handleKeys(const KeyEvent& e) {
     }
 }
 
-void IngameLayer::handleScroll(const ScrollEvent& e) {
-    HotbarLayout& hotbar = m_gui.getWidget<HotbarLayout>("hotbar_layout");
-
-    int currentIndex = hotbar.getSelectionIndex();
-    int index = (currentIndex + (e.dy > 0 ? 1 : 8)) % 9;
-    hotbar.setSelectionIndex(index);
-
-    m_registry.view<PlayerComponent>().raw()[0].selectedItemIndex = index;
-}
-
 IngameLayer::IngameLayer(Application* application)
     : GameLayer{application}, m_atlas{16, 16} {
     m_application->getWindow().disableCursor();
@@ -85,7 +75,8 @@ IngameLayer::IngameLayer(Application* application)
     // TODO add clear description of which systems to initialize and update first
     m_systems.emplace_back(new ChunkCreateSystem{m_registry, m_atlas});
     m_systems.emplace_back(new PhysicsSystem{m_registry});
-    m_systems.emplace_back(new InputSystem{m_registry});
+    m_systems.emplace_back(new InputSystem{m_registry,
+        m_gui.getWidget<InventoryLayout>("inventory_layout"), m_gui.getWidget<HotbarLayout>("hotbar_layout")});
     m_systems.emplace_back(new PlayerMovementSystem{m_registry});
     m_systems.emplace_back(new CloudSystem{m_registry});
     m_systems.emplace_back(new SkyboxSystem{m_registry});
@@ -101,10 +92,6 @@ IngameLayer::IngameLayer(Application* application)
     // callbacks
     m_keyEventHandle = EventDispatcher::onKeyPress.subscribe([&](const KeyEvent& e) {
         handleKeys(e);
-    });
-
-    m_scrollEventHandle = EventDispatcher::onMouseScroll.subscribe([&](const ScrollEvent& e) {
-        handleScroll(e);
     });
 
     EventDispatcher::raiseEvent(EnterChunkEvent{nullptr, 0, 0, 0, 0});

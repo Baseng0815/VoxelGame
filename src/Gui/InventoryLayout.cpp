@@ -26,7 +26,7 @@ void InventoryLayout::onCursorMove(const CursorEvent& e) {
     else {
         m_slotSelector->properties().isVisible = false;
         m_slotSelector->_invalidate();
-    }    
+    }
 }
 
 void InventoryLayout::onMouseButton(const MouseButtonEvent& e) {
@@ -39,11 +39,11 @@ void InventoryLayout::onMouseButton(const MouseButtonEvent& e) {
             if (m_playerInventory->slots[m_selectedSlot].second > 0) {
                 m_dragContext.data = std::pair<BlockId, int>{
                     m_playerInventory->slots[m_selectedSlot].first,
-                    m_playerInventory->slots[m_selectedSlot].second};
-                                
+                        m_playerInventory->slots[m_selectedSlot].second};
+
             }
             else {
-                m_dragContext.hasData = false;                
+                m_dragContext.hasData = false;
             }
 
             m_playerInventory->slots[m_selectedSlot].first = item;
@@ -55,10 +55,10 @@ void InventoryLayout::onMouseButton(const MouseButtonEvent& e) {
             if (m_playerInventory->slots[m_selectedSlot].second > 0) {
                 m_dragContext.data = std::pair<BlockId, int>{
                     m_playerInventory->slots[m_selectedSlot].first,
-                    m_playerInventory->slots[m_selectedSlot].second};
+                        m_playerInventory->slots[m_selectedSlot].second};
 
                 m_dragContext.hasData = true;
-                
+
                 m_playerInventory->slots[m_selectedSlot] = std::pair<BlockId, int>{BlockId::BLOCK_AIR, 0};
                 m_slots[m_selectedSlot]->setData(BlockId::BLOCK_AIR, 0);
                 m_slots[m_selectedSlot]->_invalidate();
@@ -83,41 +83,41 @@ int InventoryLayout::getSlot(const glm::vec2& cursorPosition) {
 
 InventoryLayout::InventoryLayout(GUI& gui)
     : Layout{"inventory_layout", gui} {
-    m_properties.constraints.x = CenterConstraint();
-    m_properties.constraints.y = CenterConstraint();
-    m_properties.constraints.height = AbsoluteConstraint(400);
-    m_properties.constraints.width = AbsoluteConstraint(726);
+        m_properties.constraints.x = CenterConstraint();
+        m_properties.constraints.y = CenterConstraint();
+        m_properties.constraints.height = AbsoluteConstraint(400);
+        m_properties.constraints.width = AbsoluteConstraint(726);
 
-    onMoveHandle = onMove.subscribe([&](const CursorEvent& e) { onCursorMove(e); });
-    onMouseButtonHandle = onPress.subscribe([&](const MouseButtonEvent& e) { onMouseButton(e); });
+        onMoveHandle = onMove.subscribe([&](const CursorEvent& e) { onCursorMove(e); });
+        onMouseButtonHandle = onPress.subscribe([&](const MouseButtonEvent& e) { onMouseButton(e); });
 
-    Image* background = new Image("inventory_background", ResourceManager::getResource<Texture>(TEXTURE_GUI_INVENTORY));
-    background->properties().constraints.x = AbsoluteConstraint(0);
-    background->properties().constraints.y = AbsoluteConstraint(0);
-    background->properties().constraints.width = RelativeConstraint(1);
-    background->properties().constraints.height = RelativeConstraint(1);
-    addWidget(background);
+        Image* background = new Image("inventory_background", ResourceManager::getResource<Texture>(TEXTURE_GUI_INVENTORY));
+        background->properties().constraints.x = AbsoluteConstraint(0);
+        background->properties().constraints.y = AbsoluteConstraint(0);
+        background->properties().constraints.width = RelativeConstraint(1);
+        background->properties().constraints.height = RelativeConstraint(1);
+        addWidget(background);
 
-    m_slotSelector = new Image("inventory_layout_selector", ResourceManager::getResource<Texture>(TEXTURE_GUI_SLOT_SELECTOR));
-    m_slotSelector->properties().constraints.width = AbsoluteConstraint(64);
-    m_slotSelector->properties().constraints.height = AbsoluteConstraint(64);
-    m_slotSelector->properties().isVisible = false;
-    addWidget(m_slotSelector);
+        m_slotSelector = new Image("inventory_layout_selector", ResourceManager::getResource<Texture>(TEXTURE_GUI_SLOT_SELECTOR));
+        m_slotSelector->properties().constraints.width = AbsoluteConstraint(64);
+        m_slotSelector->properties().constraints.height = AbsoluteConstraint(64);
+        m_slotSelector->properties().isVisible = false;
+        addWidget(m_slotSelector);
 
-    for (int i = 0; i < 36; i++) {
-        // TODO: Fix widget id
-        // ItemLayout* item = new ItemLayout{"inventory_slot_" + i, gui};
-        ItemLayout* item = new ItemLayout{"inventory_layout?fkdjlkgjhlgj_slot_" + i, gui};
-        glm::ivec2 position = m_itemPositions[i];
-        item->properties().constraints.x = AbsoluteConstraint(position.x);
-        item->properties().constraints.y = AbsoluteConstraint(position.y);
+        for (int i = 0; i < 36; i++) {
+            // TODO: Fix widget id
+            // ItemLayout* item = new ItemLayout{"inventory_slot_" + i, gui};
+            ItemLayout* item = new ItemLayout {"inventory_layout?fkdjlkgjhlgj_slot_" + i, gui};
+            glm::ivec2 position = m_itemPositions[i];
+            item->properties().constraints.x = AbsoluteConstraint(position.x);
+            item->properties().constraints.y = AbsoluteConstraint(position.y);
 
-        addWidget(item);
-        m_slots[i] = item;
-    }    
+            addWidget(item);
+            m_slots[i] = item;
+        }
 
-    m_properties.isVisible = false;
-}
+        m_properties.isVisible = false;
+    }
 
 void InventoryLayout::setInventory(InventoryComponent& inventory) {
     for (int i = 0; i < m_itemPositions.size(); i++) {

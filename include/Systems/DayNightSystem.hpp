@@ -13,7 +13,7 @@ class DayNightSystem : public System {
         entt::entity m_skybox;
 
         static constexpr float m_ingameTimePerRealMillis = 24000 / (float)Configuration::DAYNIGHT_DURATION / 1000.f;
-        float m_ingameTime = 0;
+        float m_ingameTime = 8000;
 
         void _update(int dt) override;
 

@@ -27,6 +27,8 @@ class Configuration {
         static constexpr int DAYNIGHT_DURATION  = 100;
         // units per second
         static constexpr float CLOUD_SPEED      = 16;
+        // in milliseconds
+        static constexpr int KEY_INTERVAL       = 200;
         // the higher the bias, the more clouds there will be
         static constexpr double CLOUD_BIAS      = 0.0;
         static constexpr float CLOUD_HEIGHT     = 120;

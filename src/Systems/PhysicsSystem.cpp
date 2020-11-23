@@ -58,7 +58,7 @@ void PhysicsSystem::applyVelocities(float dt, const entt::entity &entity, Transf
 
 void PhysicsSystem::applyAccelerations(float dt, VelocityComponent &velocity, const RigidBodyComponent &rigidBody) {
     // gravity
-    if (rigidBody.isFalling) {
+    if (rigidBody.gravityApplies && rigidBody.isFalling) {
         velocity.velocity.y = std::max(velocity.velocity.y - dt * 9.81f, -20.f);
     }
 }

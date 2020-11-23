@@ -7,6 +7,7 @@ struct PlayerComponent {
 
     float xAxisInput, yAxisInput, zAxisInput;
     bool inputEnabled = true;
+    bool isFlying = false;
 
     glm::vec3 lookAt;
     short selectedItemIndex;

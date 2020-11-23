@@ -26,7 +26,7 @@ void PlayerMovementSystem::_update(int dt) {
 }
 
 void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent &player, VelocityComponent &velocity, const CameraComponent &camera, const RigidBodyComponent &rigidBody) const {
-    glm::vec3 playerInput = glm::vec3();
+    glm::vec3 playerInput {0.f};
 
     if (player.xAxisInput != 0) {
         playerInput += player.xAxisInput * camera.front_noY;

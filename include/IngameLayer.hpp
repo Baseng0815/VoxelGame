@@ -22,9 +22,6 @@ class IngameLayer : public GameLayer {
     CallbackHandle<const KeyEvent&> m_keyEventHandle;
     void handleKeys(const KeyEvent&);
 
-    CallbackHandle<const ScrollEvent&> m_scrollEventHandle;
-    void handleScroll(const ScrollEvent&);
-
     int m_time = 0;
     int m_frameCounter = 0;
 

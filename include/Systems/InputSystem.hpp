@@ -15,13 +15,18 @@ struct CursorEvent;
 struct ScrollEvent;
 struct FramebufferSizeEvent;
 
+class InventoryLayout;
+class HotbarLayout;
+
 // handles player movement input
 // also updates the camera
 class InputSystem : public System {
     private:
         struct LookData { glm::vec3 block; glm::vec3 face; bool valid; };
         entt::entity m_player;
-        double lastSpaceInput = -1;
+
+        int m_lastKey;
+        int m_lastKeyTime = 0;
 
         CallbackHandle<const KeyEvent&> m_keyPressHandle;
         void handleKeyPressEvent(const KeyEvent&);
@@ -41,8 +46,10 @@ class InputSystem : public System {
         void _update(int dt) override;
 
         LookData selectedBlock;
+        InventoryLayout &m_inventoryLayout;
+        HotbarLayout    &m_hotbarLayout;
 
         byte playerInputState = 0;
     public:
-        InputSystem(Registry_T &registry);
+        InputSystem(Registry_T &registry, InventoryLayout &inventoryLayout, HotbarLayout &m_hotbarLayout);
 };

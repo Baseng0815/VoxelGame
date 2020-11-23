@@ -8,7 +8,8 @@
 #include "../../include/Resources/Texture.hpp"
 
 HotbarLayout::HotbarLayout(GUI& gui)
-    : Layout{"hotbar_layout", gui} {
+    : Layout{"hotbar_layout", gui}
+{
 
     Image* hotbar = new Image("image_hotbar", ResourceManager::getResource<Texture>(TEXTURE_GUI_HOTBAR));
     hotbar->properties().constraints.width = RelativeConstraint(1);
@@ -45,18 +46,21 @@ HotbarLayout::HotbarLayout(GUI& gui)
     addWidget(m_selector);
 }
 
-void HotbarLayout::setSelectionIndex(int index) {
+void HotbarLayout::setSelectionIndex(int index)
+{
     m_selectionIndex = index;
 
     m_selector->properties().constraints.x = AbsoluteConstraint(m_selectionIndex * 74);
     m_selector->_invalidate();
 }
 
-int HotbarLayout::getSelectionIndex() const {
+int HotbarLayout::getSelectionIndex() const
+{
     return m_selectionIndex;
 }
 
-void HotbarLayout::updateItems(const InventoryComponent& inventory) {
+void HotbarLayout::updateItems(const InventoryComponent &inventory)
+{
     for (int i = 0; i < 9; i++) {
         auto& [block, count] = inventory.slots[i];
         m_items[i]->setData(block, count);
