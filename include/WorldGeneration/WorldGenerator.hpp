@@ -3,6 +3,7 @@
 #include "CaveGenerator.hpp"
 #include "TerrainGenerator.hpp"
 #include "TerrainHeightGenerator.hpp"
+#include "StructureGenerator.hpp"
 
 #include "../GameData/Block.hpp"
 #include "../GameData/BlockStates/BlockState.hpp"
@@ -31,8 +32,9 @@ class WorldGenerator {
     CaveGenerator m_caveGenerator;
     TerrainHeightGenerator m_heightGenerator;
     TerrainGenerator m_terrainGenerator;
+    StructureGenerator m_structureGenerator;
 
-    void generateOres(BiomeId** biomes, GenerationData*** blocks) const;
+    void generateOres(BiomeId** biomes, BlockId*** blocks) const;
 
   public:
     WorldGenerator(WorldType type);

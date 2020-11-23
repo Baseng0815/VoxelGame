@@ -33,7 +33,7 @@ void TerrainGenerator::createBlocks(GenerationData* data, int** heightMap) const
                 BlockId block = BlockId::BLOCK_AIR;
                 if (cy < randNext(2, 4))
                     // bricks
-                    block = BlockId::BLOCK_BRICKS;
+                    block = BlockId::BLOCK_BEDROCK;
                 else if (cy <= height - (biome.subsurfaceHeight + biome.surfaceHeight))
                     // stone
                     block = BlockId::BLOCK_STONE;

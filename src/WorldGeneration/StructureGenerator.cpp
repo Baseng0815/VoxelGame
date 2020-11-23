@@ -6,18 +6,18 @@
 #include "../../include/Systems/ChunkCreateSystem.hpp"
 #include "../../include/Utility.hpp"
 
-void StructureGenerator::generateStructure(const glm::vec2 &chunk, glm::vec3 position, const BlockCollection& structure,
+void StructureGenerator::generateStructure(const glm::vec2& chunk, glm::vec3 position, const BlockCollection& structure,
                                            Block*** blocks) const {
     std::unordered_map<glm::vec2, BlockCollection, std::hash<glm::vec2>> chunkOverflow =
         std::unordered_map<glm::vec2, BlockCollection, std::hash<glm::vec2>>{};
 
-    for (const auto &[localPos, blockType] : structure) {
+    for (const auto& [localPos, blockType] : structure) {
         glm::vec3 pos = localPos + position;
         if (Utility::inChunk(pos)) {
             blocks[(int)pos.x][(int)pos.y][(int)pos.z].type = blockType;
         }
-        else {            
-            glm::vec3 worldPos = Utility::getWorldCoords(chunk, pos);            
+        else {
+            glm::vec3 worldPos = Utility::getWorldCoords(chunk, pos);
 
             auto [newChunk, chunkCoords] = Utility::GetChunkAndLocal(worldPos);
             if (!chunkOverflow.contains(chunk)) {
@@ -33,42 +33,40 @@ void StructureGenerator::generateStructure(const glm::vec2 &chunk, glm::vec3 pos
     }
 }
 
-void StructureGenerator::generateTrees(const glm::vec2 &chunk, GenerationData* data) const {
-    // for (int cx = 0; cx < Configuration::CHUNK_SIZE; cx++) {
-    //     for (int cz = 0; cz < Configuration::CHUNK_SIZE; cz++) {
-    //         float random = rand() / (float)RAND_MAX;
-    //         if (random < 0.025 && data->biomes[cx][cz] == BiomeId::BIOME_FLAT_TERRAIN) {
-    //             bool canCreate = true;
-    //             int surfaceHeight = m_worldGenerator->getSurfaceHeight(chunk, cx, cz);
+std::vector<glm::ivec2> StructureGenerator::getTreePositions(int chunkX, int chunkZ) const {
+    std::vector<glm::ivec2> treePositions;
+    for (int cx = 0; cx < Configuration::CHUNK_SIZE; cx++) {
+        for (int cz = 0; cz < Configuration::CHUNK_SIZE; cz++) {
+            int x = cx + chunkX * Configuration::CHUNK_SIZE;
+            int z = cz + chunkZ * Configuration::CHUNK_SIZE;
+            if (m_treeNoise.getValue(x, z)) {
+                treePositions.emplace_back(x, z);
+            }
+        }
+    }
 
-    //             for (int x1 = -4; x1 <= 4; x1++) {
-    //                 for (int y1 = -4; y1 <= 4; y1++) {
-    //                     for (int z1 = -4; z1 <= 4; z1++) {
-    //                         int x = cx + x1;
-    //                         int y = surfaceHeight + 1 + y1;
-    //                         int z = cz + z1;
-
-    //                         if (Utility::InChunk(x, y, z)) {
-    //                             if (data->blocks[x][y][z].type == BlockId::BLOCK_WOOD) {
-    //                                 canCreate = false;
-    //                             }
-    //                         }
-    //                     }
-    //                 }
-    //             }
-
-    //             if (canCreate && data->blocks[cx][surfaceHeight - 1][cz].type == BlockId::BLOCK_GRASS) {
-    //                 generateStructure(chunk, glm::vec3{cx, surfaceHeight, cz}, Structures::getStructure(StructureType::STRUCTURE_TREE, rand() % 3), data->blocks);
-    //             }
-    //         }
-    //     }
-    // }
+    return treePositions;
 }
 
-StructureGenerator::StructureGenerator(WorldGenerator* worldGenerator) : m_worldGenerator(worldGenerator) {
+void StructureGenerator::generateTrees(const glm::vec2& chunk, GenerationData* data) const {
+    std::vector<glm::ivec2> treePositions;
+    for (int x = chunk.x - 1; x <= chunk.x + 1; x++) {
+        for (int y = chunk.y - 1; y <= chunk.y + 1; y++) {
+            if (x == chunk.x && y == chunk.y) {
+                continue;
+            }
+
+            std::vector<glm::ivec2> trees = getTreePositions(x, y);
+            treePositions.insert(treePositions.begin() + treePositions.size(), trees.begin(), trees.end());
+        }
+    }
+}
+
+StructureGenerator::StructureGenerator(WorldGenerator* worldGenerator)
+    : m_worldGenerator(worldGenerator) {
     Structures::init();
 }
 
-void StructureGenerator::generateStructures(const glm::vec2 &chunk, GenerationData* data) const {
+void StructureGenerator::generateStructures(const glm::vec2& chunk, GenerationData* data) const {
     generateTrees(chunk, data);
 }

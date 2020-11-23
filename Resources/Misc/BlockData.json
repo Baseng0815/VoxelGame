@@ -31,6 +31,16 @@
         "tid_ny": 1
     },
     {
+        "name": "BLOCK_BEDROCK",
+        "is_solid": true,
+        "tid_py": 17,
+        "tid_px": 17,
+        "tid_nx": 17,
+        "tid_pz": 17,
+        "tid_nz": 17,
+        "tid_ny": 17
+    },
+    {
         "name": "BLOCK_WOOD",
         "is_solid": true,
         "tid_py": 21,
@@ -250,7 +260,7 @@
         "tid_pz": 237,
         "tid_nz": 237,
         "tid_ny": 237
-    },
+    },    
     {
         "name": "PLANE_GRASS",
         "is_solid": false,
