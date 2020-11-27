@@ -28,16 +28,25 @@ void PlayerMovementSystem::_update(int dt) {
 void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent &player, VelocityComponent &velocity, const CameraComponent &camera, const RigidBodyComponent &rigidBody) const {
     glm::vec3 playerInput {0.f};
 
+    // x input axis = camera front
     if (player.xAxisInput != 0) {
         playerInput += player.xAxisInput * camera.front_noY;
     }
 
+    // y input axis = camera right
     if (player.yAxisInput != 0) {
         playerInput += player.yAxisInput * camera.right;
     }
 
+    // z input axis = camera up
+    // TODO add isFalling so the player can't jump when already in air
     if (player.zAxisInput != 0) {
         playerInput += player.zAxisInput * glm::vec3(0, 1, 0);
+    } else {
+        // set y velocity to 0 if player is flying
+        if (player.isFlying) {
+            velocity.velocity.y = 0;
+        }
     }
 
     if (glm::length(playerInput) != 0) {

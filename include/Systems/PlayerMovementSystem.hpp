@@ -7,6 +7,8 @@ struct CameraComponent;
 struct EntityMovedEvent;
 struct RigidBodyComponent;
 
+// handles actual player movement
+// -> velocity calculation, NOT position!! (this is done by physics)
 class PlayerMovementSystem : public System {
 private:
     entt::entity playerEntity;
