@@ -1,0 +1,60 @@
+[
+    {
+        "type": 0,
+        "variation": 0,
+        "blocks": [
+            {
+                "blockId": 23,
+                "position0": [
+                    -2,
+                    2,
+                    -2
+                ],
+                "position1": [
+                    2,
+                    3,
+                    2
+                ]
+            },
+            {
+                "blockId": 23,
+                "position0": [
+                    -1,
+                    4,
+                    0
+                ],
+                "position1": [
+                    1,
+                    5,
+                    0
+                ]
+            },
+            {
+                "blockId": 23,
+                "position0": [
+                    0,
+                    4,
+                    -1
+                ],
+                "position1": [
+                    0,
+                    5,
+                    1
+                ]
+            },
+            {
+                "blockId": 4,
+                "position0": [
+                    0,
+                    0,
+                    0
+                ],
+                "position1": [
+                    0,
+                    3,
+                    0
+                ]
+            }
+        ]
+    }
+]

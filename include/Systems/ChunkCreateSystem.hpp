@@ -20,7 +20,6 @@
 
 struct EntityMovedEvent;
 struct BlockChangedEvent;
-struct StructureCreatedEvent;
 
 struct Vertex;
 struct ChunkComponent;
@@ -45,8 +44,7 @@ class ChunkCreateSystem : public System {
     // some static data needed
 
     WorldGenerator m_worldGenerator;
-    StructureGenerator m_structureGenerator;
-    std::unordered_map<glm::vec2, BlockCollection, std::hash<glm::vec2>> m_structureQueue;
+    StructureGenerator m_structureGenerator;    
     const TextureAtlas& m_atlas;
 
     int m_constructionCount = 0;
@@ -54,12 +52,9 @@ class ChunkCreateSystem : public System {
     std::vector<glm::vec2> m_loadedChunks;
 
     CallbackHandle<const EntityMovedEvent&> m_playerMovedHandle;
-    void handlePlayerMoved(const EntityMovedEvent& e);
-    CallbackHandle<const StructureCreatedEvent&> m_structureCreatedHandle;
-    void handleStructureCreated(const StructureCreatedEvent& e);
+    void handlePlayerMoved(const EntityMovedEvent& e);    
 
-    GenerationData updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ);
-    void updateChunkStructures(Block*** chunkBlocks, BlockCollection structureBlocks) const;
+    GenerationData updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ);    
     ChunkGeometryData updateChunkVertices(entt::entity entity, const ChunkComponent& chunk);
     void updateChunkBuffers(Geometry* geometryComponent, const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices);
 

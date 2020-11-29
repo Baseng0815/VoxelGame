@@ -31,6 +31,9 @@ namespace Utility {
     bool inChunk(const glm::ivec3& position);
     bool inChunk(const int x, const int y, const int z);
 
+    bool inChunk(const glm::ivec3& position, const glm::ivec2& chunk);
+    bool inChunk(const int x, const int y, const int z, const int chunkX, const int chunkZ);
+
     std::tuple<glm::vec2, glm::ivec3> GetChunkAndLocal(const glm::ivec3& worldCoords);
     glm::ivec2 getChunk(const glm::ivec3& worldCoords);
     glm::ivec3 getWorldCoords(const glm::ivec2& chunk, const glm::ivec3& chunkCoords);

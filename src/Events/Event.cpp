@@ -2,7 +2,6 @@
 #include "../../include/Math/Cuboid.hpp"
 
 #include "../../include/Utility.hpp"
-#include "../../include/WorldGeneration/Structures.hpp"
 
 std::string KeyEvent::toString() const {
     std::stringstream ss;

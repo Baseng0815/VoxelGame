@@ -19,8 +19,6 @@ CallbackList<const EntityMovedEvent&> EventDispatcher::onEntityMoved;
 CallbackList<const BlockChangedEvent&> EventDispatcher::onBlockChange;
 CallbackList<const BlockCollisionEvent&> EventDispatcher::onBlockCollision;
 
-CallbackList<const StructureCreatedEvent&> EventDispatcher::onStructureCreated;
-
 CallbackList<DragEvent<std::tuple<BlockId, int>>&> EventDispatcher::onItemDragStart;
 CallbackList<const DragEvent<std::tuple<BlockId, int>>&> EventDispatcher::onItemDrop;
 
@@ -125,10 +123,6 @@ void EventDispatcher::raiseEvent(const BlockChangedEvent& e) {
 
 void EventDispatcher::raiseEvent(const BlockCollisionEvent& e) {
     onBlockCollision.invoke(e);
-}
-
-void EventDispatcher::raiseEvent(const StructureCreatedEvent& e) {
-    onStructureCreated.invoke(e);
 }
 
 void EventDispatcher::raiseItemDragStartEvent(DragEvent<std::tuple<BlockId, int>>& e) {

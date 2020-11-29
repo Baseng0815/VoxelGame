@@ -11,7 +11,6 @@
 #include "../GameData/Block.hpp"
 #include "../Gui/DragContext.hpp"
 #include "../Utility.hpp"
-#include "../WorldGeneration/Structures.hpp"
 
 enum EventType {
     // basic events
@@ -26,7 +25,6 @@ enum EventType {
 
 class Application;
 struct Block;
-struct StructureId;
 
 struct KeyEvent {
     Application* app;
@@ -101,12 +99,6 @@ struct BlockCollisionEvent {
     glm::vec3 block;
 
     std::string toString() const;
-};
-
-struct StructureCreatedEvent {
-    Application* app;
-
-    std::unordered_map<glm::vec2, BlockCollection, std::hash<glm::vec2>> data;
 };
 
 template<typename T>

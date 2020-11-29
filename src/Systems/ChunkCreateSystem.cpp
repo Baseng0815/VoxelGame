@@ -59,18 +59,6 @@ void ChunkCreateSystem::handlePlayerMoved(const EntityMovedEvent& e) {
     }
 }
 
-void ChunkCreateSystem::handleStructureCreated(const StructureCreatedEvent& e) {
-    for (const auto& pair : e.data) {
-        // TODO: fix error
-        try {
-            m_structureQueue.insert(pair);
-        }
-        catch (std::exception) {
-            // ignore
-        }
-    }
-}
-
 GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ) {
     GenerationData generationData;
     generationData.entity = entity;
@@ -99,15 +87,6 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
     // }
 
     return generationData;
-}
-
-void ChunkCreateSystem::updateChunkStructures(Block*** chunkBlocks, BlockCollection structureBlocks) const {
-    // for (auto [pos, type] : structureBlocks) {
-    //     int x = pos.x, y = pos.y, z = pos.z;
-    //     if (chunkBlocks[x][y][z].type == BlockId::BLOCK_AIR) {
-    //         chunkBlocks[x][y][z] = Block{type};
-    //     }
-    // }
 }
 
 ChunkGeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, const ChunkComponent& chunk) {
@@ -351,7 +330,9 @@ void ChunkCreateSystem::_update(int dt) {
                     chunk.threadActiveOnSelf = true;
 
                     m_generationFutures.push_back(std::async(
-                        std::launch::async, [=, this]() { return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ); }));
+                        std::launch::async, [=, this]() { 
+                            return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ); 
+                        }));
 
                     chunk.needsUpdate = true;
                     chunk.verticesOutdated = true;
@@ -419,28 +400,7 @@ void ChunkCreateSystem::_update(int dt) {
         else {
             itGeo++;
         }
-    }
-
-    // process structures
-    // auto itStr = m_structureQueue.begin();
-    // while (itStr != m_structureQueue.end()) {
-    //     glm::vec2 chunkPos = (*itStr).first;
-    //     if (World::chunkCreated(chunkPos)) {
-    //         ChunkComponent& chunk = m_registry.get<ChunkComponent>(World::getChunk(chunkPos));
-    //         if (chunk.blocks) {
-    //             updateChunkStructures(chunk.blocks, (*itStr).second);
-
-    //             chunk.verticesOutdated = true;
-    //             itStr = m_structureQueue.erase(itStr);
-    //         }
-    //         else {
-    //             itStr++;
-    //         }
-    //     }
-    //     else {
-    //         itStr++;
-    //     }
-    // }
+    }    
 }
 
 ChunkCreateSystem::ChunkCreateSystem(Registry_T& registry, const TextureAtlas& atlas)
@@ -453,10 +413,7 @@ ChunkCreateSystem::ChunkCreateSystem(Registry_T& registry, const TextureAtlas& a
             if (m_registry.any<PlayerComponent>(e.entity)) {
                 handlePlayerMoved(e);
             }
-        });
-
-    m_structureCreatedHandle = EventDispatcher::onStructureCreated.subscribe(
-        [&](const StructureCreatedEvent& e) { handleStructureCreated(e); });
+        });    
 
     handlePlayerMoved(EntityMovedEvent{nullptr, entt::null, glm::vec3{0.f}, glm::vec3{FLT_MAX}});
 }

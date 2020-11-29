@@ -3,44 +3,38 @@
 
 #include "../../include/Configuration.hpp"
 #include "../../include/Events/EventDispatcher.hpp"
+#include "../../include/GameData/GameData.hpp"
 #include "../../include/Systems/ChunkCreateSystem.hpp"
 #include "../../include/Utility.hpp"
 
-void StructureGenerator::generateStructure(const glm::vec2& chunk, glm::vec3 position, const BlockCollection& structure,
-                                           Block*** blocks) const {
-    std::unordered_map<glm::vec2, BlockCollection, std::hash<glm::vec2>> chunkOverflow =
-        std::unordered_map<glm::vec2, BlockCollection, std::hash<glm::vec2>>{};
+void StructureGenerator::fillSection(const Section& section, const glm::ivec3& position, GenerationData* data) {
+    glm::ivec3 pos0 = section.position0 + position;
+    glm::ivec3 pos1 = section.position1 + position;
 
-    for (const auto& [localPos, blockType] : structure) {
-        glm::vec3 pos = localPos + position;
-        if (Utility::inChunk(pos)) {
-            blocks[(int)pos.x][(int)pos.y][(int)pos.z].type = blockType;
-        }
-        else {
-            glm::vec3 worldPos = Utility::getWorldCoords(chunk, pos);
-
-            auto [newChunk, chunkCoords] = Utility::GetChunkAndLocal(worldPos);
-            if (!chunkOverflow.contains(chunk)) {
-                chunkOverflow.emplace(newChunk, BlockCollection());
+    for (int x = pos0.x; x <= pos1.x; x++) {
+        for (int y = pos0.y; y <= pos1.y; y++) {
+            for (int z = pos0.z; z <= pos1.z; z++) {                
+                if (Utility::inChunk(x, y, z)) {
+                    // if (data->blocks[x][y][z] == BlockId::BLOCK_AIR) {
+                    data->blocks[x][y][z] = section.block_type;
+                    // }
+                }
             }
-            chunkOverflow[newChunk].emplace_back(chunkCoords, blockType);
         }
-    }
-
-    if (!chunkOverflow.empty()) {
-        StructureCreatedEvent e{nullptr, chunkOverflow};
-        EventDispatcher::raiseEvent(e);
     }
 }
 
-std::vector<glm::ivec2> StructureGenerator::getTreePositions(int chunkX, int chunkZ) const {
-    std::vector<glm::ivec2> treePositions;
+std::vector<glm::ivec3> StructureGenerator::getTreePositions(const glm::ivec2& chunk) const {
+    std::vector<glm::ivec3> treePositions;
     for (int cx = 0; cx < Configuration::CHUNK_SIZE; cx++) {
         for (int cz = 0; cz < Configuration::CHUNK_SIZE; cz++) {
-            int x = cx + chunkX * Configuration::CHUNK_SIZE;
-            int z = cz + chunkZ * Configuration::CHUNK_SIZE;
-            if (m_treeNoise.getValue(x, z)) {
-                treePositions.emplace_back(x, z);
+            if (m_worldGenerator->getBiome(chunk, cx, cz) == BiomeId::BIOME_FLAT_TERRAIN) {
+                int x = cx + chunk.x * Configuration::CHUNK_SIZE;
+                int z = cz + chunk.y * Configuration::CHUNK_SIZE;
+                if (m_treeNoise.getValue(x, z)) {
+                    int y = m_worldGenerator->getSurfaceHeight(chunk, cx, cz) + 1;
+                    treePositions.emplace_back(cx, y, cz);
+                }
             }
         }
     }
@@ -48,25 +42,29 @@ std::vector<glm::ivec2> StructureGenerator::getTreePositions(int chunkX, int chu
     return treePositions;
 }
 
-void StructureGenerator::generateTrees(const glm::vec2& chunk, GenerationData* data) const {
-    std::vector<glm::ivec2> treePositions;
-    for (int x = chunk.x - 1; x <= chunk.x + 1; x++) {
-        for (int y = chunk.y - 1; y <= chunk.y + 1; y++) {
-            if (x == chunk.x && y == chunk.y) {
-                continue;
-            }
+// TODO: remove flying trees
+void StructureGenerator::generateTrees(const glm::ivec2& chunk, GenerationData* data) const {
+    const Structure& treeStructure = GameData::getStructure(StructureId::STRUCTURE_TREE, 0);
 
-            std::vector<glm::ivec2> trees = getTreePositions(x, y);
-            treePositions.insert(treePositions.begin() + treePositions.size(), trees.begin(), trees.end());
+    for (int cxo = -1; cxo <= 1; cxo++) {
+        for (int czo = -1; czo <= 1; czo++) {
+            glm::ivec2 chunkOffset{cxo, czo};
+            std::vector<glm::ivec3> trees = getTreePositions(chunk + chunkOffset);
+            for (auto& tree : trees) {
+                glm::ivec3 treePos = tree + glm::ivec3{cxo * Configuration::CHUNK_SIZE, 0, czo * Configuration::CHUNK_SIZE};                
+                for (const auto& section : treeStructure.sections) {
+                    fillSection(section, treePos, data);
+                }
+            }
         }
     }
 }
 
 StructureGenerator::StructureGenerator(WorldGenerator* worldGenerator)
     : m_worldGenerator(worldGenerator) {
-    Structures::init();
+    m_treeNoise.setRadius(4);
 }
 
 void StructureGenerator::generateStructures(const glm::vec2& chunk, GenerationData* data) const {
-    generateTrees(chunk, data);
+    generateTrees((glm::ivec2)chunk, data);
 }

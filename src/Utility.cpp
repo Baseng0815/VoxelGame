@@ -17,7 +17,21 @@ namespace Utility {
     }
 
     bool inChunk(const int x, const int y, const int z) {
-        return x >= 0 && x < Configuration::CHUNK_SIZE && y >= 0 && y < Configuration::CHUNK_HEIGHT && z >= 0 && z < Configuration::CHUNK_SIZE;
+        return x >= 0 && x < Configuration::CHUNK_SIZE 
+            && y >= 0 && y < Configuration::CHUNK_HEIGHT 
+            && z >= 0 && z < Configuration::CHUNK_SIZE;
+    }
+
+    bool inChunk(const glm::ivec3& position, const glm::ivec2& chunk) {
+        glm::ivec2 chunkPos = getChunk(position);
+        return chunk == chunkPos;
+    }
+
+    bool inChunk(const int x, const int y, const int z, const int chunkX, const int chunkZ) {
+        int cx = (int)glm::floor(x / (float)Configuration::CHUNK_SIZE);
+        int cz = (int)glm::floor(z / (float)Configuration::CHUNK_SIZE);
+
+        return cx == chunkX && cz == chunkZ;
     }
 
     bool onBlockFace(glm::ivec3 block, glm::vec3 position) {
