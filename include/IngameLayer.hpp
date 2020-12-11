@@ -25,6 +25,7 @@ class IngameLayer : public GameLayer {
     int m_time = 0;
     int m_frameCounter = 0;
 
+    bool m_isPaused = false;
     IngameLayerGUI m_gui;
 
   public:

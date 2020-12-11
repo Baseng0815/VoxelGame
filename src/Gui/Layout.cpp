@@ -10,7 +10,7 @@
 void Layout::arrangeWidgets() {
     if(m_widgets.size() == 0)
         return;
-    
+
     // set position of widgets based on stack mode and widget dimensions
     int start = m_invertStackWidgets ? m_widgets.size() - 1 : 0;
     // end = first nonvalid element
@@ -56,7 +56,7 @@ void Layout::arrangeWidgets() {
                     // margin and size from next element
                     currentX -= m_widgets[i + direction]->properties().margin.right + m_widgets[i + direction]->_getSize().x;
                 }
-            }            
+            }
         } else { // RIGHT
             int currentX = m_innerArea.position.x;
             for (int i = start; i != end; i += direction) {
@@ -109,7 +109,7 @@ void Layout::setStackMode(StackMode stackMode, bool invertStack, bool invertStac
     m_invertStackWidgets = invertStackWidgets;
 }
 
-template<typename T>
+    template<typename T>
 T *Layout::addWidget(const std::string& id)
 {
     T* widget = new T {id};
@@ -119,7 +119,7 @@ T *Layout::addWidget(const std::string& id)
     return widget;
 }
 
-template<>
+    template<>
 Layout *Layout::addWidget(const std::string& id)
 {
     Layout* widget = new Layout {id, m_gui};

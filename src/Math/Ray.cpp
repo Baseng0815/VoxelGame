@@ -27,15 +27,15 @@ namespace Math {
         direction = glm::normalize(dir);
     }
 
-    bool Ray::intersects(const Plane& plane, float* t) const {
-        *t = 0;
+    bool Ray::intersects(const Plane& plane, float &t) const {
+        t = 0;
 
         // ray parallel to plane
         if (glm::dot(direction, plane.normal) == 0) {
             return (glm::dot(origin, plane.normal) == plane.d);
         }
 
-        *t = (plane.d - glm::dot(plane.normal, origin)) / (glm::dot(plane.normal, direction));
+        t = (plane.d - glm::dot(plane.normal, origin)) / (glm::dot(plane.normal, direction));
 
         return true;
     }

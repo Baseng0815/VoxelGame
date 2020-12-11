@@ -66,8 +66,8 @@ namespace Math {
 
         std::vector<Plane> facePlanes = getFacePlanes();
         for (Plane face : facePlanes) {
-            float tmp = 0;
-            if (ray.intersects(face, &tmp)) {
+            float tmp;
+            if (ray.intersects(face, tmp)) {
                 intersects = true;
                 *t = glm::min(*t, tmp);
             }

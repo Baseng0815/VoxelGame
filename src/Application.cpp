@@ -35,7 +35,8 @@ void Application::handleKeys(const KeyEvent& e) {
 }
 
 Application::Application()
-    : m_window(this, 800, 600) {
+    : m_window(this, 800, 600)
+{
     srand(time(NULL));
 
     ResourceManager::loadResources();
@@ -51,20 +52,24 @@ Application::Application()
     //m_currentLayer = new MainMenuLayer(this);
 }
 
-Window& Application::getWindow() {
+Window& Application::getWindow()
+{
     return m_window;
 }
 
-Application::~Application() {
+Application::~Application()
+{
     m_window.close();
     glfwTerminate();
 }
 
-void Application::setNewLayer(GameLayer* newLayer) {
+void Application::setNewLayer(GameLayer* newLayer)
+{
     m_currentLayer = newLayer;
 }
 
-void Application::run() {
+void Application::run()
+{
     while (m_isRunning) {
         // event polling
         glfwPollEvents();
@@ -98,6 +103,7 @@ void Application::run() {
     }
 }
 
-void Application::stop() {
-	m_isRunning = false;
+void Application::stop()
+{
+    m_isRunning = false;
 }

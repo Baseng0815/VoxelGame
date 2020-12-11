@@ -27,6 +27,8 @@ private:
     CallbackHandle<const FramebufferSizeEvent&> m_framebufferSizeHandle;
     void handleFramebufferSize(const FramebufferSizeEvent&);
 
+    static void glfwErrorCallback(int code, const char *str);
+
 public:
     Window(Application* app, int width, int height);
 

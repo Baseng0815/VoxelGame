@@ -14,14 +14,19 @@ struct DebugLayoutInfo {
     float pitch;
     float fov;
     int chunkX, chunkZ;
+    bool inAir;
+    bool isFlying;
+    bool gravityApplies;
 };
 
 class DebugLayout : public Layout {
     private:
         Text *m_textFps, *m_textRenderTime, *m_textChunkCount,
-             *m_textCameraVectors, *m_textCameraScalars, *m_textChunkPosition;
+             *m_textCameraVectors, *m_textCameraScalars, *m_textChunkPosition,
+             *m_textInAir, *m_textIsFlying, *m_textGravityApplies;
 
-        static std::string toStr(float value, int precision = 2);
+        static std::string ftoStr(float value, int precision = 2);
+        static std::string btoStr(bool value);
 
     public:
         DebugLayout(GUI &gui);

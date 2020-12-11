@@ -10,7 +10,7 @@ struct KeyEvent;
 class Shader;
 class CameraComponent;
 
-typedef unsigned int CallbackId;
+using CallbackId = unsigned int;
 
 class GUI {
     protected:

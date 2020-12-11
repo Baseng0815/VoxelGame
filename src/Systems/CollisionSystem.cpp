@@ -111,7 +111,7 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
     }
 
     if (hasCollision) {
-        BlockCollisionEvent e{nullptr, entity, block};
+        BlockCollisionEvent e {nullptr, entity, block};
         EventDispatcher::raiseEvent(e);
     }
 }

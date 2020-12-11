@@ -20,6 +20,7 @@ class HotbarLayout;
 
 // handles player movement input
 // also updates the camera
+// TODO maybe put camera stuff in extra system?
 class InputSystem : public System {
     private:
         struct LookData { glm::vec3 block; glm::vec3 face; bool valid; };

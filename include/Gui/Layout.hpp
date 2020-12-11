@@ -8,9 +8,9 @@
 class GUI;
 class Text;
 class Image;
-class Widget;
+;
 
-typedef std::vector<Widget*>::iterator WidgetIt;
+using WidgetIt = std::vector<Widget*>::iterator;
 
 enum StackMode {
     STACK_NONE = 0x00, STACK_VERTICAL = 0x01, STACK_HORIZONTAL = 0x02

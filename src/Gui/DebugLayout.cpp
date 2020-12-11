@@ -7,11 +7,20 @@
 #include <sstream>
 #include <iomanip>
 
-std::string DebugLayout::toStr(float value, int precision)
+std::string DebugLayout::ftoStr(float value, int precision)
 {
     std::stringstream ss;
     ss << round(value * pow(10, precision)) / pow(10, precision);
     return ss.str();
+}
+
+std::string DebugLayout::btoStr(bool value)
+{
+    if (value) {
+        return "true";
+    } else {
+        return "false";
+    }
 }
 
 DebugLayout::DebugLayout(GUI &gui)
@@ -21,7 +30,10 @@ DebugLayout::DebugLayout(GUI &gui)
     m_textChunkCount {new Text("text_chunkCount")},
     m_textCameraVectors {new Text("text_cameraVectors")},
     m_textCameraScalars {new Text("text_cameraScalars")},
-    m_textChunkPosition {new Text("text_cameraScalars")}
+    m_textChunkPosition {new Text("text_cameraScalars")},
+    m_textInAir {new Text("text_inAir")},
+    m_textIsFlying {new Text("text_isFlying")},
+    m_textGravityApplies {new Text("text_gravityApplies")}
 {
     m_properties.constraints.height = RelativeConstraint(1.0f);
     m_properties.constraints.width = RelativeConstraint(0.5f);
@@ -57,14 +69,32 @@ DebugLayout::DebugLayout(GUI &gui)
     m_textChunkPosition->properties().margin.top = 10;
     m_textChunkPosition->setFont(ResourceManager::getResource<Font>(FONT_KORURI));
     this->addWidget(m_textChunkPosition);
+
+    m_textInAir->properties().constraints.x = AbsoluteConstraint(0);
+    m_textInAir->properties().margin.top = 10;
+    m_textInAir->setFont(ResourceManager::getResource<Font>(FONT_KORURI));
+    this->addWidget(m_textInAir);
+
+    m_textIsFlying->properties().constraints.x = AbsoluteConstraint(0);
+    m_textIsFlying->properties().margin.top = 10;
+    m_textIsFlying->setFont(ResourceManager::getResource<Font>(FONT_KORURI));
+    this->addWidget(m_textIsFlying);
+
+    m_textGravityApplies->properties().constraints.x = AbsoluteConstraint(0);
+    m_textGravityApplies->properties().margin.top = 10;
+    m_textGravityApplies->setFont(ResourceManager::getResource<Font>(FONT_KORURI));
+    this->addWidget(m_textGravityApplies);
 }
 
 void DebugLayout::setValues(const DebugLayoutInfo &info) {
-    m_textFps->setString(toStr(info.fps) + " FPS");
-    m_textRenderTime->setString(toStr(info.rendertime) + "us avg. frametime");
-    m_textChunkCount->setString(toStr(info.chunkCount) + " active chunks");
-    m_textCameraVectors->setString("Position: [" + toStr(info.playerPosition.x) + ", " + toStr(info.playerPosition.y) + ", " + toStr(info.playerPosition.z) + "], Facing [ " +
-                                   toStr(info.playerFront.x) + ", " + toStr(info.playerFront.y) + ", " + toStr(info.playerFront.z) + "]");
-    m_textCameraScalars->setString("Yaw: [" + toStr(info.yaw) + "], Pitch: [ " + toStr(info.pitch) + "], FOV [" + toStr(info.fov) + "]");
-    m_textChunkPosition->setString("Chunk: [" + toStr(info.chunkX) + ", " + toStr(info.chunkZ) + "]");
+    m_textFps->setString(ftoStr(info.fps) + " FPS");
+    m_textRenderTime->setString(ftoStr(info.rendertime) + "us avg. frametime");
+    m_textChunkCount->setString(ftoStr(info.chunkCount) + " active chunks");
+    m_textCameraVectors->setString("Position: [" + ftoStr(info.playerPosition.x) + ", " + ftoStr(info.playerPosition.y) + ", " + ftoStr(info.playerPosition.z) + "], Facing [ " +
+                                   ftoStr(info.playerFront.x) + ", " + ftoStr(info.playerFront.y) + ", " + ftoStr(info.playerFront.z) + "]");
+    m_textCameraScalars->setString("Yaw: [" + ftoStr(info.yaw) + "], Pitch: [ " + ftoStr(info.pitch) + "], FOV [" + ftoStr(info.fov) + "]");
+    m_textChunkPosition->setString("Chunk: [" + ftoStr(info.chunkX) + ", " + ftoStr(info.chunkZ) + "]");
+    m_textInAir->setString("In air: [" + btoStr(info.inAir) + "]");
+    m_textIsFlying->setString("Is flying: [" + btoStr(info.isFlying) + "]");
+    m_textChunkPosition->setString("Gravity applies: [" + btoStr(info.gravityApplies) + "]");
 }

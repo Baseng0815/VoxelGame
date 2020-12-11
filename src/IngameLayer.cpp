@@ -34,17 +34,17 @@ void IngameLayer::handleKeys(const KeyEvent& e) {
         // handle constexpr keys
         switch (e.key) {
             // handle dynamically bound keys
+            // TODO put keys into array instead of dictionary and use enums
             default:
                 if (e.key == Configuration::getAssociatedKey("KEYBIND_TOGGLE_DEBUG")) {
                     UiProperties& properties = m_gui.getWidget<DebugLayout>("layout_debugpanel").properties();
                     properties.isVisible = !properties.isVisible;
-                }
-                else if (e.key == Configuration::getAssociatedKey("KEYBIND_OPEN_INVENTORY")) {
+                } else if (e.key == Configuration::getAssociatedKey("KEYBIND_OPEN_INVENTORY")) {
                     InventoryLayout& layout = m_gui.getWidget<InventoryLayout>("inventory_layout");
 
-                    UiProperties& inventory = layout.properties();
-                    UiProperties& crosshair = m_gui.getWidget<Image>("image_crosshair").properties();
-                    UiProperties& hotbar = m_gui.getWidget<HotbarLayout>("hotbar_layout").properties();
+                    UiProperties &inventory = layout.properties();
+                    UiProperties &crosshair = m_gui.getWidget<Image>("image_crosshair").properties();
+                    UiProperties &hotbar = m_gui.getWidget<HotbarLayout>("hotbar_layout").properties();
                     entt::entity player = m_registry.view<PlayerComponent>().front();
                     PlayerComponent& playerComponent = m_registry.get<PlayerComponent>(player);
 
@@ -60,6 +60,9 @@ void IngameLayer::handleKeys(const KeyEvent& e) {
                     else {
                         m_application->getWindow().disableCursor();
                     }
+                    // TODO replace this with some kind of main menu key (Esc)
+                } else if (e.key == Configuration::getAssociatedKey("KEYBIND_PAUSE")) {
+                    m_isPaused = !m_isPaused;
                 }
                 break;
         }
@@ -67,7 +70,8 @@ void IngameLayer::handleKeys(const KeyEvent& e) {
 }
 
 IngameLayer::IngameLayer(Application* application)
-    : GameLayer{application}, m_atlas{16, 16} {
+    : GameLayer{application}, m_atlas{16, 16}
+{
     m_application->getWindow().disableCursor();
 
     // create all systems
@@ -106,48 +110,56 @@ IngameLayer::~IngameLayer() {
       );*/
 }
 
-void IngameLayer::update(int dt) {
+void IngameLayer::update(int dt)
+{
     // reset shared uniform state of all shaders
-    for (int resId = SHADER_MIN + 1; resId < SHADER_MAX; resId++) {
-        ResourceManager::getResource<Shader>(resId)->setUniformState(false);
+    if (!m_isPaused) {
+        for (int resId = SHADER_MIN + 1; resId < SHADER_MAX; resId++) {
+            ResourceManager::getResource<Shader>(resId)->setUniformState(false);
+        }
+
+        for (auto& system : m_systems) {
+            system->update(dt);
+        }
+
+        m_time += dt;
+        entt::entity player = m_registry.view<PlayerComponent>().front();
+
+        // update debug info every 100ms
+        if (m_time > 100) {
+
+            const CameraComponent& camera               = m_registry.get<CameraComponent>(player);
+            const RigidBodyComponent &rigidBody         = m_registry.get<RigidBodyComponent>(player);
+            const PlayerComponent &playerComponent      = m_registry.get<PlayerComponent>(player);
+            const TransformationComponent& transform    = m_registry.get<TransformationComponent>(player);
+
+            DebugLayoutInfo info {m_frameCounter * 1000 / m_time,
+                m_time * 1000 / std::max(m_frameCounter, 1),
+                // TODO make accessing systems easier, maybe using a map?
+                static_cast<const ChunkCreateSystem*>(m_systems[0].get())->getActiveChunkCount(),
+                transform.getPosition(),
+                camera.front,
+                camera.yaw,
+                camera.pitch,
+                camera.fov,
+                (int)std::floor(transform.getPosition().x / Configuration::CHUNK_SIZE),
+                (int)std::floor(transform.getPosition().z / Configuration::CHUNK_SIZE),
+                rigidBody.isFalling,
+                playerComponent.isFlying,
+                rigidBody.gravityApplies };
+
+            m_gui.getWidget<DebugLayout>("layout_debugpanel").setValues(info);
+            m_time = 1;
+            m_frameCounter = 0;
+        }
+
+        const InventoryComponent& inventory = m_registry.get<InventoryComponent>(player);
+        HotbarLayout& hotbar = m_gui.getWidget<HotbarLayout>("hotbar_layout");
+        hotbar.updateItems(inventory);
+
+        m_gui.update();
+        m_gui.draw();
+
+        m_frameCounter++;
     }
-
-    for (auto& system : m_systems) {
-        system->update(dt);
-    }
-
-    m_time += dt;
-    entt::entity player = m_registry.view<PlayerComponent>().front();
-
-    // update debug info every 1000ms
-    if (m_time > 1000) {
-
-        const TransformationComponent& transform = m_registry.get<TransformationComponent>(player);
-        const CameraComponent& camera = m_registry.get<CameraComponent>(player);
-
-        DebugLayoutInfo info{m_frameCounter * 1000 / m_time,
-                             m_time * 1000 / std::max(m_frameCounter, 1),
-                             // TODO make accessing systems easier, maybe using a map?
-                             static_cast<const ChunkCreateSystem*>(m_systems[0].get())->getActiveChunkCount(),
-                             transform.getPosition(),
-                             camera.front,
-                             camera.yaw,
-                             camera.pitch,
-                             camera.fov,
-                             (int)std::floor(transform.getPosition().x / Configuration::CHUNK_SIZE),
-                             (int)std::floor(transform.getPosition().z / Configuration::CHUNK_SIZE)};
-
-        m_gui.getWidget<DebugLayout>("layout_debugpanel").setValues(info);
-        m_time = 1;
-        m_frameCounter = 0;
-    }
-
-    const InventoryComponent& inventory = m_registry.get<InventoryComponent>(player);
-    HotbarLayout& hotbar = m_gui.getWidget<HotbarLayout>("hotbar_layout");
-    hotbar.updateItems(inventory);
-
-    m_gui.update();
-    m_gui.draw();
-
-    m_frameCounter++;
 }

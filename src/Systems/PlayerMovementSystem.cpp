@@ -39,17 +39,20 @@ void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent &player, VelocityCo
     }
 
     // z input axis = camera up
-    // TODO add isFalling so the player can't jump when already in air
     if (player.zAxisInput != 0) {
-        playerInput += player.zAxisInput * glm::vec3(0, 1, 0);
+        // player can only give y input if he is not in air
+        // OR he is in air AND is flying
+        if (!rigidBody.isFalling || (rigidBody.isFalling && player.isFlying)) {
+            playerInput += player.zAxisInput * glm::vec3(0, 1, 0);
+        }
     } else {
-        // set y velocity to 0 if player is flying
+        // set y velocity to 0 if no y input is detected AND player is flying
         if (player.isFlying) {
             velocity.velocity.y = 0;
         }
     }
 
-    if (glm::length(playerInput) != 0) {
+    if (playerInput.x != 0 || playerInput.y != 0 || playerInput.z != 0) {
         glm::vec3 playerMovementDir = glm::normalize(playerInput);
 
         velocity.velocity += player.maxMovementSpeed * glm::normalize(playerMovementDir);

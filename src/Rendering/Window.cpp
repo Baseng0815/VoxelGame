@@ -30,28 +30,36 @@ void Window::handleFramebufferSize(const FramebufferSizeEvent& e)
     Configuration::setValue("WINDOW_HEIGHT", e.height);
 }
 
+void Window::glfwErrorCallback(int code, const char *str)
+{
+    std::cerr << "GLFW error with code " << code << ": " << str << "\n";
+}
+
 Window::Window(Application *app, int width, int height)
 {
+    glfwSetErrorCallback(glfwErrorCallback);
+
     Configuration::loadConfiguration("Resources/");
     Configuration::setValue("WINDOW_WIDTH", width);
     Configuration::setValue("WINDOW_HEIGHT", height);
 
     if (!glfwInit()) {
-        std::cerr << "failed to initialize GLFW" << std::endl;
+        std::cerr << "failed to initialize GLFW\n";
         exit(1);
     }
 
     m_window = glfwCreateWindow(width, height, "VoxelGame", nullptr, nullptr);
     if (!m_window) {
-        std::cerr << "failed to create GLFW window" << std::endl;;
+        std::cerr << "failed to create GLFW window\n";
         exit(1);
     }
 
     m_primaryMonitor = glfwGetPrimaryMonitor();
 
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-    if (glfwRawMouseMotionSupported())
+    if (glfwRawMouseMotionSupported()) {
         glfwSetInputMode(m_window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+    }
 
     glfwSetWindowUserPointer(m_window, app);
 

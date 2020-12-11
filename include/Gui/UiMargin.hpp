@@ -12,4 +12,4 @@ struct Margin {
 };
 
 // padding ^= inside of widget
-typedef Margin Padding;
+using Padding = Margin;

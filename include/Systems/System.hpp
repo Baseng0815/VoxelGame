@@ -12,6 +12,7 @@ class System {
     protected:
         Registry_T &m_registry;
 
+        // TODO replace this with tick system and maybe even events
         int m_timeSinceLastUpdate = 0;
         int m_updateDelay;
 

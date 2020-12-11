@@ -21,7 +21,7 @@ struct Ray {
     glm::vec3 getDirection() const;
     void setDirection(const glm::vec3 dir);
 
-    bool intersects(const Plane &plane, float *t) const;
+    bool intersects(const Plane &plane, float &t) const;
 
     glm::vec3 getFirstBlock(float maxT, std::function<bool(glm::vec3)> predicate) const;
 
