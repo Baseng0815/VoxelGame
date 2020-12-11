@@ -35,9 +35,7 @@ class EventDispatcher {
     static CallbackList<const EnterChunkEvent&> onEnterChunk;
     static CallbackList<const EntityMovedEvent&> onEntityMoved;
     static CallbackList<const BlockChangedEvent&> onBlockChange;
-    static CallbackList<const BlockCollisionEvent&> onBlockCollision;
-
-    static CallbackList<const StructureCreatedEvent&> onStructureCreated;
+    static CallbackList<const BlockCollisionEvent&> onBlockCollision;    
 
     static CallbackList<DragEvent<std::tuple<BlockId, int>>&> onItemDragStart;
     static CallbackList<const DragEvent<std::tuple<BlockId, int>>&> onItemDrop;
@@ -52,7 +50,6 @@ class EventDispatcher {
     static void raiseEvent(const EntityMovedEvent&);
     static void raiseEvent(const BlockChangedEvent&);
     static void raiseEvent(const BlockCollisionEvent&);
-    static void raiseEvent(const StructureCreatedEvent&);
     static void raiseItemDragStartEvent(DragEvent<std::tuple<BlockId, int>>&);
     static void raiseItemDropEvent(const DragEvent<std::tuple<BlockId, int>>&);
 

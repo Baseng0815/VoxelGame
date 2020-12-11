@@ -1,23 +1,22 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <vector>
-#include "Structures.hpp"
 
 #include "TreeNoise.hpp"
 
 struct GenerationData;
 class WorldGenerator;
+struct Section;
 
 class StructureGenerator {
 private:
     WorldGenerator* m_worldGenerator;
-    TreeNoise m_treeNoise;
+    TreeNoise m_treeNoise;    
 
-    void generateStructure(const glm::vec2 &chunk, glm::vec3 position, const BlockCollection& structure, Block*** blocks) const;
+    static void fillSection(const Section& section, const glm::ivec3& position, GenerationData* data);
+    std::vector<glm::ivec3> getTreePositions(const glm::ivec2& chunk) const;
 
-    std::vector<glm::ivec2> getTreePositions(int chunkX, int chunkZ) const;
-
-    void generateTrees(const glm::vec2 &chunk, GenerationData *data) const;    
+    void generateTrees(const glm::ivec2 &chunk, GenerationData *data) const;    
 public:
     StructureGenerator(WorldGenerator *worldGenerator);
 

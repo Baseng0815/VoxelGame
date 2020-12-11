@@ -76,7 +76,7 @@ void WorldGenerator::generate(glm::vec2 position, GenerationData* data) {
             if (data->biomes[cx][cz] == BiomeId::BIOME_FLAT_TERRAIN) {
                 if (rand() % 5 == 0) {
                     int height = heightMap[cx][cz] + 1;
-                    if (data->blocks[cx][height - 1][cz] == BlockId::BLOCK_GRASS) {
+                    if (data->blocks[cx][height][cz] == BlockId::BLOCK_AIR && data->blocks[cx][height - 1][cz] == BlockId::BLOCK_GRASS) {
                         data->blocks[cx][height][cz] = BlockId::PLANE_GRASS;
                     }
                 }
@@ -87,4 +87,8 @@ void WorldGenerator::generate(glm::vec2 position, GenerationData* data) {
 
 int WorldGenerator::getSurfaceHeight(glm::vec2 chunk, int x, int z) const {
     return m_heightGenerator.getHeight(chunk, x, z);
+}
+
+BiomeId WorldGenerator::getBiome(glm::ivec2 chunk, int x, int z) const {
+    return m_heightGenerator.getBiome(chunk, x, z);
 }

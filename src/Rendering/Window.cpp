@@ -42,7 +42,7 @@ Window::Window(Application *app, int width, int height)
     Configuration::loadConfiguration("Resources/");
     Configuration::setValue("WINDOW_WIDTH", width);
     Configuration::setValue("WINDOW_HEIGHT", height);
-
+    
     if (!glfwInit()) {
         std::cerr << "failed to initialize GLFW\n";
         exit(1);

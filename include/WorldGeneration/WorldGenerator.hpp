@@ -45,4 +45,5 @@ class WorldGenerator {
     void generate(glm::vec2 position, GenerationData* data);
 
     int getSurfaceHeight(glm::vec2 chunk, int x, int z) const;
+    BiomeId getBiome(glm::ivec2 chunk, int cx, int cz) const;
 };

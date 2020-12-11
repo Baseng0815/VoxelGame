@@ -34,4 +34,5 @@ public:
     void generateChunkHeight(glm::vec2 chunkPos, int** heightMap, BiomeId** biomes) const;
 
     int getHeight(glm::vec2 chunk, int x, int z) const;
+    BiomeId getBiome(const glm::ivec2& chunk, int cx, int cz) const;    
 };

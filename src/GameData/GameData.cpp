@@ -9,6 +9,7 @@
 using json = nlohmann::json;
 
 std::vector<BlockTemplate> GameData::m_blockTemplates;
+std::vector<Structure> GameData::m_structures;
 
 void GameData::loadGameData()
 {
@@ -52,9 +53,52 @@ void GameData::loadGameData()
 
     stream >> root;
     stream.close();
+
+    // load structures
+    stream.open(Configuration::getStringValue("ResourceBasePath") + "Misc/Structures.json");
+    if(!stream.good()) {
+        std::cout << "Failed to open Structures.json" << std::endl;
+        exit(1);
+    }
+
+    stream >> root;
+    stream.close();
+
+    for(auto it = root.begin(); it != root.end(); it++) {
+        Structure structure;
+        structure.type = (StructureId)(*it)["type"].get<short>();
+        structure.variation = (*it)["type"].get<int>();
+
+        for(auto jt = (*it)["blocks"].begin(); jt!= (*it)["blocks"].end(); jt++) {
+            Section section;
+            section.block_type = (BlockId)(*jt)["blockId"].get<short>();
+            section.position0 = glm::ivec3{
+                (*jt)["position0"][0].get<int>(),
+                (*jt)["position0"][1].get<int>(),
+                (*jt)["position0"][2].get<int>()
+            };
+            section.position1 = glm::ivec3{
+                (*jt)["position1"][0].get<int>(),
+                (*jt)["position1"][1].get<int>(),
+                (*jt)["position1"][2].get<int>()
+            };
+
+            structure.sections.emplace_back(std::move(section));
+        }        
+
+        m_structures.emplace_back(std::move(structure));
+    }
 }
 
 const BlockTemplate &GameData::getBlockTemplate(BlockId block)
 {
     return m_blockTemplates[(size_t)block];
+}
+
+const Structure& GameData::getStructure(StructureId structureId, int variation) {
+    for(const auto& structure : m_structures) {
+        if(structure.type == structureId && structure.variation == variation) {
+            return structure;
+        }
+    }
 }
