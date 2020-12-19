@@ -79,10 +79,10 @@ IngameLayer::IngameLayer(Application* application)
     // updating and physics
     // TODO add clear description of which systems to initialize and update first
     m_systems.emplace_back(new ChunkCreateSystem {m_registry, m_atlas});
-    m_systems.emplace_back(new PhysicsSystem {m_registry});
     m_systems.emplace_back(new InputSystem {m_registry,
         m_gui.getWidget<InventoryLayout>("inventory_layout"), m_gui.getWidget<HotbarLayout>("hotbar_layout")});
     m_systems.emplace_back(new PlayerMovementSystem {m_registry});
+    m_systems.emplace_back(new PhysicsSystem {m_registry});
     m_systems.emplace_back(new CloudSystem {m_registry});
     m_systems.emplace_back(new SkyboxSystem {m_registry});
     m_systems.emplace_back(new CollisionSystem {m_registry});
