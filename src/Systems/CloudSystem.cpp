@@ -140,7 +140,7 @@ void CloudSystem::_update(int dt)
 }
 
 CloudSystem::CloudSystem(Registry_T &registry)
-    : System {registry, 0}, m_cloudEntity {registry.create()}
+    : System {registry}, m_cloudEntity {registry.create()}
 {
     // all clouds are represented by a single entity and rendered using the mesh renderer
     registry.emplace<MeshRenderComponent>(m_cloudEntity, ResourceManager::getResource<Material>(MATERIAL_CLOUDS), &m_geometry);

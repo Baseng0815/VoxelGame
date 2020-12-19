@@ -14,11 +14,8 @@
 
 #include "../../include/World.hpp"
 
-CollisionSystem::CollisionSystem(Registry_T &registry)
-    : System{registry, 0} {
-}
-
-void CollisionSystem::_update(int dt) {
+void CollisionSystem::_update(int dt)
+{
     auto view = m_registry.view<TransformationComponent, CollisionComponent, VelocityComponent>();
 
     // for (auto it = view.begin(); it != view.end(); it++) {
@@ -46,7 +43,8 @@ void CollisionSystem::_update(int dt) {
     }
 }
 
-void CollisionSystem::updatePlayerLookAtBlock(PlayerComponent &player, TransformationComponent &transform, CameraComponent &camera) const {
+void CollisionSystem::updatePlayerLookAtBlock(PlayerComponent &player, TransformationComponent &transform, CameraComponent &camera) const
+{
     Math::Ray lookDirection = Math::Ray(transform.getPosition() + camera.positionOffset, camera.front);
 
     glm::vec3 lookAt = lookDirection.getFirstBlock(5, [&](glm::vec3 pos) {
@@ -56,7 +54,8 @@ void CollisionSystem::updatePlayerLookAtBlock(PlayerComponent &player, Transform
     player.lookAt = lookAt;
 }
 
-void CollisionSystem::checkCollisions(entt::entity first, entt::entity secnd) {
+void CollisionSystem::checkCollisions(entt::entity first, entt::entity secnd)
+{
     const TransformationComponent &firstTransform = m_registry.get<TransformationComponent>(first);
     const CollisionComponent &firstCollision = m_registry.get<CollisionComponent>(first);
 
@@ -75,7 +74,8 @@ void CollisionSystem::checkCollisions(entt::entity first, entt::entity secnd) {
     }
 }
 
-void CollisionSystem::checkBlockCollisions(entt::entity entity) {
+void CollisionSystem::checkBlockCollisions(entt::entity entity)
+{
     CollisionComponent &collision = m_registry.get<CollisionComponent>(entity);
     TransformationComponent &transform = m_registry.get<TransformationComponent>(entity);
     VelocityComponent &velocity = m_registry.get<VelocityComponent>(entity);
@@ -115,3 +115,7 @@ void CollisionSystem::checkBlockCollisions(entt::entity entity) {
         EventDispatcher::raiseEvent(e);
     }
 }
+
+CollisionSystem::CollisionSystem(Registry_T &registry)
+    : System{registry}
+{ }

@@ -120,7 +120,7 @@ void InputSystem::handleMouseButtonEvent(const MouseButtonEvent& e) {
 
             const Math::Ray& lookDir = Math::Ray{transform.getPosition() + camera.positionOffset, camera.front};
 
-            glm::vec3 faceNormal = lookDir.getIntersectionFaceNormal(block);
+            const glm::vec3 &faceNormal = lookDir.getIntersectionFaceNormal(block);
             std::cout << "face normal: " << faceNormal << std::endl;
             if (glm::length2(faceNormal) > 0) {
                 InventoryComponent& playerInventory = m_registry.get<InventoryComponent>(player);
@@ -135,32 +135,6 @@ void InputSystem::handleMouseButtonEvent(const MouseButtonEvent& e) {
     }
 }
 
-void InputSystem::handleMouseMoveEvent(const CursorEvent& e) {
-    // UI
-    // TODO add abstract top layout that disables camera events
-
-    // camera movement
-    entt::entity player = m_registry.view<PlayerComponent>().front();
-    const PlayerComponent& playerComponent = m_registry.get<PlayerComponent>(player);
-    if (!playerComponent.inputEnabled)
-        return;
-
-    CameraComponent& cameraComponent = m_registry.get<CameraComponent>(player);
-
-    cameraComponent.yaw += e.dx * Configuration::getFloatValue("MOUSE_SENSITIVITY");
-    cameraComponent.yaw = std::fmod(cameraComponent.yaw, 360.f);
-    cameraComponent.pitch -= e.dy * Configuration::getFloatValue("MOUSE_SENSITIVITY");
-
-    if (cameraComponent.pitch > 89.99) {
-        cameraComponent.pitch = 89.99;
-    }
-    else if (cameraComponent.pitch < -89.99) {
-        cameraComponent.pitch = -89.99;
-    }
-
-    updateVectors(cameraComponent);
-}
-
 void InputSystem::handleScrollEvent(const ScrollEvent& e) {
     // UI hotbar scroll
     int currentIndex = m_hotbarLayout.getSelectionIndex();
@@ -170,48 +144,12 @@ void InputSystem::handleScrollEvent(const ScrollEvent& e) {
     m_registry.view<PlayerComponent>().raw()[0].selectedItemIndex = index;
 }
 
-void InputSystem::handleFramebufferSizeEvent(const FramebufferSizeEvent& e) {
-    CameraComponent& cameraComponent = m_registry.get<CameraComponent>(m_player);
-
-    cameraComponent.width = e.width;
-    cameraComponent.height = e.height;
-    updateProjectionMatrix(cameraComponent);
-}
-
-void InputSystem::updateVectors(CameraComponent& camera) {
-    camera.front.x = cos(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
-    camera.front.y = sin(glm::radians(camera.pitch));
-    camera.front.z = sin(glm::radians(camera.yaw)) * cos(glm::radians(camera.pitch));
-    camera.front = glm::normalize(camera.front);
-    camera.right = glm::normalize(glm::cross(camera.front, glm::vec3{0.f, 1.f, 0.f}));
-    camera.front_noY = glm::cross(camera.right, glm::vec3{0.f, 1.f, 0.f});
-
-    camera.viewMatrixOutdated = true;
-}
-
-void InputSystem::updateViewMatrix(CameraComponent& camera) {
-    const TransformationComponent& transform = m_registry.get<TransformationComponent>(m_player);
-
-    camera.viewMatrix = glm::lookAt(transform.getPosition() + camera.positionOffset,
-                                    transform.getPosition() + camera.positionOffset + camera.front,
-                                    glm::vec3{0.f, 1.f, 0.f});
-}
-
-void InputSystem::updateProjectionMatrix(CameraComponent& camera) {
-    camera.perspectiveProjection = glm::perspective(glm::radians(camera.fov), camera.width / (float)camera.height, 0.1f, 7000.f);
-}
-
-void InputSystem::_update(int dt) {
-    CameraComponent& camera = m_registry.get<CameraComponent>(m_player);
-
-    if (camera.viewMatrixOutdated) {
-        updateViewMatrix(camera);
-    }
-}
+void InputSystem::_update(int dt)
+{  }
 
 // TODO maybe create player somewhere else
 InputSystem::InputSystem(Registry_T& registry, InventoryLayout &inventoryLayout, HotbarLayout &hotbarLayout)
-    : System {registry, 0}, m_player {m_registry.create()}, m_lastKey {GLFW_KEY_UNKNOWN},
+    : System {registry}, m_player {m_registry.create()}, m_lastKey {GLFW_KEY_UNKNOWN},
     m_inventoryLayout {inventoryLayout}, m_hotbarLayout {hotbarLayout}
 {
     m_registry.emplace<TransformationComponent>(m_player, glm::vec3{0.f, 100.f, 0.f}, glm::vec3{0.f, 0.f, 0.f}, glm::vec3{1, 1, 1});
@@ -220,13 +158,6 @@ InputSystem::InputSystem(Registry_T& registry, InventoryLayout &inventoryLayout,
     m_registry.emplace<CollisionComponent>(m_player, glm::vec3{-0.5, 0, -0.5}, 1.0f, 2.0f, 1.0f);
     m_registry.emplace<RigidBodyComponent>(m_player, 80.f, true);
     m_registry.emplace<InventoryComponent>(m_player, 36);
-
-    // create camera and update projection matrix
-    CameraComponent& cameraComponent = m_registry.emplace<CameraComponent>(m_player, 90.f, Configuration::getFloatValue("WINDOW_WIDTH"), Configuration::getFloatValue("WINDOW_HEIGHT"));
-
-    updateVectors(cameraComponent);
-    updateViewMatrix(cameraComponent);
-    updateProjectionMatrix(cameraComponent);
 
     // subscribe to events
     m_keyPressHandle = EventDispatcher::onKeyPress.subscribe([this](const KeyEvent& e) {
@@ -237,15 +168,7 @@ InputSystem::InputSystem(Registry_T& registry, InventoryLayout &inventoryLayout,
         handleMouseButtonEvent(e);
     });
 
-    m_cursorHandle = EventDispatcher::onCursorMove.subscribe([this](const CursorEvent& e) {
-        handleMouseMoveEvent(e);
-    });
-
     m_scrollHandle = EventDispatcher::onMouseScroll.subscribe([this](const ScrollEvent& e) {
         handleScrollEvent(e);
-    });
-
-    m_framebufferHandle = EventDispatcher::onFramebufferSize.subscribe([this](const FramebufferSizeEvent& e) {
-        handleFramebufferSizeEvent(e);
     });
 }

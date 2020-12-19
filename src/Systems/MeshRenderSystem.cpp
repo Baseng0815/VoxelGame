@@ -15,7 +15,8 @@
 #include "../../include/Components/PlayerComponent.hpp"
 #include "../../include/Components/TransformationComponent.hpp"
 
-void MeshRenderSystem::uploadToShader(const Shader* shader, const CameraComponent& camera, const TransformationComponent& playerTransform) const {
+void MeshRenderSystem::uploadToShader(const Shader* shader, const CameraComponent& camera, const TransformationComponent& playerTransform) const
+{
     shader->upload("viewMatrix", camera.viewMatrix);
     shader->upload("viewPos", camera.positionOffset + playerTransform.getPosition());
     shader->upload("projectionMatrix", camera.perspectiveProjection);
@@ -40,7 +41,8 @@ void MeshRenderSystem::uploadToShader(const Shader* shader, const CameraComponen
     shader->setUniformState(true);
 }
 
-void MeshRenderSystem::render(const TransformationComponent& transformation, const MeshRenderComponent& meshRenderer, const CameraComponent& camera, const TransformationComponent& playerTransform) const {
+void MeshRenderSystem::render(const TransformationComponent& transformation, const MeshRenderComponent& meshRenderer, const CameraComponent& camera, const TransformationComponent& playerTransform) const
+{
     if (meshRenderer.geometry->getDrawCount() > 0) {
         const Shader* shader = meshRenderer.material->customShader;
         // no custom shader is used
@@ -96,7 +98,8 @@ void MeshRenderSystem::render(const TransformationComponent& transformation, con
     }
 }
 
-void MeshRenderSystem::_update(int dt) {
+void MeshRenderSystem::_update(int dt)
+{
     const CameraComponent& camera = m_registry.view<CameraComponent>().raw()[0];
     const auto &[playerTransform, player] = m_registry.get<TransformationComponent, PlayerComponent>(m_registry.view<PlayerComponent>().front());
 
@@ -147,10 +150,11 @@ void MeshRenderSystem::_update(int dt) {
 }
 
 MeshRenderSystem::MeshRenderSystem(Registry_T& registry)
-    : System{registry, 0},
-      m_meshRenderShaderColor{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_COLOR)},
-      m_meshRenderShaderTexture{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_TEXTURE)},
-      m_blockSelectorShader{ResourceManager::getResource<Shader>(SHADER_BLOCK_SELECTOR)} {
+    : System {registry},
+    m_meshRenderShaderColor{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_COLOR)},
+    m_meshRenderShaderTexture{ResourceManager::getResource<Shader>(SHADER_MESH_RENDER_TEXTURE)},
+    m_blockSelectorShader{ResourceManager::getResource<Shader>(SHADER_BLOCK_SELECTOR)}
+{
     // create lighting component
     entt::entity lightEntity = m_registry.create();
     LightingComponent lighting;

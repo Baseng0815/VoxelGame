@@ -15,7 +15,8 @@ void PlayerMovementSystem::handlePlayerMoved(const EntityMovedEvent &e) const {
     camera.viewMatrixOutdated = true;
 }
 
-void PlayerMovementSystem::_update(int dt) {
+void PlayerMovementSystem::_update(int dt)
+{
     entt::entity player = m_registry.view<PlayerComponent>().front();
     PlayerComponent &playerComponent = m_registry.get<PlayerComponent>(player);
     VelocityComponent &velocityComponent = m_registry.get<VelocityComponent>(player);
@@ -25,7 +26,8 @@ void PlayerMovementSystem::_update(int dt) {
     updatePlayerSpeed(playerComponent, velocityComponent, cameraComponent, rigidBody);
 }
 
-void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent &player, VelocityComponent &velocity, const CameraComponent &camera, const RigidBodyComponent &rigidBody) const {
+void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent &player, VelocityComponent &velocity, const CameraComponent &camera, const RigidBodyComponent &rigidBody) const
+{
     glm::vec3 playerInput {0.f};
 
     // x input axis = camera front
@@ -67,8 +69,7 @@ void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent &player, VelocityCo
         if (velocity.velocity.y > player.maxMovementSpeed) {
             velocity.velocity.y = player.maxMovementSpeed;
         }
-    }
-    else {
+    } else {
         if (velocity.velocity.y == 0) {
             velocity.velocity *= 0.2f;
         }
@@ -80,10 +81,10 @@ void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent &player, VelocityCo
 }
 
 PlayerMovementSystem::PlayerMovementSystem(Registry_T &registry)
-    : System(registry, 0) {
-
+    : System {registry}
+{
     m_playerMovedHandle = EventDispatcher::onEntityMoved.subscribe([&](const EntityMovedEvent &e) {
-        // if entity has PleyerComponent
+        // if entity has PlayerComponent
         if (m_registry.any<PlayerComponent>(e.entity)) {
             handlePlayerMoved(e);
         }

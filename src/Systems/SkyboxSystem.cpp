@@ -33,7 +33,7 @@ void SkyboxSystem::_update(int dt)
 }
 
 SkyboxSystem::SkyboxSystem(Registry_T &registry)
-    : System {registry, 0}, m_skyboxShader {ResourceManager::getResource<Shader>(SHADER_SKYBOX)},
+    : System {registry}, m_skyboxShader {ResourceManager::getResource<Shader>(SHADER_SKYBOX)},
     m_player {m_registry.view<PlayerComponent>().front()}, m_skybox {m_registry.create()}
 {
     const int SIZE = Configuration::SKYBOX_SIZE;

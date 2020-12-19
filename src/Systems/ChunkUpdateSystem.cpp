@@ -96,6 +96,6 @@ void ChunkUpdateSystem::_update(int dt) {
 }
 
 ChunkUpdateSystem::ChunkUpdateSystem(Registry_T& registry)
-    : System{registry, 0} {
+    : System{registry} {
     m_blockHandle = EventDispatcher::onBlockChange.subscribe([&](const BlockChangedEvent& e) { handleBlockChanged(e); });
 }

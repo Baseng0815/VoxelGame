@@ -19,11 +19,8 @@ class InventoryLayout;
 class HotbarLayout;
 
 // handles player movement input
-// also updates the camera
-// TODO maybe put camera stuff in extra system?
 class InputSystem : public System {
     private:
-        struct LookData { glm::vec3 block; glm::vec3 face; bool valid; };
         entt::entity m_player;
 
         int m_lastKey;
@@ -33,20 +30,12 @@ class InputSystem : public System {
         void handleKeyPressEvent(const KeyEvent&);
         CallbackHandle<const MouseButtonEvent&> m_mouseButtonHandle;
         void handleMouseButtonEvent(const MouseButtonEvent&);
-        CallbackHandle<const CursorEvent&> m_cursorHandle;
-        void handleMouseMoveEvent(const CursorEvent&);
         CallbackHandle<const ScrollEvent&> m_scrollHandle;
         void handleScrollEvent(const ScrollEvent&);
-        CallbackHandle<const FramebufferSizeEvent&> m_framebufferHandle;
-        void handleFramebufferSizeEvent(const FramebufferSizeEvent&);
-
-        void updateVectors(CameraComponent &camera);
-        void updateViewMatrix(CameraComponent &camera);
-        void updateProjectionMatrix(CameraComponent &camera);
 
         void _update(int dt) override;
 
-        LookData selectedBlock;
+        // TODO maybe put this somewhere else
         InventoryLayout &m_inventoryLayout;
         HotbarLayout    &m_hotbarLayout;
 

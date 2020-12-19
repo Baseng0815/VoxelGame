@@ -42,7 +42,7 @@ void DebugRenderSystem::_update(int dt)
 }
 
 DebugRenderSystem::DebugRenderSystem(Registry_T &registry)
-    : System {registry, 0}, m_mvpColorShader {ResourceManager::getResource<Shader>(SHADER_MVP_COLOR)}
+    : System {registry}, m_mvpColorShader {ResourceManager::getResource<Shader>(SHADER_MVP_COLOR)}
 {
     std::vector<Vertex> vertices;
     vertices.reserve((Configuration::CHUNK_COUNT_PER_AXIS + 1) * 4 * 2);

@@ -404,7 +404,7 @@ void ChunkCreateSystem::_update(int dt) {
 }
 
 ChunkCreateSystem::ChunkCreateSystem(Registry_T& registry, const TextureAtlas& atlas)
-    : System{registry, 10}, m_worldGenerator{WorldType::WORLD_NORMAL},
+    : System{registry}, m_worldGenerator{WorldType::WORLD_NORMAL},
       m_structureGenerator{&m_worldGenerator}, m_atlas{atlas} {
 
     // event callbacks

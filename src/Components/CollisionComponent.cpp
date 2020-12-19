@@ -10,7 +10,7 @@ Math::Cuboid CollisionComponent::transform(const TransformationComponent& transf
     glm::vec3 scale = transform.getScale();
 
     glm::vec3 size = localCuboid.max - localCuboid.min;
-    glm::vec3 newSize = glm::vec3{size.x * scale.x, size.y * scale.y, size.z * scale.z};
+    glm::vec3 newSize = glm::vec3 {size.x * scale.x, size.y * scale.y, size.z * scale.z};
 
     return Math::Cuboid(localCuboid.min + position, localCuboid.min + position + newSize);
 }

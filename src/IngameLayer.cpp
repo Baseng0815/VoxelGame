@@ -1,5 +1,6 @@
 #include "../include/IngameLayer.hpp"
 
+#include "../include/Systems/CameraSystem.hpp"
 #include "../include/Systems/ChunkCreateSystem.hpp"
 #include "../include/Systems/ChunkUpdateSystem.hpp"
 #include "../include/Systems/CloudSystem.hpp"
@@ -77,21 +78,22 @@ IngameLayer::IngameLayer(Application* application)
     // create all systems
     // updating and physics
     // TODO add clear description of which systems to initialize and update first
-    m_systems.emplace_back(new ChunkCreateSystem{m_registry, m_atlas});
-    m_systems.emplace_back(new PhysicsSystem{m_registry});
-    m_systems.emplace_back(new InputSystem{m_registry,
+    m_systems.emplace_back(new ChunkCreateSystem {m_registry, m_atlas});
+    m_systems.emplace_back(new PhysicsSystem {m_registry});
+    m_systems.emplace_back(new InputSystem {m_registry,
         m_gui.getWidget<InventoryLayout>("inventory_layout"), m_gui.getWidget<HotbarLayout>("hotbar_layout")});
-    m_systems.emplace_back(new PlayerMovementSystem{m_registry});
-    m_systems.emplace_back(new CloudSystem{m_registry});
-    m_systems.emplace_back(new SkyboxSystem{m_registry});
-    m_systems.emplace_back(new CollisionSystem{m_registry});
-    m_systems.emplace_back(new DayNightSystem{m_registry});
-    m_systems.emplace_back(new ItemSystem{m_registry, m_atlas});
-    m_systems.emplace_back(new ChunkUpdateSystem{m_registry});
+    m_systems.emplace_back(new PlayerMovementSystem {m_registry});
+    m_systems.emplace_back(new CloudSystem {m_registry});
+    m_systems.emplace_back(new SkyboxSystem {m_registry});
+    m_systems.emplace_back(new CollisionSystem {m_registry});
+    m_systems.emplace_back(new DayNightSystem {m_registry});
+    m_systems.emplace_back(new ItemSystem {m_registry, m_atlas});
+    m_systems.emplace_back(new ChunkUpdateSystem {m_registry});
 
     // rendering
-    m_systems.emplace_back(new MeshRenderSystem{m_registry});
-    m_systems.emplace_back(new DebugRenderSystem{m_registry});
+    m_systems.emplace_back(new CameraSystem {m_registry});
+    m_systems.emplace_back(new MeshRenderSystem {m_registry});
+    m_systems.emplace_back(new DebugRenderSystem {m_registry});
 
     // callbacks
     m_keyEventHandle = EventDispatcher::onKeyPress.subscribe([&](const KeyEvent& e) {

@@ -24,6 +24,6 @@ void DayNightSystem::_update(int dt)
 }
 
 DayNightSystem::DayNightSystem(Registry_T &registry)
-    : System {registry, 0}, m_player {m_registry.view<PlayerComponent>().front()},
+    : System {registry}, m_player {m_registry.view<PlayerComponent>().front()},
     m_skybox {m_registry.view<SkyboxComponent>().front()}
 { }

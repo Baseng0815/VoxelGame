@@ -107,7 +107,7 @@ namespace Math {
             return cuboidNormals[minIndex];
         }
         else {
-            return glm::vec3{0};
+            return glm::vec3 {0};
         }
     }
 } // namespace Math

@@ -12,7 +12,8 @@
 #include "../../include/Events/EventDispatcher.hpp"
 #include "../../include/World.hpp"
 
-void PhysicsSystem::_update(int millis) {
+void PhysicsSystem::_update(int millis)
+{
     float dt = millis / 1000.f;
 
     m_registry.view<TransformationComponent, VelocityComponent, RigidBodyComponent>().each(
@@ -27,8 +28,10 @@ void PhysicsSystem::_update(int millis) {
         });
 }
 
-void PhysicsSystem::applyVelocities(float dt, const entt::entity &entity, TransformationComponent &transform, const VelocityComponent &velocity) const {    
-    if (velocity.velocity != glm::vec3{0.f}) {
+void PhysicsSystem::applyVelocities(float dt, const entt::entity &entity, TransformationComponent &transform, const VelocityComponent &velocity) const
+{
+    // apply positional velocity
+    if (velocity.velocity.x != 0 || velocity.velocity.y != 0 || velocity.velocity.z != 0) {
         glm::vec3 oldPos = transform.getPosition();
 
         transform.move(dt * velocity.velocity);
@@ -48,7 +51,8 @@ void PhysicsSystem::applyVelocities(float dt, const entt::entity &entity, Transf
         }
     }
 
-    if (velocity.angularVelocity != glm::vec3{0.f}) {
+    // apply angular velocity
+    if (velocity.angularVelocity.x != 0 || velocity.angularVelocity.y != 0 || velocity.angularVelocity.z != 0) {
         float phi = dt * glm::length(velocity.angularVelocity);
         glm::quat pRot = glm::quat(glm::degrees(phi), glm::normalize(velocity.angularVelocity));
 
@@ -56,14 +60,16 @@ void PhysicsSystem::applyVelocities(float dt, const entt::entity &entity, Transf
     }
 }
 
-void PhysicsSystem::applyAccelerations(float dt, VelocityComponent &velocity, const RigidBodyComponent &rigidBody) {
+void PhysicsSystem::applyAccelerations(float dt, VelocityComponent &velocity, const RigidBodyComponent &rigidBody)
+{
     // gravity
     if (rigidBody.gravityApplies) {
         velocity.velocity.y = std::max(velocity.velocity.y - dt * 9.81f, -20.f);
     }
 }
 
-void PhysicsSystem::handleBlockCollision(entt::entity entity, const glm::vec3 &block) const {
+void PhysicsSystem::handleBlockCollision(entt::entity entity, const glm::vec3 &block) const
+{
     TransformationComponent &transform = m_registry.get<TransformationComponent>(entity);
     VelocityComponent &velocity = m_registry.get<VelocityComponent>(entity);
     CollisionComponent &collision = m_registry.get<CollisionComponent>(entity);
@@ -97,7 +103,8 @@ void PhysicsSystem::handleBlockCollision(entt::entity entity, const glm::vec3 &b
     } while (++it != tvs.end());
 }
 
-void PhysicsSystem::updateFalling(RigidBodyComponent &rigidBody, const TransformationComponent &transform, const VelocityComponent &velocity) const {
+void PhysicsSystem::updateFalling(RigidBodyComponent &rigidBody, const TransformationComponent &transform, const VelocityComponent &velocity) const
+{
     const glm::vec3 &position = transform.getPosition();
 
     if (position.y < 1) {
@@ -106,13 +113,14 @@ void PhysicsSystem::updateFalling(RigidBodyComponent &rigidBody, const Transform
     else if (!World::getBlock(m_registry, glm::floor(position - glm::vec3{0.0f, 0.9f, 0.0f})).isSolid()) {
         rigidBody.isFalling = true;
     }
-    else if(velocity.velocity.y == 0) {
+    else if (velocity.velocity.y == 0) {
         rigidBody.isFalling = false;
     }
 }
 
 PhysicsSystem::PhysicsSystem(Registry_T &registry)
-    : System{registry, 0} {
+    : System {registry}
+{
     m_blockCollisionHandle = EventDispatcher::onBlockCollision.subscribe(
         [&](const BlockCollisionEvent &e) { handleBlockCollision(e.entity, e.block); });
 }
