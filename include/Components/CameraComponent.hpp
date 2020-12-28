@@ -18,7 +18,9 @@ struct CameraComponent {
 
     glm::vec3 positionOffset = glm::vec3 {0.f, 1.5f, 0.f};
 
+    // fov = fov_y
     float yaw = -90.f, pitch = 0.f, fov;
+    float fov_x = 0;
 
     CameraComponent(float fov, float width, float height);
 

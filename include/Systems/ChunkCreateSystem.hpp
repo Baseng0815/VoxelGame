@@ -37,32 +37,36 @@ struct ChunkGeometryData {
 };
 
 class ChunkCreateSystem : public System {
-  private:
-    std::vector<std::future<GenerationData>> m_generationFutures;
-    std::vector<std::future<ChunkGeometryData>> m_geometryFutures;
+    private:
+        std::vector<std::future<GenerationData>> m_generationFutures;
+        std::vector<std::future<ChunkGeometryData>> m_geometryFutures;
 
-    // some static data needed
+        // some static data needed
 
-    WorldGenerator m_worldGenerator;
-    StructureGenerator m_structureGenerator;    
-    const TextureAtlas& m_atlas;
+        WorldGenerator m_worldGenerator;
+        StructureGenerator m_structureGenerator;
+        const TextureAtlas& m_atlas;
 
-    int m_constructionCount = 0;
-    std::vector<entt::entity> m_destructionQueue;
-    std::vector<glm::vec2> m_loadedChunks;
+        int m_constructionCount = 0;
+        std::vector<entt::entity> m_destructionQueue;
+        std::vector<glm::vec2> m_loadedChunks;
 
-    CallbackHandle<const EntityMovedEvent&> m_playerMovedHandle;
-    void handlePlayerMoved(const EntityMovedEvent& e);    
+        CallbackHandle<const EntityMovedEvent&> m_playerMovedHandle;
+        void handlePlayerMoved(const EntityMovedEvent& e);
 
-    GenerationData updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ);    
-    ChunkGeometryData updateChunkVertices(entt::entity entity, const ChunkComponent& chunk);
-    void updateChunkBuffers(Geometry* geometryComponent, const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices);
+        GenerationData updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ);
+        ChunkGeometryData updateChunkVertices(entt::entity entity, const ChunkComponent& chunk);
+        void updateChunkBuffers(Geometry* geometryComponent, const std::vector<unsigned int>& indices, const std::vector<Vertex>& vertices);
 
-    void _update(int dt) override;
+        void _update(int dt) override;
+        void deleteChunks();
+        void checkChunks();
+        void processBlocks();
+        void processVertices();
 
-  public:
-    // TODO make atlas a resource or entity
-    ChunkCreateSystem(Registry_T& registry, const TextureAtlas& atlas);
+    public:
+        // TODO make atlas a resource or entity
+        ChunkCreateSystem(Registry_T& registry, const TextureAtlas& atlas);
 
-    int getActiveChunkCount() const;
+        int getActiveChunkCount() const;
 };

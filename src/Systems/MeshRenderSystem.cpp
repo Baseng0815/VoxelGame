@@ -126,27 +126,24 @@ void MeshRenderSystem::_update(int dt)
     m_meshRenderShaderColor->bind();
     uploadToShader(m_meshRenderShaderColor, camera, playerTransform);
 
-    const auto& singleMeshComponents = m_registry.view<TransformationComponent, MeshRenderComponent>();
-    const auto& multiMeshComponents = m_registry.view<TransformationComponent, MultiMeshRenderComponent>();
+    // render single mesh components
+    m_registry.view<TransformationComponent, MeshRenderComponent>().each(
+        // structured bindings are not variables, so the capture list does not implicitly capture it (valid for clang)
+        [&, playerTransform = playerTransform](const TransformationComponent &transformation, const MeshRenderComponent &meshRenderer) {
+            if (meshRenderer.isActive) {
+                render(transformation, meshRenderer, camera, playerTransform);
+            }
+        });
 
-    for (int i = 0; i < 2; i++) {
-        // render single mesh components
-        singleMeshComponents.each(
-            // structured bindings are not variables, so the capture list does not implicitly capture it (valid for clang)
-            [&, playerTransform = playerTransform](const TransformationComponent& transformation, const MeshRenderComponent& meshRenderer) {
-                if (meshRenderer.order == i)
+    // render multi mesh components
+    m_registry.view<TransformationComponent, MultiMeshRenderComponent>().each(
+        [&, playerTransform = playerTransform](const TransformationComponent &transformation, const MultiMeshRenderComponent &multiMeshRenderer) {
+            if (multiMeshRenderer.isActive) {
+                for (const MeshRenderComponent &meshRenderer : multiMeshRenderer.meshRenderComponents) {
                     render(transformation, meshRenderer, camera, playerTransform);
-            });
-
-        // render multi mesh components
-        multiMeshComponents.each(
-            [&, playerTransform = playerTransform](const TransformationComponent& transformation, const MultiMeshRenderComponent& multiMeshRenderer) {
-                for (const auto& meshRenderer : multiMeshRenderer.meshRenderComponents) {
-                    if (meshRenderer.order == i)
-                        render(transformation, meshRenderer, camera, playerTransform);
                 }
-            });
-    }
+            }
+        });
 }
 
 MeshRenderSystem::MeshRenderSystem(Registry_T& registry)

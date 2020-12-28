@@ -53,9 +53,7 @@ Application::Application()
 }
 
 Window& Application::getWindow()
-{
-    return m_window;
-}
+{ return m_window; }
 
 Application::~Application()
 {
@@ -64,9 +62,7 @@ Application::~Application()
 }
 
 void Application::setNewLayer(GameLayer* newLayer)
-{
-    m_currentLayer = newLayer;
-}
+{ m_currentLayer = newLayer; }
 
 void Application::run()
 {
@@ -86,7 +82,7 @@ void Application::run()
 
         // time
         int currentTime = glfwGetTime() * 1000.f;
-        m_deltaTime = currentTime - m_prevTime;
+        m_deltaTime = std::min(currentTime - m_prevTime, 200);
         m_prevTime = currentTime;
         m_time += m_deltaTime;
 
@@ -104,6 +100,4 @@ void Application::run()
 }
 
 void Application::stop()
-{
-    m_isRunning = false;
-}
+{ m_isRunning = false; }

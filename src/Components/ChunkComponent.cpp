@@ -13,7 +13,7 @@ void ChunkComponent::setBlock(const Block& block) {
     // state
     // if needed delete old state and create new state
     switch (block.type) {
-        case BlockId::BLOCK_WATER:           
+        case BlockId::BLOCK_WATER:
             blockStates.createBlockState<WaterBlockState>(localPos);
             break;
 
@@ -47,12 +47,12 @@ Block ChunkComponent::getBlock(int x, int y, int z) {
         Block block;
         switch (type) {
             case BlockId::BLOCK_WATER: {
-                WaterBlockState* state = blockStates.getState<WaterBlockState>(glm::vec3{x, y, z});
-                block = Block{Utility::getWorldCoords(chunkX, chunkZ, x, y, z), type, state};
-            } break;
+                                           WaterBlockState* state = blockStates.getState<WaterBlockState>(glm::vec3{x, y, z});
+                                           block = Block{Utility::getWorldCoords(chunkX, chunkZ, x, y, z), type, state};
+                                       } break;
             default:
-                block = Block{Utility::getWorldCoords(chunkX, chunkZ, x, y, z), type, nullptr};
-                break;
+                                       block = Block{Utility::getWorldCoords(chunkX, chunkZ, x, y, z), type, nullptr};
+                                       break;
         }
 
         return block;

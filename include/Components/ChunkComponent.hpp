@@ -26,11 +26,11 @@ struct ChunkComponent {
 
     // raw pointer because ChunkComponent needs to be copyable
     // TODO find out if this works using move semantics only
-    Geometry* geometryCulled;
-    Geometry* geometryNonCulled;
-    Geometry* geometryTransparent;
+    Geometry *geometryCulled;
+    Geometry *geometryNonCulled;
+    Geometry *geometryTransparent;
 
-    // max 16 * 16 * 256 = 65535 elements        
+    // max 16 * 16 * 256 = 65535 elements
     BlockStateContainer blockStates;
     bool needsUpdate = false;
 
@@ -42,13 +42,13 @@ struct ChunkComponent {
     BiomeId** biomes = nullptr;
 
     bool verticesOutdated = false;
-    bool threadActiveOnSelf = false;    
+    bool threadActiveOnSelf = false;
 
-    void setBlock(const Block& block);    
+    void setBlock(const Block &block);
 
     Block getBlock(int x, int y, int z) const;
-    Block getBlock(const glm::ivec3& position) const;
+    Block getBlock(const glm::ivec3 &position) const;
 
     Block getBlock(int x, int y, int z);
-    Block getBlock(const glm::ivec3& position);
+    Block getBlock(const glm::ivec3 &position);
 };

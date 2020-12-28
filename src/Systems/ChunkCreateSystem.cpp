@@ -17,7 +17,8 @@
 #include "../../include/Components/PlayerComponent.hpp"
 #include "../../include/Components/TransformationComponent.hpp"
 
-void ChunkCreateSystem::handlePlayerMoved(const EntityMovedEvent& e) {
+void ChunkCreateSystem::handlePlayerMoved(const EntityMovedEvent& e)
+{
     glm::vec2 oldChunk = Utility::getChunk(e.oldPos);
     glm::vec2 newChunk = Utility::getChunk(e.newPos);
     if (oldChunk == newChunk)
@@ -41,17 +42,16 @@ void ChunkCreateSystem::handlePlayerMoved(const EntityMovedEvent& e) {
     // create new chunks which have come into range
     for (int x = newX + Configuration::CHUNK_PRELOAD_SIZE; x >= newX - (int)Configuration::CHUNK_PRELOAD_SIZE; x--) {
         for (int z = newZ + Configuration::CHUNK_PRELOAD_SIZE; z >= newZ - (int)Configuration::CHUNK_PRELOAD_SIZE; z--) {
-            glm::vec2 pos{x, z};
+            glm::vec2 pos {x, z};
             if (std::count(m_loadedChunks.begin(), m_loadedChunks.end(), pos) == 0) {
                 entt::entity entity = m_registry.create();
 
                 const ChunkComponent& chunk = m_registry.emplace<ChunkComponent>(entity, new std::shared_mutex{}, x, z, new Geometry{}, new Geometry{}, new Geometry{});
-                m_registry.emplace<TransformationComponent>(entity, glm::vec3{x * Configuration::CHUNK_SIZE, 0, z * Configuration::CHUNK_SIZE});
-                // TODO add two mesh renderers; one for solid blocks with culling and one for planes without culling
-                m_registry.emplace<MultiMeshRenderComponent>(entity, std::vector<MeshRenderComponent>{
-                                                                         {ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS_CULLED), chunk.geometryCulled},
-                                                                         {ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS_NON_CULLED), chunk.geometryNonCulled},
-                                                                         {ResourceManager::getResource<Material>(MATERIAL_WATER), chunk.geometryTransparent, 1}});
+                m_registry.emplace<TransformationComponent>(entity, glm::vec3 {x * Configuration::CHUNK_SIZE, 0, z * Configuration::CHUNK_SIZE});
+                m_registry.emplace<MultiMeshRenderComponent>(entity, std::vector<MeshRenderComponent> {
+                    {ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS_CULLED), chunk.geometryCulled},
+                        {ResourceManager::getResource<Material>(MATERIAL_CHUNK_BLOCKS_NON_CULLED), chunk.geometryNonCulled},
+                        {ResourceManager::getResource<Material>(MATERIAL_WATER), chunk.geometryTransparent, 1}});
 
                 m_loadedChunks.push_back(pos);
             }
@@ -59,7 +59,8 @@ void ChunkCreateSystem::handlePlayerMoved(const EntityMovedEvent& e) {
     }
 }
 
-GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ) {
+GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chunkX, int chunkZ)
+{
     GenerationData generationData;
     generationData.entity = entity;
 
@@ -89,7 +90,8 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
     return generationData;
 }
 
-ChunkGeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, const ChunkComponent& chunk) {
+ChunkGeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, const ChunkComponent& chunk)
+{
     ChunkGeometryData geometryData{entity};
 
     // reserve some space to prevent reallocations
@@ -120,7 +122,7 @@ ChunkGeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, co
                     continue;
                 }
 
-                const BlockState* state = nullptr;
+                const BlockState *state = nullptr;
                 switch (block.type) {
                     case BlockId::BLOCK_WATER:
                         state = chunk.blockStates.getState<WaterBlockState>(blockPosition);
@@ -270,12 +272,21 @@ ChunkGeometryData ChunkCreateSystem::updateChunkVertices(entt::entity entity, co
 }
 
 void ChunkCreateSystem::updateChunkBuffers(Geometry* geometry, const std::vector<unsigned int>& indices,
-                                           const std::vector<Vertex>& vertices) {
-
+                                           const std::vector<Vertex>& vertices)
+{
     geometry->fillBuffers(vertices, indices);
 }
 
-void ChunkCreateSystem::_update(int dt) {
+void ChunkCreateSystem::_update(int dt)
+{
+    deleteChunks();
+    checkChunks();
+    processBlocks();
+    processVertices();
+}
+
+void ChunkCreateSystem::deleteChunks()
+{
     // delete queued chunks if no thread is active on them
     auto it = m_destructionQueue.begin();
     while (it != m_destructionQueue.end()) {
@@ -316,40 +327,48 @@ void ChunkCreateSystem::_update(int dt) {
             ++it;
         }
     }
+}
 
+void ChunkCreateSystem::checkChunks()
+{
     // check if chunks need updating
     auto view = m_registry.view<ChunkComponent>();
     for (auto entity : view) {
         if (m_constructionCount < Configuration::CHUNK_MAX_LOADING) {
             auto& chunk = view.get<ChunkComponent>(entity);
 
-            if (!chunk.threadActiveOnSelf) {
-                // create blocks
-                if (!chunk.blocks) {
-                    m_constructionCount++;
-                    chunk.threadActiveOnSelf = true;
+            if (chunk.threadActiveOnSelf) {
+                continue;
+            }
 
-                    m_generationFutures.push_back(std::async(
-                        std::launch::async, [=, this]() { 
-                            return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ); 
+            // create blocks
+            if (!chunk.blocks) {
+                m_constructionCount++;
+                chunk.threadActiveOnSelf = true;
+
+                m_generationFutures.push_back(std::async(
+                        std::launch::async, [=, this]() {
+                            return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ);
                         }));
 
-                    chunk.needsUpdate = true;
-                    chunk.verticesOutdated = true;
-                }
-                // update vertices
-                else if (chunk.verticesOutdated) {
-                    m_constructionCount++;
-                    chunk.threadActiveOnSelf = true;
+                chunk.needsUpdate = true;
+                chunk.verticesOutdated = true;
+            }
+            // update vertices
+            else if (chunk.verticesOutdated) {
+                m_constructionCount++;
+                chunk.threadActiveOnSelf = true;
 
-                    m_geometryFutures.push_back(std::async(std::launch::async, [=, this]() {
-                        return updateChunkVertices(entity, chunk);
-                    }));
-                }
+                m_geometryFutures.push_back(std::async(std::launch::async, [=, this]() {
+                    return updateChunkVertices(entity, chunk);
+                }));
             }
         }
     }
+}
 
+void ChunkCreateSystem::processBlocks()
+{
     // process finished blocks
     auto itGen = m_generationFutures.begin();
     while (itGen != m_generationFutures.end()) {
@@ -374,7 +393,10 @@ void ChunkCreateSystem::_update(int dt) {
             itGen++;
         }
     }
+}
 
+void ChunkCreateSystem::processVertices()
+{
     // process finished vertices
     auto itGeo = m_geometryFutures.begin();
     while (itGeo != m_geometryFutures.end()) {
@@ -400,24 +422,25 @@ void ChunkCreateSystem::_update(int dt) {
         else {
             itGeo++;
         }
-    }    
+    }
 }
 
 ChunkCreateSystem::ChunkCreateSystem(Registry_T& registry, const TextureAtlas& atlas)
-    : System{registry}, m_worldGenerator{WorldType::WORLD_NORMAL},
-      m_structureGenerator{&m_worldGenerator}, m_atlas{atlas} {
-
+    : System {registry}, m_worldGenerator {WorldType::WORLD_NORMAL},
+    m_structureGenerator {&m_worldGenerator}, m_atlas {atlas}
+{
     // event callbacks
     m_playerMovedHandle = EventDispatcher::onEntityMoved.subscribe(
         [&](const EntityMovedEvent& e) {
             if (m_registry.any<PlayerComponent>(e.entity)) {
                 handlePlayerMoved(e);
             }
-        });    
+        });
 
     handlePlayerMoved(EntityMovedEvent{nullptr, entt::null, glm::vec3{0.f}, glm::vec3{FLT_MAX}});
 }
 
-int ChunkCreateSystem::getActiveChunkCount() const {
+int ChunkCreateSystem::getActiveChunkCount() const
+{
     return m_loadedChunks.size();
 }

@@ -7,5 +7,5 @@ struct MeshRenderComponent {
     const Material *material;
     const Geometry *geometry;
 
-    int order = 0;
+    bool isActive = true;
 };

@@ -5,14 +5,15 @@
 #include "System.hpp"
 
 struct CameraComponent;
+struct ChunkComponent;
 struct TransformationComponent;
 struct VelocityComponent;
 
+struct CursorEvent;
+struct FramebufferSizeEvent;
 struct KeyEvent;
 struct MouseButtonEvent;
-struct CursorEvent;
 struct ScrollEvent;
-struct FramebufferSizeEvent;
 
 class InventoryLayout;
 class HotbarLayout;
@@ -30,6 +31,8 @@ class CameraSystem : public System {
         void updateVectors(CameraComponent &camera);
         void updateViewMatrix(CameraComponent &camera);
         void updateProjectionMatrix(CameraComponent &camera);
+
+        bool isVisible(const glm::vec3 &camPos, float fov_x, int x, int z);
 
         void _update(int dt) override;
     public:
