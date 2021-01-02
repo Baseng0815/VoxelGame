@@ -6,8 +6,20 @@
 #include "../../include/Resources/ResourceManager.hpp"
 
 #include "../../include/Components/CameraComponent.hpp"
+#include "../../include/Components/TransformationComponent.hpp"
 
 #include <glm/gtx/transform.hpp>
+
+void DebugRenderSystem::recalculateCoordinateSystemModelMatrix()
+{
+    const CameraComponent           &camera     = m_registry.get<CameraComponent>(m_cameraEntity);
+    const TransformationComponent   &transform  = m_registry.get<TransformationComponent>(m_cameraEntity);
+
+    glm::vec3 cameraPositionAbsolute = transform.getPosition() + camera.positionOffset;
+    cameraPositionAbsolute += 3.f * camera.front;
+
+    m_coordinateSystemModelMatrix = glm::translate(cameraPositionAbsolute);
+}
 
 void DebugRenderSystem::handleKeys(const KeyEvent &e)
 {
@@ -28,22 +40,33 @@ void DebugRenderSystem::_update(int dt)
     if (m_isEnabled) {
         m_mvpColorShader->bind();
 
-        const CameraComponent &camera = m_registry.view<CameraComponent>().raw()[0];
+        const CameraComponent &camera = m_registry.get<CameraComponent>(m_cameraEntity);
         m_mvpColorShader->upload("viewMatrix", camera.viewMatrix);
         m_mvpColorShader->upload("projectionMatrix", camera.perspectiveProjection);
 
         m_mvpColorShader->upload("modelMatrix", m_chunkModelMatrix);
-        m_mvpColorShader->upload("material.color", Color {255, 0, 0, 255});
+        m_mvpColorShader->upload("material.color", Color::Red);
 
         // draw chunk boundaries
         glBindVertexArray(m_chunkBoundaries.getVao());
         glDrawElements(GL_LINES, m_chunkBoundaries.getDrawCount(), GL_UNSIGNED_INT, nullptr);
+
+        m_mvpColorShader->upload("modelMatrix", m_coordinateSystemModelMatrix);
+        m_mvpColorShader->upload("material.color", Color::Blue);
+
+        // draw coordinate system
+        glDisable(GL_DEPTH_TEST);
+        glBindVertexArray(m_coordinateSystem.getVao());
+        glDrawElements(GL_LINES, m_coordinateSystem.getDrawCount(), GL_UNSIGNED_INT, nullptr);
+        glEnable(GL_DEPTH_TEST);
     }
 }
 
 DebugRenderSystem::DebugRenderSystem(Registry_T &registry)
-    : System {registry}, m_mvpColorShader {ResourceManager::getResource<Shader>(SHADER_MVP_COLOR)}
+    : System {registry}, m_mvpColorShader {ResourceManager::getResource<Shader>(SHADER_MVP_COLOR)},
+    m_cameraEntity {m_registry.view<CameraComponent>().front()}
 {
+    // create chunk boundaries
     std::vector<Vertex> vertices;
     vertices.reserve((Configuration::CHUNK_COUNT_PER_AXIS + 1) * 4 * 2);
 
@@ -56,7 +79,7 @@ DebugRenderSystem::DebugRenderSystem(Registry_T &registry)
             const float p_x = x * Configuration::CHUNK_SIZE;
             const float p_z = z * Configuration::CHUNK_SIZE;
 
-            vertices.emplace_back(Vertex {glm::vec3 {p_x, 0, p_z}});
+            vertices.emplace_back(Vertex {glm::vec3 {p_x, 0.f, p_z}});
             vertices.emplace_back(Vertex {glm::vec3 {p_x, Configuration::CHUNK_HEIGHT, p_z}});
             indices.emplace_back(counter++);
             indices.emplace_back(counter++);
@@ -65,6 +88,17 @@ DebugRenderSystem::DebugRenderSystem(Registry_T &registry)
 
     m_chunkBoundaries.fillBuffers(vertices, indices);
 
+    // create coordinate system
+    vertices = {
+        Vertex {glm::vec3 {0.f, 0.f, 0.f}},
+        Vertex {glm::vec3 {1.f, 0.f, 0.f}},
+        Vertex {glm::vec3 {0.f, 1.f, 0.f}},
+        Vertex {glm::vec3 {0.f, 0.f, 1.f}}
+    };
+
+    indices = {0, 1, 0, 2, 0, 3};
+    m_coordinateSystem.fillBuffers(vertices, indices);
+
     m_keyEventHandle = EventDispatcher::onKeyPress.subscribe([&](const KeyEvent &e) {
         handleKeys(e);
     });
@@ -72,9 +106,12 @@ DebugRenderSystem::DebugRenderSystem(Registry_T &registry)
     m_enterChunkHandle = EventDispatcher::onEnterChunk.subscribe([&](const EnterChunkEvent &e) {
         handleEnterChunk(e);
     });
-}
 
-void DebugRenderSystem::toggle()
-{
-    m_isEnabled = !m_isEnabled;
+    m_cursorHandle = EventDispatcher::onCursorMove.subscribe([&](const CursorEvent&) {
+        recalculateCoordinateSystemModelMatrix();
+    });
+
+    m_entityMovedHandle = EventDispatcher::onEntityMoved.subscribe([&](const EntityMovedEvent&) {
+        recalculateCoordinateSystemModelMatrix();
+    });
 }

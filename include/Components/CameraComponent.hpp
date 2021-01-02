@@ -25,7 +25,4 @@ struct CameraComponent {
     CameraComponent(float fov, float width, float height);
 
     void invertPitch();
-
-    // TODO put all of this stuff into systems
-    void updateMatrices(const TransformationComponent &playerTransform);
 };

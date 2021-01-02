@@ -48,6 +48,12 @@ void InputSystem::handleKeyPressEvent(const KeyEvent& e) {
                         velocity.velocity.y = 0.f;
                     }
                     break;
+
+
+                default:
+                    // act as if it was not pressed at all if it is not handled
+                    doubleKeyDetected = false;
+                    break;
             }
         } else {
             // no double key press recognized, but key was pressed; update stuff
