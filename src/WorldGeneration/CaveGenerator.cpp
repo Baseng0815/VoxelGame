@@ -19,7 +19,7 @@ void CaveGenerator::generateChunk(glm::vec2 chunkPos, GenerationData* data) cons
                         if(y > 10) {
                             data->blocks[x][y][z] = BlockId::BLOCK_AIR;
                         }
-                        else if(data->blocks[x][y][z] != BlockId::BLOCK_BEDROCK) {
+                        else if(data->blocks[x][y][z] != BlockId::BLOCK_BEDROCK || data->blocks[x][y][z] != BlockId::BLOCK_WATER) {
                             data->blocks[x][y][z] = BlockId::BLOCK_LAVA;
                         }
                     }

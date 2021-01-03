@@ -2,6 +2,7 @@
 
 #include "System.hpp"
 
+#include <glm/glm.hpp>
 #include <future>
 #include <vector>
 
@@ -11,16 +12,17 @@ struct Block;
 struct WaterBlockState;
 
 class ChunkUpdateSystem : public System {
-    private:
+    private:        
         CallbackHandle<const BlockChangedEvent&> m_blockHandle;
         void handleBlockChanged(const BlockChangedEvent& e);
 
-        void updateWater(ChunkComponent& chunk, const int& x, const int& y, const int& z);
+        void updateWater(const glm::ivec3& position);
 
         void _update(int dt) override;
 
         std::vector<std::future<void>> m_updateFutures;
+        std::vector<std::pair<float, glm::ivec3>> m_waterUpdates;
 
-    public:
+      public:
         ChunkUpdateSystem(Registry_T& registry);
 };

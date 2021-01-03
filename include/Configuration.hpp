@@ -34,6 +34,9 @@ class Configuration {
         static constexpr float CLOUD_HEIGHT     = 120;
         static constexpr float CLOUD_VOLUMETRIC_HEIGHT = 8;
 
+        // the time water needs to move 1 block
+        static constexpr float WATER_FLOW_TIME = 4.0f;
+
         // resourceBasePath contains all resources and static data
         static void loadConfiguration(const std::string &resourceBasePath);
 

@@ -42,7 +42,7 @@ void TerrainGenerator::createBlocks(GenerationData* data, int** heightMap) const
                 else if (cy <= height) {
                     block = biome.surfaceBlocks;
                 }
-                else if (cy <= 63 && (biome.id == BiomeId::BIOME_OCEAN || biome.id == BiomeId::BIOME_BEACH)) {
+                else if (cy <= 63) {
                     // water default state index and block index
                     block = BlockId::BLOCK_WATER;
                     data->stateData.createBlockState<WaterBlockState>(glm::vec3{cx, cy, cz});

@@ -12,49 +12,56 @@
 #include <vector>
 
 void ChunkUpdateSystem::handleBlockChanged(const BlockChangedEvent& e) {
-    auto [chunkCoords, position] = Utility::GetChunkAndLocal(e.position);
-    ChunkComponent& chunk = World::getChunk(m_registry, chunkCoords);
+    // auto [chunkCoords, position] = Utility::GetChunkAndLocal(e.position);
+    // ChunkComponent& chunk = World::getChunk(m_registry, chunkCoords);
 
-    for (int x = -1; x <= 1; x++) {
-        for (int y = 0; y <= 1; y++) {
-            for (int z = -1; z <= 1; z++) {
-                if ((x * z) == 0) {
-                    int cx = position.x + x;
-                    int cy = position.y + y;
-                    int cz = position.z + z;
+    for (int dx = -1; dx <= 1; dx++) {
+        for (int dy = 0; dy <= 1; dy++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                if ((dx * dz) == 0) {
+                    glm::ivec3 dv{dx, dy, dz};
 
-                    Utility::chunk_execute(m_registry, chunk, cx, cy, cz,
-                                           [&](ChunkComponent& otherChunk, const int& x, const int& y, const int& z) {
-                                               BlockId block = otherChunk.blocks[x][y][z];
-                                               if (block == BlockId::BLOCK_WATER) {
-                                                   updateWater(otherChunk, x, y, z);
-                                               }
-                                           });
+                    m_waterUpdates.push_back(std::make_pair(Configuration::WATER_FLOW_TIME, e.position + dv));
+                    // Utility::chunk_execute(m_registry, chunk, cx, cy, cz,
+                    //                        [&](ChunkComponent& otherChunk, const int& x, const int& y, const int& z) {
+                    //                            BlockId block = otherChunk.blocks[x][y][z];
+                    //                            if (block == BlockId::BLOCK_WATER) {
+                    //                                updateWater(otherChunk, x, y, z);
+                    //                            }
+                    //                        });
                 }
             }
         }
     }
 
-    chunk.verticesOutdated = true;
+    // chunk.verticesOutdated = true;
 }
 
-void ChunkUpdateSystem::updateWater(ChunkComponent& chunk, const int& x, const int& y, const int& z) {
-    Block block = chunk.getBlock(x, y, z);
+void ChunkUpdateSystem::updateWater(const glm::ivec3& position) {
+    auto [chunkPos, blockPos] = Utility::GetChunkAndLocal(position);
+    ChunkComponent chunk = World::getChunk(m_registry, chunkPos);
+    Block block = chunk.getBlock(blockPos);
+    if(block.type != BlockId::BLOCK_WATER)
+        return;
+
     WaterBlockState* state = reinterpret_cast<WaterBlockState*>(block.state);
+
+    int x = blockPos.x, y = blockPos.y, z = blockPos.z;
 
     if (y > 1) {
         Block lowerBlock = chunk.getBlock(x, y - 1, z);
         // TODO: Range checking
         if (!lowerBlock.isSolid()) {
-            glm::vec3 lowerPos = glm::vec3{x, y - 1, z};
+            glm::ivec3 lowerPos = glm::ivec3{x, y - 1, z};
 
-            // create new falling state            
+            // create new falling state
             WaterBlockState* newState = chunk.blockStates.createBlockState<WaterBlockState>(lowerPos);
             newState->level = 8;
 
-            chunk.blocks[x][y - 1][z] = BlockId::BLOCK_WATER;
-            updateWater(chunk, x, y - 1, z);
+            chunk.blocks[x][y - 1][z] = BlockId::BLOCK_WATER;            
             chunk.verticesOutdated = true;
+
+            m_waterUpdates.push_back(std::make_pair(Configuration::WATER_FLOW_TIME, lowerPos));
             return;
         }
     }
@@ -73,7 +80,8 @@ void ChunkUpdateSystem::updateWater(ChunkComponent& chunk, const int& x, const i
                                                    WaterBlockState* tmpState = reinterpret_cast<WaterBlockState*>(tmp.state);
                                                    if (tmpState->level > level) {
                                                        tmpState->level = level;
-                                                       updateWater(chunk, cx, cy, cz);
+                                                       // updateWater(chunk, cx, cy, cz);
+                                                       m_waterUpdates.push_back(std::make_pair(Configuration::WATER_FLOW_TIME, glm::vec3{chunk.chunkX * Configuration::CHUNK_SIZE + cx, cy, chunk.chunkZ * Configuration::CHUNK_SIZE + cz}));
                                                        chunk.verticesOutdated = true;
                                                    }
                                                }
@@ -82,7 +90,8 @@ void ChunkUpdateSystem::updateWater(ChunkComponent& chunk, const int& x, const i
                                                    WaterBlockState* tmp = chunk.blockStates.createBlockState<WaterBlockState>(glm::vec3{cx, cy, cz});
                                                    tmp->level = level;
                                                    chunk.blocks[cx][cy][cz] = BlockId::BLOCK_WATER;
-                                                   updateWater(chunk, cx, cy, cz);
+                                                   // updateWater(chunk, cx, cy, cz);
+                                                   m_waterUpdates.push_back(std::make_pair(Configuration::WATER_FLOW_TIME, glm::vec3{chunk.chunkX * Configuration::CHUNK_SIZE + cx, cy, chunk.chunkZ * Configuration::CHUNK_SIZE + cz}));
                                                    chunk.verticesOutdated = true;
                                                }
                                            });
@@ -93,6 +102,19 @@ void ChunkUpdateSystem::updateWater(ChunkComponent& chunk, const int& x, const i
 }
 
 void ChunkUpdateSystem::_update(int dt) {
+    for (auto it = m_waterUpdates.begin(); it != m_waterUpdates.end();) {
+        (*it).first -= dt / 1000.0f;
+
+        if ((*it).first <= 0) {
+            glm::ivec3 position = (*it).second;
+            updateWater(position);
+            
+            it = m_waterUpdates.erase(it);
+        }
+        else {
+            it++;
+        }
+    }
 }
 
 ChunkUpdateSystem::ChunkUpdateSystem(Registry_T& registry)
