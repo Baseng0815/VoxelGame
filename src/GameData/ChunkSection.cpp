@@ -1,6 +1,7 @@
 #include "../../include/GameData/ChunkSection.hpp"
 
 #include <algorithm>
+#include <iostream>
 #include <iterator>
 
 SectionPart::SectionPart() {
@@ -43,6 +44,7 @@ SectionPart::~SectionPart() {
 
     if (subSections != nullptr) {
         delete[] subSections;
+        subSections = nullptr;
     }
 }
 
@@ -63,7 +65,7 @@ constexpr glm::ivec3 SectionPart::indexToDirection(int index) {
 // returns the block on the specified position
 BlockId SectionPart::getBlock(const glm::ivec3& position) const {
     // return block type if no subsections are present
-    if (!hasSubsections()) {
+    if (size == 1 || !hasSubsections()) {
         return blockType;
     }
 
@@ -74,29 +76,28 @@ BlockId SectionPart::getBlock(const glm::ivec3& position) const {
 
 // sets a block on the specified position
 void SectionPart::setBlock(const glm::ivec3& position, BlockId blockType) {
+    // size equal to one
+    if (size == 1) {
+        // replace current block type and return
+        this->blockType = blockType;
+        return;
+    }
+
     // has no subsections
     if (!hasSubsections()) {
-        // size equal to one
-        if (size == 1) {
-            // replace current block type and return
-            this->blockType = blockType;
-            return;
-        }
-        else {
-            // split the section into 8 smaller subsections
-            split();
-        }
+        // split the section into 8 smaller subsections
+        split();
     }
 
     // set block in the right subsection
     int index = directionToIndex(position - center);
-    setBlock(position, blockType);
+    this->subSections[index].setBlock(position, blockType);
 }
 
 // splits the section into 8 subsections of same blockType if size > 1
 void SectionPart::split() {
     // only sections greater than one can be divided
-    if (size <= 1)
+    if (size == 1)
         return;
 
     // reserve memory for new subsections
@@ -142,13 +143,14 @@ void SectionPart::cleanUp() {
 
         // merge subsections
         delete[] subSections;
+        subSections = nullptr;
         this->blockType = subsectionBlocks;
     }
 }
 
 // checks if subsection has subsections
 bool SectionPart::hasSubsections() const {
-    return subSections != nullptr;
+    return !(subSections == nullptr);
 }
 
 SectionPart& SectionPart::operator=(const SectionPart& other) {
@@ -169,10 +171,26 @@ SectionPart& SectionPart::operator=(const SectionPart& other) {
     return *this;
 }
 
+void SectionPart::print(int indent) const {
+    for (int i = 0; i < indent; i++) {
+        std::cout << "\t";
+    }
+    std::cout << "Size: " << size;
+    if (!hasSubsections()) {
+        std::cout << " BlockId: " << (int)blockType << std::endl;
+    }
+    else {
+        std::cout << std::endl;
+        for (int i = 0; i < SUBSECTIONS_COUNT; i++) {
+            subSections[i].print(indent + 1);
+        }
+    }
+}
+
 void ChunkSection::setBlock(const glm::ivec3& position, BlockId blockType) {
-    blocks.setBlock(position, blockType);
+    blocks->setBlock(position, blockType);
 }
 
 BlockId ChunkSection::getBlock(const glm::ivec3& position) const {
-    return blocks.getBlock(position);
+    return blocks->getBlock(position);
 }

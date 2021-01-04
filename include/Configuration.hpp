@@ -14,6 +14,7 @@ class Configuration {
         static std::map<std::string, int> keyBinds;
 
     public:
+        static constexpr int CHUNK_SECTION_SIZE = 16;
         static constexpr int CHUNK_SIZE         = 16;
         static constexpr int CHUNK_HEIGHT       = 256;
         static constexpr int CHUNK_PRELOAD_SIZE = 6;
