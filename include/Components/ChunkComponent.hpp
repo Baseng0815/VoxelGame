@@ -13,6 +13,7 @@
 
 #include "../GameData/BiomeIds.hpp"
 #include "../GameData/Block.hpp"
+#include "../GameData/ChunkSection.hpp"
 
 #include "../GameData/BlockStates/BlockStateContainer.hpp"
 #include <vector>
@@ -36,7 +37,8 @@ struct ChunkComponent {
 
     // TODO make this more efficient (maybe use octrees?)
     // four bytes blockdata and four bytes block type
-    BlockId*** blocks = nullptr;
+    // BlockId*** blocks = nullptr;
+    ChunkSection* sections;
 
     // TODO maybe use chunk-wise biomes and interpolate
     BiomeId** biomes = nullptr;

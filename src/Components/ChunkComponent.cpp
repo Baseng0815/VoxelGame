@@ -13,21 +13,30 @@ void ChunkComponent::setBlock(const Block& block) {
     // state
     // if needed delete old state and create new state
     switch (block.type) {
-        case BlockId::BLOCK_WATER:
-            blockStates.createBlockState<WaterBlockState>(localPos);
-            break;
+    case BlockId::BLOCK_WATER:
+        blockStates.createBlockState<WaterBlockState>(localPos);
+        break;
 
-        default:
-            break;
+    default:
+        break;
     }
 
+    int sectionIndex = localPos.y / 16;
 
-    blocks[localPos.x][localPos.y][localPos.z] = block.type;
+    glm::ivec3 sectionCoords{
+        localPos.x,
+        localPos.y % 16,
+        localPos.z};
+
+    sections[sectionIndex].setBlock(sectionCoords, block.type);
 }
 
 Block ChunkComponent::getBlock(int x, int y, int z) const {
     if (Utility::inChunk(x, y, z)) {
-        BlockId type = blocks[x][y][z];
+        int sectionIndex = y / 16;
+        glm::ivec3 sectionCoords{x, y % 16, z};
+
+        BlockId type = sections[sectionIndex].getBlock(sectionCoords);
 
         return Block{Utility::getWorldCoords(chunkX, chunkZ, x, y, z), type};
     }
@@ -42,17 +51,20 @@ Block ChunkComponent::getBlock(const glm::ivec3& position) const {
 
 Block ChunkComponent::getBlock(int x, int y, int z) {
     if (Utility::inChunk(x, y, z)) {
-        BlockId type = blocks[x][y][z];
+        int sectionIndex = y / 16;
+        glm::ivec3 sectionCoords{x, y % 16, z};
+
+        BlockId type = sections[sectionIndex].getBlock(sectionCoords);
 
         Block block;
         switch (type) {
-            case BlockId::BLOCK_WATER: {
-                                           WaterBlockState* state = blockStates.getState<WaterBlockState>(glm::vec3{x, y, z});
-                                           block = Block{Utility::getWorldCoords(chunkX, chunkZ, x, y, z), type, state};
-                                       } break;
-            default:
-                                       block = Block{Utility::getWorldCoords(chunkX, chunkZ, x, y, z), type, nullptr};
-                                       break;
+        case BlockId::BLOCK_WATER: {
+            WaterBlockState* state = blockStates.getState<WaterBlockState>(glm::vec3{x, y, z});
+            block = Block{Utility::getWorldCoords(chunkX, chunkZ, x, y, z), type, state};
+        } break;
+        default:
+            block = Block{Utility::getWorldCoords(chunkX, chunkZ, x, y, z), type, nullptr};
+            break;
         }
 
         return block;
