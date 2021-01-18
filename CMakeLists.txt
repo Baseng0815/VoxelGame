@@ -13,14 +13,14 @@ set(CMAKE_BUILD_TYPE Debug)
 
 if(WIN32)
     message("WIN32")
-    
+
     set(CMAKE_CXX_STANDARD 20)
     set(CAMKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /GCTHREADS:16")
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SAFESEH:NO /NODEFAULTLIB:MSVCRT")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /SAFESEH:NO")
     set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} /SAFESEH:NO")
 
-    include_directories("C:/lib/assimp/include")    
+    include_directories("C:/lib/assimp/include")
     include_directories("C:/lib/entt-master/src")
     include_directories("C:/lib/GLEW/include")
     include_directories("C:/lib/GLFW/include")
@@ -58,8 +58,7 @@ if(WIN32)
         ${SOIL_LIBRARIES})
 
 else()
-    set(CMAKE_CXX_STANDARD 20)
-    set(CMAKE_CXX_FLAGS_DEBUG "-ggdb")
+    set(CMAKE_BUILD_TYPE Debug)
 
     find_package(glfw3 3.3 REQUIRED)
     if (GLFW_FOUND)
@@ -98,14 +97,17 @@ else()
     message("Freetype LIBRARIES: ${FREETYPE_LIBRARIES}")
     message("Assimp LIBRARIES: ${ASSIMP_LIBRARIES}")
 
-    file(GLOB_RECURSE SOURCES
-        include/*.hpp
-        src/*.cpp)
-
     add_executable(VoxelGame ${SOURCES})
 
+    # source files
+    include(sourcelist.cmake)
+
+    # compile features
+    target_compile_features(VoxelGame PRIVATE
+        cxx_std_20)
+
     # add include directories
-    target_include_directories(VoxelGame PUBLIC
+    target_include_directories(VoxelGame PRIVATE
         /usr/include/entt)
 
     # add libraries
