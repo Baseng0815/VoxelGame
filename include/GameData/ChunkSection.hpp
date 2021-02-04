@@ -12,9 +12,10 @@ protected:
     static constexpr int directionToIndex(const glm::ivec3& direction);
     static constexpr glm::ivec3 indexToDirection(int index);
 
-public:    
+public:
+    // logarithmic length of one edge 0, 1, 2, 3, 4
     int size = 16;
-    glm::ivec3 center = glm::ivec3{8, 8, 8};
+    glm::ivec3 center = glm::ivec3{};
 
     BlockId blockType = BlockId::BLOCK_AIR;
     SectionPart* subSections = nullptr;
@@ -33,15 +34,13 @@ public:
     bool hasSubsections() const;
 
     SectionPart& operator=(const SectionPart& other);
-
-    void print(int indent) const;
 };
 
 struct ChunkSection {
     // index in chunk 0 to 15 from bottom to top
     unsigned char index;
 
-    SectionPart* blocks;
+    SectionPart blocks;
 
     void setBlock(const glm::ivec3& position, BlockId blockType);
     BlockId getBlock(const glm::ivec3& position) const;

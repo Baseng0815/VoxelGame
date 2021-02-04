@@ -16,9 +16,7 @@ void StructureGenerator::fillSection(const Section& section, const glm::ivec3& p
             for (int z = pos0.z; z <= pos1.z; z++) {                
                 if (Utility::inChunk(x, y, z)) {
                     // if (data->blocks[x][y][z] == BlockId::BLOCK_AIR) {
-                    int sectionIndex = y / Configuration::CHUNK_SECTION_SIZE;
-                    glm::ivec3 sectionPosition{x, y % Configuration::CHUNK_SECTION_SIZE, z};
-                    data->sections[sectionIndex].setBlock(sectionPosition, section.block_type);
+                    data->blocks[x][y][z] = section.block_type;
                     // }
                 }
             }
