@@ -6,7 +6,7 @@
 #include "../../include/Components/RigidBodyComponent.hpp"
 
 #include "../../include/Events/EventDispatcher.hpp"
-#include "../../include/Utility.hpp"
+#include "../../include/Utility/Utility.hpp"
 
 #include <iostream>
 

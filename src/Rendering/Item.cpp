@@ -2,7 +2,7 @@
 
 #include "../../include/GameData/BlockTemplate.hpp"
 #include "../../include/GameData/GameData.hpp"
-#include "../../include/Utility.hpp"
+#include "../../include/Utility/Utility.hpp"
 
 Item::Item() {
     glGenVertexArrays(1, &m_vao);
@@ -66,8 +66,8 @@ void Item::resize(const Rectangle &area, const BlockId &block) const {
         x2, y1, uvX2,           uvY2 + uvYpT,
         x3, y2, uvX2 + uvXpT,   uvY2 + uvYpT,
         x3, y4, uvX2 + uvXpT,   uvY2,
-        x2, y3, uvX2,           uvY2,         
-         
+        x2, y3, uvX2,           uvY2,
+
         x2, y3, uvX3,           uvY3 + uvYpT,
         x3, y4, uvX3 + uvXpT,   uvY3 + uvYpT,
         x2, y5, uvX3 + uvXpT,   uvY3,
@@ -75,7 +75,7 @@ void Item::resize(const Rectangle &area, const BlockId &block) const {
     };
 
     unsigned int indices[] = {
-        0, 1, 2, 0, 2, 3, 
+        0, 1, 2, 0, 2, 3,
         4, 5, 6, 4, 6, 7,
         8, 9, 10, 8, 10, 11
     };

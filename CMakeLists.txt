@@ -43,11 +43,12 @@ if(WIN32)
         message("OpenGL was found")
     endif()
 
-    file(GLOB_RECURSE SOURCES
-        include/*.hpp
-        src/*.cpp)
-
     add_executable(VoxelGame ${SOURCES})
+    include(sourcelist.cmake)
+
+    target_compile_features(VoxelGame PRIVATE
+            cxx_std_20)
+
     target_link_libraries(VoxelGame "-SAFESEH:NO"
         ${ASSIMP_LIBRARIES}
         ${OPENGL_LIBRARIES}

@@ -5,7 +5,7 @@
 #include "../../include/Events/EventDispatcher.hpp"
 #include "../../include/GameData/GameData.hpp"
 #include "../../include/Systems/ChunkCreateSystem.hpp"
-#include "../../include/Utility.hpp"
+#include "../../include/Utility/Utility.hpp"
 
 void StructureGenerator::fillSection(const Section& section, const glm::ivec3& position, GenerationData* data) {
     glm::ivec3 pos0 = section.position0 + position;
@@ -13,7 +13,7 @@ void StructureGenerator::fillSection(const Section& section, const glm::ivec3& p
 
     for (int x = pos0.x; x <= pos1.x; x++) {
         for (int y = pos0.y; y <= pos1.y; y++) {
-            for (int z = pos0.z; z <= pos1.z; z++) {                
+            for (int z = pos0.z; z <= pos1.z; z++) {
                 if (Utility::inChunk(x, y, z)) {
                     // if (data->blocks[x][y][z] == BlockId::BLOCK_AIR) {
                     data->blocks[x][y][z] = section.block_type;
@@ -51,7 +51,7 @@ void StructureGenerator::generateTrees(const glm::ivec2& chunk, GenerationData* 
             glm::ivec2 chunkOffset{cxo, czo};
             std::vector<glm::ivec3> trees = getTreePositions(chunk + chunkOffset);
             for (auto& tree : trees) {
-                glm::ivec3 treePos = tree + glm::ivec3{cxo * Configuration::CHUNK_SIZE, 0, czo * Configuration::CHUNK_SIZE};                
+                glm::ivec3 treePos = tree + glm::ivec3{cxo * Configuration::CHUNK_SIZE, 0, czo * Configuration::CHUNK_SIZE};
                 for (const auto& section : treeStructure.sections) {
                     fillSection(section, treePos, data);
                 }

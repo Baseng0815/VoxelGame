@@ -5,7 +5,7 @@
 #include "../../include/Components/TransformationComponent.hpp"
 #include "../../include/Components/LightComponent.hpp"
 
-#include "../../include/Utility.hpp"
+#include "../../include/Utility/Utility.hpp"
 
 #include <iostream>
 void DayNightSystem::_update(int dt)

@@ -1,7 +1,7 @@
 #include "../../include/Events/Event.hpp"
 #include "../../include/Math/Cuboid.hpp"
 
-#include "../../include/Utility.hpp"
+#include "../../include/Utility/Utility.hpp"
 
 std::string KeyEvent::toString() const {
     std::stringstream ss;

@@ -1,4 +1,4 @@
-#include "../include/Utility.hpp"
+#include "../include/Utility/Utility.hpp"
 
 #include <entt/entt.hpp>
 #include <glm/glm.hpp>

@@ -3,7 +3,7 @@
 #include "System.hpp"
 
 #include "../Resources/Geometry.hpp"
-#include "../Utility.hpp"
+#include "../Utility/Utility.hpp"
 #include "../WorldGeneration/GenerationData.hpp"
 #include "../WorldGeneration/StructureGenerator.hpp"
 #include "../WorldGeneration/WorldGenerator.hpp"

@@ -1,8 +1,7 @@
-// in der .cpp kann man einbinden, was man will, da entsteht kein Problem
 //#include "../../include/WorldGeneration/WorldGenerator.hpp"
 #include "../../include/Configuration.hpp"
 #include "../../include/Systems/ChunkCreateSystem.hpp"
-#include "../../include/Utility.hpp"
+#include "../../include/Utility/Utility.hpp"
 #include "../../include/WorldGeneration/noiseutils.hpp"
 
 #include "../../include/GameData/GameData.hpp"

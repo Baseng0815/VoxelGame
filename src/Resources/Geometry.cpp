@@ -1,7 +1,7 @@
 #include "../../include/Resources/Geometry.hpp"
 
-#include "../../include/Utility.hpp"
 #include "../../include/Configuration.hpp"
+#include "../../include/Utility/Utility.hpp"
 
 #include <assimp/scene.h>
 #include <assimp/Importer.hpp>

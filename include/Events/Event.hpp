@@ -10,7 +10,7 @@
 
 #include "../GameData/Block.hpp"
 #include "../Gui/DragContext.hpp"
-#include "../Utility.hpp"
+#include "../Utility/Utility.hpp"
 
 enum EventType {
     // basic events

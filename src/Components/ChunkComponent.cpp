@@ -2,7 +2,7 @@
 
 #include "../../include/Configuration.hpp"
 #include "../../include/GameData/BlockStates/WaterBlockState.hpp"
-#include "../../include/Utility.hpp"
+#include "../../include/Utility/Utility.hpp"
 
 #include <mutex>
 

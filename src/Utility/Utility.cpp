@@ -1,11 +1,11 @@
-#include "../include/Utility.hpp"
+#include "../../include/Utility/Utility.hpp"
 
-#include "../include/Components/ChunkComponent.hpp"
-#include "../include/Components/InventoryComponent.hpp"
-#include "../include/Configuration.hpp"
-#include "../include/World.hpp"
+#include "../../include/Components/ChunkComponent.hpp"
+#include "../../include/Components/InventoryComponent.hpp"
+#include "../../include/Configuration.hpp"
+#include "../../include/World.hpp"
 
-#include "../include/Math/Ray.hpp"
+#include "../../include/Math/Ray.hpp"
 
 #include <iostream>
 
@@ -17,8 +17,8 @@ namespace Utility {
     }
 
     bool inChunk(const int x, const int y, const int z) {
-        return x >= 0 && x < Configuration::CHUNK_SIZE 
-            && y >= 0 && y < Configuration::CHUNK_HEIGHT 
+        return x >= 0 && x < Configuration::CHUNK_SIZE
+            && y >= 0 && y < Configuration::CHUNK_HEIGHT
             && z >= 0 && z < Configuration::CHUNK_SIZE;
     }
 

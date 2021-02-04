@@ -16,15 +16,15 @@
 #include <utility>
 #include <vector>
 
-#include "GameData/Block.hpp"
-#include "Math/Ray.hpp"
+#include "../GameData/Block.hpp"
+#include "../Math/Ray.hpp"
 
 struct WorldComponent;
 struct InventoryComponent;
 struct ChunkComponent;
 
 namespace Utility {
-    constexpr float PI = 3.141592741f;    
+    constexpr float PI = 3.141592741f;
 
     bool onBlockFace(glm::ivec3 block, glm::vec3 position);
 

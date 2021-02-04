@@ -40,7 +40,7 @@ target_sources(VoxelGame PRIVATE
     ./include/Gui/InventoryLayout.hpp
     ./include/Gui/UiConstraints.hpp
     ./include/Gui/UiProperties.hpp
-    ./include/Utility.hpp
+    ./include/Utility/Utility.hpp
     ./include/GameLayer.hpp
     ./include/Collision.hpp
     ./include/Rendering/Item.hpp
@@ -120,7 +120,7 @@ target_sources(VoxelGame PRIVATE
     ./src/GameData/Block.cpp
     ./src/MainMenuLayer.cpp
     ./src/GameLayer.cpp
-    ./src/Utility.cpp
+    ./src/Utility/Utility.cpp
     ./src/Gui/HotbarLayout.cpp
     ./src/Gui/Rectangle.cpp
     ./src/Gui/Image.cpp

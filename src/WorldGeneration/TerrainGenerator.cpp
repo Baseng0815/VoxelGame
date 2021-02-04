@@ -1,6 +1,6 @@
 #include "../../include/WorldGeneration/TerrainGenerator.hpp"
 #include "../../include/Configuration.hpp"
-#include "../../include/Utility.hpp"
+#include "../../include/Utility/Utility.hpp"
 
 #include "../../include/GameData/BlockStates/WaterBlockState.hpp"
 
@@ -46,7 +46,7 @@ void TerrainGenerator::createBlocks(GenerationData* data, int** heightMap) const
                     // water default state index and block index
                     block = BlockId::BLOCK_WATER;
                     data->stateData.createBlockState<WaterBlockState>(glm::vec3{cx, cy, cz});
-                }                
+                }
 
                 data->blocks[cx][cy][cz] = block;
             }
