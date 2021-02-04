@@ -37,8 +37,8 @@ struct ChunkComponent {
 
     // TODO make this more efficient (maybe use octrees?)
     // four bytes blockdata and four bytes block type
-    // BlockId*** blocks = nullptr;
-    ChunkSection* sections;
+    BlockId*** blocks = nullptr;
+    // ChunkSection* sections;
 
     // TODO maybe use chunk-wise biomes and interpolate
     BiomeId** biomes = nullptr;
