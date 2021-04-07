@@ -1,7 +1,7 @@
 #include "../../include/Math/Ray.hpp"
 #include "../../include/Math/Cuboid.hpp"
 #include "../../include/Math/Plane.hpp"
-#include "../../include/Utility.hpp"
+#include "../../include/Utility/Utility.hpp"
 
 #include <iostream>
 #include <limits.h>

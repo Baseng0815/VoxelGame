@@ -16,6 +16,7 @@ target_sources(VoxelGame PRIVATE
     ./include/GameData/Block.hpp
     ./include/GameData/Structure.hpp
     ./include/GameData/ChunkSection.hpp
+    ./include/GameData/SectionPart.hpp
     ./include/GameData/BlockGeometry.hpp
     ./include/GameData/BlockStates/BlockStateContainer.hpp
     ./include/GameData/BlockStates/BlockState.hpp
@@ -89,6 +90,7 @@ target_sources(VoxelGame PRIVATE
     ./include/Systems/PlayerMovementSystem.hpp
     ./include/Systems/System.hpp
     ./include/Systems/CameraSystem.hpp
+    ./include/Systems/ChunkSaveSystem.hpp
     ./include/Typedefs.hpp
     ./include/Configuration.hpp
     ./include/Resources/Geometry.hpp
@@ -115,6 +117,7 @@ target_sources(VoxelGame PRIVATE
     ./src/Application.cpp
     ./src/GameData/BlockGeometry.cpp
     ./src/GameData/GameData.cpp
+    ./src/GameData/SectionPart.cpp
     ./src/GameData/ChunkSection.cpp
     ./src/GameData/BlockStates/BlockStateContainer.cpp
     ./src/GameData/Block.cpp
@@ -170,6 +173,7 @@ target_sources(VoxelGame PRIVATE
     ./src/Systems/CameraSystem.cpp
     ./src/Systems/ItemSystem.cpp
     ./src/Systems/System.cpp
+    ./src/Systems/ChunkSaveSystem.cpp
     ./src/Resources/Texture.cpp
     ./src/Resources/Font.cpp
     ./src/Resources/Geometry.cpp
