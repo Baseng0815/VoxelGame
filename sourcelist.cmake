@@ -16,7 +16,6 @@ target_sources(VoxelGame PRIVATE
     ./include/GameData/Block.hpp
     ./include/GameData/Structure.hpp
     ./include/GameData/ChunkSection.hpp
-    ./include/GameData/SectionPart.hpp
     ./include/GameData/BlockGeometry.hpp
     ./include/GameData/BlockStates/BlockStateContainer.hpp
     ./include/GameData/BlockStates/BlockState.hpp
@@ -42,6 +41,7 @@ target_sources(VoxelGame PRIVATE
     ./include/Gui/UiConstraints.hpp
     ./include/Gui/UiProperties.hpp
     ./include/Utility/Utility.hpp
+    ./include/Utility/ChunkConverter.hpp
     ./include/GameLayer.hpp
     ./include/Collision.hpp
     ./include/Rendering/Item.hpp
@@ -117,13 +117,13 @@ target_sources(VoxelGame PRIVATE
     ./src/Application.cpp
     ./src/GameData/BlockGeometry.cpp
     ./src/GameData/GameData.cpp
-    ./src/GameData/SectionPart.cpp
     ./src/GameData/ChunkSection.cpp
     ./src/GameData/BlockStates/BlockStateContainer.cpp
     ./src/GameData/Block.cpp
     ./src/MainMenuLayer.cpp
     ./src/GameLayer.cpp
     ./src/Utility/Utility.cpp
+    ./src/Utility/ChunkConverter.cpp
     ./src/Gui/HotbarLayout.cpp
     ./src/Gui/Rectangle.cpp
     ./src/Gui/Image.cpp

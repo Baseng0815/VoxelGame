@@ -9,5 +9,5 @@ enum class BlockId : short {
     // the following blocks are non-solid blocks; they are made up of two orthogonal and textured 2d planes
     PLANE_GRASS,
 
-    NUM_BLOCKS
+    NUM_BLOCKS, BLOCK_EMPTY = -1
 };
