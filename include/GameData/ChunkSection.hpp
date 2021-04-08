@@ -32,6 +32,7 @@ struct ChunkSection {
     bool isAir() const;
 
     char* getData(size_t* length) const;
+    static ChunkSection load(char* data, const glm::ivec3& position);
 
     ChunkSection& operator=(const ChunkSection& other);
 };
