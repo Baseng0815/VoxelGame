@@ -117,6 +117,7 @@ void ChunkSection::cleanUp() {
 
         // merge subsections
         delete[] subsections;
+        subsections = nullptr;
         this->blockType = subsectionBlocks;
     }
 }
@@ -142,20 +143,11 @@ char* ChunkSection::getData(size_t* length) const {
             entireLength += length;
         }
 
-        *length = entireLength + 2;
+        *length = entireLength;
         // create buffer
         char* buffer = new char[*length];
-        // write node byte
-        buffer[0] = 0x02;
-        // write size
-        buffer[1] = size;
 
-        // write length
-        // for (int i = 0; i < 4; i++) {
-        //     buffer[4 - i] = (char)(entireLength >> (i * 8));
-        // }
-
-        int pos = 1;
+        int pos = 0;
         // write section data
         for (int i = 0; i < SUBSECTIONS_COUNT; i++) {
             std::memcpy(buffer + pos, subSectionData[i], subSectionDataLengths[i]);
@@ -168,48 +160,42 @@ char* ChunkSection::getData(size_t* length) const {
         return buffer;
     }
     else {
-        char* buffer = new char[4];
+        char* buffer = new char[7];
         // write leaf byte
-        buffer[0] = 0x01;
+        buffer[0] = 0xFF;
+
+        // write position
+        buffer[1] = (char)position.x;
+        buffer[2] = (char)position.y;
+        buffer[3] = (char)position.z;
 
         // write section size
-        buffer[1] = size;
+        buffer[4] = size;
 
         // write block type
-        buffer[2] = (char)((short)blockType >> 8);
-        buffer[3] = (char)blockType;
+        buffer[5] = (char)((short)blockType >> 8);
+        buffer[6] = (char)blockType;
 
-        *length = 4;
+        *length = 7;
         return buffer;
     }
 }
 
-ChunkSection ChunkSection::load(char* data, const glm::ivec3& position) {
+ChunkSection ChunkSection::load(char* data) {
     char firstByte = *(data++);
     // leaf node
-    if (firstByte == 0x01) {
+    if (firstByte == 0xFF) {
+        // read position
+        glm::ivec3 position;
+        position.x = *(data++);
+        position.y = *(data++);
+        position.z = *(data++);
         // read section size
         byte sectionSize = *(data++);
         // read block type
         short blockIndex = (short)(*(data++) << 8) | *(data++);
 
-        return ChunkSection{glm::ivec3{}, sectionSize, (BlockId)blockIndex};
-    }
-    // internal node
-    else if (firstByte == 0x02) {
-        int size = *(data++);
-
-        ChunkSection* subsections = new ChunkSection[SUBSECTIONS_COUNT];
-        ChunkSection section{position, (byte)size, subsections};
-
-        // read subsections
-        for (int i = 0; i < SUBSECTIONS_COUNT; i++) {
-            glm::ivec3 sectionPos = getDirection(i) * size / 2;
-
-            subsections[i] = load(data, sectionPos);
-        }
-
-        return section;
+        return ChunkSection{position, sectionSize, (BlockId)blockIndex};
     }
 
     return ChunkSection();

@@ -3,6 +3,7 @@
 #include "System.hpp"
 
 #include <future>
+#include <queue>
 #include <string>
 #include <vector>
 
@@ -12,9 +13,10 @@ class ChunkSaveSystem : public System {
   private:
     const static std::string savegameDir;
 
-    std::vector<std::future<void>> saveTasks;
+    std::queue<entt::entity> saveQueue;
+    std::vector<std::future<entt::entity>> saveTasks;
 
-    void saveChunk(const ChunkComponent& chunk) const;
+    static entt::entity saveChunk(const entt::entity entity, const ChunkComponent& chunk);
 
     void _update(int dt) override;
 

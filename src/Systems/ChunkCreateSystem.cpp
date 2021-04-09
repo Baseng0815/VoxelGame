@@ -81,11 +81,6 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity, int chu
 
     glm::vec2 chunk = glm::vec2{chunkX, chunkZ};
     m_worldGenerator.generate(chunk, &generationData);
-    // m_structureGenerator.generateStructures(chunk, &generationData);
-
-    // if (m_structureQueue.contains(chunk)) {
-    //     updateChunkStructures(chunk, generationData.blocks);
-    // }
 
     return generationData;
 }
@@ -290,37 +285,38 @@ void ChunkCreateSystem::deleteChunks()
     // delete queued chunks if no thread is active on them
     auto it = m_destructionQueue.begin();
     while (it != m_destructionQueue.end()) {
-        const ChunkComponent& chunk = m_registry.get<ChunkComponent>(*it);
+        ChunkComponent& chunk = m_registry.get<ChunkComponent>(*it);
 
         if (!chunk.threadActiveOnSelf && chunk.blocks) {
-            glm::vec2 pos{chunk.chunkX, chunk.chunkZ};
+            chunk.state |= ChunkComponent::States::SAVE_REQUESTED;
+            // glm::vec2 pos{chunk.chunkX, chunk.chunkZ};
 
-            World::removeChunk(*it);
+            // World::removeChunk(*it);
 
-            // cleanup memory
-            for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
-                for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
-                    delete[] chunk.blocks[x][y];
-                }
-                delete[] chunk.blocks[x];
-            }
+            // // cleanup memory
+            // for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
+            //     for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
+            //         delete[] chunk.blocks[x][y];
+            //     }
+            //     delete[] chunk.blocks[x];
+            // }
 
-            delete[] chunk.blocks;
+            // delete[] chunk.blocks;
 
-            for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
-                delete[] chunk.biomes[x];
-            }
+            // for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
+            //     delete[] chunk.biomes[x];
+            // }
 
-            delete[] chunk.biomes;
+            // delete[] chunk.biomes;
 
-            delete chunk.blockMutex;
-            delete chunk.geometryCulled;
-            delete chunk.geometryNonCulled;
-            delete chunk.geometryTransparent;
+            // delete chunk.blockMutex;
+            // delete chunk.geometryCulled;
+            // delete chunk.geometryNonCulled;
+            // delete chunk.geometryTransparent;
 
-            // remove from loaded chunks and registry
-            m_loadedChunks.erase(std::remove(m_loadedChunks.begin(), m_loadedChunks.end(), pos), m_loadedChunks.end());
-            m_registry.destroy(*it);
+            // // remove from loaded chunks and registry
+            // m_loadedChunks.erase(std::remove(m_loadedChunks.begin(), m_loadedChunks.end(), pos), m_loadedChunks.end());
+            // m_registry.destroy(*it);
             it = m_destructionQueue.erase(it);
         }
         else {
@@ -351,11 +347,12 @@ void ChunkCreateSystem::checkChunks()
                             return updateChunkBlocks(entity, chunk.chunkX, chunk.chunkZ);
                         }));
 
-                chunk.needsUpdate = true;
-                chunk.verticesOutdated = true;
+                // remove update state and add vertices outdated state
+                chunk.state ^= ChunkComponent::States::NEEDS_UPDATE;
+                chunk.state |= ChunkComponent::States::VERTICES_OUTDATED;
             }
             // update vertices
-            else if (chunk.verticesOutdated) {
+            else if (chunk.state & ChunkComponent::States::VERTICES_OUTDATED) {
                 m_constructionCount++;
                 chunk.threadActiveOnSelf = true;
 
@@ -413,7 +410,9 @@ void ChunkCreateSystem::processVertices()
             // water geometry
             updateChunkBuffers(chunk.geometryTransparent, geometryData.indicesTransparent, geometryData.verticesTransparent);
 
-            chunk.verticesOutdated = false;
+            // remove vertices outdated state
+            chunk.state ^= ChunkComponent::States::VERTICES_OUTDATED;
+
             chunk.threadActiveOnSelf = false;
             m_constructionCount--;
 

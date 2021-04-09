@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../Typedefs.hpp"
+#include "../Configuration.hpp"
+#include "../GameData/BlockIds.hpp"
 
 #include <glm/glm.hpp>
 #include <vector>

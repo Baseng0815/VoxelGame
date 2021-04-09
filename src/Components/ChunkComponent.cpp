@@ -13,12 +13,12 @@ void ChunkComponent::setBlock(const Block& block) {
     // state
     // if needed delete old state and create new state
     switch (block.type) {
-    case BlockId::BLOCK_WATER:
-        blockStates.createBlockState<WaterBlockState>(localPos);
-        break;
+        case BlockId::BLOCK_WATER:
+            blockStates.createBlockState<WaterBlockState>(localPos);
+            break;
 
-    default:
-        break;
+        default:
+            break;
     }
 
     blocks[localPos.x][localPos.y][localPos.z] = block.type;
@@ -45,13 +45,13 @@ Block ChunkComponent::getBlock(int x, int y, int z) {
 
         Block block;
         switch (type) {
-        case BlockId::BLOCK_WATER: {
-            WaterBlockState* state = blockStates.getState<WaterBlockState>(glm::vec3{x, y, z});
-            block = Block{Utility::getWorldCoords(chunkX, chunkZ, x, y, z), type, state};
-        } break;
-        default:
-            block = Block{Utility::getWorldCoords(chunkX, chunkZ, x, y, z), type, nullptr};
-            break;
+            case BlockId::BLOCK_WATER: {
+                WaterBlockState* state = blockStates.getState<WaterBlockState>(glm::vec3{x, y, z});
+                block = Block{Utility::getWorldCoords(chunkX, chunkZ, x, y, z), type, state};
+            } break;
+            default:
+                block = Block{Utility::getWorldCoords(chunkX, chunkZ, x, y, z), type, nullptr};
+                break;
         }
 
         return block;
@@ -63,4 +63,32 @@ Block ChunkComponent::getBlock(int x, int y, int z) {
 
 Block ChunkComponent::getBlock(const glm::ivec3& position) {
     return getBlock(position.x, position.y, position.z);
+}
+
+ChunkComponent::States operator~(ChunkComponent::States a) {
+    return static_cast<ChunkComponent::States>(~static_cast<int>(a));
+}
+
+ChunkComponent::States operator|(ChunkComponent::States a, ChunkComponent::States b) {
+    return static_cast<ChunkComponent::States>(static_cast<int>(a) | static_cast<int>(b));
+}
+
+ChunkComponent::States operator&(ChunkComponent::States a, ChunkComponent::States b) {
+    return static_cast<ChunkComponent::States>(static_cast<int>(a) & static_cast<int>(b));
+}
+
+ChunkComponent::States operator^(ChunkComponent::States a, ChunkComponent::States b) {
+    return static_cast<ChunkComponent::States>(static_cast<int>(a) ^ static_cast<int>(b));
+}
+
+ChunkComponent::States& operator|=(ChunkComponent::States& a, ChunkComponent::States b) {
+    return (a = a | b);
+}
+
+ChunkComponent::States& operator&=(ChunkComponent::States& a, ChunkComponent::States b) {
+    return (a = a & b);
+}
+
+ChunkComponent::States& operator^=(ChunkComponent::States& a, ChunkComponent::States b) {
+    return (a = a ^ b);
 }

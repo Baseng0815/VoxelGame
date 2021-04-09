@@ -39,7 +39,7 @@ void World::setBlock(entt::registry& registry, Block block)
         BlockId prevBlock = chunk.getBlock(localPosition.x, localPosition.y, localPosition.z).type;
 
         chunk.setBlock(block);
-        chunk.verticesOutdated = true;
+        chunk.state |= ChunkComponent::States::VERTICES_OUTDATED;
 
         BlockChangedEvent blockChangedEvent{nullptr, block.position, prevBlock, block.type};
         EventDispatcher::raiseEvent(blockChangedEvent);

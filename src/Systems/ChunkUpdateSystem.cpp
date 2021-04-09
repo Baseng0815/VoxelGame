@@ -58,8 +58,8 @@ void ChunkUpdateSystem::updateWater(const glm::ivec3& position) {
             WaterBlockState* newState = chunk.blockStates.createBlockState<WaterBlockState>(lowerPos);
             newState->level = 8;
 
-            chunk.blocks[x][y - 1][z] = BlockId::BLOCK_WATER;            
-            chunk.verticesOutdated = true;
+            chunk.blocks[x][y - 1][z] = BlockId::BLOCK_WATER;
+            chunk.state |= ChunkComponent::States::VERTICES_OUTDATED;
 
             m_waterUpdates.push_back(std::make_pair(Configuration::WATER_FLOW_TIME, lowerPos));
             return;
@@ -82,7 +82,7 @@ void ChunkUpdateSystem::updateWater(const glm::ivec3& position) {
                                                        tmpState->level = level;
                                                        // updateWater(chunk, cx, cy, cz);
                                                        m_waterUpdates.push_back(std::make_pair(Configuration::WATER_FLOW_TIME, glm::vec3{chunk.chunkX * Configuration::CHUNK_SIZE + cx, cy, chunk.chunkZ * Configuration::CHUNK_SIZE + cz}));
-                                                       chunk.verticesOutdated = true;
+                                                       chunk.state |= ChunkComponent::States::VERTICES_OUTDATED;
                                                    }
                                                }
                                                // not solid and no water
@@ -92,7 +92,7 @@ void ChunkUpdateSystem::updateWater(const glm::ivec3& position) {
                                                    chunk.blocks[cx][cy][cz] = BlockId::BLOCK_WATER;
                                                    // updateWater(chunk, cx, cy, cz);
                                                    m_waterUpdates.push_back(std::make_pair(Configuration::WATER_FLOW_TIME, glm::vec3{chunk.chunkX * Configuration::CHUNK_SIZE + cx, cy, chunk.chunkZ * Configuration::CHUNK_SIZE + cz}));
-                                                   chunk.verticesOutdated = true;
+                                                   chunk.state |= ChunkComponent::States::VERTICES_OUTDATED;
                                                }
                                            });
                 }
@@ -108,7 +108,7 @@ void ChunkUpdateSystem::_update(int dt) {
         if ((*it).first <= 0) {
             glm::ivec3 position = (*it).second;
             updateWater(position);
-            
+
             it = m_waterUpdates.erase(it);
         }
         else {

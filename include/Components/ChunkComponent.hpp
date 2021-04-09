@@ -22,18 +22,27 @@ struct Cuboid;
 class Geometry;
 
 struct ChunkComponent {
-    std::shared_mutex *blockMutex;
+    enum States
+    {
+        IDLE = 0,
+        NEEDS_UPDATE = 1,
+        VERTICES_OUTDATED = 2,
+        SAVE_REQUESTED = 4,
+        DELETION_REQUESTED = 8
+    };
+
+    std::shared_mutex* blockMutex;
     int chunkX, chunkZ;
 
     // raw pointer because ChunkComponent needs to be copyable
     // TODO find out if this works using move semantics only
-    Geometry *geometryCulled;
-    Geometry *geometryNonCulled;
-    Geometry *geometryTransparent;
+    Geometry* geometryCulled;
+    Geometry* geometryNonCulled;
+    Geometry* geometryTransparent;
 
     // max 16 * 16 * 256 = 65535 elements
     BlockStateContainer blockStates;
-    bool needsUpdate = false;
+    States state = States::IDLE;
 
     // TODO make this more efficient (maybe use octrees?)
     // four bytes blockdata and four bytes block type
@@ -43,14 +52,22 @@ struct ChunkComponent {
     // TODO maybe use chunk-wise biomes and interpolate
     BiomeId** biomes = nullptr;
 
-    bool verticesOutdated = false;
     bool threadActiveOnSelf = false;
 
-    void setBlock(const Block &block);
+    void setBlock(const Block& block);
 
     Block getBlock(int x, int y, int z) const;
-    Block getBlock(const glm::ivec3 &position) const;
+    Block getBlock(const glm::ivec3& position) const;
 
     Block getBlock(int x, int y, int z);
-    Block getBlock(const glm::ivec3 &position);
+    Block getBlock(const glm::ivec3& position);
 };
+
+// state operators
+ChunkComponent::States operator~(ChunkComponent::States a);
+ChunkComponent::States operator|(ChunkComponent::States a, ChunkComponent::States b);
+ChunkComponent::States operator&(ChunkComponent::States a, ChunkComponent::States b);
+ChunkComponent::States operator^(ChunkComponent::States a, ChunkComponent::States b);
+ChunkComponent::States& operator|=(ChunkComponent::States& a, ChunkComponent::States b);
+ChunkComponent::States& operator&=(ChunkComponent::States& a, ChunkComponent::States b);
+ChunkComponent::States& operator^=(ChunkComponent::States& a, ChunkComponent::States b);

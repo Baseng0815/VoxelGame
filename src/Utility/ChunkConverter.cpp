@@ -53,10 +53,11 @@ namespace Utility {
     }
 
     std::vector<ChunkSection> ChunkConverter::chunkToSections(const ChunkComponent& chunk) {
-        std::vector<ChunkSection> sections{sectionsCount};
+        std::vector<ChunkSection> sections;
+        sections.reserve(sectionsCount);
 
         for (int i = 0; i < sectionsCount; i++) {
-            sections.emplace_back(getChunkSection(chunk, Configuration::CHUNK_SIZE * i * glm::ivec3{0, 1, 0}, Configuration::CHUNK_SIZE));
+            sections.push_back(getChunkSection(chunk, Configuration::CHUNK_SIZE * i * glm::ivec3{0, 1, 0}, Configuration::CHUNK_SIZE));
         }
 
         return sections;
