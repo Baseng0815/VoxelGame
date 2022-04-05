@@ -1,6 +1,7 @@
 #include "../../include/Resources/Texture.hpp"
 
-#include <SOIL/SOIL.h>
+#define STB_IMAGE_IMPLEMENTATION
+#include "../../include/stb_image.h"
 
 #include <iostream>
 
@@ -14,7 +15,7 @@ void Texture::release()
 Texture::Texture(const std::string& file) {
     std::cout << "loading texture " << file << "\n";
 
-    unsigned char *data = SOIL_load_image((Configuration::getStringValue("ResourceBasePath") + file).c_str(), &m_width, &m_height, &m_channels, SOIL_LOAD_RGBA);
+    unsigned char *data = stbi_load((Configuration::getStringValue("ResourceBasePath") + file).c_str(), &m_width, &m_height, &m_channels, STBI_rgb_alpha);
     if (!data) {
         std::cerr << "failed to load texture" << file << "\n";
         exit(1);
@@ -30,7 +31,7 @@ Texture::Texture(const std::string& file) {
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 
-    SOIL_free_image_data(data);
+    stbi_image_free(data);
 }
 
 Texture::Texture(const std::array<std::string, 6> &files)
@@ -42,13 +43,13 @@ Texture::Texture(const std::array<std::string, 6> &files)
     for (int i = 0; i < files.size(); i++) {
         std::cout << "\t" << files[i] << std::endl;
         int width, height, channels;
-        unsigned char *data = SOIL_load_image((Configuration::getStringValue("ResourceBasePath") + files[i]).c_str(), &width, &height, &channels, SOIL_LOAD_RGBA);
+        unsigned char *data = stbi_load((Configuration::getStringValue("ResourceBasePath") + files[i]).c_str(), &width, &height, &channels, STBI_rgb_alpha);
         if (!data) {
             std::cerr << "failed to load texture" << files[i] << "\n";
             exit(1);
         }
         glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
-        SOIL_free_image_data(data);
+        stbi_image_free(data);
     }
 
     glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
