@@ -146,7 +146,7 @@ ItemSystem::ItemSystem(entt::registry& registry, const TextureAtlas& atlas)
     });
 
     m_playerMovedHandle = EventDispatcher::onEntityMoved.subscribe([&](const EntityMovedEvent& e) {
-        if (m_registry.any<PlayerComponent>(e.entity)) {
+        if (m_registry.any_of<PlayerComponent>(e.entity)) {
             handlePlayerMoved(e);
         }
     });

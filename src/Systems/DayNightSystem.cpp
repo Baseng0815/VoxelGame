@@ -15,7 +15,7 @@ void DayNightSystem::_update(int dt)
 
     // float angle = 2 * Utility::PI * m_ingameTime / 24000.f;
     float angle = 0.25 * Utility::PI;
-    LightingComponent& lighting = m_registry.raw<LightingComponent>()[0];
+    LightingComponent& lighting = m_registry.get<LightingComponent>(m_registry.view<LightingComponent>().front());
     lighting.dirLights[0].direction.x = -std::cos(angle);
     lighting.dirLights[0].direction.y = -std::sin(angle);
 

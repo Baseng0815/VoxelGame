@@ -147,7 +147,7 @@ void InputSystem::handleScrollEvent(const ScrollEvent& e) {
     int index = (currentIndex + (e.dy < 0 ? 1 : 8)) % 9;
     m_hotbarLayout.setSelectionIndex(index);
 
-    m_registry.view<PlayerComponent>().raw()[0].selectedItemIndex = index;
+    m_registry.get<PlayerComponent>(m_registry.view<PlayerComponent>().front()).selectedItemIndex = index;
 }
 
 void InputSystem::_update(int dt)

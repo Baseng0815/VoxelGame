@@ -85,7 +85,7 @@ PlayerMovementSystem::PlayerMovementSystem(Registry_T &registry)
 {
     m_playerMovedHandle = EventDispatcher::onEntityMoved.subscribe([&](const EntityMovedEvent &e) {
         // if entity has PlayerComponent
-        if (m_registry.any<PlayerComponent>(e.entity)) {
+        if (m_registry.any_of<PlayerComponent>(e.entity)) {
             handlePlayerMoved(e);
         }
     });

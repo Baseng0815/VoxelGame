@@ -40,7 +40,7 @@ void PhysicsSystem::applyVelocities(float dt, const entt::entity &entity, Transf
         EventDispatcher::raiseEvent(e);
 
         // if entity is player, check for EnterChunk event
-        if (m_registry.has<PlayerComponent>(entity)) {
+        if (m_registry.orphan(entity)) {
             glm::ivec2 oldChunk = Utility::getChunk(oldPos);
             glm::ivec2 newChunk = Utility::getChunk(transform.getPosition());
 

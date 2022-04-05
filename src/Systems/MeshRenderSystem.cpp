@@ -21,7 +21,7 @@ void MeshRenderSystem::uploadToShader(const Shader* shader, const CameraComponen
     shader->upload("viewPos", camera.positionOffset + playerTransform.getPosition());
     shader->upload("projectionMatrix", camera.perspectiveProjection);
 
-    const LightingComponent& lighting = m_registry.raw<LightingComponent>()[0];
+    const LightingComponent& lighting = m_registry.get<LightingComponent>(m_registry.view<LightingComponent>().front());
 
     // upload dir lights
     shader->upload("dirLightCount", (int)lighting.dirLights.size());
@@ -100,7 +100,7 @@ void MeshRenderSystem::render(const TransformationComponent& transformation, con
 
 void MeshRenderSystem::_update(int dt)
 {
-    const CameraComponent& camera = m_registry.view<CameraComponent>().raw()[0];
+    const CameraComponent& camera = m_registry.get<CameraComponent>(m_registry.view<CameraComponent>().front());
     const auto &[playerTransform, player] = m_registry.get<TransformationComponent, PlayerComponent>(m_registry.view<PlayerComponent>().front());
 
     // look at block is valid
