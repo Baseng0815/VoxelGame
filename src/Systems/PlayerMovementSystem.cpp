@@ -66,8 +66,8 @@ void PlayerMovementSystem::updatePlayerSpeed(PlayerComponent &player, VelocityCo
             velocity.velocity.z *= player.maxMovementSpeed / speed;
         }
 
-        if (velocity.velocity.y > player.maxMovementSpeed) {
-            velocity.velocity.y = player.maxMovementSpeed;
+        if (glm::abs(velocity.velocity.y) > player.maxMovementSpeed) {
+            velocity.velocity.y *= player.maxMovementSpeed / glm::abs(velocity.velocity.y);
         }
     } else {
         if (velocity.velocity.y == 0) {
