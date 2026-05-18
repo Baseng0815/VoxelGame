@@ -21,34 +21,34 @@ struct Cuboid;
 class Geometry;
 
 struct ChunkComponent {
-    std::shared_mutex *blockMutex;
-    int chunkX, chunkZ;
+  std::shared_mutex *blockMutex;
+  int chunkX, chunkZ;
 
-    // raw pointer because ChunkComponent needs to be copyable
-    // TODO find out if this works using move semantics only
-    Geometry *geometryCulled;
-    Geometry *geometryNonCulled;
-    Geometry *geometryTransparent;
+  // raw pointer because ChunkComponent needs to be copyable
+  // TODO find out if this works using move semantics only
+  Geometry *geometryCulled;
+  Geometry *geometryNonCulled;
+  Geometry *geometryTransparent;
 
-    // max 16 * 16 * 256 = 65535 elements
-    BlockStateContainer blockStates;
-    bool needsUpdate = false;
+  // max 16 * 16 * 256 = 65535 elements
+  BlockState ****blockStates = nullptr;
+  bool needsUpdate = false;
 
-    // TODO make this more efficient (maybe use octrees?)
-    // four bytes blockdata and four bytes block type
-    BlockId*** blocks = nullptr;
+  // TODO make this more efficient (maybe use octrees?)
+  // four bytes blockdata and four bytes block type
+  BlockId ***blocks = nullptr;
 
-    // TODO maybe use chunk-wise biomes and interpolate
-    BiomeId** biomes = nullptr;
+  // TODO maybe use chunk-wise biomes and interpolate
+  BiomeId **biomes = nullptr;
 
-    bool verticesOutdated = false;
-    bool threadActiveOnSelf = false;
+  bool verticesOutdated = false;
+  bool threadActiveOnSelf = false;
 
-    void setBlock(const Block &block);
+  void setBlock(const Block &block);
 
-    Block getBlock(int x, int y, int z) const;
-    Block getBlock(const glm::ivec3 &position) const;
+  Block getBlock(int x, int y, int z) const;
+  Block getBlock(const glm::ivec3 &position) const;
 
-    Block getBlock(int x, int y, int z);
-    Block getBlock(const glm::ivec3 &position);
+  Block getBlock(int x, int y, int z);
+  Block getBlock(const glm::ivec3 &position);
 };

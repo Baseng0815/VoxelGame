@@ -41,33 +41,36 @@ const GeometryData BlockGeometry::generationDataPlane = {
     std::array<float, 8>{0, 0, 1, -1, 0, 1, 1},
 };
 
-GeometryData BlockGeometry::getGeometry(const BlockId& type, const BlockState* state) {
-    GeometryData geometry;
-    if (type >= BlockId::PLANE_GRASS) {
-        return generationDataPlane;
-    }
-    else {
-        if (type == BlockId::BLOCK_WATER) {            
-            float height = 7.0f / 8.0f;
-            if (state != nullptr) {
-                const WaterBlockState* waterBlockState = reinterpret_cast<const WaterBlockState*>(state);
-                if (!(waterBlockState->level == 0 || waterBlockState->level == 8)) {
-                    height = (7 - waterBlockState->level) / 8.0f;
-                }
-            }
-
-            GeometryData waterGeo;
-            for (auto& data : generationDataBlock) {
-                waterGeo.emplace_back(std::array<float, 8>{
-                    data[0],
-                    data[1] * height,
-                    data[2], data[3], data[4], data[5], data[6], data[7]});
-            }
-
-            return waterGeo;
+GeometryData BlockGeometry::getGeometry(const BlockId &type,
+                                        const BlockState *state) {
+  GeometryData geometry;
+  if (type >= BlockId::PLANE_GRASS) {
+    return generationDataPlane;
+  } else {
+    switch (type) {
+    case BlockId::BLOCK_WATER: {
+      float height = 7.0f / 8.0f;
+      if (state != nullptr) {
+        const WaterBlockState *waterBlockState =
+            reinterpret_cast<const WaterBlockState *>(state);
+        if (!(waterBlockState->level == 0 || waterBlockState->level == 8)) {
+          height = (7 - waterBlockState->level) / 8.0f;
+        } else if (waterBlockState->level == 8) {
+          height = 1.0f;
         }
-        else {
-            return generationDataBlock;
-        }
+      }
+
+      GeometryData waterGeo;
+      for (auto &data : generationDataBlock) {
+        waterGeo.emplace_back(std::array<float, 8>{data[0], data[1] * height,
+                                                   data[2], data[3], data[4],
+                                                   data[5], data[6], data[7]});
+      }
+
+      return waterGeo;
     }
+    default:
+      return generationDataBlock;
+    }
+  }
 }

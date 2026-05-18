@@ -28,6 +28,7 @@ void TerrainGenerator::createBlocks(GenerationData* data, int** heightMap) const
             int height = heightMap[cx][cz];
             BiomeId biomeId = data->biomes[cx][cz];
             Biome biome = getBiome(biomeId);
+            BlockState* state = nullptr;
 
             for (int cy = 0; cy < Configuration::CHUNK_HEIGHT; cy++) {
                 BlockId block = BlockId::BLOCK_AIR;
@@ -45,10 +46,11 @@ void TerrainGenerator::createBlocks(GenerationData* data, int** heightMap) const
                 else if (cy <= 63) {
                     // water default state index and block index
                     block = BlockId::BLOCK_WATER;
-                    data->stateData.createBlockState<WaterBlockState>(glm::vec3{cx, cy, cz});
-                }                
+                    state = new WaterBlockState();
+                }
 
                 data->blocks[cx][cy][cz] = block;
+                data->stateData[cx][cy][cz] = state;
             }
         }
 }

@@ -12,7 +12,7 @@ struct Block;
 struct WaterBlockState;
 
 class ChunkUpdateSystem : public System {
-    private:        
+    private:
         CallbackHandle<const BlockChangedEvent&> m_blockHandle;
         void handleBlockChanged(const BlockChangedEvent& e);
 
@@ -22,6 +22,7 @@ class ChunkUpdateSystem : public System {
 
         std::vector<std::future<void>> m_updateFutures;
         std::vector<std::pair<float, glm::ivec3>> m_waterUpdates;
+        std::vector<glm::ivec3> m_nextWaterUpdates;
 
       public:
         ChunkUpdateSystem(Registry_T& registry);

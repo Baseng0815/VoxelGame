@@ -4,4 +4,5 @@
 struct BlockState {
     bool outdated = true;
 
+    virtual ~BlockState() = default;
 };

@@ -6,9 +6,9 @@
 #include <entt/entt.hpp>
 
 struct GenerationData {
-    entt::entity entity;
-    
-    BlockStateContainer stateData;
-    BlockId*** blocks;
-    BiomeId** biomes;
+  entt::entity entity;
+
+  BlockState ****stateData;
+  BlockId ***blocks;
+  BiomeId **biomes;
 };
