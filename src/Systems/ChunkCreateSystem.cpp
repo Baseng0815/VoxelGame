@@ -78,15 +78,10 @@ GenerationData ChunkCreateSystem::updateChunkBlocks(entt::entity entity,
 
   // allocate blocks
   generationData.blocks = new BlockId **[Configuration::CHUNK_SIZE];
-  generationData.stateData = new BlockState ***[Configuration::CHUNK_SIZE];
   for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
     generationData.blocks[x] = new BlockId *[Configuration::CHUNK_HEIGHT];
-    generationData.stateData[x] =
-        new BlockState **[Configuration::CHUNK_HEIGHT];
     for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
       generationData.blocks[x][y] = new BlockId[Configuration::CHUNK_SIZE];
-      generationData.stateData[x][y] =
-          new BlockState *[Configuration::CHUNK_SIZE];
     }
   }
 
@@ -144,8 +139,7 @@ ChunkCreateSystem::updateChunkVertices(entt::entity entity,
         const BlockState *state = nullptr;
         switch (block.type) {
         case BlockId::BLOCK_WATER:
-          state =
-              reinterpret_cast<WaterBlockState *>(chunk.blockStates[x][y][z]);
+          state = chunk.blockStates.getState<WaterBlockState>(x, y, z);
           break;
         default:
           break;
@@ -312,42 +306,25 @@ void ChunkCreateSystem::deleteChunks() {
   // delete queued chunks if no thread is active on them
   auto it = m_destructionQueue.begin();
   while (it != m_destructionQueue.end()) {
-    const ChunkComponent &chunk = m_registry.get<ChunkComponent>(*it);
+    ChunkComponent &chunk = m_registry.get<ChunkComponent>(*it);
 
     if (!chunk.threadActiveOnSelf && chunk.blocks) {
       glm::vec2 pos{chunk.chunkX, chunk.chunkZ};
 
       World::removeChunk(*it);
 
+      chunk.blockStates.deleteAll(chunk);
+
       // cleanup memory
       for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
         for (int y = 0; y < Configuration::CHUNK_HEIGHT; y++) {
-
-          for (int z = 0; z < Configuration::CHUNK_SIZE; z++) {
-            if (chunk.blockStates[x][y][z] == nullptr) {
-              continue;
-            }
-
-            switch (chunk.blocks[x][y][z]) {
-            case BlockId::BLOCK_WATER:
-              delete reinterpret_cast<WaterBlockState *>(
-                  chunk.blockStates[x][y][z]);
-              break;
-            }
-
-            chunk.blockStates[x][y][z] = nullptr;
-          }
-
           delete[] chunk.blocks[x][y];
-          delete[] chunk.blockStates[x][y];
         }
 
         delete[] chunk.blocks[x];
-        delete[] chunk.blockStates[x];
       }
 
       delete[] chunk.blocks;
-      delete[] chunk.blockStates;
 
       for (int x = 0; x < Configuration::CHUNK_SIZE; x++) {
         delete[] chunk.biomes[x];

@@ -14,8 +14,7 @@ void ChunkComponent::setBlock(const Block &block) {
   // if needed delete old state and create new state
   switch (block.type) {
   case BlockId::BLOCK_WATER:
-    blockStates[block.position.x][block.position.y][block.position.z] =
-        new WaterBlockState();
+    blockStates.createBlockState<WaterBlockState>(block.position);
     break;
 
   default:
@@ -46,8 +45,8 @@ Block ChunkComponent::getBlock(int x, int y, int z) {
     Block block;
     switch (type) {
     case BlockId::BLOCK_WATER: {
-      WaterBlockState *state =
-          reinterpret_cast<WaterBlockState *>(blockStates[x][y][z]);
+      WaterBlockState *state = blockStates.getState<WaterBlockState>(x, y, z);
+          // reinterpret_cast<WaterBlockState *>(blockStates[x][y][z]);
       block =
           Block{Utility::getWorldCoords(chunkX, chunkZ, x, y, z), type, state};
     } break;

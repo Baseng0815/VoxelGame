@@ -8,7 +8,7 @@
 struct GenerationData {
   entt::entity entity;
 
-  BlockState ****stateData;
+  BlockStateContainer stateData;
   BlockId ***blocks;
   BiomeId **biomes;
 };

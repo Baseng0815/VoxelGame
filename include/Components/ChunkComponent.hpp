@@ -31,7 +31,7 @@ struct ChunkComponent {
   Geometry *geometryTransparent;
 
   // max 16 * 16 * 256 = 65535 elements
-  BlockState ****blockStates = nullptr;
+  BlockStateContainer blockStates;
   bool needsUpdate = false;
 
   // TODO make this more efficient (maybe use octrees?)

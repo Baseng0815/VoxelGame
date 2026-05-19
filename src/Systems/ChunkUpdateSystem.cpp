@@ -48,7 +48,7 @@ void ChunkUpdateSystem::updateWater(const glm::ivec3 &position) {
 
       // create new falling state
       chunk.blocks[x][y - 1][z] = BlockId::BLOCK_WATER;
-      chunk.blockStates[x][y - 1][z] = new WaterBlockState(8);
+      chunk.blockStates.createBlockState<WaterBlockState>(lowerPos, 8);
       chunk.verticesOutdated = true;
 
       m_nextWaterUpdates.push_back(
@@ -85,7 +85,7 @@ void ChunkUpdateSystem::updateWater(const glm::ivec3 &position) {
             }
             // not solid and no water
             else if (!tmp.isSolid()) {
-              chunk.blockStates[cx][cy][cz] = new WaterBlockState(level);
+              chunk.blockStates.createBlockState<WaterBlockState>(glm::ivec3{cx, cy, cz}, level);
               chunk.blocks[cx][cy][cz] = BlockId::BLOCK_WATER;
               // updateWater(chunk, cx, cy, cz);
               m_nextWaterUpdates.push_back(
