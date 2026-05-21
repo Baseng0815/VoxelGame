@@ -17,6 +17,8 @@ class System {
     public:
         System(Registry_T &registry);
 
+        // TODO: Implement virtual destructor
+
         // dt in milliseconds
         void update(int dt);
 };

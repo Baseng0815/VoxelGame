@@ -1,8 +1,16 @@
 #pragma once
 #include "../BlockIds.hpp"
 
-struct BlockState {
-    bool outdated = true;
+struct BlockStateContainer;
 
-    virtual ~BlockState() = default;
+struct BlockState {
+private:
+  bool outdated = false;
+
+  friend class BlockStateContainer;
+
+public:
+  inline bool isOutdated() const { return outdated; }
+
+  virtual ~BlockState() = default;
 };

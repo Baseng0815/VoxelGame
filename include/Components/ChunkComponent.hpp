@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <entt/entt.hpp>
 #include <glm/glm.hpp>
+#include <glm/gtx/hash.hpp>
 
 #include <future>
 #include <iostream>
@@ -10,12 +11,13 @@
 #include <shared_mutex>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
+#include <vector>
 
 #include "../GameData/BiomeIds.hpp"
 #include "../GameData/Block.hpp"
 
 #include "../GameData/BlockStates/BlockStateContainer.hpp"
-#include <vector>
 
 struct Cuboid;
 class Geometry;
@@ -43,6 +45,7 @@ struct ChunkComponent {
 
   bool verticesOutdated = false;
   bool threadActiveOnSelf = false;
+  std::unordered_set<glm::ivec3> fluidUpdates;
 
   void setBlock(const Block &block);
 

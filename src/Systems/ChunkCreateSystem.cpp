@@ -3,7 +3,7 @@
 #include "../../include/Configuration.hpp"
 #include "../../include/Events/EventDispatcher.hpp"
 #include "../../include/GameData/BlockGeometry.hpp"
-#include "../../include/GameData/BlockStates/WaterBlockState.hpp"
+#include "../../include/GameData/BlockStates/FluidBlockState.hpp"
 #include "../../include/GameData/GameData.hpp"
 #include "../../include/Math/Cuboid.hpp"
 #include "../../include/Resources/TextureAtlas.hpp"
@@ -139,7 +139,7 @@ ChunkCreateSystem::updateChunkVertices(entt::entity entity,
         const BlockState *state = nullptr;
         switch (block.type) {
         case BlockId::BLOCK_WATER:
-          state = chunk.blockStates.getState<WaterBlockState>(x, y, z);
+          state = chunk.blockStates.getState<FluidBlockState>(x, y, z);
           break;
         default:
           break;

@@ -1,6 +1,6 @@
 #include "../../include/GameData/BlockGeometry.hpp"
 
-#include "../../include/GameData/BlockStates/WaterBlockState.hpp"
+#include "../../include/GameData/BlockStates/FluidBlockState.hpp"
 
 const GeometryData BlockGeometry::generationDataBlock = {
     //                    x  y  z  nx  ny nz ix iy
@@ -51,11 +51,11 @@ GeometryData BlockGeometry::getGeometry(const BlockId &type,
     case BlockId::BLOCK_WATER: {
       float height = 7.0f / 8.0f;
       if (state != nullptr) {
-        const WaterBlockState *waterBlockState =
-            reinterpret_cast<const WaterBlockState *>(state);
-        if (!(waterBlockState->level == 0 || waterBlockState->level == 8)) {
-          height = (7 - waterBlockState->level) / 8.0f;
-        } else if (waterBlockState->level == 8) {
+        const FluidBlockState *fluidBlockState =
+            reinterpret_cast<const FluidBlockState *>(state);
+        if (!(fluidBlockState->level == 0 || fluidBlockState->level == 8)) {
+          height = (7 - fluidBlockState->level) / 8.0f;
+        } else if (fluidBlockState->level == 8) {
           height = 1.0f;
         }
       }

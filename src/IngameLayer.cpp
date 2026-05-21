@@ -2,7 +2,7 @@
 
 #include "../include/Systems/CameraSystem.hpp"
 #include "../include/Systems/ChunkCreateSystem.hpp"
-#include "../include/Systems/ChunkUpdateSystem.hpp"
+#include "../include/Systems/FluidSystem.hpp"
 #include "../include/Systems/CloudSystem.hpp"
 #include "../include/Systems/CollisionSystem.hpp"
 #include "../include/Systems/DayNightSystem.hpp"
@@ -88,7 +88,7 @@ IngameLayer::IngameLayer(Application* application)
     m_systems.emplace_back(new CollisionSystem {m_registry});
     m_systems.emplace_back(new DayNightSystem {m_registry});
     m_systems.emplace_back(new ItemSystem {m_registry, m_atlas});
-    m_systems.emplace_back(new ChunkUpdateSystem {m_registry});
+    m_systems.emplace_back(new FluidSystem {m_registry});
 
     // rendering
     m_systems.emplace_back(new CameraSystem {m_registry});

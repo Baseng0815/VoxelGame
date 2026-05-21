@@ -2,7 +2,7 @@
 #include "../../include/Configuration.hpp"
 #include "../../include/Utility.hpp"
 
-#include "../../include/GameData/BlockStates/WaterBlockState.hpp"
+#include "../../include/GameData/BlockStates/FluidBlockState.hpp"
 
 TerrainGenerator::TerrainGenerator() {
   m_biomes.emplace_back(BiomeId::BIOME_FLAT, BlockId::BLOCK_GRASS,
@@ -51,8 +51,8 @@ void TerrainGenerator::createBlocks(GenerationData *data,
         } else if (cy <= 63) {
           // water default state index and block index
           block = BlockId::BLOCK_WATER;
-          data->stateData.createBlockState<WaterBlockState>(
-              glm::ivec3{cx, cy, cz});
+          data->stateData.setBlockState<FluidBlockState>(glm::ivec3{cx, cy, cz},
+                                                         0, 1.0f);
         }
 
         data->blocks[cx][cy][cz] = block;

@@ -6,7 +6,9 @@
 #include <glm/glm.hpp>
 
 #include <map>
+#include <set>
 #include <vector>
+#include <stdexcept>
 
 struct ChunkComponent;
 
@@ -15,13 +17,12 @@ private:
   std::map<int, int> blockIndices;
   std::vector<BlockState *> stateData;
 
-  static inline constexpr int getKey(const glm::vec3 &position) {
+  static inline constexpr int getKey(const glm::ivec3 &position) {
     return getKey(position.x, position.y, position.z);
   }
 
-  static inline constexpr int getKey(float x, float y, float z) {
-    return static_cast<int>(x) << 12 | static_cast<int>(y) << 4 |
-           static_cast<int>(z);
+  static inline constexpr int getKey(int x, int y, int z) {
+    return x << 12 | y << 4 | z;
   }
 
   static inline constexpr glm::ivec3 getPosition(int key) {
@@ -31,15 +32,15 @@ private:
 
 public:
   template <typename T>
-  inline const T *operator[](const glm::vec3 &position) const {
+  inline const T *operator[](const glm::ivec3 &position) const {
     return getState<T>(position);
   }
 
-  template <typename T> inline T *operator[](const glm::vec3 &position) {
+  template <typename T> inline T *operator[](const glm::ivec3 &position) {
     return getState<T>(position);
   }
 
-  template <typename T> inline T *createBlockState(const glm::vec3 &position) {
+  template <typename T> inline T *setBlockState(const glm::ivec3 &position) {
     int key = getKey(position);
 
     T *state = new T{};
@@ -57,7 +58,7 @@ public:
   }
 
   template <typename T, typename... TArgs>
-  inline T *createBlockState(const glm::vec3 &position, const TArgs &...args) {
+  inline T *setBlockState(const glm::ivec3 &position, const TArgs &...args) {
     int key = getKey(position);
 
     T *state = new T(args...);
@@ -66,8 +67,7 @@ public:
       delete reinterpret_cast<T *>(stateData[index]);
 
       stateData[index] = state;
-    }
-    else {
+    } else {
       blockIndices[key] = stateData.size();
       stateData.emplace_back(state);
     }
@@ -75,29 +75,64 @@ public:
     return state;
   }
 
-  template <typename T> inline T *getState(const glm::vec3 &position) {
+  template <typename T> inline T *getState(const glm::ivec3 &position) {
     return getState<T>(position.x, position.y, position.z);
   }
 
-  template <typename T> inline T *getState(float x, float y, float z) {
+  template <typename T> inline T *getState(int x, int y, int z) {
     int key = getKey(x, y, z);
-    int index = blockIndices[key];
-    return reinterpret_cast<T *>(stateData[index]);
+
+    try {
+      int index = blockIndices.at(key);
+      return reinterpret_cast<T *>(stateData[index]);
+    } catch (std::out_of_range e) {
+      return nullptr;
+    }
+  }
+
+  template <typename T> inline T *setDefaultState(const glm::ivec3 &position) {
+    return setBlockState<T>(position);
   }
 
   template <typename T>
-  inline void setDefaultState(const glm::vec3 &position) {}
-
-  template <typename T>
-  inline const T *getState(const glm::vec3 &position) const {
+  inline const T *getState(const glm::ivec3 &position) const {
     return getState<T>(position.x, position.y, position.z);
   }
 
-  template <typename T>
-  inline const T *getState(float x, float y, float z) const {
+  template <typename T> inline const T *getState(int x, int y, int z) const {
     int key = getKey(x, y, z);
+
+    try {
+      int index = blockIndices.at(key);
+      return reinterpret_cast<T *>(stateData[index]);
+    } catch (std::out_of_range e) {
+      return nullptr;
+    }
+  }
+
+  template <typename T> inline void deleteState(const glm::ivec3 &position) {
+    deleteState<T>(position.x, position.y, position.z);
+  }
+
+  template <typename T> inline void deleteState(int x, int y, int z) {
+    int key = getKey(x, y, z);
+
+    if (!blockIndices.contains(key)) {
+      return;
+    }
+
+
     int index = blockIndices.at(key);
-    return reinterpret_cast<T *>(stateData[index]);
+
+    delete reinterpret_cast<T *>(stateData[index]);
+    stateData.erase(stateData.begin() + index);
+    blockIndices.erase(key);
+
+    for (auto &[_, i] : blockIndices) {
+      if (i > index) {
+        ++i;
+      }
+    }
   }
 
   BlockStateContainer &operator=(const BlockStateContainer &other);
