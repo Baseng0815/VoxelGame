@@ -27,9 +27,6 @@ class MeshRenderSystem : public System {
 
     entt::entity m_blockSelector;
 
-    PointLight m_pointLights[MAX_LIGHTS];
-    DirectionalLight m_sun;
-
     void uploadToShader(const Shader* shader, const CameraComponent& camera, const TransformationComponent& playerTransform) const;
     void render(const TransformationComponent& transformation, const MeshRenderComponent& meshRenderer, const CameraComponent& camera, const TransformationComponent& playerTransform) const;
 

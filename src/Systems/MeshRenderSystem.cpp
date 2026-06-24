@@ -37,7 +37,6 @@ void MeshRenderSystem::uploadToShader(const Shader* shader, const CameraComponen
         shader->upload("pointLights[" + std::to_string(i) + "]", lighting.pointLights[i]);
     }
 
-    shader->upload("dirLight", m_sun);
     shader->setUniformState(true);
 }
 
@@ -102,7 +101,7 @@ void MeshRenderSystem::_update(int dt)
 {
     const CameraComponent& camera = m_registry.get<CameraComponent>(m_registry.view<CameraComponent>().front());
     const auto &[playerTransform, player] = m_registry.get<TransformationComponent, PlayerComponent>(m_registry.view<PlayerComponent>().front());
-
+    
     // look at block is valid
     if (player.lookAt.y > 0) {
         m_blockSelectorShader->bind();
@@ -155,7 +154,8 @@ MeshRenderSystem::MeshRenderSystem(Registry_T& registry)
     // create lighting component
     entt::entity lightEntity = m_registry.create();
     LightingComponent lighting;
-    lighting.dirLights.emplace_back(DirectionalLight{glm::vec3{0.f, 0.f, 0.f}, Color{30}, Color{220}, Color{30}});
+    lighting.dirLights.emplace_back(DirectionalLight{glm::vec3{0.f, 0.f, 0.f}, Color{20}, Color{150}, Color{20}});
+    lighting.pointLights.emplace_back(PointLight{glm::vec3{0.f, 0.f, 0.f}, Color{0}, Color::Red, Color{0}, 1.0f, 0.5f});
     m_registry.emplace<LightingComponent>(lightEntity, lighting);
 
     // create block selection entity

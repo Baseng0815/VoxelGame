@@ -7,12 +7,16 @@
 
 #include "../../include/Events/EventDispatcher.hpp"
 #include "../../include/Utility.hpp"
+#include "Components/LightComponent.hpp"
 
 #include <iostream>
 
 void PlayerMovementSystem::handlePlayerMoved(const EntityMovedEvent &e) const {
     CameraComponent &camera = m_registry.get<CameraComponent>(e.entity);
     camera.viewMatrixOutdated = true;
+
+    LightingComponent &lighting = m_registry.get<LightingComponent>(m_registry.view<LightingComponent>().front());
+    lighting.pointLights[0].position = e.newPos;
 }
 
 void PlayerMovementSystem::_update(int dt)
