@@ -68,7 +68,8 @@ void main()
         result += calcPointLight(pointLights[i], norm, viewDir, pass_fragPos, diffuseColor, specularColor);
     }
 
-    out_Color = result;
+    const float gamma_inverse = 1.0 / 2.2;
+    out_Color = vec4(pow(result.rgb, vec3(gamma_inverse)), result.a);
 }
 
 // directional light
